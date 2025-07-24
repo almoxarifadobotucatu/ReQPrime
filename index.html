@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solicitação de Pedido Extra</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #0a66c2;
+      --primary-hover-color: #004182;
+      --danger-color: #e53e3e;
+      --danger-hover-color: #c53030;
+      --background-light: #1a1a2e;
+      --background-white: #16213e;
+      --text-dark: #ffffff;
+      --text-medium: #b8b8b8;
+      --border-light: #2a2a3a;
+      --shadow-light: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+      --transition-all: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    body {
+      background-color: var(--background-light);
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      min-height: 100vh;
+      box-sizing: border-box;
+      color: var(--text-dark);
+    }
+
+    .container {
+      max-width: 800px;
+      width: 100%;
+      background-color: var(--background-white);
+      margin: 40px auto;
+      padding: 50px;
+      border-radius: 20px;
+      box-shadow: var(--shadow-light);
+      transition: var(--transition-all);
+    }
+
+    .container:hover {
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+    }
+
+    h2 {
+      text-align: center;
+      color: var(--text-dark);
+      margin-bottom: 40px;
+      font-weight: 700;
+      font-size: 1.5rem;
+      letter-spacing: -0.025em;
+    }
+
+    label {
+      display: block;
+      margin-top: 25px;
+      color: var(--text-medium);
+      font-weight: 500;
+      margin-bottom: 8px;
+      font-size: 0.95rem;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+      width: 100%;
+      padding: 14px 18px;
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      box-sizing: border-box;
+      font-size: 1rem;
+      color: var(--text-dark);
+      background-color: rgba(255, 255, 255, 0.1);
+      transition: var(--transition-all);
+    }
+
+    input[type="text"]:focus,
+    input[type="number"]:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 4px rgba(10, 102, 194, 0.3);
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+
+    /* ✅ Corrigir fundo branco ao digitar/usar preenchimento automático */
+    input:-webkit-autofill {
+      -webkit-box-shadow: 0 0 0px 1000px rgba(255, 255, 255, 0.1) inset !important;
+      -webkit-text-fill-color: var(--text-dark) !important;
+      transition: background-color 5000s ease-in-out 0s;
+    }
+
+    input:-webkit-autofill:focus {
+      -webkit-box-shadow: 0 0 0px 1000px rgba(255, 255, 255, 0.15) inset !important;
+    }
+
+    input:-internal-autofill-selected {
+      background-color: rgba(255, 255, 255, 0.1) !important;
+      color: var(--text-dark) !important;
+    }
+
+    /* Estilos para o custom select */
+    .custom-select {
+      position: relative;
+      width: 100%;
+    }
+
+    .custom-select .selected {
+      width: 100%;
+      padding: 14px 18px;
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      box-sizing: border-box;
+      font-size: 1rem;
+      color: var(--text-dark);
+      background-color: rgba(255, 255, 255, 0.1);
+      transition: var(--transition-all);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .custom-select .selected::after {
+      content: '▼';
+      font-size: 0.8rem;
+      color: var(--text-medium);
+      margin-left: 10px;
+    }
+
+    .custom-select .selected:hover,
+    .custom-select .selected:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 4px rgba(10, 102, 194, 0.3);
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .custom-select .options {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      width: 100%;
+      background-color: var(--background-white);
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      box-shadow: var(--shadow-light);
+      max-height: 200px;
+      overflow-y: auto;
+      z-index: 10;
+      display: none;
+      margin-top: 4px;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+
+    .custom-select .options .option {
+      padding: 12px 18px;
+      color: var(--text-dark);
+      cursor: pointer;
+      transition: var(--transition-all);
+      font-size: 1rem;
+    }
+
+    .custom-select .options .option:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .custom-select .options .option.selected {
+      background-color: rgba(10, 102, 194, 0.2);
+    }
+
+    .setor {
+      margin-top: 40px;
+      padding: 30px;
+      border: 1px solid var(--border-light);
+      border-radius: 16px;
+      background-color: rgba(0, 0, 0, 0.2);
+      position: relative;
+      box-shadow: var(--shadow-light);
+      transition: var(--transition-all);
+    }
+
+    .setor:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+    }
+
+    .setor > label {
+      margin-top: 0;
+    }
+
+    /* Novo: Grupo para seletor e botão de remover setor */
+    .setor-select-group {
+      display: flex;
+      align-items: flex-end;
+      gap: 20px;
+    }
+
+    .setor-select-group .custom-select {
+      flex: 1;
+    }
+
+    .setor-select-group .remove-setor-button {
+      flex-shrink: 0;
+      padding: 12px 18px;
+      font-size: 0.95rem;
+      border-radius: 12px;
+      position: static; /* Removido absolute */
+      box-shadow: var(--shadow-light); /* Adicionado para consistência com outros botões */
+    }
+
+    .item {
+      margin-top: 20px;
+      padding: 30px; /* Alinhado com .setor */
+      border: 1px solid var(--border-light); /* Alinhado com .setor */
+      border-radius: 16px; /* Alinhado com .setor */
+      background-color: rgba(0, 0, 0, 0.2); /* Alinhado com .setor */
+      position: relative; /* Mantido para consistência, mas não necessário agora */
+      box-shadow: var(--shadow-light); /* Alinhado com .setor */
+      transition: var(--transition-all); /* Alinhado com .setor */
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      align-items: flex-end;
+    }
+
+    .item:hover {
+      transform: translateY(-2px); /* Alinhado com .setor:hover */
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3); /* Alinhado com .setor:hover */
+    }
+
+    /* Removido o border-top dashed e o :first-of-type, pois agora cada item é uma caixa completa como .setor */
+
+    .item .item-input-group {
+      flex: 1;
+    }
+
+    .item .item-input-group.item-nome-group {
+      min-width: 300px;
+      flex-grow: 2;
+    }
+
+    .item .item-input-group.item-qtd-group {
+      min-width: 120px;
+      max-width: 150px;
+      flex-grow: 1;
+    }
+
+    .item .item-input-group label {
+      margin-top: 0;
+      margin-bottom: 8px;
+    }
+
+    .item .item-input-group input {
+      width: 100%;
+      margin-top: 0;
+    }
+
+    .item .remove-item-button {
+      flex-shrink: 0;
+      padding: 12px 18px;
+      font-size: 0.95rem;
+      border-radius: 12px;
+      align-self: flex-end; /* Alinha o botão no fundo, com os inputs */
+      margin-left: 20px; /* Espaçamento à frente da quantidade */
+    }
+
+    .observacao-group {
+      margin-top: 20px;
+    }
+
+    .buttons {
+      margin-top: 50px;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    button {
+      background: linear-gradient(135deg, var(--primary-color), var(--primary-hover-color));
+      color: white;
+      padding: 14px 30px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: var(--transition-all);
+      box-shadow: var(--shadow-light);
+    }
+
+    button:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+    }
+
+    .remove-button {
+      background: linear-gradient(135deg, var(--danger-color), var(--danger-hover-color));
+    }
+    .remove-button:hover {
+      background: linear-gradient(135deg, var(--danger-hover-color), var(--danger-color));
+    }
+
+    .remove-setor-button:hover {
+      transform: scale(1.05);
+    }
+
+    .item-buttons {
+      margin-top: 25px;
+      text-align: right;
+    }
+
+    .setor, .item {
+      animation: fadeIn 0.5s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        margin: 20px;
+        padding: 30px;
+      }
+      .buttons {
+        flex-direction: column;
+        gap: 15px;
+      }
+      .setor-select-group {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .setor-select-group .remove-setor-button {
+        margin-top: 10px;
+        width: auto;
+      }
+      .item {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .item .item-input-group {
+        min-width: unset;
+        max-width: 100%;
+      }
+      .item .remove-item-button {
+        margin-left: 0;
+        margin-top: 10px; /* Ajuste para mobile, colocando abaixo */
+        width: auto;
+        align-self: flex-start; /* Ou center, se preferir */
+      }
+    }
+  </style>
+</head>
+<body oncontextmenu="return false;">
+
+<div class="container">
+  <h2>Solicitação de Pedido Extra</h2>
+
+  <form id="pedidoForm">
+    <label for="solicitante">Nome do Solicitante:</label>
+    <input type="text" id="solicitante" required>
+
+    <label for="unidade">Unidade Solicitante:</label>
+    <input type="text" id="unidade" required>
+
+    <div id="setoresContainer"></div>
+
+    <div class="buttons">
+      <button type="button" onclick="adicionarSetor()">+ Adicionar Novo Setor</button>
+      <button type="submit">Enviar Pedido</button>
+    </div>
+  </form>
+</div>
+
+<datalist id="lista-itens">
+  <option value="1010300099 DIPIRONA COMPRIMIDO">
+  <option value="1010300048 DIPIRONA GOTAS">
+  <option value="1010300056 DIPIRONA SÓDICA 500MG/ML AMPOLA">
+  <option value="Seringa 5ml">
+  <option value="Seringa 10ml">
+  <option value="Algodão">
+  <option value="Gaze estéril">
+  <option value="Esparadrapo">
+  <option value="Termômetro digital">
+</datalist>
+
+<script>
+  // Bloquear clique direito (context menu)
+  document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+    return false;
+  });
+
+  // Bloquear F12 e combinações comuns de dev tools
+  document.addEventListener('keydown', function(e) {
+    // Bloquear F12
+    if (e.keyCode === 123) {
+      e.preventDefault();
+      return false;
+    }
+    // Bloquear Ctrl+Shift+I (Inspect)
+    if (e.ctrlKey && e.shiftKey && e.keyCode === 73) {
+      e.preventDefault();
+      return false;
+    }
+    // Bloquear Ctrl+Shift+J (Console)
+    if (e.ctrlKey && e.shiftKey && e.keyCode === 74) {
+      e.preventDefault();
+      return false;
+    }
+    // Bloquear Ctrl+U (View Source)
+    if (e.ctrlKey && e.keyCode === 85) {
+      e.preventDefault();
+      return false;
+    }
+  });
+
+  let setorIndex = 0;
+
+  function adicionarSetor() {
+    const container = document.getElementById('setoresContainer');
+
+    const div = document.createElement('div');
+    div.className = 'setor';
+    div.setAttribute('data-setor-index', setorIndex);
+
+    const setorId = `setor-${setorIndex}`;
+
+    div.innerHTML = `
+      <label>Setor:</label>
+      <div class="setor-select-group">
+        <div class="custom-select" id="${setorId}">
+          <div class="selected" onclick="toggleOptions('${setorId}')">Selecione um setor</div>
+          <input type="hidden" name="setor" value="" required>
+          <div class="options">
+            <div class="option" data-value="Farmácia" onclick="selectOption('${setorId}', 'Farmácia')">Farmácia</div>
+            <div class="option" data-value="Enfermagem" onclick="selectOption('${setorId}', 'Enfermagem')">Enfermagem</div>
+            <div class="option" data-value="Odonto" onclick="selectOption('${setorId}', 'Odonto')">Odonto</div>
+            <div class="option" data-value="Consumo e Limpeza" onclick="selectOption('${setorId}', 'Consumo e Limpeza')">Consumo e Limpeza</div>
+            <div class="option" data-value="Materiais de Escritório" onclick="selectOption('${setorId}', 'Materiais de Escritório')">Materiais de Escritório</div>
+            <div class="option" data-value="Impressos" onclick="selectOption('${setorId}', 'Impressos')">Impressos</div>
+            <div class="option" data-value="Carrinho de Emergência" onclick="selectOption('${setorId}', 'Carrinho de Emergência')">Carrinho de Emergência</div>
+          </div>
+        </div>
+        <button type="button" onclick="removerSetor(this)" class="remove-button remove-setor-button">Remover Setor</button>
+      </div>
+
+      <div class="itens" id="itens-${setorIndex}">
+      </div>
+
+      <div class="observacao-group">
+        <label>Digite aqui uma observação:</label>
+        <input type="text" class="observacao" maxlength="70">
+      </div>
+
+      <div class="item-buttons">
+        <button type="button" onclick="adicionarItem(${setorIndex})">+ Adicionar Item</button>
+      </div>
+    `;
+
+    container.appendChild(div);
+    adicionarItem(setorIndex);
+    setorIndex++;
+  }
+
+  function toggleOptions(setorId) {
+    const options = document.querySelector(`#${setorId} .options`);
+    options.style.display = options.style.display === 'block' ? 'none' : 'block';
+  }
+
+  function selectOption(setorId, value) {
+    const selected = document.querySelector(`#${setorId} .selected`);
+    const hiddenInput = document.querySelector(`#${setorId} input[name="setor"]`);
+    selected.textContent = value;
+    hiddenInput.value = value;
+    toggleOptions(setorId);
+  }
+
+  // Fechar dropdown se clicar fora
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.custom-select')) {
+      document.querySelectorAll('.options').forEach(opt => opt.style.display = 'none');
+    }
+  });
+
+  function removerSetor(button) {
+    button.closest('.setor').remove();
+  }
+
+  function adicionarItem(index) {
+    const container = document.getElementById(`itens-${index}`);
+    const div = document.createElement('div');
+    div.className = 'item';
+    div.innerHTML = `
+      <div class="item-input-group item-nome-group">
+        <label>Item:</label>
+        <input type="text" class="item-nome" list="lista-itens" required>
+      </div>
+      <div class="item-input-group item-qtd-group">
+        <label>Quantidade:</label>
+        <input type="number" class="item-qtd" min="1" required>
+      </div>
+      <button type="button" onclick="removerItem(this)" class="remove-button remove-item-button">Remover</button>
+    `;
+    container.appendChild(div);
+  }
+
+  function removerItem(button) {
+    button.closest('.item').remove();
+  }
+
+  document.getElementById('pedidoForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const solicitante = document.getElementById('solicitante').value;
+    const unidade = document.getElementById('unidade').value;
+    const setores = document.querySelectorAll('.setor');
+
+    let corpoEmail = `SOLICITAÇÃO DE PEDIDO EXTRA\n\n`;
+    corpoEmail += `Solicitante: ${solicitante}\n`;
+    corpoEmail += `Unidade: ${unidade}\n\n`;
+    corpoEmail += `----------------------------------------\n\n`;
+
+    setores.forEach(setor => {
+      const nomeSetor = setor.querySelector('input[name="setor"]').value;
+      corpoEmail += `SETOR: ${nomeSetor}\n\n`;
+
+      const itensNomes = setor.querySelectorAll('.item-nome');
+      const itensQtds = setor.querySelectorAll('.item-qtd');
+
+      if (itensNomes.length === 0) {
+          corpoEmail += `(Nenhum item neste setor)\n\n`;
+      } else {
+          itensNomes.forEach((input, index) => {
+            const nome = input.value;
+            const qtd = itensQtds[index].value;
+            corpoEmail += `- ${nome} (Qtd: ${qtd})\n`;
+          });
+          corpoEmail += `\n`;
+      }
+
+      const observacao = setor.querySelector('.observacao').value;
+      if (observacao) {
+        corpoEmail += `Observação: ${observacao}\n\n`;
+      }
+
+      corpoEmail += `----------------------------------------\n\n`;
+    });
+
+    const mailto = `mailto:leitaoochefe@gmail.com?subject=Pedido Extra - ${encodeURIComponent(unidade)}&body=${encodeURIComponent(corpoEmail)}`;
+    window.location.href = mailto;
+  });
+
+  window.onload = adicionarSetor;
+</script>
+
+</body>
+</html>
