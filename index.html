@@ -304,6 +304,11 @@
       transform: scale(1.05);
     }
 
+    .item-buttons {
+      margin-top: 25px;
+      text-align: right;
+    }
+
     .setor, .item {
       animation: fadeIn 0.5s ease-in-out;
     }
@@ -362,478 +367,308 @@
     <div id="setoresContainer"></div>
 
     <div class="buttons">
-      <button type="button" onclick="adicionarSetor()">+ Adicionar Novo Setor</button>
+      <button type="button" onclick="adicionarSetor()">Adicionar Novo Setor</button>
       <button type="submit">Enviar Pedido</button>
     </div>
   </form>
 </div>
 
-<datalist id="lista-itens">
-  <option value="1010600017 Aciclovir 200mg comprimido">
-  <option value="1010600025 Aciclovir 50mg/g creme bisnaga - uso tópico - uso adulto e pediátrico">
-  <option value="1012000300 Ácido acético 3% frasco 10ml (manipulado)">
-  <option value="1012000475 Ácido acético 5% frasco 10ml (manipulado)">
-  <option value="1010300013 Ácido acetilsalicílico 100mg comprimido">
-  <option value="1010300064 Ácido acetilsalicílico 500mg comprimido">
-  <option value="1010900010 Ácido fólico 5mg comprimido">
-  <option value="1012000319 Ácido tricloroacético 80% frasco 10ml (manipulado)">
-  <option value="1012001633 Agua destilada ampola 10ml">
-  <option value="1020100181 Agulha para aplicação de insulina com caneta 0,23X4MM">
-  <option value="1010500144 Alcatrão Mineral (FN) 10mg/g (1%) pomada">
-  <option value="1091206055 ALENDRONATO DE SODIO 70MG COMPRIMIDO - USO ADULTO">
-  <option value="1010700054 Albendazol 400mg comprimido mastigável">
-  <option value="1010700062 Albendazol 400mg solução oral frasco 10ml">
-  <option value="1010800059 Algestona acetofenida 150mg/ml + estradiol enantato 10mg/ml ampola 1ml - Uso Im">
-  <option value="1010100014 Alopurinol 100mg comprimido">
-  <option value="1011100115 Aminofilina 100mg comprimido">
-  <option value="1012000092 Amiodarona cloridrato 200mg comprimido">
-  <option value="1011700090 Amoxicilina 250mg/5ml suspensão frasco">
-  <option value="1011100093 Salbutamol sulfato 2 mg/5 ml xarope frasco 120 ml">
-  <option value="1011100107 Salbutamol sulfato spray oral 100 mcg/dose 200 doses">
-  <option value="1011800010 Simeticona 75 mg/ml gotas frasco 15 ml">
-  <option value="1012003717 Sinvastatina 20MG comprimido">
-  <option value="1091226471 Sulfadiazina de prata 1% (10mg/g) creme">
-  <option value="1011700040 Sulfametoxazol - trimetoprim 200/40 mg/5 ml suspensão frasco 100 ml">
-  <option value="1011700201 Sulfametoxazol - trimetoprim 400/80 mg comprimido">
-  <option value="1010900088 Sulfato ferroso 25 mg/ml gotas frasco 30 ml">
-  <option value="1010900061 Sulfato ferroso 300 mg comprimido">
-  <option value="1010900070 Sulfato ferroso 40 mg comprimido">
-  <option value="1011900022 Tiamazol 10 mg comprimido">
-  <option value="1010900118 Tiamina cloridrato 300 mg comprimido">
-  <option value="1012002818 Tiamina cloridrato + piridoxina cloridrato (Ampola I) Cianocobalamina 5000 mcg (Ampola II) - Uso IM">
-  <option value="1012000157 Tiocolchicosídeo 2 mg/ml ampola 2 ml - Uso Im">
-  <option value="1011700228 Tobramicina 0,3% colírio frasco 5 ml">
-  <option value="1012000017 Varfarina sódica 5MG comprimido - USO ADULTO">
-  <option value="1011200047 Vildagliptina 50 mg comprimido (Reposição automática mediante consumo)">
-  <option value="1010900452 Vitamina a + d gotas frasco 20 ml">
-  <option value="1010900045 Vitamina a + d pomada tubo 45 g">
-  <option value="1010900053 Vitamina c 200 mg/ml gotas frasco 20 ml">
-  <option value="1011600070 Ácido valpróico 250mg cápsula">
-  <option value="1011600088 Ácido valpróico 250mg/5ml frasco 100ml">
-  <option value="1011600096 Ácido valpróico 500mg comprimido revestido">
-  <option value="1011600010 Amitriptilina cloridrato 25mg comprimido">
-  <option value="1011600126 Biperideno cloridrato 2mg comprimido">
-  <option value="1011600185 Carbamazepina 20 mg/ml suspensão frasco 100 ml">
-  <option value="1011600266 Carbamazepina 200 mg comprimido">
-  <option value="1011600134 Carbonato de lítio 300 mg comprimido">
-  <option value="1011600193 Clomipramina cloridrato 25 mg comprimido">
-  <option value="1011500032 Clonazepam 2 mg comprimido">
-  <option value="1011500393 Clonazepam 2,5mg/ml frasco de 20ml">
-  <option value="1011600100 Clorpromazina 25 mg comprimido">
-  <option value="1011600207 Clorpromazina cloridrato 100 mg comprimido">
-  <option value="1011500067 Diazepan 10 mg comprimido">
-  <option value="1011500059 Diazepan 5 mg/ml ampola 2 ml">
-  <option value="1011600037 Fenitoína 100 mg comprimido">
-  <option value="1011600215 Fenitoína 50 mg/ml ampola 5 ml">
-  <option value="1011600274 Fenobarbital 100 mg comprimido">
-  <option value="1011600282 Fenobarbital 4% gotas frasco 20 ml">
-  <option value="1011600029 Fluoxetina cloridrato 20 mg cápsula">
-  <option value="1011600150 Haloperidol 2 mg/ml gotas frasco 20 ml">
-  <option value="1011600223 Haloperidol 5 mg comprimido">
-  <option value="1011600177 Haloperidol 5 mg/ml ampola 1 ml - Uso Im">
-  <option value="1011600169 Haloperidol decanoato 70,52 mg/ml ampola 1 ml">
-  <option value="1011600231 Imipramina 25 mg comprimido">
-  <option value="1011600240 Levomepromazina 4% gotas frasco 20 ml">
-  <option value="1011600410 Naltrexona cloridrato 50 mg comprimido">
-  <option value="1011500083 Nitrazepan 5 mg comprimido">
-  <option value="1011600053 Nortriptilina cloridrato 25 mg comprimido">
-  <option value="1011600061 Sertralina cloridrato 50 mg comprimido">
-  <option value="1011600258 Tioridazina cloridrato 100 mg comprimido">
-  <option value="1021200015 Abaixador de lingua de madeira (Pacote c/ 100 unidades)">
-  <option value="1020300016 Ácido graxo essencial (Age)">
-  <option value="1020900013 Adaptador plástico para coleta de sangue - padrão">
-  <option value="1021200023 Adesivo para sutura de pele ( steri strip ) - envelope com 05 unidades">
-  <option value="1021100010 Água deionizada ou destilada para autoclave">
-  <option value="1021100029 Água destilada/bidestilada para injeção">
-  <option value="1021100045 Água oxigenada 10 volumes - frasco 1.000 ml">
-  <option value="1020100033 Agulha descartável hipodérmica 13 x 4,5 mm">
-  <option value="1020100041 Agulha descartável hipodérmica 25 x 7 mm">
-  <option value="1020100050 Agulha descartável hipodérmica 25 x 8 mm">
-  <option value="1020100068 Agulha descartável hipodérmica 30 x 7 mm">
-  <option value="1020100076 Agulha descartável hipodérmica 30 x 8 mm">
-  <option value="1020100084 Agulha descartável hipodérmica 40 x 12 mm">
-  <option value="1020100025 Agulha para coleta á vácuo múltipla 25 x 8 - cor verde">
-  <option value="1020100017 Agulha para coleta á vácuo múltipla 25 x 7 - cor preta">
-  <option value="1021100053 Álcool 70º (Antisséptico e bactericida)">
-  <option value="1021100177 Álcool 92,8º ou 96º para exame PCG">
-  <option value="1020600150 Soro fisiológico 0,9 % injetável - frasco de 100 ml">
-  <option value="1020600028 Soro fisiológico 0,9 % injetável - frasco de 250 ml">
-  <option value="1020600010 Soro fisiológico 0,9 % curativo - frasco com 250 ml">
-  <option value="1020900412 SWAB de Rayon estéril para coleta de amostras. Haste plástica de 14 cm ponta 100% Rayon">
-  <option value="1021200376 Termômetro com extensor digital">
-  <option value="1021200368 Termômetro clínico digital">
-  <option value="1020900161 Torniquete elástico com trava regulável">
-  <option value="1020900404 Tubo cônico tipo Falcon estéril em polipropileno (PP) capacidade 15 ml com tampa rosca">
-  <option value="1020900170 Tubo para coleta de sangue á vácuo amarelo - 5 ml">
-  <option value="1020900226 Tubo para coleta de sangue á vacuo amarelo 3,5 ml - adolescente">
-  <option value="1020900200 Tubo para coleta de sangue á vacuo amarelo c/ gel ( bebê )">
-  <option value="1020900218 Tubo para coleta de sangue á vacuo roxo ( bebê)">
-  <option value="1020900188 Tubo para coleta de sangue á vacuo roxo de 3 ou 4 ml">
-  <option value="1020900196 Tubo para coleta de sangue á vacuo vermelho de 10 ml - seco">
-  <option value="1021100142 Vaselina liquida">
-  <option value="1021200392 Vaselina sólida - pote com 500 grs">
-  <option value="1020100165 Agulha para acupuntura 0,18 x 0,8 mm (EXCLUSIVO P/ ESPAÇO SAÚDE)">
-  <option value="1020100157 Agulha para acupuntura 0,25 x 0,30 mm (EXCLUSIVO P/ ESPAÇO SAÚDE)">
-  <option value="1021900041 Caneta para papel grau cirúrgico (EXCLUSIVO P/ ESPAÇO SAÚDE)">
-  <option value="1021200503 Papel crepado - 50 x 50 MM (EXCLUSIVO P/ ESPAÇO SAÚDE)">
-  <option value="1021900114 Teste Bowie e Dick - folha (EXCLUSIVO P/ ESPAÇO SAÚDE)">
-  <option value="1012004365 TESTE RÁPIDO SARS-COV2 / INFLUENZA TIPO A INFLUENZA TIPO B">
-  <option value="1012004284 TESTE RÁPIDO ANTIGÊNICO PARA COVID-19">
-  <option value="1021000016 Cadarço fixador (Rolo c/ 50 metros)">
-  <option value="1021000024 Campo operatório estéril - pacote com 5 unidades">
-  <option value="1021800195 Cânula de entubação c/ cuff nº 3,0">
-  <option value="1021800209 Cânula de entubação c/ cuff nº 3,5">
-  <option value="1021800233 Cânula de entubação c/ cuff nº 4,5">
-  <option value="1021800187 Cânula de entubação c/ cuff nº 5,0">
-  <option value="1021800314 Cânula de entubação c/ cuff nº 5,5">
-  <option value="1021800063 Cânula de entubação c/ cuff nº 6,0">
-  <option value="1021800071 Cânula de entubação c/ cuff nº 6,5">
-  <option value="1021800080 Cânula de entubação c/ cuff nº 7,0">
-  <option value="1021800039 Cânula de entubação c/ cuff nº 7,5">
-  <option value="1021800047 Cânula de entubação c/ cuff nº 8,0">
-  <option value="1021800012 Cânula de guedel - conjunto">
-  <option value="1021000342 Eletrodo descartável infantil - Cmos Drake">
-  <option value="1021000164 Eletrodo descartável infantil para desfibrilador - Dea (Schiller)">
-  <option value="1021200147 Eletrodo p/ ecg pré-cordial em metal (ventosa)">
-  <option value="1020600133 Extensor intermediário duas vias (polifix)">
-  <option value="1021000091 Mandril p/ entubação - adulto">
-  <option value="1021000105 Mandril p/ entubação infantil">
-  <option value="1020600206 Solução cristaloide de ringer com lactato - bolsa 1.000 ml">
-  <option value="1020600176 Solução cristalóide de ringer com lactato - bolsa 500 ml">
-  <option value="1020600125 Solução de glicose 5% bolsa/frasco de 250ml">
-  <option value="1020700227 Sonda aspiração traqueal nº 06 - c/ válvula">
-  <option value="1020700243 Sonda aspiração traqueal nº 10 - c/ válvula">
-  <option value="1020700235 Sonda aspiração traqueal nº 8 - c/ válvula">
-  <option value="1020600168 Soro fisiológico 0,9% injetável - frasco 1.000 ml">
-  <option value="1020300202 Soro fisiológico 0,9% injetável - frasco 500ml">
-  <option value="1020600109 Soro glicofisiológico a 5% - frasco de 500 ml">
-  <option value="1020600184 Soro glicosado a 5% bolsa /frasco 100 ml">
-  <option value="1021000130 Tala p/ imobilização grande 86x10x2,5 cm">
-  <option value="1021000121 Tala p/ imobilização média 63x9x0,2 cm">
-  <option value="1021000113 Tala p/ imobilização pequena ( dedo ) 16x180 mm">
-  <option value="1021000571 Tala p/ imobilização pequena (SAMU)">
-  <option value="1020600141 Torneirinha 3 vias">
-  <option value="1012003350 Teste rápido (Anti Hcv) Alere">
-  <option value="1012003369 Teste rápido (Anti Hep B)">
-  <option value="1012003342 Teste rápido (Anti Hiv ) Alere">
-  <option value="1012003407 Teste rápido Hiv - Abon">
-  <option value="1012003709 Teste rápido Hiv - Bioclin">
-  <option value="1012003326 Teste rápido Hiv - Biomanguinhos">
-  <option value="1012004098 Teste rápido Hiv - Med Levensohn">
-  <option value="1012003334 Teste rápido Hiv - Rapid Check">
-  <option value="1012003300 Teste rápido Hiv F.O (frasco oral)">
-  <option value="1012003440 Teste rápido sífilis - Alere">
-  <option value="1012004152 Teste rápido sífilis - Bioclin">
-  <option value="1012003318 Teste rápido sífilis - Biomanguinhos">
-  <option value="1012004055 Teste rápido sífilis - Wama">
-  <option value="1012004349 Teste rápido Sífilis - Abon">
-  <option value="1070200155 Afastador tipo Farabeuf">
-  <option value="1070200864 Afastador tipo Minesotta">
-  <option value="1070201291 Alavanca tipo Apical direita">
-  <option value="1070201305 Alavanca tipo Apical esquerda">
-  <option value="1070200163 Alavanca tipo Apical reta">
-  <option value="1070201380 Alavanca tipo Heidbrink direita">
-  <option value="1070201372 Alavanca tipo Heidbrink esquerda">
-  <option value="1070201364 Alavanca tipo Heidbrink reta">
-  <option value="1070200171 Alavanca tipo Seldin direita">
-  <option value="1070201313 Alavanca tipo Seldin esquerda">
-  <option value="1070201321 Alavanca tipo Seldin reta">
-  <option value="1070201330 Alavanca tipo Seldin infantil direita">
-  <option value="1070201348 Alavanca tipo Seldin infantil esquerda">
-  <option value="1070201356 Alavanca tipo Seldin infantil reta">
-  <option value="1070200600 Alveolotomo curvo">
-  <option value="1070200619 Alveolotomo reto">
-  <option value="1070200180 Aplicador de hidróxido de cálcio">
-  <option value="1070200201 Brunidor nº 29">
-  <option value="1070200210 Brunidor nº 33">
-  <option value="1070200228 Cabo de aço inox para espelho bucal">
-  <option value="1070200708 Cabo de bisturi nº 03">
-  <option value="1070201186 Cabo de bisturi nº 04">
-  <option value="1070201542 Cinzel para osso bizelado">
-  <option value="1070201224 Fórceps adulto nº 210">
-  <option value="1070201267 Fórceps adulto nº 222">
-  <option value="1070200740 Fórceps adulto nº 32">
-  <option value="1070200759 Fórceps adulto nº 44">
-  <option value="1070200821 Fórceps adulto nº 68">
-  <option value="1070200694 Fórceps adulto nº 69">
-  <option value="1070200724 Fórceps infantil nº 01">
-  <option value="1070200970 Fórceps infantil nº 02">
-  <option value="1070200538 Fórceps infantil nº 03">
-  <option value="1070200520 Fórceps infantil nº 04">
-  <option value="1070200546 Fórceps infantil nº 06">
-  <option value="1070200988 Fórceps infantil nº 16">
-  <option value="1070201402 Fórceps infantil nº 18 D">
-  <option value="1070200996 Fórceps infantil nº 18 E">
-  <option value="1070201089 Fórceps infantil nº 21">
-  <option value="1070201194 Fórceps infantil nº 27">
-  <option value="1070201615 Lamparina de inox">
-  <option value="1070200457 Lima para osso nº 11">
-  <option value="1070200465 Lima para osso nº 12">
-  <option value="1070200635 Pedra para afiar instrumental">
-  <option value="1070201283 Pinça clínica adulto">
-  <option value="1070201240 Pinça clínica pediátrica">
-  <option value="1070201135 Pinça hemostática curva">
-  <option value="1070200880 Pinça hemostática reta">
-  <option value="1070200775 Placa de vidro">
-  <option value="1070200104 Porta agulha tipo Mathieu 14 cm">
-  <option value="1070200031 Porta agulha tipo Mathieu 17 cm">
-  <option value="1070200040 Porta algodão limpo">
-  <option value="1070200058 Porta algodão servido">
-  <option value="1070200066 Porta amálgama de plástico">
-  <option value="1070200074 Porta matriz tipo Ivory">
-  <option value="1070201429 Prendedor de algodão">
-  <option value="1070200082 Prendedor tipo jacaré">
-  <option value="1070200732 Seringa carpule">
-  <option value="1070200090 Sindesmótomo">
-  <option value="1070200015 Sonda exploradora nº 05">
-  <option value="1070200767 Sonda milimetrada">
-  <option value="1070200120 Sugador metálico reto">
-  <option value="1070200139 Tesoura curva tipo Iris - 11,5 / 12cm">
-  <option value="1070200147 Tesoura curva tipo Iris - 15 cm">
-  <option value="1060200209 Tesoura Iris reta - 11,5 a 12 cm">
-  <option value="1070100010 Ácido condicionador para resina foto">
-  <option value="1070100029 Agulha curta para anestesia">
-  <option value="1070100053 Agulha extra curta para anestesia">
-  <option value="1070100037 Agulha longa descartável para anestesia">
-  <option value="1070100045 Agulha para sutura">
-  <option value="1070100061 Alveostesin ou similar">
-  <option value="1070100070 Amalgama de prata">
-  <option value="1070101289 Amálgama em cápsula 1 porção">
-  <option value="1070101297 Amálgama em cápsula 2 porções">
-  <option value="1070101122 Anestésico de cloridrato de lidocaína 2% sem vaso">
-  <option value="1070101130 Anestésico de cloridrato de lidocaína 3% com vaso">
-  <option value="1070101149 Anestésico de cloridrato de mepivacaína com vaso">
-  <option value="1070101157 Anestésico de cloridrato de prilocaina 3% com vaso">
-  <option value="1070100088 Anestésico tópico gel">
-  <option value="1070101211 Antisséptico bucal 1 litro - refil">
-  <option value="1070101580 Antisséptico bucal à base de gluconato de clorhexidina a 0,12%">
-  <option value="1021201020 Avental descartável manga longa">
-  <option value="1070100096 Base de hidróxido de cálcio">
-  <option value="1070101424 Bicarbonato de sódio pó - sachê com 40 g">
-  <option value="1070100550 Broca BR nº 02">
-  <option value="1070100568 Broca Br nº 04">
-  <option value="1070101513 Mandril para contra ângulo">
-  <option value="1070100860 Máscara cirúrgica descartável">
-  <option value="1070100878 Matriz aço inoxidável 5 mm">
-  <option value="1070100886 Matriz aço inoxidável 7 mm">
-  <option value="1070100894 Mercúrio odontológico frasco com 100 grs">
-  <option value="1070101602 Microbrush">
-  <option value="1070300060 Obturação provisória pronta">
-  <option value="1070100924 Óleo lubrificante baixa rotação">
-  <option value="1070100916 Óleo lubrificante para alta rotação">
-  <option value="1070100932 Óxido zinco pó">
-  <option value="1070100940 Papel oclusal">
-  <option value="1070100959 Paramonoclorofenol canforado frasco com 20 ml">
-  <option value="1070100967 Pasta profilática - tubo com 90 grs">
-  <option value="1070100975 Pedra pomes">
-  <option value="1070101238 Pontas de profident - Perio E - Dabi">
-  <option value="1070101254 Pontas de profident - Perio Sub - Dabi">
-  <option value="1070101246 Pontas de profident - Perio Supra - Dabi">
-  <option value="1070101637 Pontas para aparelho de Profident Sub - Gnatus">
-  <option value="1070101629 Pontas para aparelho de Profident Supra - Gnatus">
-  <option value="1070100983 Primer frasco com 4 ml">
-  <option value="1070101025 Resina fotopolimerizável A 1">
-  <option value="1070101033 Resina fotopolimerizável A 2">
-  <option value="1070101041 Resina fotopolimerizável A 3">
-  <option value="1070101050 Resina fotopolimerizável A 3.5">
-  <option value="1070100991 Resina fotopolimerizável B 2">
-  <option value="1070101009 Resina fotopolimerizável B 3">
-  <option value="1070101017 Resina fotopolimerizável C 2">
-  <option value="1070101068 Roletes dentais de algodão">
-  <option value="1070101548 Saquinho para proteger canetas odontológicas ( Ar e Br )">
-  <option value="1070101882 Selante fotopolimerizável 2 g">
-  <option value="1070101076 Sugador descartável - pacote com 40 unid">
-  <option value="1070101084 Taça de borracha para contra ângulo">
-  <option value="1070101114 Tira de acabamento de resina 4 x 170 mm">
-  <option value="1070101092 Tira de poliéster de 10 x 120 x 0,05 mm">
-  <option value="1070101106 Tira para acabamento de amálgama 4 x 120 mm">
-  <option value="1070101165 Verniz com flúor">
-  <option value="1040600015 Anamnese de odonto (frente e verso)">
-  <option value="1040400016 Anexo 1">
-  <option value="1040400024 Atestado médico">
-  <option value="1040600023 Autorização para tratamento odontológico">
-  <option value="1040100128 Autorização para vacinação de escolar">
-  <option value="1040100101 Avaliação audiológica">
-  <option value="1040400032 Avaliação lesões de pele">
-  <option value="1040600031 Aviso aos pais - atenção">
-  <option value="1040600058 Aviso aos pais - urgente">
-  <option value="1040700010 Capa prontuário familiar - Psf">
-  <option value="1040400040 Capa prontuário Ubs e Psf">
-  <option value="1040400083 Cartão de agendamento">
-  <option value="1040400067 Cartão Ha e Dm">
-  <option value="1040100012 Cartão menina - rosa">
-  <option value="1040100020 Cartão menino - azul">
-  <option value="1040300020 Termo declaração de aceite ou recusa do teste de HIV">
-  <option value="1040400300 Teste de Snellen">
-  <option value="1040300038 Triagem Psico social - saúde mental">
-  <option value="1050102239 Adesivo personalizado programa Dose em Casa - grande (EXCLUSIVO DOSE EM CASA)">
-  <option value="1050102220 Adesivo personalizado programa Dose em Casa - pequeno (EXCLUSIVO DOSE EM CASA)">
-  <option value="1050102204 Caixa tipo Sedex em papelão pardo - grande (EXCLUSIVO DOSE EM CASA)">
-  <option value="1050102212 Caixa tipo Sedex em papelão pardo - pequeno (EXCLUSIVO DOSE EM CASA)">
-  <option value="1040400482 Cartão de dispensação-farmácia da SMS (EXCLUSIVO FARMÁCIA MUNICIPAL)">
-  <option value="1040400407 Ficha atendimento - Espaço Saúde Prof. Cecilia Magaldi (EXCLUSIVO ESPAÇO SAÚDE)">
-  <option value="1040500096 Protocolo de atendimento do Caps 1 (EXCLUSIVO CAPS 1)">
-  <option value="1040400466 Relatório de atendimento ao acidentado do trabalho (R.A.A.T) (EXCLUSIVO CEREST)">
-  <option value="1040400296 Ocorrências dentro do município (EXCLUSIVO CENTRAL DE AMBULÂNCIAS)">
-  <option value="1040400288 Ocorrências fora do município (EXCLUSIVO CENTRAL DE AMBULÂNCIAS)">
-  <option value="1040400261 Requisição de viaturas 192 (EXCLUSIVO CENTRAL DE AMBULÂNCIAS)">
-  <option value="1040400199 Requisição viatura (EXCLUSIVO CENTRAL DE AMBULÂNCIAS)">
-  <option value="1040400440 Usa - Ficha de atendimento pré-hospitalar do Samu (EXCLUSIVO SAMU)">
-  <option value="1040400458 Usb - Ficha de atendimento pré-hospitalar do Samu (EXCLUSIVO SAMU)">
-  <option value="1040100152 Primeira consulta do recém nascido (EXCLUSIVO CRINICA DO BEBE)">
-  <option value="1040100136 Protocolo do RN (EXCLUSIVO CRINICA DO BEBE)">
-  <option value="1040100160 Registro de amostra do teste do pezinhO (EXCLUSIVO CRINICA DO BEBE)">
-  <option value="1040100144 Resumo do atendimento do recém nascido (EXCLUSIVO CLINICA DO BEBE)">
-  <option value="1040100195 Vigilância à saúde do recém-nascido de risco (preenchimento na maternidade) (EXCLUSIVO CLINICA DO BEBE)">
-  <option value="1050100031 Alfinete colorido">
-  <option value="1050101003 Tarja amarela - tipo durex">
-  <option value="1050101038 Tarja azul - tipo durex">
-  <option value="1050101011 Tarja verde - tipo durex">
-  <option value="1050101020 Tarja vermelha - tipo durex">
-  <option value="1050101135 Tesoura grande">
-  <option value="1050101143 Tesoura pequena escolar">
-  <option value="1050101151 Tinta para carimbo preta">
-  <option value="1050100929 Tinta para carimbo vermelho">
-  <option value="1050101780 Tinta para carimbo automático - cor preto - aproxima. 30ml">
-  <option value="1050100910 Tinta para carimbo azul">
-  <option value="1030200367 Assento sanitário">
-  <option value="1030100990 Balde plástico com alça de metal - 12 litros">
-  <option value="1030100036 Balde plástico com alça de metal - 20 litros">
-  <option value="1030200774 Bateria 9 volts">
-  <option value="1030200880 Bateria de lítio 1.5/1.55 v - tipo botão">
-  <option value="1030200871 Bateria lithium 3 volts CR2032 - para glicômetros">
-  <option value="1030100044 Cabeleira p/ mop">
-  <option value="1030200626 Caixa Organizadora Plástica Transparente c/ tampa e trava - Capacidade 34 Litros">
-  <option value="1030200618 Caixa Organizadora Plástica Transparente c/ tampa e trava - Capacidade 54 Litros">
-  <option value="1030200634 Caixa Organizadora Plástica Transparente c/ tampa e trava - Capacidade 12 Litros">
-  <option value="1030200448 Canecão de alumínio com 2 litros">
-  <option value="1030200057 Canecão de alumínio com 4 litros">
-  <option value="1030201487 Cesto de lixo 10 litros - telado">
-  <option value="1030201460 Cobertor de casal (Carrinho de Emergência)">
-  <option value="1030200588 Cobertor de solteiro (Carrinho de Emergência)">
-  <option value="1030100095 Corda de nylon para varal">
-  <option value="1030100125 Desentupidor de vaso sanitário">
-  <option value="1030100338 Pá para lixo">
-  <option value="1030200405 Pés para geladeira - jogo 04 unidades">
-  <option value="1030200219 Pilha grande D - pacote com 2 unidades">
-  <option value="1030200227 Pilha média C - pacote com 2 unidades">
-  <option value="1030200839 Pilhas de dióxido de manganês de lítio tipo 123A">
-  <option value="1030100370 Prendedor p/ Roupas - pacote com 12 unidades">
-  <option value="1030100397 Rodinho para pia">
-  <option value="1030100419 Rodo de madeira c/ cabo, borracha dupla - 40 cm">
-  <option value="1030100400 Rodo de madeira c/ cabo, borracha dupla - 60 cm">
-  <option value="1030100427 Sabão de côco em barra - 200 grs">
-  <option value="1030200278 Suporte para coador plástico nº 103">
-  <option value="1030200421 Suporte para copo água">
-  <option value="1030100605 Suporte para cabeleira em alumínio (cabo para mop)">
-  <option value="1030200480 Suporte para copo de café">
-  <option value="1030200600 Toalha de tecido de mesa quadrada 1,40 x 1,40 mt">
-  <option value="1030200570 Toalha de tecido de mesa redonda 1,20 mt">
-  <option value="1030200316 Toalha de tecido para rosto">
-  <option value="1030200332 Torneira para filtro">
-  <option value="1030200340 Vela para filtro">
-  <option value="1030100915 Vassoura de nylon c/ cabo">
-  <option value="1030100540 Vassoura de pêlo c/ cabo de madeira">
-  <option value="1030200502 Vassoura para limpar teto">
-  <option value="1030200014 Açúcar cristal - pacote c/ 5 kg">
-  <option value="1030100010 Álcool 70º - limpeza superfície - c/ 1 litro">
-  <option value="1030200022 Aparelho de barbear descartável">
-  <option value="1030200038 Cadeado de 30 mm (Fornecido pelo Almoxarifado da SMS)">
-  <option value="1030200037 Cadeado de 40 mm (Fornecido pelo Almoxarifado da SMS)">
-  <option value="1030100737 Cera líquida amarela - galão c/ 750 ml">
-  <option value="1030100060 Cera líquida incolor - galão c/ 5 litros">
-  <option value="1030100923 Cera líquida incolor - galão c/ 750 ml">
-  <option value="1030200065 Chá mate - caixa c/ 500 g">
-  <option value="1030200081 Copo plástico descartável para água - 180 ml - pacote c/ 100 unidades">
-  <option value="1030200090 Copo plástico descartável para café - 50 ml - pacote c/ 100 unidades">
-  <option value="1030100109 Desinfetante líquido - galão c/ 5 litros">
-  <option value="1030100133 Detergente líquido - galão c/ 5 litros">
-  <option value="1030100168 Esponja de limpeza dupla face">
-  <option value="1030200120 Filme pvc transparente - rolo c/ 15 metros">
-  <option value="1030200111 Filtro de papel nº 103 - caixa c/ 30 un">
-  <option value="1030100710 Flanela p/ limpeza 30 cm x 40 cm">
-  <option value="1030200138 Fósforo - maço c/ 10 caixas">
-  <option value="1030100184 Inseticida spray - frasco c/ 300 ml">
-  <option value="1030100192 Lã de aço - tipo bom bril - pacote c/ 8 unid">
-  <option value="1030100206 Limpa inox - frasco c/ 500 ml">
-  <option value="1030100249 Lustra-móveis - frasco c/ 200 ml">
-  <option value="1030100869 Multilimpador - frasco c/ 500 ml">
-  <option value="1030100354 Pano de chão (saco alvejado)">
-  <option value="1030200510 Pano desengordurante multiuso - pacote c/ 05 unidades">
-  <option value="1030200200 Papel alumínio - rolo pequeno de 30cm x 7,5 metros">
-  <option value="1030100362 Papel higiênico branco - rolo c/ 40 metros">
-  <option value="1030200197 Papel toalha absorvente - pacote c/ 2 rolos">
-  <option value="1030200243 Pilha alcalina palito AAA - pacote com 4 unidades">
-  <option value="1030200235 Pilha pequena AA - pacote com 2 unidades">
-  <option value="1030200251 Pó de café - pacote c/ 500 gramas">
-  <option value="1030100389 Removedor de cera - frasco 1 litro">
-  <option value="1030100435 Sabão em barra - pacote c/ 5 un de 200 gramas cada">
-  <option value="1030100443 Sabão em pó - caixa c/ 1 kg">
-  <option value="1030100451 Sabonete líquido - galão c/ 5 litros">
-  <option value="1030100460 Sabonete perfumado - 90 gramas">
-  <option value="1030100508 Saco plástico p/ lixo preto - 100 litros">
-  <option value="1030100753 Saco plástico p/ lixo preto - 30 litros">
-  <option value="1030100680 Saco plástico p/ lixo preto - 50 litros">
-  <option value="1030100516 Sapólio em pó - frasco c/ 300 gramas">
-  <option value="1030200308 Tee p/ tomada (Fornecido pelo Almoxarifado da SMS)">
-  <option value="1030200324 Toalha de papel interfolhas branca - Pacote c/ 1000 Folhas">
-  <option value="1060400232 Avental de proteção em vinil">
-  <option value="1060400143 Bota borracha branca cano curto - nº 34">
-  <option value="1060400151 Bota borracha branca cano curto - nº 35">
-  <option value="1060400160 Bota borracha branca cano curto - nº 36">
-  <option value="1060400178 Bota borracha branca cano curto - nº 37">
-  <option value="1060400186 Bota borracha branca cano curto - nº 38">
-  <option value="1060400089 Bota borracha branca cano curto - nº 39">
-  <option value="1060400097 Bota borracha branca cano curto - nº 40">
-  <option value="1060400100 Bota borracha branca cano curto - nº 41">
-  <option value="1060400194 Bota borracha branca cano curto - nº 42">
-  <option value="1060400216 Bota borracha branca cano curto - nº 43">
-  <option value="1060400224 Bota borracha branca cano curto - nº 44">
-  <option value="1060400208 Bota borracha branca cano curto - nº 45">
-  <option value="1060400240 Luva de segurança em borracha cano longo PP">
-  <option value="1060400259 Luva de segurança em borracha cano longo M">
-  <option value="1060400267 Luva de segurança em borracha cano longo G">
-  <option value="1060400275 Luva de segurança em borracha cano longo EG">
-  <option value="1030100257 Luva de borracha com forro cano curto pequena">
-  <option value="1030100265 Luva de borracha com forro cano curto média">
-  <option value="1030100273 Luva de borracha com forro cano curto grande">
-  <option value="1030100290 Luva de borracha com forro cano curto extra grande">
-  <option value="1060400046 Jaleco profissional em tecido - PP">
-  <option value="1060400038 Jaleco profissional em tecido - P">
-  <option value="1060400020 Jaleco profissional em tecido - M">
-  <option value="1060400054 Jaleco profissional em tecido - G">
-  <option value="1060400062 Jaleco profissional em tecido - GG">
-  <option value="1060400070 Jaleco profissional em tecido - EG">
-  <option value="1060400674 Jaleco profissional em tecido - EXG">
-  <option value="1060400747 Protetor auditivo tipo inserção">
-  <option value="1021000245 Respirador descartável semi facial pff2 com carvão ativado (gases ácidos)">
-  <option value="1021000350 Respirador descartável semi facial pff2 com carvão ativado (vapores orgânicos)">
-  <option value="1021000237 Máscara de proteção N 95 (respirador) (4.01.03 - ENFERMAGEM)">
-  <option value="1070100908 Óculos de proteção translúcido (4.01.02 - ODONTO)">
-  <option value="1060400291 Óculos de proteção laranja (4.01.02 - ODONTO)">
-  <option value="1060400011 Protetor facial (viseira) (4.01.02 - ODONTO)">
-</datalist>
+<datalist id="lista-itens"></datalist>
 
 <script>
+  // Item lists
+  const farmaciaItems = [
+    "1010600017 Aciclovir 200mg comprimido",
+    "101060025 Aciclovir 50mg/g creme bisnaga - uso tópico - uso adulto e pediátrico",
+    "1012000300 Ácido acético 3% frasco 10ml (manipulado)",
+    "1012000475 Ácido acético 5% frasco 10ml (manipulado)",
+    "1010300013 Ácido acetilsalicílico 100mg comprimido",
+    "1010300064 Ácido acetilsalicílico 500mg comprimido",
+    "1010900010 Ácido fólico 5mg comprimido",
+    "1012000319 Ácido tricloroacético 80% frasco 10ml (manipulado)",
+    "1012001633 Agua destilada ampola 10ml",
+    "1020100181 Agulha para aplicação de insulina com caneta 0,23X4MM",
+    "1010500144 Alcatrão Mineral (FN) 10mg/g (1%) pomada",
+    "1091206055 ALENDRONATO DE SODIO 70MG COMPRIMIDO - USO ADULTO",
+    "1010700054 Albendazol 400mg comprimido mastigável",
+    "1010700062 Albendazol 400mg solução oral frasco 10ml",
+    "1010800059 Algestona acetofenida 150mg/ml + estradiol, enantato 10mg/ml ampola 1ml - Uso Im",
+    "1010100014 Alopurinol 100mg comprimido",
+    "1011100115 Aminofilina 100mg comprimido",
+    "1012000092 Amiodarona, cloridrato 200mg comprimido",
+    "1011700090 Amoxicilina 250mg/5ml suspensão frasco 150ml",
+    "1011700104 Amoxicilina 500mg comprimido",
+    "1011700341 Amoxicilina 500mg + Clavunalato de potassio125mg comprimido",
+    "1011700619 Amoxicilina trihidratada 287mg/5ml - equivalente a 250mg/5ml de amoxicilina + clavulanato de potássio 74,5mg/5ml - equivalente a 62,5mg/5ml de ácido clavulânico pó para suspensão oral frasco 75ml - uso adulto e pediátrico",
+    "1011700252 Ampicilina 250mg/5ml suspensão frasco 60ml",
+    "1011700244 Ampicilina 500mg comprimido",
+    "1010200019 Anlodipino, besilato 5mg comprimido - uso adulto",
+    "1010200760 Atenolol 25mg comprimido - uso adulto",
+    "1011700295 Azitromicina dihidratada 524,10mg - equivalente a 500mg azitromicina base comprimido",
+    "1011700511 Azitromicina dihidratada 209,605mg - equivalente a 200mg de azitromicina base para cada 5ml de suspensão oral reconstituida de 600mg ou 900mg",
+    "1011100255 Beclometasona, dipropionato 200mcg capsula oral",
+    "1011100034 Beclometasona, dipropionato 250mcg spray oral frasco 200 doses",
+    "1011100018 Beclometasona, dipropionato 50mcg spray nasal frasco 200 doses",
+    "1011700163 Benzilpenicilina benzatina 1.200.000 Ui frasco-ampola - Uso Im",
+    "1011700171 Benzilpenicilina benzatina 600.000 Ui frasco-ampola - Uso Im",
+    "1011700180 Benzilpenicilina procaína 300.000 Ui + benzilpenicilina potássica 100.000 Ui frasco-ampola - Uso Im",
+    "1010700143 Benzoato de benzila 250mg/ml solução frasco 100ml",
+    "1011700759 Benzoíla, peróxido 25mg (2,5%) base aquosa - gel",
+    "1011200505 Betamesona, acetato de 3mg/ml+betametasona, fosfato dissódico 3,945mg/ml (equivalente a 3mg/ml de betametasona) suspensão injetavel - ampola 1ml",
+    "1011800079 Bromoprida 10mg comprimido",
+    "1011300157 Budesonida 32mcg/dose frasco 120 doses",
+    "1011300351 Budesonida 50mcg/dose suspensão em spray estéril - frasco contendo 120 doses",
+    "1012000246 Bultilbrometo de escopolamina 10 mg comprimido +dipirona 250 mg comprimido revestido",
+    "1012000203 Butilbrometo de escopolamina + dipirona sódica - Uso Im/Iv - ampola 5 ml",
+    "1012000106 Butilbrometo de escopolamina 6,67 mg/ml + dipirona 333,4 ml gotas frasco 20 ml",
+    "1012000076 Butilbrometo de escopolamina 10 mg comprimido",
+    "1012000190 Butilbrometo de escopolamina 20 mg/ml - ampola 1 ml",
+    "1012000424 Butilbrometo de escopolamina 10 mg/ml gotas frasco 20 ml",
+    "1091210281 CARBONATO DE CALCIO 1250MG (EQUIVALENTE A 500MG DE CALCIO) COMPRIMIDO",
+    "1012002389 CARBONATO DE CALCIO 1500MG (EQUIVALENTE A 600MG DE CALCIO) + colecalciferol 400 UI",
+    "1012001080 CARBONATO DE CALCIO 1500MG + colecalciferol 200 UI COMP",
+    "1010200043 Captopril 25mg comprimido",
+    "1010200671 Carvedilol 12,5mg comprimido - USO ADULTO",
+    "1010200418 Carvedilol 6,25mg comprimido - USO ADULTO",
+    "1011700074 Cefalexina 250 mg/5 ml suspensão frasco 60 ml",
+    "1011700198 Cefalexina 500 mg comprimido",
+    "1011700538 Ceftriaxona sódica hemieptaidratada 1,193g - equivalente a 1g de ceftriaxona base frasco-ampola acompanhado de ampola diluente lidocaina 10mg/ml 3,5ml - uso IM",
+    "1020600257 Caneta para injeção de insulina Refil - compativel com carpule 3ml (100UI/ml)",
+    "1010500063 Cetoconazol 200 mg comprimido",
+    "1010500047 Cetoconazol creme 20 mg/g tubo 30 g",
+    "1010500039 Cetoconazol shampoo 20 mg/g frasco 100 ml",
+    "1010100146 Cetoprofeno 100mg ampola 2ml - uso IM",
+    "1010100154 Cetoprofeno 100mg ampola - uso IV",
+    "1012000149 Cetotifeno, fumarato xarope frasco120 ml - uso adulto e pediátrico",
+    "1011000048 Cimetidina 200 mg comprimido",
+    "1012000114 Cinarizina 25 mg comprimido",
+    "1011700376 Ciprofloxacino, cloridrato monohidratado 582mg - equivalente a 500MG de ciprofloxacino comprimido - USO ADULTO",
+    "1011700490 Claritromicina 500mg comprimido",
+    "1011700317 Clindamicina, cloridrato 300mg caps",
+    "1010200051 Clonidina, cloridrato 0,150mg comprimido",
+    "1010200078 Clortalidona 25mg comprimido",
+    "1012000033 Cold cream tubo 50G (manipulado)",
+    "1010900096 Complexo B comprimido",
+    "1010900100 Complexo B amp 2 ml",
+    "1010700097 Deltametrina loção 0,02% frasco 100 ml",
+    "1012000351 Deltametrina shampoo frasco 100 ml",
+    "1011300521 Dexametasona 4mg comprimido - uso adulto e pediátrico",
+    "1011300076 Dexametasona,Fosfato Dissódico 4MG/ML - Frasco 2,5 ML",
+    "1012000165 Dexametasona, acetato (Ampola I) + cianocobalamina + tiamina, cloridrato + piridoxina, cloridrato (Ampola II) - Uso Im",
+    "1011300114 Dexametasona, acetato creme dermatológico 1 mg/g tubo 10 g",
+    "1011300513 Dexametasona 1 mg/g suspensão oftalmica esterio frasco 5ml- uso tópicp ocular -uso adulto",
+    "1011300017 Dexclorfeniramina, maleato 2 mg comprimido",
+    "1011300041 Dexclorfeniramina, maleato 2 mg/5 ml suspensão frasco 100 ml",
+    "1012002001 Dextrano 70 1mg/ml + Hipromelose 3mg/ml frasco 15 ml",
+    "1010100057 Diclofenaco de sódio 75mg ampola 3ml",
+    "1010100081 Diclofenaco sódico 50mg comprimido",
+    "1012000220 Digoxina 0,25 mg comprimido",
+    "1011800060 Dimenidrinato + piridoxina, 50/10mg cloridrato comprimido",
+    "1011800095 Dimenidrinato + piridoxina, cloridrato + glicose + frutose ampola 10 ml - Uso Ev",
+    "1012000289 Dimenidrinato + piridoxina, cloridrato ampola 1 ml - Uso Im",
+    "1011800036 Dimenidrinato + piridoxina, cloridrato gotas frasco 20 ml",
+    "1010300099 Dipirona sódica 500 mg comprimido",
+    "1010300056 Dipirona sódica 500 mg/ml ampola 2 ml",
+    "1010300048 Dipirona sódica 500 mg/ml gotas frasco 10 ml",
+    "1011800028 Domperidona suspensão 1 mg/ml frasco 100 ml",
+    "1012001706 Doxazosina, mesilato 2MG comprimido",
+    "1010200094 Enalapril, maleato 10mg comprimido",
+    "1010200108 Enalapril, maleato 20mg comprimido",
+    "1010200086 Enalapril, maleato 5mg comprimido",
+    "1011700643 Eritromicina, estolato 250 mg/ 5 ml suspensão frasco 100ml",
+    "1011700732 Eritromicina, estolato 250 mg/ 5 ml suspensão oral frasco 60ml",
+    "1010200116 Espironolactona 25mg comprimido",
+    "1010800229 Estriol 1mg/g creme vaginal bisnaga 50+aplicador - uso intravaginal - uso adulto",
+    "1010800199 Estrogênios conjugados 0,3mg - drágeas - uso oral p/adultos",
+    "1012000769 Finasterida 5MG comprimido",
+    "1021400073 Fitas para hemoglicoteste - ( hgt )",
+    "1010200183 Furosemida 10 mg/ml ampola 2 ml",
+    "1010200140 Furosemida 40 mg comprimido",
+    "1010500012 Fluconazol 150mg capsula - uso adulto",
+    "1011200012 Glibenclamida 5 mg comprimido",
+    "1012004420 Glicerol 2,68G supositório - uso retal - uso adulto",
+    "1011200527 Gliclazida 60 mg comprimido (liberação modificada)",
+    "1012000173 Glicose 25% ampola 10 ml",
+    "1012000181 Glicose 50% ampola 10 ml",
+    "1012000394 Heparina Sódica 5.000ui/0,25ml AMP 0,25ml USO SC",
+    "1010200507 Hidralazina, cloridrato 25mg drágea - uso adulto",
+    "1010200060 Hidroclorotiazida 25mg comprimido",
+    "1012000297 Hidrocortisona, acetato 11,2mg (equivalente a 10mg de hidrocortisona) creme - bisnaga de 20mg - uso dermatológico",
+    "1012000297 Hidrocortisona + neomicina, sulfato + polimixina b, sulfato gotas frasco 10 ml (tipo otosporin)",
+    "1011300092 Hidrocortisona, succinato 500 mg frasco",
+    "1011000030 Hidróxido de alumínio 60 mg/ml suspensão frasco 150 ml",
+    "1012000068 Hidróxido de magnésio 80 mg/ml suspensão frasco 120 ml",
+    "1012000408 Hidróxido de potássio 10% frasco 10 ml (manipulado)",
+    "1010100120 Ibuprofeno 300mg comprimido - uso adulto",
+    "1010100065 Ibuprofeno 50mg/ml gotas frasco 30ml",
+    "1011200055 Insulina humana nph 100 ui/ml frasco 10 ml - uso adulto e pediátrico",
+    "1011200578 Isulina humana NPH 100UI/ML Caneta descartavel 3ML - uso adulto e pediátrico",
+    "1011200063 Insulina humana regular 100 ui/ml frasco 10 ml - uso adulto e pediátrico",
+    "1011200560 Insulina humana regular 100UI/ML Caneta descartavel 3ML uso adulto e pediátrico",
+    "1011200357 Insulina humana NPH 100 ui/ml refil 3 ml - uso adulto e pediátrico",
+    "1011200349 Insulina humana regular 100 ui/ml refil 3 ml - uso adulto e pediátrico",
+    "1011100077 Ipratrópio, brometo gotas frasco 20 ml",
+    "1012001072 Isossorbida, mononitrato 20mg comprimido - uso adulto",
+    "1010200167 Isossorbida, dinitrato 10 mg comprimido",
+    "1010200159 Isossorbida, dinitrato 5 mg comprimido",
+    "1010200205 Isossorbida 10 Mg/Ml Ampola 1Ml",
+    "1010700070 Ivermectina 6 mg comprimido",
+    "1020900250 Lanceta para hgt",
+    "1012001455 Lactulose 1340,00mg/ml - equivalente a 667mg/ml de lactulos frasco 120 ml - uso adulto e pediátrico",
+    "1092001210 LEVODOPA 100MG + BENSERAZIDA, CLORIDRATO 25MG COMPRIMIDO BIRRANHURADO - USO ADULTO",
+    "1091216727 LEVODOPA 100MG + BENSERAZIDA, CLORIDRATO 25MG CAPSULA HBS - USO ADULTO",
+    "1091215615 LEVODOPA 200MG + BENSERAZIDA, CLORIDRATO 50MG COMPRIMIDO - USO ADULTO",
+    "1091216379 LEVODOPA 250MG + CARBIDOPA 25MG COMPRIMIDO - USO ADULTO",
+    "1010800067 Levonorgestrel 0,75 mg cartela 2 comp",
+    "1010800024 Levonorgestrel+ etinilestradiol cartela 21 comp",
+    "1011900111 Levotiroxina sódica 100mcg comprimido - uso adulto e pediátrico",
+    "1011900073 Levotiroxina sódica 25mcg comprimido - uso adulto e pediátrico",
+    "1011900081 Levotiroxina sódica 50mcg comprimido - uso adulto e pediátrico",
+    "1091226439 Levotiroxina sódica 37,5mcg comprimido - uso adulto e pediátrico",
+    "1011900162 Levotiroxina sódica 12,5mcg comprimido - uso adulto e pediátrico",
+    "1012000050 Lidocaína gel 100 mg/5 g tubo 30 g",
+    "1011300149 Loratadina 1 mg/ml suspensão oral frasco 100 ml",
+    "1011300084 Loratadina 10 mg comprimido",
+    "1010200035 Losartana potássica 50mg comprimido revestido",
+    "1010700020 Mebendazol 100 mg comprimido",
+    "1010700038 Mebendazol suspensão 100 mg/5 ml frasco 30 ml",
+    "1010800016 Medroxiprogesterona, acetato 150 mg/ml ampola 1 ml - Uso Im",
+    "1010800245 MEDROXIPROGESTERONA, ACETATO 25MG/ML + ESTRADIOL, CIPIONATO 5MG/ML SUSPENSAO INJETAVEL 0,5ML",
+    "1011200020 Metformina, cloridrato 500 mg comprimido",
+    "1011200039 Metformina, cloridrato 850 mg comprimido",
+    "1010200175 Metildopa 250 mg comprimido",
+    "1011800109 Metoclopramida, cloridrato 10 mg comprimido",
+    "1011800052 Metoclopramida, cloridrato 5 mg/ml ampola 2 ml",
+    "1011800117 Metoclopramida, cloridrato gotas frasco 10 ml",
+    "1012001757 Metoprolol, succinato 47,5mg - equivalente a 50MG de Metoprolol, tartarato - uso adulto",
+    "1011700031 Metronidazol 250 mg comprimido",
+    "1011700058 Metronidazol 40 mg/ml suspensão oral frasco 100 ml",
+    "1011700082 Metronidazol 500 mg/5 g tubo 50 g c/ 10 aplicadores",
+    "1011700066 Neomicina, sulfato + bacitracina zínica tubo 10 g",
+    "1010200191 Nifedipina 20 mg comprimido",
+    "1010100030 Nimesulida 100mg comprimido",
+    "1010100049 Nimesulida 50mg/ml frasco 15ml",
+    "1010500020 Nistatina 100.000 Ui/4 g creme vaginal tubo 60 g",
+    "1010700046 Nistatina 100.000 Ui/ml suspensão oral frasco 50 ml",
+    "1011700406 Nitrofurantoina 100mg cápsula",
+    "1010800032 Noretisterona 0,35 mg cartela 35 comp",
+    "1010800040 Noretisterona, enantato + estradiol, valerato (50 + 5 mg/ml) ampola 1 ml - Uso Im",
+    "1011700112 Norfloxacina 400 mg comprimido",
+    "1012000041 Óleo mineral 100% frasco 100 ml",
+    "1011000021 Omeprazol 20 mg cápsula",
+    "1011800133 Ondansetrona 8mg - equivalente a 10mg de ondansentrona, cloridrato comprimido de desintegração oral - uso adulto e pediátrico acima de 11 anos",
+    "1010300030 Paracetamol 200 mg/ml gotas frasco15 ml",
+    "1010300137 Paracetamol 500mg comprimido - uso adulto e pediátrico acima de 12 anos",
+    "1012004438 Pasta D'água óxido de zinco 25% (250mg/g) bisnaga 80g - uso externo - uso adulto e pediátrico",
+    "1012000122 Permanganato de potássio 100 mg comprimido",
+    "1091226455 Permetrina 50mg/ml loção cremosa frasco plastico",
+    "1010900444 Polivitamínico gotas frasco 20 ml",
+    "1011300068 Prednisolona, fosfato sódico 3 mg/ml suspensão frasco 100 ml",
+    "1011300033 Prednisona 20 mg comprimido",
+    "1011300025 Prednisona 5 mg comprimido",
+    "1011300050 Prometazina, cloridrato 25 mg comprimido",
+    "1011300130 Prometazina, cloridrato 25 mg/ml ampola 2 ml",
+    "1012001196 Proprafenona, cloridrato 300mg comprimido revestido - uso adulto",
+    "1010200132 Propranolol, cloridrato 40 mg comprimido",
+    "1012000254 Sais para rehidratação oral envelope 27,9 g",
+    "1011100042 Salbutamol 2 mg comprimido",
+    "1011100263 Salbutamol Sulfato 6MG-frasco 10ML- solução para nebulização",
+    "1011100093 Salbutamol, sulfato 2 mg/5 ml xarope frasco 120 ml",
+    "1011100107 Salbutamol, sulfato spray oral 100 mcg/dose 200 doses",
+    "1011800010 Simeticona 75 mg/ml gotas frasco 15 ml",
+    "1012003717 Sinvastatina 20MG comprimido",
+    "1091226471 Sulfadiazina de prata 1% (10mg/g) creme",
+    "1011700040 Sulfametoxazol - trimetoprim 200/40 mg/5 ml suspensão frasco 100 m l",
+    "1011700201 Sulfametoxazol - trimetoprim 400/80 mg comprimido",
+    "1010900088 Sulfato ferroso 25 mg/ml gotas frasco 30 ml",
+    "1010900061 Sulfato ferroso 300 mg comprimido",
+    "1010900070 Sulfato ferroso 40 mg comprimido",
+    "1011900022 Tiamazol 10 mg comprimido",
+    "1010900118 Tiamina, cloridrato 300 mg comprimido",
+    "1012002818 Tiamina, cloridrato + piridoxina, cloridrato (Ampola I), Cianocobalamina 5000 mcg (Ampola II) - Uso IM",
+    "1012000157 Tiocolchicosídeo 2 mg/ml ampola 2 ml - Uso Im",
+    "1011700228 Tobramicina 0,3% colírio frasco 5 ml",
+    "1012000017 Varfarina sódica 5MG comprimido - USO ADULTO",
+    "1011200047 Vildagliptina 50 mg comprimido (Reposição automática mediante consumo)",
+    "1010900452 Vitamina a + d gotas frasco 20 ml",
+    "1010900045 Vitamina a + d pomada tubo 45 g",
+    "1010900053 Vitamina c 200 mg/ml gotas frasco 20 ml"
+  ];
+
+  const psicotroficoItems = [
+    "1011600070 Ácido valpróico 250mg cápsula",
+    "1011600088 Ácido valpróico 250mg/5ml frasco 100ml",
+    "1011600096 Ácido valpróico 500mg comprimido revestido",
+    "1011600010 Amitriptilina, cloridrato 25mg comprimido",
+    "1011600126 Biperideno, cloridrato 2mg comprimido",
+    "1011600185 Carbamazepina 20 mg/ml suspensão frasco 100 ml",
+    "1011600266 Carbamazepina 200 mg comprimido",
+    "1011600134 Carbonato de lítio 300 mg comprimido",
+    "1011600193 Clomipramina, cloridrato 25 mg comprimido",
+    "1011500032 Clonazepam 2 mg comprimido",
+    "1011500393 Clonazepam 2,5mg/ml frasco de 20ml",
+    "1011600100 Clorpromazina 25 mg comprimido",
+    "1011600207 Clorpromazina, cloridrato 100 mg comprimido",
+    "1011500067 Diazepan 10 mg comprimido",
+    "1011500059 Diazepan 5 mg/ml ampola 2 ml",
+    "1011600037 Fenitoína 100 mg comprimido",
+    "1011600215 Fenitoína 50 mg/ml ampola 5 ml",
+    "1011600274 Fenobarbital 100 mg comprimido",
+    "1011600282 Fenobarbital 4% gotas frasco 20 ml",
+    "1011600029 Fluoxetina, cloridrato 20 mg cápsula",
+    "1011600150 Haloperidol 2 mg/ml gotas frasco 20 ml",
+    "1011600223 Haloperidol 5 mg comprimido",
+    "1011600177 Haloperidol 5 mg/ml ampola 1 ml - Uso Im",
+    "1011600169 Haloperidol, decanoato 70,52 mg/ml ampola 1 ml",
+    "1011600231 Imipramina 25 mg comprimido",
+    "1011600240 Levomepromazina 4% gotas frasco 20 ml",
+    "1011600410 Naltrexona, cloridrato 50 mg comprimido",
+    "1011500083 Nitrazepan 5 mg comprimido",
+    "1011600053 Nortriptilina, cloridrato 25 mg comprimido",
+    "1011600061 Sertralina, cloridrato 50 mg comprimido",
+    "1011600258 Tioridazina, cloridrato 100 mg comprimido"
+  ];
+
+  // Default items for other sectors (empty since not specified)
+  const defaultItems = [];
+
+  // Function to update datalist based on sector
+  function updateDatalist(setorId, sectorValue) {
+    const datalist = document.getElementById('lista-itens');
+    datalist.innerHTML = ''; // Clear existing options
+
+    let items;
+    if (sectorValue === 'Farmácia') {
+      items = farmaciaItems;
+    } else if (sectorValue === 'Psictrópico') {
+      items = psicotroficoItems;
+    } else {
+      items = defaultItems;
+    }
+
+    items.forEach(item => {
+      const option = document.createElement('option');
+      option.value = item;
+      datalist.appendChild(option);
+    });
+
+    // Update existing item inputs in the sector
+    const setor = document.querySelector(`#${setorId}`).closest('.setor');
+    const itemInputs = setor.querySelectorAll('.item-nome');
+    itemInputs.forEach(input => {
+      input.value = ''; // Clear input to avoid invalid selections
+    });
+  }
+
+  // Block right-click
   document.addEventListener('contextmenu', function(e) {
     e.preventDefault();
     return false;
   });
 
+  // Block developer tools shortcuts
   document.addEventListener('keydown', function(e) {
-    if (e.keyCode === 123) {
-      e.preventDefault();
-      return false;
-    }
-    if (e.ctrlKey && e.shiftKey && e.keyCode === 73) {
-      e.preventDefault();
-      return false;
-    }
-    if (e.ctrlKey && e.shiftKey && e.keyCode === 74) {
-      e.preventDefault();
-      return false;
-    }
-    if (e.ctrlKey && e.keyCode === 85) {
+    if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) || (e.ctrlKey && e.keyCode === 85)) {
       e.preventDefault();
       return false;
     }
@@ -843,11 +678,9 @@
 
   function adicionarSetor() {
     const container = document.getElementById('setoresContainer');
-
     const div = document.createElement('div');
     div.className = 'setor';
     div.setAttribute('data-setor-index', setorIndex);
-
     const setorId = `setor-${setorIndex}`;
 
     div.innerHTML = `
@@ -858,6 +691,7 @@
           <input type="hidden" name="setor" value="" required>
           <div class="options">
             <div class="option" data-value="Farmácia" onclick="selectOption('${setorId}', 'Farmácia')">Farmácia</div>
+            <div class="option" data-value="Psictrópico" onclick="selectOption('${setorId}', 'Psictrópico')">Psictrópico</div>
             <div class="option" data-value="Enfermagem" onclick="selectOption('${setorId}', 'Enfermagem')">Enfermagem</div>
             <div class="option" data-value="Odonto" onclick="selectOption('${setorId}', 'Odonto')">Odonto</div>
             <div class="option" data-value="Consumo e Limpeza" onclick="selectOption('${setorId}', 'Consumo e Limpeza')">Consumo e Limpeza</div>
@@ -878,7 +712,7 @@
       </div>
 
       <div class="item-buttons">
-        <button type="button" onclick="adicionarItem(${setorIndex})">+ Adicionar Item</button>
+        <button type="button" onclick="adicionarItem(${setorIndex})">Adicionar Item</button>
       </div>
     `;
 
@@ -898,8 +732,10 @@
     selected.textContent = value;
     hiddenInput.value = value;
     toggleOptions(setorId);
+    updateDatalist(setorId, value);
   }
 
+  // Close dropdown when clicking outside
   document.addEventListener('click', function(e) {
     if (!e.target.closest('.custom-select')) {
       document.querySelectorAll('.options').forEach(opt => opt.style.display = 'none');
@@ -908,6 +744,7 @@
 
   function removerSetor(button) {
     button.closest('.setor').remove();
+    updateDatalist('setor-0', ''); // Reset to default when removing sector
   }
 
   function adicionarItem(index) {
@@ -935,9 +772,65 @@
   document.getElementById('pedidoForm').addEventListener('submit', function(e) {
     e.preventDefault();
 
-    const solicitante = document.getElementById('solicitante').value;
-    const unidade = document.getElementById('unidade').value;
+    const solicitante = document.getElementById('solicitante').value.trim();
+    const unidade = document.getElementById('unidade').value.trim();
+
+    if (!solicitante || !unidade) {
+      alert('Por favor, preencha os campos de solicitante e unidade.');
+      return;
+    }
+
     const setores = document.querySelectorAll('.setor');
+    let todosSetoresValidos = true;
+
+    setores.forEach(setor => {
+      const nomeSetor = setor.querySelector('input[name="setor"]').value.trim();
+      const itensNomes = setor.querySelectorAll('.item-nome');
+      const itensQtds = setor.querySelectorAll('.item-qtd');
+
+      if (!nomeSetor) {
+        todosSetoresValidos = false;
+        alert('Por favor, selecione um setor.');
+        return;
+      }
+
+      if (itensNomes.length === 0) {
+        todosSetoresValidos = false;
+        alert('Por favor, adicione pelo menos um item em cada setor.');
+        return;
+      }
+
+      itensNomes.forEach((input, index) => {
+        const nome = input.value.trim();
+        const qtd = itensQtds[index].value.trim();
+
+        if (!nome || !qtd) {
+          todosSetoresValidos = false;
+          alert('Por favor, preencha todos os campos de item e quantidade.');
+          return;
+        }
+
+        // Validate if the selected item is valid for the sector
+        let validItems;
+        if (nomeSetor === 'Farmácia') {
+          validItems = farmaciaItems;
+        } else if (nomeSetor === 'Psictrópico') {
+          validItems = psicotroficoItems;
+        } else {
+          validItems = defaultItems;
+        }
+
+        if (!validItems.includes(nome)) {
+          todosSetoresValidos = false;
+          alert(`O item "${nome}" não é válido para o setor ${nomeSetor}.`);
+          return;
+        }
+      });
+    });
+
+    if (!todosSetoresValidos) {
+      return;
+    }
 
     let corpoEmail = `SOLICITAÇÃO DE PEDIDO EXTRA\n\n`;
     corpoEmail += `Solicitante: ${solicitante}\n`;
@@ -951,16 +844,12 @@
       const itensNomes = setor.querySelectorAll('.item-nome');
       const itensQtds = setor.querySelectorAll('.item-qtd');
 
-      if (itensNomes.length === 0) {
-          corpoEmail += `(Nenhum item neste setor)\n\n`;
-      } else {
-          itensNomes.forEach((input, index) => {
-            const nome = input.value;
-            const qtd = itensQtds[index].value;
-            corpoEmail += `- ${nome} (Qtd: ${qtd})\n`;
-          });
-          corpoEmail += `\n`;
-      }
+      itensNomes.forEach((input, index) => {
+        const nome = input.value;
+        const qtd = itensQtds[index].value;
+        corpoEmail += `- ${nome} (Qtd: ${qtd})\n`;
+      });
+      corpoEmail += `\n`;
 
       const observacao = setor.querySelector('.observacao').value;
       if (observacao) {
@@ -974,7 +863,10 @@
     window.location.href = mailto;
   });
 
-  window.onload = adicionarSetor;
+  window.onload = function() {
+    adicionarSetor();
+    updateDatalist('setor-0', ''); // Initialize with default items
+  };
 </script>
 
 </body>
