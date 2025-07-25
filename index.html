@@ -87,7 +87,6 @@
       background-color: rgba(255, 255, 255, 0.15);
     }
 
-    /* ✅ Corrigir fundo branco ao digitar/usar preenchimento automático */
     input:-webkit-autofill {
       -webkit-box-shadow: 0 0 0px 1000px rgba(255, 255, 255, 0.1) inset !important;
       -webkit-text-fill-color: var(--text-dark) !important;
@@ -103,7 +102,6 @@
       color: var(--text-dark) !important;
     }
 
-    /* Estilos para o custom select */
     .custom-select {
       position: relative;
       width: 100%;
@@ -192,7 +190,6 @@
       margin-top: 0;
     }
 
-    /* Novo: Grupo para seletor e botão de remover setor */
     .setor-select-group {
       display: flex;
       align-items: flex-end;
@@ -208,19 +205,19 @@
       padding: 12px 18px;
       font-size: 0.95rem;
       border-radius: 12px;
-      position: static; /* Removido absolute */
-      box-shadow: var(--shadow-light); /* Adicionado para consistência com outros botões */
+      position: static;
+      box-shadow: var(--shadow-light);
     }
 
     .item {
       margin-top: 20px;
-      padding: 30px; /* Alinhado com .setor */
-      border: 1px solid var(--border-light); /* Alinhado com .setor */
-      border-radius: 16px; /* Alinhado com .setor */
-      background-color: rgba(0, 0, 0, 0.2); /* Alinhado com .setor */
-      position: relative; /* Mantido para consistência, mas não necessário agora */
-      box-shadow: var(--shadow-light); /* Alinhado com .setor */
-      transition: var(--transition-all); /* Alinhado com .setor */
+      padding: 30px;
+      border: 1px solid var(--border-light);
+      border-radius: 16px;
+      background-color: rgba(0, 0, 0, 0.2);
+      position: relative;
+      box-shadow: var(--shadow-light);
+      transition: var(--transition-all);
       display: flex;
       flex-wrap: wrap;
       gap: 20px;
@@ -228,11 +225,9 @@
     }
 
     .item:hover {
-      transform: translateY(-2px); /* Alinhado com .setor:hover */
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3); /* Alinhado com .setor:hover */
+      transform: translateY(-2px);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
     }
-
-    /* Removido o border-top dashed e o :first-of-type, pois agora cada item é uma caixa completa como .setor */
 
     .item .item-input-group {
       flex: 1;
@@ -264,8 +259,8 @@
       padding: 12px 18px;
       font-size: 0.95rem;
       border-radius: 12px;
-      align-self: flex-end; /* Alinha o botão no fundo, com os inputs */
-      margin-left: 20px; /* Espaçamento à frente da quantidade */
+      align-self: flex-end;
+      margin-left: 20px;
     }
 
     .observacao-group {
@@ -301,11 +296,9 @@
     .remove-button {
       background: linear-gradient(135deg, var(--danger-color), var(--danger-hover-color));
     }
+
     .remove-button:hover {
       background: linear-gradient(135deg, var(--danger-hover-color), var(--danger-color));
-    }
-
-    .remove-setor-button:hover {
       transform: scale(1.05);
     }
 
@@ -350,9 +343,9 @@
       }
       .item .remove-item-button {
         margin-left: 0;
-        margin-top: 10px; /* Ajuste para mobile, colocando abaixo */
+        margin-top: 10px;
         width: auto;
-        align-self: flex-start; /* Ou center, se preferir */
+        align-self: flex-start;
       }
     }
   </style>
@@ -361,7 +354,6 @@
 
 <div class="container">
   <h2>Solicitação de Pedido Extra</h2>
-
   <form id="pedidoForm">
     <label for="solicitante">Nome do Solicitante:</label>
     <input type="text" id="solicitante" required>
@@ -399,22 +391,18 @@
 
   // Bloquear F12 e combinações comuns de dev tools
   document.addEventListener('keydown', function(e) {
-    // Bloquear F12
     if (e.keyCode === 123) {
       e.preventDefault();
       return false;
     }
-    // Bloquear Ctrl+Shift+I (Inspect)
     if (e.ctrlKey && e.shiftKey && e.keyCode === 73) {
       e.preventDefault();
       return false;
     }
-    // Bloquear Ctrl+Shift+J (Console)
     if (e.ctrlKey && e.shiftKey && e.keyCode === 74) {
       e.preventDefault();
       return false;
     }
-    // Bloquear Ctrl+U (View Source)
     if (e.ctrlKey && e.keyCode === 85) {
       e.preventDefault();
       return false;
@@ -482,7 +470,6 @@
     toggleOptions(setorId);
   }
 
-  // Fechar dropdown se clicar fora
   document.addEventListener('click', function(e) {
     if (!e.target.closest('.custom-select')) {
       document.querySelectorAll('.options').forEach(opt => opt.style.display = 'none');
@@ -518,7 +505,6 @@
   document.getElementById('pedidoForm').addEventListener('submit', function(e) {
     e.preventDefault();
 
-    // Verificar se os campos principais estão preenchidos
     const solicitante = document.getElementById('solicitante').value.trim();
     const unidade = document.getElementById('unidade').value.trim();
 
@@ -527,7 +513,6 @@
       return;
     }
 
-    // Verificar setores
     const setores = document.querySelectorAll('.setor');
     let todosSetoresValidos = true;
 
@@ -542,7 +527,6 @@
         return;
       }
 
-      // Verificar se há itens no setor e se estão preenchidos
       if (itensNomes.length === 0) {
         todosSetoresValidos = false;
         alert('Por favor, adicione pelo menos um item em cada setor.');
@@ -565,7 +549,6 @@
       return;
     }
 
-    // Se chegou aqui, todos os campos estão preenchidos, prosseguir com o envio
     let corpoEmail = `SOLICITAÇÃO DE PEDIDO EXTRA\n\n`;
     corpoEmail += `Solicitante: ${solicitante}\n`;
     corpoEmail += `Unidade: ${unidade}\n\n`;
@@ -596,8 +579,6 @@
     const mailto = `mailto:leitaoochefe@gmail.com?subject=Pedido Extra - ${encodeURIComponent(unidade)}&body=${encodeURIComponent(corpoEmail)}`;
     window.location.href = mailto;
   });
-
-  window.onload = adicionarSetor;
 </script>
 
 </body>
