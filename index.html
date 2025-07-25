@@ -518,10 +518,54 @@
   document.getElementById('pedidoForm').addEventListener('submit', function(e) {
     e.preventDefault();
 
-    const solicitante = document.getElementById('solicitante').value;
-    const unidade = document.getElementById('unidade').value;
-    const setores = document.querySelectorAll('.setor');
+    // Verificar se os campos principais estão preenchidos
+    const solicitante = document.getElementById('solicitante').value.trim();
+    const unidade = document.getElementById('unidade').value.trim();
 
+    if (!solicitante || !unidade) {
+      alert('Por favor, preencha os campos de solicitante e unidade.');
+      return;
+    }
+
+    // Verificar setores
+    const setores = document.querySelectorAll('.setor');
+    let todosSetoresValidos = true;
+
+    setores.forEach(setor => {
+      const nomeSetor = setor.querySelector('input[name="setor"]').value.trim();
+      const itensNomes = setor.querySelectorAll('.item-nome');
+      const itensQtds = setor.querySelectorAll('.item-qtd');
+
+      if (!nomeSetor) {
+        todosSetoresValidos = false;
+        alert('Por favor, selecione um setor.');
+        return;
+      }
+
+      // Verificar se há itens no setor e se estão preenchidos
+      if (itensNomes.length === 0) {
+        todosSetoresValidos = false;
+        alert('Por favor, adicione pelo menos um item em cada setor.');
+        return;
+      }
+
+      itensNomes.forEach((input, index) => {
+        const nome = input.value.trim();
+        const qtd = itensQtds[index].value.trim();
+
+        if (!nome || !qtd) {
+          todosSetoresValidos = false;
+          alert('Por favor, preencha todos os campos de item e quantidade.');
+          return;
+        }
+      });
+    });
+
+    if (!todosSetoresValidos) {
+      return;
+    }
+
+    // Se chegou aqui, todos os campos estão preenchidos, prosseguir com o envio
     let corpoEmail = `SOLICITAÇÃO DE PEDIDO EXTRA\n\n`;
     corpoEmail += `Solicitante: ${solicitante}\n`;
     corpoEmail += `Unidade: ${unidade}\n\n`;
@@ -534,16 +578,12 @@
       const itensNomes = setor.querySelectorAll('.item-nome');
       const itensQtds = setor.querySelectorAll('.item-qtd');
 
-      if (itensNomes.length === 0) {
-          corpoEmail += `(Nenhum item neste setor)\n\n`;
-      } else {
-          itensNomes.forEach((input, index) => {
-            const nome = input.value;
-            const qtd = itensQtds[index].value;
-            corpoEmail += `- ${nome} (Qtd: ${qtd})\n`;
-          });
-          corpoEmail += `\n`;
-      }
+      itensNomes.forEach((input, index) => {
+        const nome = input.value;
+        const qtd = itensQtds[index].value;
+        corpoEmail += `- ${nome} (Qtd: ${qtd})\n`;
+      });
+      corpoEmail += `\n`;
 
       const observacao = setor.querySelector('.observacao').value;
       if (observacao) {
