@@ -1691,10 +1691,44 @@ const Epi_ConsumoItems = [
         <button type="button" onclick="adicionarItem(${setorIndex})">Adicionar Item</button>
       </div>
 
-      <div class="observacao-group">
-        <label>Digite aqui uma observação:</label>
-        <input type="text" class="observacao" maxlength="70">
-      </div>
+<div class="observacao-group">
+    <label>Digite aqui uma justificativa para algum item do setor acima:</label>
+    <textarea class="observacao" maxlength="300" rows="3" placeholder="Digite sua justificativa..."></textarea>
+</div>
+
+<style>
+.observacao {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #555; /* Borda cinza escura para contraste */
+    border-radius: 4px;
+    font-size: 14px;
+    resize: vertical; /* Permite redimensionar apenas verticalmente */
+    background-color: #333; /* Fundo escuro */
+    color: #fff; /* Texto branco para legibilidade */
+}
+.observacao:focus {
+    outline: none;
+    border-color: #007bff; /* Borda azul ao focar */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+}
+.observacao::placeholder {
+    color: #aaa; /* Cor do placeholder mais clara para contraste */
+}
+</style>
+
+<script>
+document.querySelectorAll('.observacao').forEach(textarea => {
+    textarea.addEventListener('keydown', function(event) {
+        if (event.key === 'Enter' && event.shiftKey) {
+            // Shift+Enter: Permite a quebra de linha padrão
+            return;
+        } else if (event.key === 'Enter') {
+            // Enter sozinho: Impede o comportamento padrão
+            event.preventDefault();
+        }
+    });
+});
 
     `;
 
