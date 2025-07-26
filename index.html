@@ -1260,7 +1260,7 @@ const EscritórioItems = [
     "1 05 01 0092 9 Tinta para carimbo vermelho",
     "1 05 01 0178 0 Tinta para carimbo automático - cor preto - aproxima. 30ml",
     "1 05 01 0091 0 Tinta para carimbo azul",
-];
+  ];
 
   Odonto_InstrumentalItems = [
     "1 07 02 0015 5 Afastador tipo Farabeuf",
@@ -1372,7 +1372,7 @@ const EscritórioItems = [
     "1 07 02 0013 9 Tesoura curva tipo Iris - 11,5 / 12cm",
     "1 07 02 0014 7 Tesoura curva tipo Iris - 15 cm",
     "1 06 02 0020 9 Tesoura Iris reta - 11,5 a 12 cm",
-];
+  ];
 
 const Consumo_e_Limpeza_EsporádicosItems = [
     "1 03 02 0036 7 Assento sanitário",
@@ -1433,7 +1433,7 @@ const Consumo_e_Limpeza_EsporádicosItems = [
     "1 03 01 0091 5 Vassoura de nylon c/ cabo",
     "1 03 01 0054 0 Vassoura de pêlo c/ cabo de madeira",
     "1 03 02 0050 2 Vassoura para limpar teto",
-];
+  ];
 
 const Consumo_e_Limpeza_PeriódicoItems = [
     "1 03 02 0001 4 Açúcar cristal - pacote c/ 5 kg",
@@ -1478,7 +1478,7 @@ const Consumo_e_Limpeza_PeriódicoItems = [
     "1 03 01 0051 6 Sapólio em pó - frasco c/ 300 gramas",
     "1 03 02 0030 8 Tee p/ tomada (Fornecido pelo Almoxarifado da SMS)",
     "1 03 02 0032 4 Toalha de papel interfolhas branca - Pacote c/ 1000 Folhas",
-];
+  ];
 
 const Enfermagem_Urgência_e_EmergênciaItems = [
     "1 02 10 0001 6 Cadarço fixador (Rolo c/ 50 metros)",
@@ -1529,7 +1529,24 @@ const Enfermagem_Urgência_e_EmergênciaItems = [
     "1 02 10 0011 3 Tala p/ imobilização pequena ( dedo ) 16x180 mm",
     "1 02 10 0057 1 Tala p/ imobilização pequena (SAMU)",
     "1 02 06 0014 1 Torneirinha 3 vias",
-];
+  ];
+
+const Enfermagem_Teste_DSTItems = [
+    "1 01 20 0335 0 Teste rápido (Anti Hcv) Alere",
+    "1 01 20 0336 9 Teste rápido (Anti Hep B)",
+    "1 01 20 0334 2 Teste rápido (Anti Hiv ) Alere",
+    "1 01 20 0340 7 Teste rápido Hiv - Abon",
+    "1 01 20 0370 9 Teste rápido Hiv - Bioclin",
+    "1 01 20 0332 6 Teste rápido Hiv - Biomanguinhos",
+    "1 01 20 0409 8 Teste rápido Hiv - Med Levensohn",
+    "1 01 20 0333 4 Teste rápido Hiv - Rapid Check",
+    "1 01 20 0330 0 Teste rápido Hiv F.O (frasco oral)",
+    "1 01 20 0344 0 Teste rápido sífilis - Alere",
+    "1 01 20 0415 2 Teste rápido sífilis - Bioclin",
+    "1 01 20 0331 8 Teste rápido sífilis - Biomanguinhos",
+    "1 01 20 0405 5 Teste rápido sífilis - Wama",
+    "1 01 20 0434 9 Teste rápido Sífilis - Abon",
+  ];
 
   // Default items for other sectors (empty since not specified)
   const defaultItems = [];
@@ -1560,6 +1577,8 @@ const Enfermagem_Urgência_e_EmergênciaItems = [
       items = Consumo_e_Limpeza_EsporádicosItems;
     } else if (sectorValue === 'Consumo_e_Limpeza_Periódico') {
       items = Consumo_e_Limpeza_PeriódicoItems;
+   } else if (sectorValue === 'Enfermagem_Teste_DST') {
+      items = Enfermagem_Teste_DSTItems;
     } else {
       items = defaultItems;
     }
@@ -1612,6 +1631,7 @@ const Enfermagem_Urgência_e_EmergênciaItems = [
             <div class="option" data-value="Psicotrópico" onclick="selectOption('${setorId}', 'Psicotrópico')">Psicotrópico</div>
             <div class="option" data-value="Enfermagem" onclick="selectOption('${setorId}', 'Enfermagem')">Enfermagem</div>
             <div class="option" data-value="Enfermagem_Urgência_e_Emergência" onclick="selectOption('${setorId}', 'Enfermagem_Urgência_e_Emergência')">Enfermagem_Urgência_e_Emergência</div>
+            <div class="option" data-value="Enfermagem_Teste_DST" onclick="selectOption('${setorId}', 'Enfermagem_Teste_DST')">Enfermagem_Teste_DST</div>
             <div class="option" data-value="Odonto" onclick="selectOption('${setorId}', 'Odonto')">Odonto</div>
             <div class="option" data-value="Odonto_Instrumental" onclick="selectOption('${setorId}', 'Odonto_Instrumental')">Odonto_Instrumental</div>
             <div class="option" data-value="Consumo_e_Limpeza_Esporádicos" onclick="selectOption('${setorId}', 'Consumo_e_Limpeza_Esporádicos')">Consumo_e_Limpeza_Esporádicos</div>
@@ -1742,6 +1762,8 @@ const Enfermagem_Urgência_e_EmergênciaItems = [
           validItems = enfermagemItems;
         } else if (nomeSetor === 'Enfermagem_Urgência_e_Emergência') {
           validItems = Enfermagem_Urgência_e_EmergênciaItems;
+        } else if (nomeSetor === 'Enfermagem_Teste_DST') {
+          validItems = Enfermagem_Teste_DSTItems;
         } else if (nomeSetor === 'Odonto') {
           validItems = OdontoItems;
         } else if (nomeSetor === 'Odonto_Instrumental') {
@@ -1754,7 +1776,6 @@ const Enfermagem_Urgência_e_EmergênciaItems = [
           validItems = Consumo_e_Limpeza_EsporádicosItems;
         } else if (nomeSetor === 'Consumo_e_Limpeza_Periódico') {
           validItems = Consumo_e_Limpeza_PeriódicoItems;
-        } else {
           validItems = defaultItems;
         }
 
