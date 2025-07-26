@@ -600,7 +600,7 @@
     "1 01 09 0005 3 Vitamina c 200 mg/ml gotas frasco 20 ml"
   ];
 
-  const psicotroficoItems = [
+  const PsicotópicoItems = [
     "1 01 16 0007 0 Ácido valpróico 250mg cápsula",
     "1 01 16 0008 8 Ácido valpróico 250mg/5ml frasco 100ml",
     "1 01 16 0009 6 Ácido valpróico 500mg comprimido revestido",
@@ -856,7 +856,7 @@
     if (sectorValue === 'Farmácia') {
       items = farmaciaItems;
     } else if (sectorValue === 'Psicotrópico') {
-      items = psicotroficoItems;
+      items = PsicotópicoItems;
     } else if (sectorValue === 'Enfermagem') {
       items = enfermagemItems;
     } else {
@@ -1032,8 +1032,8 @@
         let validItems;
         if (nomeSetor === 'Farmácia') {
           validItems = farmaciaItems;
-        } else if (nomeSetor === 'Psictrópico') {
-          validItems = psicotroficoItems;
+        } else if (nomeSetor === 'Psicotrópico') {
+          validItems = PsicotópicoItems;
         } else if (nomeSetor === 'Enfermagem') {
           validItems = enfermagemItems;
         } else {
@@ -1067,7 +1067,7 @@
       itensNomes.forEach((input, index) => {
         const nome = input.value;
         const qtd = itensQtds[index].value;
-        corpoEmail += `- ${nome} (Qtd: ${qtd})\n`;
+        corpoEmail += `- ${nome} (Quantidade: ${qtd})\n`;
       });
       corpoEmail += `\n`;
 
@@ -1084,7 +1084,6 @@
   });
 
   window.onload = function() {
-    adicionarSetor();
     updateDatalist('setor-0', ''); // Initialize with default items
   };
 </script>
