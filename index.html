@@ -1613,12 +1613,12 @@ const Epi_ConsumoItems = [
       items = EscritórioItems;
     } else if (sectorValue === 'Consumo_e_Limpeza_Esporádicos') {
       items = Consumo_e_Limpeza_EsporádicosItems;
-    } else if (sectorValue === 'Consumo_e_Limpeza_Periódico') {
-      items = Consumo_e_Limpeza_PeriódicoItems;
    } else if (sectorValue === 'Enfermagem_Teste_DST') {
       items = Enfermagem_Teste_DSTItems;
    } else if (sectorValue === 'Epi_Consumo') {
       items = Epi_ConsumoItems;
+   } else if (sectorValue === 'Consumo_e_Limpeza_Periódico') {
+      items = Consumo_e_Limpeza_PeriódicoItems;
     } else {
       items = defaultItems;
     }
@@ -1716,19 +1716,6 @@ const Epi_ConsumoItems = [
     color: #aaa; /* Cor do placeholder mais clara para contraste */
 }
 </style>
-
-<script>
-document.querySelectorAll('.observacao').forEach(textarea => {
-    textarea.addEventListener('keydown', function(event) {
-        if (event.key === 'Enter' && event.shiftKey) {
-            // Shift+Enter: Permite a quebra de linha padrão
-            return;
-        } else if (event.key === 'Enter') {
-            // Enter sozinho: Impede o comportamento padrão
-            event.preventDefault();
-        }
-    });
-});
 
     `;
 
@@ -1850,7 +1837,6 @@ document.querySelectorAll('.observacao').forEach(textarea => {
           validItems = Consumo_e_Limpeza_EsporádicosItems;
         } else if (nomeSetor === 'Consumo_e_Limpeza_Periódico') {
           validItems = Consumo_e_Limpeza_PeriódicoItems;
-          validItems = defaultItems;
         } else if (nomeSetor === 'Epi_Consumo') {
           validItems = Epi_ConsumoItems;
         }
