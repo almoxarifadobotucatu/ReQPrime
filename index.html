@@ -1548,6 +1548,44 @@ const Enfermagem_Teste_DSTItems = [
     "1 01 20 0434 9 Teste rápido Sífilis - Abon",
   ];
 
+const Epi_ConsumoItems = [
+    "1 06 04 0023 2 Avental de proteção em vinil",
+    "1 06 04 0014 3 Bota borracha branca cano curto - nº 34",
+    "1 06 04 0015 1 Bota borracha branca cano curto - nº 35",
+    "1 06 04 0016 0 Bota borracha branca cano curto - nº 36",
+    "1 06 04 0017 8 Bota borracha branca cano curto - nº 37",
+    "1 06 04 0018 6 Bota borracha branca cano curto - nº 38",
+    "1 06 04 0008 9 Bota borracha branca cano curto - nº 39",
+    "1 06 04 0009 7 Bota borracha branca cano curto - nº 40",
+    "1 06 04 0010 0 Bota borracha branca cano curto - nº 41",
+    "1 06 04 0019 4 Bota borracha branca cano curto - nº 42",
+    "1 06 04 0021 6 Bota borracha branca cano curto - nº 43",
+    "1 06 04 0022 4 Bota borracha branca cano curto - nº 44",
+    "1 06 04 0020 8 Bota borracha branca cano curto - nº 45",
+    "1 06 04 0024 0 Luva de segurança em borracha cano longo PP",
+    "1 06 04 0025 9 Luva de segurança em borracha cano longo M",
+    "1 06 04 0026 7 Luva de segurança em borracha cano longo G",
+    "1 06 04 0027 5 Luva de segurança em borracha cano longo EG",
+    "1 03 01 0025 7 Luva de borracha com forro cano curto pequena",
+    "1 03 01 0026 5 Luva de borracha com forro cano curto média",
+    "1 03 01 0027 3 Luva de borracha com forro cano curto grande",
+    "1 03 01 7 Luva de borracha com forro cano curto extra grande",
+    "1 06 04 0004 6 Jaleco profissional em tecido - PP",
+    "1 06 04 0003 8 Jaleco profissional em tecido - P",
+    "1 06 04 0002 0 Jaleco profissional em tecido - M",
+    "1 06 04 0005 4 Jaleco profissional em tecido - G",
+    "1 06 04 0006 2 Jaleco profissional em tecido - GG",
+    "1 06 04 0007 0 Jaleco profissional em tecido - EG",
+    "1 06 04 0067 4 Jaleco profissional em tecido - EXG",
+    "1 06 04 0074 7 Protetor auditivo tipo inserção",
+    "1 02 10 0024 5 Respirador descartável semi facial pff2 com carvão ativado (gases ácidos)",
+    "1 02 10 0035 0 Respirador descartável semi facial pff2 com carvão ativado (vapores orgânicos)",
+    "1 02 10 0023 7 Máscara de proteção N 95 (respirador) (4.01.03 - ENFERMAGEM)",
+    "1 07 01 0090 8 Óculos de proteção translucido (4.01.02 - ODONTO)",
+    "1 06 04 0029 1 Óculos de proteção laranja (4.01.02 - ODONTO)",
+    "1 06 04 0001 1 Protetor facial (viseira) (4.01.02 - ODONTO)",
+  ];
+
   // Default items for other sectors (empty since not specified)
   const defaultItems = [];
 
@@ -1579,6 +1617,8 @@ const Enfermagem_Teste_DSTItems = [
       items = Consumo_e_Limpeza_PeriódicoItems;
    } else if (sectorValue === 'Enfermagem_Teste_DST') {
       items = Enfermagem_Teste_DSTItems;
+   } else if (sectorValue === 'Epi_Consumo') {
+      items = Epi_ConsumoItems;
     } else {
       items = defaultItems;
     }
@@ -1638,7 +1678,7 @@ const Enfermagem_Teste_DSTItems = [
             <div class="option" data-value="Consumo_e_Limpeza_Periódico" onclick="selectOption('${setorId}', 'Consumo_e_Limpeza_Periódico')">Consumo_e_Limpeza_Periódico</div>
             <div class="option" data-value="Escritório" onclick="selectOption('${setorId}', 'Escritório')">Escritório</div>
             <div class="option" data-value="Impressos" onclick="selectOption('${setorId}', 'Impressos')">Impressos</div>
-            <div class="option" data-value="Carrinho de Emergência" onclick="selectOption('${setorId}', 'Carrinho de Emergência')">Carrinho de Emergência</div>
+            <div class="option" data-value="Epi_Consumo" onclick="selectOption('${setorId}', 'Epi_Consumo')">Epi_Consumo</div>
           </div>
         </div>
         <button type="button" onclick="removerSetor(this)" class="remove-button remove-setor-button">Remover Setor</button>
@@ -1777,6 +1817,8 @@ const Enfermagem_Teste_DSTItems = [
         } else if (nomeSetor === 'Consumo_e_Limpeza_Periódico') {
           validItems = Consumo_e_Limpeza_PeriódicoItems;
           validItems = defaultItems;
+        } else if (nomeSetor === 'Epi_Consumo') {
+          validItems = Epi_ConsumoItems;
         }
 
         if (!validItems.includes(nome)) {
