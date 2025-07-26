@@ -1374,7 +1374,7 @@ const EscritórioItems = [
     "1 06 02 0020 9 Tesoura Iris reta - 11,5 a 12 cm",
 ];
 
-const ConsumoElimpezaItems = [
+const ConsumoElimpezaEsporádicosItems = [
     "1 03 02 0036 7 Assento sanitário",
     "1 03 01 0099 0 Balde plástico com alça de metal - 12 litros",
     "1 03 01 0003 6 Balde plástico com alça de metal - 20 litros",
@@ -1458,8 +1458,8 @@ const ConsumoElimpezaItems = [
       items = ImpressosItems;
     } else if (sectorValue === 'Escritório') {
       items = EscritórioItems;
-    } else if (sectorValue === 'ConsumoElimpeza') {
-      items = ConsumoElimpezaItems;
+    } else if (sectorValue === 'ConsumoElimpezaEsporádicos') {
+      items = ConsumoElimpezaEsporádicosItems;
     } else {
       items = defaultItems;
     }
@@ -1513,7 +1513,7 @@ const ConsumoElimpezaItems = [
             <div class="option" data-value="Enfermagem" onclick="selectOption('${setorId}', 'Enfermagem')">Enfermagem</div>
             <div class="option" data-value="Odonto" onclick="selectOption('${setorId}', 'Odonto')">Odonto</div>
             <div class="option" data-value="OdontoInstrumental" onclick="selectOption('${setorId}', 'OdontoInstrumental')">OdontoInstrumental</div>
-            <div class="option" data-value="ConsumoElimpeza" onclick="selectOption('${setorId}', 'ConsumoElimpeza')">ConsumoElimpeza</div>
+            <div class="option" data-value="ConsumoElimpezaEsporádicos" onclick="selectOption('${setorId}', 'ConsumoElimpezaEsporádicos')">ConsumoElimpezaEsporádicos</div>
             <div class="option" data-value="Escritório" onclick="selectOption('${setorId}', 'Escritório')">Escritório</div>
             <div class="option" data-value="Impressos" onclick="selectOption('${setorId}', 'Impressos')">Impressos</div>
             <div class="option" data-value="Carrinho de Emergência" onclick="selectOption('${setorId}', 'Carrinho de Emergência')">Carrinho de Emergência</div>
@@ -1646,8 +1646,8 @@ const ConsumoElimpezaItems = [
           validItems = ImpressosItems;
         } else if (nomeSetor === 'Escritório') {
           validItems = EscritórioItems;
-        } else if (nomeSetor === 'ConsumoElimpeza') {
-          validItems = ConsumoElimpezaItems;
+        } else if (nomeSetor === 'ConsumoElimpezaEsporádicos') {
+          validItems = ConsumoElimpezaEsporádicosItems;
         } else {
           validItems = defaultItems;
         }
