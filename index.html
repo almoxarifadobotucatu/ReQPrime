@@ -1038,7 +1038,7 @@
     "1 07 01 0116 5 Verniz com fluor",
   ];
 
-  const InstrumentalOdontologiaItems = [
+  const OdontoInstrumentalItems = [
     "1 07 02 0015 5 Afastador tipo Farabeuf",
     "1 07 02 0086 4 Afastador tipo Minesotta",
     "1 07 02 0129 1 Alavanca tipo Apical direita",
@@ -1167,8 +1167,8 @@
       items = enfermagemItems;
     } else if (sectorValue === 'Odonto') {
       items = OdontoItems;
-    } else if (sectorValue === 'InstrumentalOdontologia') {
-      items = InstrumentalOdontologiaItems;
+    } else if (sectorValue === 'OdontoInstrumental') {
+      items = OdontoInstrumentalItems;
     } else {
       items = defaultItems;
     }
@@ -1221,7 +1221,7 @@
             <div class="option" data-value="Psicotrópico" onclick="selectOption('${setorId}', 'Psicotrópico')">Psicotrópico</div>
             <div class="option" data-value="Enfermagem" onclick="selectOption('${setorId}', 'Enfermagem')">Enfermagem</div>
             <div class="option" data-value="Odonto" onclick="selectOption('${setorId}', 'Odonto')">Odonto</div>
-            <div class="option" data-value="InstrumentalOdontologia" onclick="selectOption('${setorId}', 'InstrumentalOdontologia')">InstrumentalOdontologia</div>
+            <div class="option" data-value="OdontoInstrumental" onclick="selectOption('${setorId}', 'OdontoInstrumental')">OdontoInstrumental</div>
             <div class="option" data-value="Consumo e Limpeza" onclick="selectOption('${setorId}', 'Consumo e Limpeza')">Consumo e Limpeza</div>
             <div class="option" data-value="Materiais de Escritório" onclick="selectOption('${setorId}', 'Materiais de Escritório')">Materiais de Escritório</div>
             <div class="option" data-value="Impressos" onclick="selectOption('${setorId}', 'Impressos')">Impressos</div>
@@ -1349,8 +1349,8 @@
           validItems = enfermagemItems;
         } else if (nomeSetor === 'Odonto') {
           validItems = OdontoItems;
-        } else if (nomeSetor === 'InstrumentalOdontologia') {
-          validItems = InstrumentalOdontologiaItems;
+        } else if (nomeSetor === 'OdontoInstrumental') {
+          validItems = OdontoInstrumentalItems;
         } else {
           validItems = defaultItems;
         }
