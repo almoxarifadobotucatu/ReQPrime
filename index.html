@@ -1374,6 +1374,67 @@ const EscritórioItems = [
     "1 06 02 0020 9 Tesoura Iris reta - 11,5 a 12 cm",
 ];
 
+const ConsumoElimpezaItems = [
+    "1 03 02 0036 7 Assento sanitário",
+    "1 03 01 0099 0 Balde plástico com alça de metal - 12 litros",
+    "1 03 01 0003 6 Balde plástico com alça de metal - 20 litros",
+    "1 03 02 0077 4 Bateria 9 volts",
+    "1 03 02 0088 0 Bateria de lítio 1.5/1.55 v - tipo botão",
+    "1 03 02 0087 1 Bateria lithium 3 volts CR2032 - para glicômetros",
+    "1 03 01 0004 4 Cabeleira p/ mop",
+    "1 03 02 0062 6 Caixa Organizadora Plástica Transparente c/ tampa e trava - Capacidade 34 Litros",
+    "1 03 02 0061 8 Caixa Organizadora Plástica Transparente c/ tampa e trava - Capacidade 54 Litros",
+    "1 03 02 0063 4 Caixa Organizadora Plástica Transparente c/ tampa e trava - Capacidade 12 Litros",
+    "1 03 02 0044 8 Canecão de alumínio com 2 litros",
+    "1 03 02 0005 7 Canecão de alumínio com 4 litros",
+    "1 03 02 0148 7 Cesto de lixo 10 litros - telado",
+    "1 03 02 0146 0 Cobertor de casal (Carrinho de Emergência)",
+    "1 03 02 0058 8 Cobertor de solteiro (Carrinho de Emergência)",
+    "1 03 01 0009 5 Corda de nylon para varal",
+    "1 03 01 0012 5 Desentupidor de vaso sanitário",
+    "1 03 01 0011 7 Desentupidor de pia",
+    "1 03 01 0067 2 Dispenser - saboneteira",
+    "1 03 01 0065 6 Dispenser álcool gel",
+    "1 03 01 0066 4 Dispenser papel toalha",
+    "1 03 01 0014 1 Escova de cerdas plástica",
+    "1 03 01 0015 0 Escova de nylon para limpeza sanitária",
+    "1 03 01 0070 2 Extensor para vassoura e rodo de alumínio",
+    "1 03 02 0014 6 Garrafa térmica - 1 litro",
+    "1 03 02 0015 4 Garrafa térmica - 1,8 litros",
+    "1 03 02 0055 3 Guardanapo de tecido para cozinha 60 x 40",
+    "1 03 02 0016 2 Jarra de 1 litro com medidor",
+    "1 03 02 0017 0 Jarra de 3 litros",
+    "1 03 02 0046 4 Lâmpada comum 60 watts",
+    "1 03 02 0086 3 Lixeira plástica com pedal - 100 litros",
+    "1 03 01 0023 0 Lixeira plástica com pedal - 35 litros",
+    "1 03 02 0053 7 Lixeira plástica com pedal - 60 litros",
+    "1 03 01 0069 9 Lixeira plástica com tampa sem pedal (basculante)",
+    "1 03 02 0078 2 Lixeira plástica sem pedal com tampa - 100 litros",
+    "1 03 01 0031 1 Mangueira de borracha com gatilho e bico com 20 metros",
+    "1 03 01 0033 8 Pá para lixo",
+    "1 03 02 0040 5 Pés para geladeira - jogo 04 unidades",
+    "1 03 02 0021 9 Pilha grande D - pacote com 2 unidades",
+    "1 03 02 0022 7 Pilha média C - pacote com 2 unidades",
+    "1 03 02 0083 9 Pilhas de dióxido de manganês de lítio tipo 123A",
+    "1 03 01 0037 0 Prendedor p/ Roupas - pacote com 12 unidades",
+    "1 03 01 0039 7 Rodinho para pia",
+    "1 03 01 0041 9 Rodo de madeira c/ cabo, borracha dupla - 40 cm",
+    "1 03 01 0040 0 Rodo de madeira c/ cabo, borracha dupla - 60 cm",
+    "1 03 01 0042 7 Sabão de côco em barra - 200 grs",
+    "1 03 02 0027 8 Suporte para coador plástico nº 103",
+    "1 03 02 0042 1 Suporte para copo água",
+    "1 03 01 0060 5 Suporte para cabeleira em alumínio (cabo para mop)",
+    "1 03 02 0048 0 Suporte para copo de café",
+    "1 03 02 0060 0 Toalha de tecido de mesa quadrada 1,40 x 1,40 mt",
+    "1 03 02 0057 0 Toalha de tecido de mesa redonda 1,20 mt",
+    "1 03 02 0031 6 Toalha de tecido para rosto",
+    "1 03 02 0033 2 Torneira para filtro",
+    "1 03 02 0034 0 Vela para filtro",
+    "1 03 01 0091 5 Vassoura de nylon c/ cabo",
+    "1 03 01 0054 0 Vassoura de pêlo c/ cabo de madeira",
+    "1 03 02 0050 2 Vassoura para limpar teto",
+];
+
   // Default items for other sectors (empty since not specified)
   const defaultItems = [];
 
@@ -1397,6 +1458,8 @@ const EscritórioItems = [
       items = ImpressosItems;
     } else if (sectorValue === 'Escritório') {
       items = EscritórioItems;
+    } else if (sectorValue === 'ConsumoElimpeza') {
+      items = ConsumoElimpezaItems;
     } else {
       items = defaultItems;
     }
@@ -1450,7 +1513,7 @@ const EscritórioItems = [
             <div class="option" data-value="Enfermagem" onclick="selectOption('${setorId}', 'Enfermagem')">Enfermagem</div>
             <div class="option" data-value="Odonto" onclick="selectOption('${setorId}', 'Odonto')">Odonto</div>
             <div class="option" data-value="OdontoInstrumental" onclick="selectOption('${setorId}', 'OdontoInstrumental')">OdontoInstrumental</div>
-            <div class="option" data-value="Consumo e Limpeza" onclick="selectOption('${setorId}', 'Consumo e Limpeza')">Consumo e Limpeza</div>
+            <div class="option" data-value="ConsumoElimpeza" onclick="selectOption('${setorId}', 'ConsumoElimpeza')">ConsumoElimpeza</div>
             <div class="option" data-value="Escritório" onclick="selectOption('${setorId}', 'Escritório')">Escritório</div>
             <div class="option" data-value="Impressos" onclick="selectOption('${setorId}', 'Impressos')">Impressos</div>
             <div class="option" data-value="Carrinho de Emergência" onclick="selectOption('${setorId}', 'Carrinho de Emergência')">Carrinho de Emergência</div>
@@ -1583,6 +1646,8 @@ const EscritórioItems = [
           validItems = ImpressosItems;
         } else if (nomeSetor === 'Escritório') {
           validItems = EscritórioItems;
+        } else if (nomeSetor === 'ConsumoElimpeza') {
+          validItems = ConsumoElimpezaItems;
         } else {
           validItems = defaultItems;
         }
