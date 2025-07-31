@@ -436,7 +436,6 @@
       { username: "sms6786", password: "Master1@" },
       { username: "admin", password: "master@" },
       // { username: "user3", password: "Password3@" }
-
     ];
     // Ensure all usernames are lowercase
     users = users.map(user => ({
@@ -1817,8 +1816,6 @@ const EscritórioItems = [
     "1 06 04 0001 1 Protetor facial (viseira) (4.01.02 - ODONTO)",
   ];
 
-    const defaultItems = [];
-
     function updateDatalist(setorId, sectorValue) {
       const datalist = document.getElementById('lista-itens');
       datalist.innerHTML = '';
@@ -1854,11 +1851,6 @@ const EscritórioItems = [
         const option = document.createElement('option');
         option.value = item;
         datalist.appendChild(option);
-      });
-      const setor = document.querySelector(`#${setorId}`).closest('.setor');
-      const itemInputs = setor.querySelectorAll('.item-nome');
-      itemInputs.forEach(input => {
-        input.value = '';
       });
     }
 
@@ -1931,6 +1923,12 @@ const EscritórioItems = [
       hiddenInput.value = value;
       toggleOptions(setorId);
       updateDatalist(setorId, value);
+      // Clear all item names and quantities in this sector
+      const setor = document.querySelector(`#${setorId}`).closest('.setor');
+      const itemInputs = setor.querySelectorAll('.item-nome');
+      const quantityInputs = setor.querySelectorAll('.item-qtd');
+      itemInputs.forEach(input => input.value = '');
+      quantityInputs.forEach(input => input.value = '');
     }
 
     document.addEventListener('click', function(e) {
