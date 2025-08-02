@@ -433,7 +433,8 @@
   <script>
     // Initialize users from localStorage or use default
     let users = JSON.parse(localStorage.getItem('users')) || [
-      { username: "admin", password: "master@" },
+      { username: "sms6786", password: "Master1@" },
+      { username: "admin", password: "master@" }
     ];
     // Ensure all usernames are lowercase
     users = users.map(user => ({
@@ -1945,7 +1946,15 @@ const EscritórioItems = [
 
     function removerSetor(button) {
       button.closest('.setor').remove();
-      updateDatalist('setor-0', '');
+      // Update datalist for the first remaining sector, if any
+      const firstSetor = document.querySelector('.setor');
+      if (firstSetor) {
+        const setorId = firstSetor.querySelector('.custom-select').id;
+        const sectorValue = firstSetor.querySelector('input[name="setor"]').value.trim();
+        updateDatalist(setorId, sectorValue);
+      } else {
+        updateDatalist('setor-0', ''); // Clear datalist if no sectors remain
+      }
     }
 
     function adicionarItem(index) {
