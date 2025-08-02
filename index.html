@@ -431,11 +431,9 @@
   <datalist id="lista-itens"></datalist>
 
   <script>
-    // Initialize users from localStorage or use default (add more users manually here)
+    // Initialize users from localStorage or use default
     let users = JSON.parse(localStorage.getItem('users')) || [
-      { username: "sms6786", password: "Master1@" },
       { username: "admin", password: "master@" },
-      // { username: "user3", password: "Password3@" }
     ];
     // Ensure all usernames are lowercase
     users = users.map(user => ({
@@ -514,7 +512,7 @@
       document.getElementById('changePasswordForm').reset();
     }
 
-    // Item lists (same as original)
+    // Item lists
     const farmaciaItems = [
     "1 01 06 0001 7 Aciclovir 200mg comprimido",
     "1 01 06 0025 5 Aciclovir 50mg/g creme bisnaga - uso tópico - uso adulto e pediátrico",
@@ -1869,6 +1867,8 @@ const EscritórioItems = [
     let setorIndex = 0;
 
     function adicionarSetor() {
+      const setores = document.querySelectorAll('.setor input[name="setor"]');
+      const setoresSelecionados = Array.from(setores).map(input => input.value.trim());
       const container = document.getElementById('setoresContainer');
       const div = document.createElement('div');
       div.className = 'setor';
@@ -1917,6 +1917,12 @@ const EscritórioItems = [
     }
 
     function selectOption(setorId, value) {
+      const setores = document.querySelectorAll('.setor input[name="setor"]');
+      const setoresSelecionados = Array.from(setores).map(input => input.value.trim());
+      if (setoresSelecionados.includes(value)) {
+        alert('Este setor já foi adicionado.');
+        return;
+      }
       const selected = document.querySelector(`#${setorId} .selected`);
       const hiddenInput = document.querySelector(`#${setorId} input[name="setor"]`);
       selected.textContent = value;
@@ -1944,12 +1950,17 @@ const EscritórioItems = [
 
     function adicionarItem(index) {
       const container = document.getElementById(`itens-${index}`);
+      const setor = container.closest('.setor');
+      const nomeSetor = setor.querySelector('input[name="setor"]').value.trim();
+      if (!nomeSetor) {
+      }
+      const itensExistentes = Array.from(container.querySelectorAll('.item-nome')).map(input => input.value.trim());
       const div = document.createElement('div');
       div.className = 'item';
       div.innerHTML = `
         <div class="item-input-group item-nome-group">
           <label>Item:</label>
-          <input type="text" class="item-nome" list="lista-itens" required>
+          <input type="text" class="item-nome" list="lista-itens" required onchange="verificarDuplicata(this, '${index}')">
         </div>
         <div class="item-input-group item-qtd-group">
           <label>Quantidade:</label>
@@ -1958,6 +1969,17 @@ const EscritórioItems = [
         <button type="button" onclick="removerItem(this)" class="remove-button remove-item-button">Remover</button>
       `;
       container.appendChild(div);
+    }
+
+    function verificarDuplicata(input, index) {
+      const container = document.getElementById(`itens-${index}`);
+      const itensExistentes = Array.from(container.querySelectorAll('.item-nome')).map(input => input.value.trim());
+      const valorAtual = input.value.trim();
+      const duplicatas = itensExistentes.filter((item, idx) => item === valorAtual && itensExistentes.indexOf(item) !== idx);
+      if (duplicatas.length > 0) {
+        alert('Este item já foi adicionado.');
+        input.value = '';
+      }
     }
 
     function removerItem(button) {
