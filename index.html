@@ -2091,7 +2091,14 @@ const EscritórioItems = [
     window.onload = function() {
       updateDatalist('setor-0', '');
     };
-  </script>
+  <script>
+  document.addEventListener('keydown', function(e) {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+      e.preventDefault();
+      alert("Salvar página está desativado.");
+    }
+  });
+</script>
 </body>
 </html>
 <footer>© 2025 Fabiano Oliveira
