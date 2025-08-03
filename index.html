@@ -390,6 +390,28 @@
       <input type="password" id="password" autocomplete="off" required>
       <div class="buttons">
         <button type="submit">Entrar</button>
+        <button type="button" onclick="showChangePassword()">Trocar Senha</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="change-password-container hidden" id="changePasswordContainer">
+    <h2>Trocar Senha</h2>
+    <form id="changePasswordForm">
+      <label for="changeUsername">Usuário:</label>
+      <input type="text" id="changeUsername" autocomplete="off" required>
+      <label for="currentPassword">Senha Atual:</label>
+      <input type="password" id="currentPassword" autocomplete="off" required>
+      <label for="newPassword">Nova Senha:</label>
+      <input type="password" id="newPassword" autocomplete="off" required>
+      <label for="confirmNewPassword">Confirmar Nova Senha:</label>
+      <input type="password" id="confirmNewPassword" autocomplete="off" required>
+      <div class="buttons">
+        <button type="submit">Alterar Senha</button>
+        <button type="button" onclick="showLogin()">Voltar</button>
+      </div>
+    </form>
+  </div>
 
   <div class="container hidden" id="mainContainer">
     <h2>Solicitação de Pedido Extra</h2>
