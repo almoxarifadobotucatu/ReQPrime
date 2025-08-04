@@ -265,11 +265,11 @@
       margin-left: 20px;
     }
 
-    .observacao-group {
+    .Justificativa-group {
       margin-top: 20px;
     }
 
-    .observacao {
+    .Justificativa {
       width: 100%;
       padding: 8px;
       border: 1px solid #555;
@@ -280,13 +280,13 @@
       color: #fff;
     }
 
-    .observacao:focus {
+    .Justificativa:focus {
       outline: none;
       border-color: #007bff;
       box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
     }
 
-    .observacao::placeholder {
+    .Justificativa:placeholder {
       color: #aaa;
     }
 
@@ -1901,9 +1901,9 @@ const EscritórioItems = [
         <div class="item-buttons">
           <button type="button" onclick="adicionarItem(${setorIndex})">Adicionar Item</button>
         </div>
-        <div class="observacao-group">
+        <div class="Justificativa-group">
           <label>Digite aqui uma justificativa para itens do setor acima:</label>
-          <textarea class="observacao" maxlength="300" rows="3" placeholder="Digite sua justificativa..."></textarea>
+          <textarea class="Justificativa" maxlength="300" rows="3" placeholder="Digite sua justificativa..."></textarea>
         </div>
       `;
       container.appendChild(div);
@@ -2077,9 +2077,9 @@ const EscritórioItems = [
           corpoEmail += ` ${nome} (Quantidade: ${qtd})\n`;
         });
         corpoEmail += `\n`;
-        const observacao = setor.querySelector('.observacao').value;
-        if (observacao) {
-          corpoEmail += `Observação: ${observacao}\n\n`;
+        const Justificativa = setor.querySelector('.Justificativa').value;
+        if (Justificativa) {
+          corpoEmail += `Justificativa: ${Justificativa}\n\n`;
         }
         corpoEmail += `----------------------------------------\n\n`;
       });
