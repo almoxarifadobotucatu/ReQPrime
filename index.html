@@ -7,6 +7,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
+      --primary-extra-color: #1db954;
+      --danger-extra-color: #ff6b6b;
       --primary-color: #0a66c2;
       --primary-hover-color: #004182;
       --danger-color: #e53e3e;
@@ -202,14 +204,47 @@
       flex: 1;
     }
 
-    .setor-select-group .remove-setor-button {
-      flex-shrink: 0;
-      padding: 12px 18px;
-      font-size: 0.95rem;
+    .setor-select-group .remove-setor-
+    /* Botões estilo Central de Pedidos */
+    button {
+      background: var(--primary-color);
+      color: white;
+      padding: 14px 30px;
+      border: none;
       border-radius: 12px;
-      position: static;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                  box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                  background 0.4s ease-in-out;
       box-shadow: var(--shadow-light);
     }
+
+    button:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+      background: linear-gradient(270deg, var(--primary-color), var(--primary-hover-color), var(--primary-extra-color));
+      background-size: 600% 600%;
+      animation: gradientShift 6s ease infinite;
+    }
+
+    .remove-button {
+      background: var(--danger-color);
+    }
+
+    .remove-button:hover {
+      background: linear-gradient(270deg, var(--danger-color), var(--danger-hover-color), var(--danger-extra-color));
+      background-size: 600% 600%;
+      animation: gradientShift 6s ease infinite;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
 
     .item {
       margin-top: 20px;
@@ -256,14 +291,47 @@
       margin-top: 0;
     }
 
-    .item .remove-item-button {
-      flex-shrink: 0;
-      padding: 12px 18px;
-      font-size: 0.95rem;
+    .item .remove-item-
+    /* Botões estilo Central de Pedidos */
+    button {
+      background: var(--primary-color);
+      color: white;
+      padding: 14px 30px;
+      border: none;
       border-radius: 12px;
-      align-self: flex-end;
-      margin-left: 20px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                  box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                  background 0.4s ease-in-out;
+      box-shadow: var(--shadow-light);
     }
+
+    button:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+      background: linear-gradient(270deg, var(--primary-color), var(--primary-hover-color), var(--primary-extra-color));
+      background-size: 600% 600%;
+      animation: gradientShift 6s ease infinite;
+    }
+
+    .remove-button {
+      background: var(--danger-color);
+    }
+
+    .remove-button:hover {
+      background: linear-gradient(270deg, var(--danger-color), var(--danger-hover-color), var(--danger-extra-color));
+      background-size: 600% 600%;
+      animation: gradientShift 6s ease infinite;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
 
     .Justificativa-group {
       margin-top: 20px;
@@ -298,8 +366,10 @@
       gap: 20px;
     }
 
+    
+    /* Botões estilo Central de Pedidos */
     button {
-      background: linear-gradient(135deg, var(--primary-color), var(--primary-hover-color));
+      background: var(--primary-color);
       color: white;
       padding: 14px 30px;
       border: none;
@@ -307,18 +377,78 @@
       cursor: pointer;
       font-size: 1rem;
       font-weight: 600;
-      transition: var(--transition-all);
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                  box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                  background 0.4s ease-in-out;
       box-shadow: var(--shadow-light);
     }
 
     button:hover {
       transform: translateY(-3px) scale(1.02);
       box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+      background: linear-gradient(270deg, var(--primary-color), var(--primary-hover-color), var(--primary-extra-color));
+      background-size: 600% 600%;
+      animation: gradientShift 6s ease infinite;
     }
 
     .remove-button {
-      background: linear-gradient(135deg, var(--danger-color), var(--danger-hover-color));
+      background: var(--danger-color);
     }
+
+    .remove-button:hover {
+      background: linear-gradient(270deg, var(--danger-color), var(--danger-hover-color), var(--danger-extra-color));
+      background-size: 600% 600%;
+      animation: gradientShift 6s ease infinite;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+
+    .remove-
+    /* Botões estilo Central de Pedidos */
+    button {
+      background: var(--primary-color);
+      color: white;
+      padding: 14px 30px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                  box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                  background 0.4s ease-in-out;
+      box-shadow: var(--shadow-light);
+    }
+
+    button:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+      background: linear-gradient(270deg, var(--primary-color), var(--primary-hover-color), var(--primary-extra-color));
+      background-size: 600% 600%;
+      animation: gradientShift 6s ease infinite;
+    }
+
+    .remove-button {
+      background: var(--danger-color);
+    }
+
+    .remove-button:hover {
+      background: linear-gradient(270deg, var(--danger-color), var(--danger-hover-color), var(--danger-extra-color));
+      background-size: 600% 600%;
+      animation: gradientShift 6s ease infinite;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
 
     .remove-button:hover {
       background: linear-gradient(135deg, var(--danger-hover-color), var(--danger-color));
@@ -359,10 +489,47 @@
         flex-direction: column;
         align-items: stretch;
       }
-      .setor-select-group .remove-setor-button {
-        margin-top: 10px;
-        width: auto;
-      }
+      .setor-select-group .remove-setor-
+    /* Botões estilo Central de Pedidos */
+    button {
+      background: var(--primary-color);
+      color: white;
+      padding: 14px 30px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                  box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                  background 0.4s ease-in-out;
+      box-shadow: var(--shadow-light);
+    }
+
+    button:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+      background: linear-gradient(270deg, var(--primary-color), var(--primary-hover-color), var(--primary-extra-color));
+      background-size: 600% 600%;
+      animation: gradientShift 6s ease infinite;
+    }
+
+    .remove-button {
+      background: var(--danger-color);
+    }
+
+    .remove-button:hover {
+      background: linear-gradient(270deg, var(--danger-color), var(--danger-hover-color), var(--danger-extra-color));
+      background-size: 600% 600%;
+      animation: gradientShift 6s ease infinite;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
       .item {
         flex-direction: column;
         align-items: stretch;
@@ -371,48 +538,55 @@
         min-width: unset;
         max-width: 100%;
       }
-      .item .remove-item-button {
-        margin-left: 0;
-        margin-top: 10px;
-        width: auto;
-        align-self: flex-start;
-      }
+      .item .remove-item-
+    /* Botões estilo Central de Pedidos */
+    button {
+      background: var(--primary-color);
+      color: white;
+      padding: 14px 30px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                  box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                  background 0.4s ease-in-out;
+      box-shadow: var(--shadow-light);
+    }
+
+    button:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+      background: linear-gradient(270deg, var(--primary-color), var(--primary-hover-color), var(--primary-extra-color));
+      background-size: 600% 600%;
+      animation: gradientShift 6s ease infinite;
+    }
+
+    .remove-button {
+      background: var(--danger-color);
+    }
+
+    .remove-button:hover {
+      background: linear-gradient(270deg, var(--danger-color), var(--danger-hover-color), var(--danger-extra-color));
+      background-size: 600% 600%;
+      animation: gradientShift 6s ease infinite;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
     }
   </style>
 </head>
 <body oncontextmenu="return false;">
-  <div class="login-container" id="loginContainer">
-    <h2>Login</h2>
-    <form id="loginForm">
-      <label for="username">Usuário:</label>
-      <input type="text" id="username" autocomplete="off" required>
-      <label for="password">Senha:</label>
-      <input type="password" id="password" autocomplete="off" required>
-      <div class="buttons">
-        <button type="submit">Entrar</button>
-      </div>
     </form>
   </div>
 
-  <div class="change-password-container hidden" id="changePasswordContainer">
-    <h2>Trocar Senha</h2>
-    <form id="changePasswordForm">
-      <label for="changeUsername">Usuário:</label>
-      <input type="text" id="changeUsername" autocomplete="off" required>
-      <label for="currentPassword">Senha Atual:</label>
-      <input type="password" id="currentPassword" autocomplete="off" required>
-      <label for="newPassword">Nova Senha:</label>
-      <input type="password" id="newPassword" autocomplete="off" required>
-      <label for="confirmNewPassword">Confirmar Nova Senha:</label>
-      <input type="password" id="confirmNewPassword" autocomplete="off" required>
-      <div class="buttons">
-        <button type="submit">Alterar Senha</button>
-        <button type="button" onclick="showLogin()">Voltar</button>
-      </div>
-    </form>
-  </div>
-
-  <div class="container hidden" id="mainContainer">
+  <div class="container" id="mainContainer">
     <h2>Solicitação de Pedido Extra</h2>
     <form id="pedidoForm">
       <label for="solicitante">Nome do Solicitante:</label>
@@ -441,76 +615,6 @@
       password: user.password
     }));
     localStorage.setItem('users', JSON.stringify(users));
-
-    // Handle login form submission
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const username = document.getElementById('username').value.trim().toLowerCase();
-      const password = document.getElementById('password').value.trim();
-
-      const user = users.find(u => u.username === username && u.password === password);
-      if (user) {
-        document.getElementById('loginContainer').classList.add('hidden');
-        document.getElementById('mainContainer').classList.remove('hidden');
-        document.getElementById('changePasswordContainer').classList.add('hidden');
-      } else {
-        alert('Usuário ou senha incorretos.');
-      }
-    });
-
-    // Show change password form and pre-fill username
-    function showChangePassword() {
-      const username = document.getElementById('username').value.trim();
-      document.getElementById('changeUsername').value = username;
-      document.getElementById('loginContainer').classList.add('hidden');
-      document.getElementById('changePasswordContainer').classList.remove('hidden');
-      document.getElementById('mainContainer').classList.add('hidden');
-    }
-
-    // Handle change password form submission
-    document.getElementById('changePasswordForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      const username = document.getElementById('changeUsername').value.trim().toLowerCase();
-      const currentPassword = document.getElementById('currentPassword').value.trim();
-      const newPassword = document.getElementById('newPassword').value.trim();
-      const confirmNewPassword = document.getElementById('confirmNewPassword').value.trim();
-
-      const user = users.find(u => u.username === username);
-      if (!user) {
-        alert('O usuário informado não é válido.');
-        return;
-      }
-      if (currentPassword !== user.password) {
-        alert('A senha atual está incorreta.');
-        return;
-      }
-      if (newPassword !== confirmNewPassword) {
-        alert('A nova senha e a confirmação não coincidem.');
-        return;
-      }
-      if (newPassword.length < 6) {
-        alert('A nova senha deve ter pelo menos 6 caracteres.');
-        return;
-      }
-
-      // Update user password and save to localStorage
-      user.password = newPassword;
-      localStorage.setItem('users', JSON.stringify(users));
-      alert('Senha alterada com sucesso! Por favor, faça login com a nova senha.');
-      document.getElementById('changePasswordContainer').classList.add('hidden');
-      document.getElementById('loginContainer').classList.remove('hidden');
-      document.getElementById('mainContainer').classList.add('hidden');
-      document.getElementById('changePasswordForm').reset();
-      document.getElementById('loginForm').reset();
-    });
-
-    // Show login form
-    function showLogin() {
-      document.getElementById('changePasswordContainer').classList.add('hidden');
-      document.getElementById('loginContainer').classList.remove('hidden');
-      document.getElementById('mainContainer').classList.add('hidden');
-      document.getElementById('changePasswordForm').reset();
-    }
 
     // Item lists
     const farmaciaItems = [
