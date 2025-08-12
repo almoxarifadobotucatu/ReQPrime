@@ -1989,5 +1989,28 @@ function gerarHtmlDoPedidoCompleto() {
         switchTab('farmacia');
     });
     </script>
+    <script>
+// Bloquear F12, Ctrl+S, Ctrl+U
+document.addEventListener('keydown', function (event) {
+    // Bloquear F12
+    if (event.key === "F12" || event.keyCode === 123) {
+        event.preventDefault();
+        return false;
+    }
+    // Bloquear Ctrl+S ou Ctrl+U
+    if ((event.ctrlKey && event.key.toLowerCase() === 's') || 
+        (event.ctrlKey && event.key.toLowerCase() === 'u')) {
+        event.preventDefault();
+        return false;
+    }
+});
+
+// Bloquear clique direito do mouse
+document.addEventListener('contextmenu', function (event) {
+    event.preventDefault();
+    alert("Função desabilitada!");
+});
+</script>
+
 </body>
 </html>
