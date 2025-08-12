@@ -1,14 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-
-<script>
-if (sessionStorage.getItem("logado") !== "true") {
-    window.location.href = "/";
-}
-</script>
-
-
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Solicitação de Pedido Extra</title>
@@ -844,39 +836,42 @@ if (sessionStorage.getItem("logado") !== "true") {
   ];
 
     const PsicotópicoItems = [
-    "1 01 16 0007 0 Ácido valpróico 250mg cápsula",
-    "1 01 16 0008 8 Ácido valpróico 250mg/5ml frasco 100ml",
-    "1 01 16 0009 6 Ácido valpróico 500mg comprimido revestido",
-    "1 01 16 0001 0 Amitriptilina, cloridrato 25mg comprimido",
-    "1 01 16 0012 6 Biperideno, cloridrato 2mg comprimido",
-    "1 01 16 0018 5 Carbamazepina 20 mg/ml suspensão frasco 100 ml",
-    "1 01 16 0026 6 Carbamazepina 200 mg comprimido",
-    "1 01 16 0013 4 Carbonato de lítio 300 mg comprimido",
-    "1 01 16 0019 3 Clomipramina, cloridrato 25 mg comprimido",
-    "1 01 15 0003 2 Clonazepam 2 mg comprimido",
-    "1 01 15 0039 3 Clonazepam 2,5mg/ml frasco de 20ml",
-    "1 01 16 0010 0 Clorpromazina 25 mg comprimido",
-    "1 01 16 0020 7 Clorpromazina, cloridrato 100 mg comprimido",
-    "1 01 15 0006 7 Diazepan 10 mg comprimido",
-    "1 01 15 0005 9 Diazepan 5 mg/ml ampola 2 ml",
-    "1 01 16 0003 7 Fenitoína 100 mg comprimido",
-    "1 01 16 0021 5 Fenitoína 50 mg/ml ampola 5 ml",
-    "1 01 16 0027 4 Fenobarbital 100 mg comprimido",
-    "1 01 16 0028 2 Fenobarbital 4% gotas frasco 20 ml",
-    "1 01 16 0002 9 Fluoxetina, cloridrato 20 mg cápsula",
-    "1 01 16 0015 0 Haloperidol 2 mg/ml gotas frasco 20 ml",
-    "1 01 16 0022 3 Haloperidol 5 mg comprimido",
-    "1 01 16 0017 7 Haloperidol 5 mg/ml ampola 1 ml - Uso Im",
-    "1 01 16 0016 9 Haloperidol, decanoato 70,52 mg/ml ampola 1 ml",
-    "1 01 16 0023 1 Imipramina 25 mg comprimido",
-    "1 01 16 0024 0 Levomepromazina 4% gotas frasco 20 ml",
-    "1 01 16 0041 0 Naltrexona, cloridrato 50 mg comprimido",
-    "1 01 15 0008 3 Nitrazepan 5 mg comprimido",
-    "1 01 16 0005 3 Nortriptilina, cloridrato 25 mg comprimido",
-    "1 01 16 0006 1 Sertralina, cloridrato 50 mg comprimido",
-    "1 01 16 0025 8 Tioridazina, cloridrato 100 mg comprimido"
-  ];
-
+     "1 01 16 0007 0 Ácido valpróico 250mg - Cápsula",
+     "1 01 16 0008 8 Ácido valpróico 250mg/5ml - Frasco 100ml",
+     "1 01 16 0009 6 Ácido valpróico 500mg - Comprimido revestido",
+     "1 01 16 0001 0 Amitriptilina, cloridrato 25mg",
+     "1 01 16 0012 6 Biperideno, cloridrato 2mg",
+     "1 01 16 0018 5 Carbamazepina 20 mg/ml suspensão - Frasco 100 ml",
+     "1 01 16 0026 6 Carbamazepina 200 mg",
+     "1 01 16 0013 4 Carbonato de lítio 300 mg",
+     "1 01 16 0019 3 Clomipramina, cloridrato 25 mg",
+     "1 01 15 0003 2 Clonazepam 2 mg",
+     "1 01 15 0039 3 Clonazepam 2,5 mg/ml – Solução Oral - Frasco 20 ml",
+     "1 01 16 0010 0 Clorpromazina 25 mg",
+     "1 01 16 0020 7 Clorpromazina, cloridrato 100 mg",
+     "1 01 15 0006 7 Diazepan 10 mg",
+     "1 01 15 0005 9 Diazepan 5 mg/ml - Ampola 2 ml",
+     "1 01 20 0398 9 Etomidato 20 Mg - Ampola 10 ml",
+     "1 01 16 0003 7 Fenitoína 100 mg",
+     "1 01 16 0021 5 Fenitoína 50 mg/ml - Ampola 5 ml",
+     "1 01 16 0027 4 Fenobarbital 100 mg",
+     "1 01 16 0028 2 Fenobarbital 4% gotas - Frasco 20 ml",
+     "1 01 14 0010 0 Fentanila, Citrato 0,0785 Mg/Ml - Ampola 10 ml",
+     "1 01 16 0002 9 Fluoxetina, cloridrato 20 mg - Cápsula",
+     "1 01 16 0015 0 Haloperidol 2 mg/ml  - Frasco 20 ml",
+     "1 01 16 0022 3 Haloperidol 5 mg",
+     "1 01 16 0017 7 Haloperidol 5 mg/ml IM - Ampola 1 ml",
+     "1 01 16 0016 9 Haloperidol, decanoato 70,52 mg/ml - Ampola 1 ml",
+     "1 01 16 0023 1 Imipramina 25 mg",
+     "1 01 16 0024 0 Levomepromazina 4% gotas - Frasco 20 ml",
+     "1 01 15 0009 1 Midazolan 5mg/ml - Ampola 3 ml",
+     "1 01 16 0041 0 Naltrexona, cloridrato 50 mg",
+     "1 01 15 0008 3 Nitrazepan 5 mg",
+     "1 01 16 0005 3 Nortriptilina, cloridrato 25 mg",
+     "1 01 16 0006 1 Sertralina, cloridrato 50 mg",
+     "1 01 16 0025 8 Tioridazina, cloridrato 100 mg",
+        ];
+    
     const enfermagemItems = [
     "1 02 12 0001 5 Abaixador de lingua de madeira (Pacote c/ 100 unidades)",
     "1 02 03 0001 6 Ácido graxo essencial (Age )",
@@ -2216,14 +2211,6 @@ const EscritórioItems = [
 </html>
 <html lang="pt-BR">
 <head>
-
-<script>
-if (sessionStorage.getItem("logado") !== "true") {
-    window.location.href = "/";
-}
-</script>
-
-
   <meta charset="UTF-8" />
   <title>Rodapé Profissional Pequeno</title>
   <style>
