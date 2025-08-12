@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+
+<script>
+if (sessionStorage.getItem("logado") !== "true") {
+    window.location.href = "/";
+}
+</script>
+
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>PEDIDO MENSAL</title>
@@ -1847,100 +1855,97 @@ impressos: [
     }
 
     // Gera o conteúdo HTML para download com os dados atuais
-    
-function gerarHtmlDoPedidoCompleto() {
-    const requestingUnit = (document.getElementById('requestingUnit') && document.getElementById('requestingUnit').value) || '(não informado)';
-    const period = (document.getElementById('period') && document.getElementById('period').value) || '(não informado)';
-    let htmlTables = '';
+    function gerarHtmlDoPedidoCompleto() {
+        const requestingUnit = document.getElementById('requestingUnit').value || '(não informado)';
+        const period = document.getElementById('period').value || '(não informado)';
+        const setores = Object.keys(data);
 
-    Object.entries(data).forEach(([tabKey, items]) => {
-        const tableBody = document.getElementById(`${tabKey}TableBody`);
-        if (!tableBody) return;
-        const rows = tableBody.querySelectorAll('tr');
-        if (!rows.length) return;
+        let htmlTables = '';
 
-        // inserir quebra de página antes do setor (exceto antes do primeiro)
-        if (htmlTables.trim() !== '') {
-            htmlTables += '<div class="page-break"></div>';
-        }
+        setores.forEach(tabKey => {
+            const tableBody = document.getElementById(`${tabKey}TableBody`);
+            if (!tableBody) return;
+            const rows = tableBody.querySelectorAll('tr');
+            if (rows.length === 0) return;
 
-        const responsibleInput = document.getElementById(`responsible${capitalizeFirstLetter(tabKey)}`);
-        const responsible = responsibleInput ? (responsibleInput.value || '(não informado)') : '(não informado)';
+            const responsibleInput = document.getElementById(`responsible${capitalizeFirstLetter(tabKey)}`);
+            const responsible = responsibleInput ? responsibleInput.value || '(não informado)' : '(não informado)';
 
-        htmlTables += `<section class="sector"><h2 style="background-color:#f0f0f0; padding:10px; margin:0">${capitalizeFirstLetter(tabKey)}</h2>`;
-        htmlTables += `<p><strong>Responsável:</strong> ${responsible}</p>`;
-        htmlTables += `<p><strong>Unidade Solicitante:</strong> ${requestingUnit}</p>`;
-        htmlTables += `<p><strong>Período:</strong> ${period}</p>`;
+            htmlTables += `<h2 style="background-color:#f0f0f0; padding:10px;">${capitalizeFirstLetter(tabKey)}</h2>`;
+            htmlTables += `<p><strong>Responsável:</strong> ${responsible}</p>`;
+            htmlTables += `<p><strong>Unidade Solicitante:</strong> ${requestingUnit}</p>`;
+            htmlTables += `<p><strong>Período:</strong> ${period}</p>`;
 
-        htmlTables += `<table border="1" cellpadding="5" cellspacing="0" style="border-collapse: collapse; width: 100%; margin-bottom: 20px;">`;
-        htmlTables += `<thead><tr>
-            <th>Código SMAR</th>
-            <th>Descrição completa</th>
-            <th>Unidade de Medida</th>
-            <th>Saldo Vivver</th>
-            <th>Consumo Médio</th>
-            <th>Sugestão de Pedido</th>
-        </tr></thead><tbody>`;
+            htmlTables += `<table border="1" cellpadding="5" cellspacing="0" style="border-collapse: collapse; width: 100%; margin-bottom: 20px;">`;
+            htmlTables += `<thead><tr>
+                <th>Código SMAR</th>
+                <th>Descrição completa</th>
+                <th>Unidade de Medida</th>
+                <th>Saldo Vivver</th>
+                <th>Consumo Médio</th>
+                <th>Sugestão de Pedido</th>
+            </tr></thead><tbody>`;
 
-        rows.forEach(row => {
-            const codigo = row.cells[0] ? row.cells[0].textContent.trim() : '';
-            const descricao = row.cells[1] ? row.cells[1].textContent.trim() : '';
-            const unidade = row.cells[2] ? row.cells[2].textContent.trim() : '';
-            const saldo = row.querySelector('input[data-field="saldo"]') ? row.querySelector('input[data-field="saldo"]').value : (row.cells[3] ? row.cells[3].textContent.trim() : '');
-            const consumo = row.querySelector('input[data-field="consumo"]') ? row.querySelector('input[data-field="consumo"]').value : (row.cells[4] ? row.cells[4].textContent.trim() : '');
-            const sugestao = row.querySelector('input[data-field="sugestao"]') ? row.querySelector('input[data-field="sugestao"]').value : (row.cells[5] ? row.cells[5].textContent.trim() : '');
+            rows.forEach(row => {
+                const codigo = row.cells[0].textContent.trim();
+                const descricao = row.cells[1].textContent.trim();
+                const unidade = row.cells[2].textContent.trim();
+                const saldo = row.querySelector('input[data-field="saldo"]').value || '0';
+                const consumo = row.querySelector('input[data-field="consumo"]').value || '0';
+                const sugestao = row.querySelector('input[data-field="sugestao"]').value || '0';
 
-            htmlTables += `<tr>
-                <td>${codigo}</td>
-                <td>${descricao}</td>
-                <td>${unidade}</td>
-                <td>${saldo}</td>
-                <td>${consumo}</td>
-                <td>${sugestao}</td>
-            </tr>`;
+                htmlTables += `<tr>
+                    <td>${codigo}</td>
+                    <td>${descricao}</td>
+                    <td>${unidade}</td>
+                    <td>${saldo}</td>
+                    <td>${consumo}</td>
+                    <td>${sugestao}</td>
+                </tr>`;
+            });
+
+            htmlTables += '</tbody></table>';
         });
 
-        htmlTables += '</tbody></table></section>';
-    });
-
-    const htmlCompleto = `
+        const htmlCompleto = `
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+
+<script>
+if (sessionStorage.getItem("logado") !== "true") {
+    window.location.href = "/";
+}
+</script>
+
+
     <meta charset="UTF-8" />
     <title>Pedido Mensal - Download</title>
-    <style>
-        table th:first-child,
-        table td:first-child {
-            min-width: 240px !important;
-            white-space: nowrap;
-        }
-        table th, table td {
-            padding: 0.5rem 1rem;
-            text-align: left;
-            vertical-align: middle;
-        }
-        table {
-            min-width: 100%;
-            table-layout: auto;
-            border-collapse: collapse;
-        }
-        /* orientação e margens de impressão (nem todos os navegadores respeitam) */
-        @page { size: A4 landscape; margin: 12mm; }
-        @media print {
-    /* quebras entre setores */
-    .page-break { page-break-before: always; break-before: page; }
-    /* evitar quebra no meio de linhas/tabelas */
-    thead { display: table-header-group; }
-    tr { page-break-inside: avoid; }
-    table { page-break-inside: auto; }
+    
+<style>
+table th:first-child,
+table td:first-child {
+    min-width: 240px !important;
+    white-space: nowrap;,
+    epiConsumo: []
 }
-            /* tentar evitar quebra no meio de linhas/tabelas */
-            thead { display: table-header-group; }
-            tr { page-break-inside: avoid; }
-            table { page-break-inside: auto; }
-        }
-    </style>
+table th, table td {
+    padding: 0.5rem 1rem;
+    text-align: left;
+    vertical-align: middle;
+}
+table {
+    min-width: 100%;
+    table-layout: auto;
+}
+table thead tr.bg-gray-200 th {
+    padding: 0.75rem 1rem;
+    font-weight: 600;
+    background-color: #e5e7eb;
+    white-space: nowrap;
+}
+</style>
+
 </head>
 <body>
     <h1 style="text-align: center; margin-top: 20px;">Pedido Mensal</h1>
@@ -1948,9 +1953,10 @@ function gerarHtmlDoPedidoCompleto() {
 </body>
 </html>`;
 
-    return htmlCompleto;
-}
-// Baixa o pedido completo como arquivo HTML
+        return htmlCompleto;
+    }
+
+    // Baixa o pedido completo como arquivo HTML
     function baixarPedidoCompleto() {
         const conteudo = gerarHtmlDoPedidoCompleto();
         const blob = new Blob([conteudo], { type: 'text/html;charset=utf-8' });
