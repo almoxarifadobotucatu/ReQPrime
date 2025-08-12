@@ -105,7 +105,7 @@ table thead tr.bg-gray-200 th {
                 <h2 class="text-xl font-semibold mb-4">Farmácia</h2>
 
                 <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700">Responsável pelo Pedido: <span style='color:red'>*</span></label>
+                    <label class="block text-sm font-medium text-gray-700">Responsável: <span style='color:red'>*</span></label>
                     <input id="responsibleFarmacia" type="text" value="" class="mt-1 block w-full p-2 border rounded-md" />
                 </div>
 
@@ -1991,7 +1991,29 @@ function gerarHtmlDoPedidoCompleto() {
 }
 // Baixa o pedido completo como arquivo HTML
     function baixarPedidoCompleto() {
-        const conteudo = gerarHtmlDoPedidoCompleto();
+    // Validação imediata: impede download se houver campos obrigatórios vazios
+    var unidadeEl = document.getElementById('requestingUnit');
+    var periodoEl = document.getElementById('period');
+    var camposFaltando = [];
+
+    if (!unidadeEl || !unidadeEl.value.trim()) camposFaltando.push('Unidade de Saúde Solicitante');
+    if (!periodoEl || !periodoEl.value.trim()) camposFaltando.push('Período Apurado');
+
+    // verifica responsável na aba ativa
+    var abaAtiva = document.querySelector('.tab-pane:not(.hidden)');
+    var responsavelVal = '';
+    if (abaAtiva) {
+        var inputResp = abaAtiva.querySelector('input[id^="responsible"]');
+        if (inputResp) responsavelVal = inputResp.value.trim();
+    }
+    if (!responsavelVal) camposFaltando.push('Responsável');
+
+    if (camposFaltando.length > 0) {
+        alert('Por favor, preencha o(s) campo(s): ' + camposFaltando.join(', ') + '.');
+        return; // Sai da função imediatamente, impedindo download
+    }
+
+    const conteudo = gerarHtmlDoPedidoCompleto();
         const blob = new Blob([conteudo], { type: 'text/html;charset=utf-8' });
         const url = URL.createObjectURL(blob);
 
@@ -2024,43 +2046,24 @@ function gerarHtmlDoPedidoCompleto() {
     });
     </script>
 
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    const btnExportar = document.getElementById('downloadAllOrder');
 
-    if (btnExportar) {
-        btnExportar.addEventListener('click', function (e) {
-            const unidade = document.getElementById('requestingUnit').value.trim();
-            const periodo = document.getElementById('period').value.trim();
-            
-            // Procura o campo "Responsável" visível na aba ativa
-            const abaAtiva = document.querySelector('.tab-pane:not(.hidden)');
-            let responsavel = '';
-            if (abaAtiva) {
-                const inputResp = abaAtiva.querySelector('input[id^="responsible"]');
-                if (inputResp) responsavel = inputResp.value.trim();
-            }
 
-            if (!unidade || !periodo || !responsavel) {
-                e.preventDefault();
-                alert('Por favor, preencha os campos: Unidade de Saúde Solicitante, Período Apurado e Responsável.');
-                return false;
-            }
-        });
-    }
-});
-</script>
+
+
+
+
+
 
 
 <script>
 document.addEventListener('DOMContentLoaded', function () {
     function toggleAsterisk(input) {
-        const label = input.closest('div').querySelector('label span');
-        if (label) {
+        const labelSpan = input.closest('div').querySelector('label span');
+        if (labelSpan) {
             if (input.value.trim() !== '') {
-                label.style.display = 'none';
+                labelSpan.style.display = 'none';
             } else {
-                label.style.display = 'inline';
+                labelSpan.style.display = 'inline';
             }
         }
     }
@@ -2076,7 +2079,6 @@ document.addEventListener('DOMContentLoaded', function () {
             input.addEventListener('input', function () {
                 toggleAsterisk(input);
             });
-            // Estado inicial
             toggleAsterisk(input);
         }
     });
