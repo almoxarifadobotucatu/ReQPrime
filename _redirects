@@ -1,9 +1,0 @@
-# Permite acessar a página de login normalmente
-/login/*        /login/:splat    200
-
-# Permite acessar a página inicial
-/index.html     /index.html      200
-/               /index.html      200
-
-# Qualquer outro acesso direto é redirecionado para login
-/*              /login/index.html   302
