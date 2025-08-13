@@ -5,5 +5,5 @@
 /index.html     /index.html      200
 /               /index.html      200
 
-# Qualquer outro acesso direto é redirecionado para login
-/*              /login/index.html   302
+# Qualquer outro acesso direto é redirecionado para login (ignora arquivos reais)
+ /*              /login/index.html   302!
