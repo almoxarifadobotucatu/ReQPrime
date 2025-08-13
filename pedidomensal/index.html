@@ -1852,9 +1852,9 @@ impressos: [
             const responsible = responsibleInput ? responsibleInput.value || '(não informado)' : '(não informado)';
 
             allData.push([capitalizeFirstLetter(tabKey)]);
-            allData.push(['Responsável:', responsible]);
-            allData.push(['Unidade Solicitante:', requestingUnit]);
-            allData.push(['Período:', period]);
+            allData.push(['Responsável pelo pedido:', responsible]);
+            allData.push(['Unidade de Saúde Solicitante:', requestingUnit]);
+            allData.push(['Período Apurado:', period]);
             allData.push(['Código SMAR', 'Descrição completa', 'Unidade de Medida', 'Saldo Vivver', 'Consumo Médio', 'Sugestão de Pedido']);
 
             rows.forEach(row => {
