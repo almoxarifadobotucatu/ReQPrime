@@ -15,6 +15,6 @@
     window.stop();
 
     // Redireciona sem deixar voltar
-    location.replace("../index.html");
+    location.replace("/index.html");
   }
 })();
