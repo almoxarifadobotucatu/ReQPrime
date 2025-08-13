@@ -12,7 +12,7 @@
     if (!sessionStorage.getItem("logado")) {
       // Volta para a pasta /login relativa ao nível atual
       if (caminhoAtual.endsWith("/")) {
-        window.location.href = "../lindex.html";
+        window.location.href = "../index.html";
       } else {
         window.location.href = "../../index.html";
       }
