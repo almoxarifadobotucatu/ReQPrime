@@ -1,26 +1,26 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+  <!-- Força URL sem index.html -->
+  <script>
+  if (location.pathname.endsWith('/index.html')) {
+      location.replace(location.pathname.replace('/index.html', '/') + location.search + location.hash);
+  }
+  </script>
+
   <!-- Proteção deve ser a primeira coisa do head -->
   <script src="/protege-pagina.js"></script>
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Central de Pedidos</title>
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
 
-<script>
-if (sessionStorage.getItem("logado") !== "true") {
-    window.location.href = "/";
-}
-</script>
+  <script>
+  if (sessionStorage.getItem("logado") !== "true") {
+      window.location.href = "/";
+  }
+  </script>
 
-
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Central de Pedidos</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -63,7 +63,7 @@ if (sessionStorage.getItem("logado") !== "true") {
       align-items: center;
       justify-content: center;
       gap: 40px;
-      transform: translateY(-80px); /* Subiu mais para cima */
+      transform: translateY(-80px);
     }
 
     .container:hover {
@@ -117,7 +117,7 @@ if (sessionStorage.getItem("logado") !== "true") {
     @media (max-width: 768px) {
       .container {
         padding: 30px;
-        transform: translateY(-60px); /* Ajuste menor no mobile */
+        transform: translateY(-60px);
       }
       .buttons {
         flex-direction: column;
@@ -164,63 +164,51 @@ if (sessionStorage.getItem("logado") !== "true") {
   <!-- Script de proteção -->
   <script src="/protege-pagina.js"></script>
 
+  <script>
+  // Bloquear F12, Ctrl+S, Ctrl+U
+  document.addEventListener('keydown', function (event) {
+      if (event.key === "F12" || event.keyCode === 123) {
+          event.preventDefault();
+          return false;
+      }
+      if ((event.ctrlKey && event.key.toLowerCase() === 's') || 
+          (event.ctrlKey && event.key.toLowerCase() === 'u')) {
+          event.preventDefault();
+          return false;
+      }
+  });
+
+  // Bloquear clique direito do mouse
+  document.addEventListener('contextmenu', function (event) {
+      event.preventDefault();
+  });
+
+  // Bloquear combinações adicionais
+  document.addEventListener('keydown', function(e) {
+      if (
+          e.key === 'F12' ||
+          (e.ctrlKey && e.key.toLowerCase() === 'u') ||
+          (e.ctrlKey && e.key.toLowerCase() === 's') ||
+          (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'i') ||
+          (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'j') ||
+          (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'c') ||
+          (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'p') ||
+          (e.ctrlKey && e.altKey && e.key.toLowerCase() === 'i')
+      ) {
+          e.preventDefault();
+          e.stopPropagation();
+          return false;
+      }
+  });
+
+  // Tentativa de detectar abertura do DevTools
+  setInterval(function() {
+      const widthThreshold = window.outerWidth - window.innerWidth > 160;
+      const heightThreshold = window.outerHeight - window.innerHeight > 160;
+      if (widthThreshold || heightThreshold) {
+          window.location.href = 'about:blank';
+      }
+  }, 500);
+  </script>
 </body>
-        <script>
-// Bloquear F12, Ctrl+S, Ctrl+U
-document.addEventListener('keydown', function (event) {
-    // Bloquear F12
-    if (event.key === "F12" || event.keyCode === 123) {
-        event.preventDefault();
-        return false;
-    }
-    // Bloquear Ctrl+S ou Ctrl+U
-    if ((event.ctrlKey && event.key.toLowerCase() === 's') || 
-        (event.ctrlKey && event.key.toLowerCase() === 'u')) {
-        event.preventDefault();
-        return false;
-    }
-});
-
-// Bloquear clique direito do mouse
-document.addEventListener('contextmenu', function (event) {
-    event.preventDefault();
-});
-</script>
-<script>
-// Lista de combinações bloqueadas
-document.addEventListener('keydown', function(e) {
-    // Lista de combinações específicas
-    if (
-        e.key === 'F12' || // F12
-        (e.ctrlKey && e.key.toLowerCase() === 'u') || // Ctrl+U
-        (e.ctrlKey && e.key.toLowerCase() === 's') || // Ctrl+S
-        (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'i') || // Ctrl+Shift+I
-        (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'j') || // Ctrl+Shift+J
-        (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'c') || // Ctrl+Shift+C
-        (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'p') || // Ctrl+Shift+P
-        (e.ctrlKey && e.altKey && e.key.toLowerCase() === 'i') // Ctrl+Alt+I
-    ) {
-        e.preventDefault();
-        e.stopPropagation();
-        return false;
-    }
-});
-
-// Bloqueia botão direito
-document.addEventListener('contextmenu', function(e) {
-    e.preventDefault();
-});
-
-// Tentativa de detectar abertura do DevTools (não é 100% garantido)
-setInterval(function() {
-    if (window.devtoolsOpen) {
-        window.location.href = 'about:blank'; // ou redirecionar
-    }
-    const widthThreshold = window.outerWidth - window.innerWidth > 160;
-    const heightThreshold = window.outerHeight - window.innerHeight > 160;
-    if (widthThreshold || heightThreshold) {
-        window.devtoolsOpen = true;
-    }
-}, 500);
-</script>
 </html>
