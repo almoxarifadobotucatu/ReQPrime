@@ -1927,9 +1927,9 @@ function gerarHtmlDoPedidoCompleto() {
         const responsible = responsibleInput ? (responsibleInput.value || '(não informado)') : '(não informado)';
 
         htmlTables += `<section class="sector"><h2 style="background-color:#f0f0f0; padding:10px; margin:0">${capitalizeFirstLetter(tabKey)}</h2>`;
-        htmlTables += `<p><strong>Responsável:</strong> ${responsible}</p>`;
-        htmlTables += `<p><strong>Unidade Solicitante:</strong> ${requestingUnit}</p>`;
-        htmlTables += `<p><strong>Período:</strong> ${period}</p>`;
+        htmlTables += `<p><strong>Responsável pelo pedido:</strong> ${responsible}</p>`;
+        htmlTables += `<p><strong>Unidade de Saúde Solicitante:</strong> ${requestingUnit}</p>`;
+        htmlTables += `<p><strong>Período Apurado:</strong> ${period}</p>`;
 
         htmlTables += `<table border="1" cellpadding="5" cellspacing="0" style="border-collapse: collapse; width: 100%; margin-bottom: 20px;">`;
         htmlTables += `<thead><tr>
