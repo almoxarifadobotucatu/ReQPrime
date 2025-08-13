@@ -7,6 +7,9 @@
 
 # Permite acessar central-de-pedidos
 /central-de-pedidos/*    /central-de-pedidos/:splat   200
+/pedidoextra/*           /central-de-pedidos/:splat   200
+/pedidomensal/*          /central-de-pedidos/:splat   200
+/calculadora/*           /central-de-pedidos/:splat   200
 
 # Bloqueia todo o resto
 /*              /login/index.html   302!
