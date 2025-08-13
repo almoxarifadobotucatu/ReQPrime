@@ -1,9 +1,12 @@
-# Permite acessar a página de login normalmente
+# Permite acessar login
 /login/*        /login/:splat    200
 
-# Permite acessar a página inicial
+# Permite acessar home
 /index.html     /index.html      200
 /               /index.html      200
 
-# Qualquer outro acesso direto é redirecionado para login (ignora arquivos reais)
- /*              /login/index.html   302!
+# Permite acessar central-de-pedidos
+/central-de-pedidos/*    /central-de-pedidos/:splat   200
+
+# Bloqueia todo o resto
+/*              /login/index.html   302!
