@@ -1,15 +1,13 @@
 # netlify.toml
 
 [build]
-  # Ajuste conforme a pasta final do seu build
-  publish = "dist"
-  command = "npm run build"
+  # Publica a raiz do repositório
+  publish = "."
 
 # =======================================
-# Regras de redirecionamento
+# Redirecionamentos para forçar login
 # =======================================
 
-# Voltar para tela de login se acessar páginas restritas
 [[redirects]]
   from = "/pedidoextra"
   to = "/login"
@@ -30,7 +28,9 @@
   to = "/login"
   status = 302
 
-# Fallback para SPA (React, Vue, Angular, etc.)
+# =======================================
+# Fallback SPA (React, Vue, Angular ou páginas internas)
+# =======================================
 [[redirects]]
   from = "/*"
   to = "/index.html"
