@@ -1,8 +1,5 @@
-/pedidomensal      /index.html   302
-/pedidomensal/*    /index.html   302
-/pedidoextra       /index.html   302
-/pedidoextra/*     /index.html   302
-/central-de-pedidos      /index.html   302
-/central-de-pedidos/*    /index.html   302
-/calculadora       /index.html   302
-/calculadora/*     /index.html   302
+/Central-de-Pedidos/*   /index.html   302
+/central-de-pedidos/*   /index.html   302
+/pedidoextra/*          /index.html   302
+/pedidomensal/*         /index.html   302
+/calculadora/*          /index.html   302
