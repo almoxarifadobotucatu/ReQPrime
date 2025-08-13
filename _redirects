@@ -1,5 +1,9 @@
-/Central-de-Pedidos/*   /index.html   302
-/central-de-pedidos/*   /index.html   302
-/pedidoextra/*          /index.html   302
-/pedidomensal/*         /index.html   302
-/calculadora/*          /index.html   302
+# Permite acessar a página de login normalmente
+/login/*        /login/:splat    200
+
+# Permite acessar a página inicial
+/index.html     /index.html      200
+/               /index.html      200
+
+# Qualquer outro acesso direto é redirecionado para login
+/*              /login/index.html   302
