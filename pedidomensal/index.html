@@ -2236,4 +2236,14 @@ setInterval(function() {
 }, 500);
 </script>
 </body>
+    <script>
+document.addEventListener("DOMContentLoaded", function() {
+    // Verifica se está logado
+    if (sessionStorage.getItem("logado") !== "true") {
+        // Redireciona para o login
+        window.location.href = "/index.html";
+    }
+});
+</script>
+
 </html>
