@@ -148,7 +148,7 @@ document.addEventListener("DOMContentLoaded", function() {
             const password = document.getElementById("password").value.trim();
 
             if (username === usuarioCorreto && password === senhaCorreta) {
-                sessionStorage.setItem("logado", "true");
+sessionStorage.setItem("usuarioLogado", "true");
                 window.location.href = "/central-de-pedidos/";
             } else {
                 alert("Usuário ou senha inválidos!");
