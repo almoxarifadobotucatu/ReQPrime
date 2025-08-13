@@ -1,14 +1,4 @@
 <!DOCTYPE html>
-<script>
-// Bloqueio de acesso direto à página pedidomensal
-if (
-    sessionStorage.getItem("acesso") !== "ok" ||
-    sessionStorage.getItem("passouCentral") !== "sim"
-) {
-    window.location.href = "/login.html";
-}
-</script>
-
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8" />
@@ -53,10 +43,12 @@ table thead tr.bg-gray-200 th {
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Unidade de Saúde Solicitante: <span style='color:red'>*</span></label>
                     <input id="requestingUnit" type="text" value="" class="mt-1 block w-full p-2 border rounded-md" />
+<small class="help-msg" style="color:red; display:none;">Campo obrigatório</small>
                 </div>
                 <div>
                     <label class="block text-sm font-medium text-gray-700">Período Apurado: <span style='color:red'>*</span></label>
                     <input id="period" type="text" value="" class="mt-1 block w-full p-2 border rounded-md" />
+<small class="help-msg" style="color:red; display:none;">Campo obrigatório</small>
                 </div>
             </div>
         </div>
@@ -115,8 +107,9 @@ table thead tr.bg-gray-200 th {
                 <h2 class="text-xl font-semibold mb-4">Farmácia</h2>
 
                 <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700">Responsável: <span style='color:red'>*</span></label>
+                    <label class="block text-sm font-medium text-gray-700">Responsável pelo pedido: <span style='color:red'>*</span></label>
                     <input id="responsibleFarmacia" type="text" value="" class="mt-1 block w-full p-2 border rounded-md" />
+<small class="help-msg" style="color:red; display:none;">Campo obrigatório</small>
                 </div>
 
                 <div class="overflow-x-auto">
@@ -141,8 +134,9 @@ table thead tr.bg-gray-200 th {
                 <h2 class="text-xl font-semibold mb-4">Psicotrópicos</h2>
 
                 <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700">Responsável: <span style='color:red'>*</span></label>
+                    <label class="block text-sm font-medium text-gray-700">Responsável pelo pedido: <span style='color:red'>*</span></label>
                     <input id="responsiblePsicotropicos" type="text" value="" class="mt-1 block w-full p-2 border rounded-md" />
+<small class="help-msg" style="color:red; display:none;">Campo obrigatório</small>
                 </div>
 
                 <div class="overflow-x-auto">
@@ -167,8 +161,9 @@ table thead tr.bg-gray-200 th {
                 <h2 class="text-xl font-semibold mb-4">Enfermagem</h2>
 
                 <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700">Responsável: <span style='color:red'>*</span></label>
+                    <label class="block text-sm font-medium text-gray-700">Responsável pelo pedido: <span style='color:red'>*</span></label>
                     <input id="responsibleEnfermagem" type="text" value="" class="mt-1 block w-full p-2 border rounded-md" />
+<small class="help-msg" style="color:red; display:none;">Campo obrigatório</small>
                 </div>
 
                 <div class="overflow-x-auto">
@@ -193,8 +188,9 @@ table thead tr.bg-gray-200 th {
                 <h2 class="text-xl font-semibold mb-4">Enfermagem DST</h2>
 
                 <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700">Responsável: <span style='color:red'>*</span></label>
+                    <label class="block text-sm font-medium text-gray-700">Responsável pelo pedido: <span style='color:red'>*</span></label>
                     <input id="responsibleEnfermagemDST" type="text" value="" class="mt-1 block w-full p-2 border rounded-md" />
+<small class="help-msg" style="color:red; display:none;">Campo obrigatório</small>
                 </div>
 
                 <div class="overflow-x-auto">
@@ -219,8 +215,9 @@ table thead tr.bg-gray-200 th {
                 <h2 class="text-xl font-semibold mb-4">Enfermagem Urgência e Emergência</h2>
 
                 <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700">Responsável: <span style='color:red'>*</span></label>
+                    <label class="block text-sm font-medium text-gray-700">Responsável pelo pedido: <span style='color:red'>*</span></label>
                     <input id="responsibleEnfermagemUrgenciaEmergencia" type="text" value="" class="mt-1 block w-full p-2 border rounded-md" />
+<small class="help-msg" style="color:red; display:none;">Campo obrigatório</small>
                 </div>
 
                 <div class="overflow-x-auto">
@@ -245,8 +242,9 @@ table thead tr.bg-gray-200 th {
                 <h2 class="text-xl font-semibold mb-4">Odonto</h2>
 
                 <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700">Responsável: <span style='color:red'>*</span></label>
+                    <label class="block text-sm font-medium text-gray-700">Responsável pelo pedido: <span style='color:red'>*</span></label>
                     <input id="responsibleOdonto" type="text" value="" class="mt-1 block w-full p-2 border rounded-md" />
+<small class="help-msg" style="color:red; display:none;">Campo obrigatório</small>
                 </div>
 
                 <div class="overflow-x-auto">
@@ -271,8 +269,9 @@ table thead tr.bg-gray-200 th {
                 <h2 class="text-xl font-semibold mb-4">Odonto Instrumental</h2>
 
                 <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700">Responsável: <span style='color:red'>*</span></label>
+                    <label class="block text-sm font-medium text-gray-700">Responsável pelo pedido: <span style='color:red'>*</span></label>
                     <input id="responsibleOdontoInstrumental" type="text" value="" class="mt-1 block w-full p-2 border rounded-md" />
+<small class="help-msg" style="color:red; display:none;">Campo obrigatório</small>
                 </div>
 
                 <div class="overflow-x-auto">
@@ -297,8 +296,9 @@ table thead tr.bg-gray-200 th {
                 <h2 class="text-xl font-semibold mb-4">Consumo e Limpeza Periódico</h2>
 
                 <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700">Responsável: <span style='color:red'>*</span></label>
+                    <label class="block text-sm font-medium text-gray-700">Responsável pelo pedido: <span style='color:red'>*</span></label>
                     <input id="responsibleConsumoLimpezaPeriodico" type="text" value="" class="mt-1 block w-full p-2 border rounded-md" />
+<small class="help-msg" style="color:red; display:none;">Campo obrigatório</small>
                 </div>
 
                 <div class="overflow-x-auto">
@@ -323,8 +323,9 @@ table thead tr.bg-gray-200 th {
                 <h2 class="text-xl font-semibold mb-4">Consumo e Limpeza Esporádico</h2>
 
                 <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700">Responsável: <span style='color:red'>*</span></label>
+                    <label class="block text-sm font-medium text-gray-700">Responsável pelo pedido: <span style='color:red'>*</span></label>
                     <input id="responsibleConsumoLimpezaEsporadico" type="text" value="" class="mt-1 block w-full p-2 border rounded-md" />
+<small class="help-msg" style="color:red; display:none;">Campo obrigatório</small>
                 </div>
 
                 <div class="overflow-x-auto">
@@ -350,8 +351,9 @@ table thead tr.bg-gray-200 th {
     <h2 class="text-xl font-semibold mb-4">Impressos</h2>
 
     <div class="mb-4">
-        <label class="block text-sm font-medium text-gray-700">Responsável: <span style='color:red'>*</span></label>
+        <label class="block text-sm font-medium text-gray-700">Responsável pelo pedido: <span style='color:red'>*</span></label>
         <input id="responsibleImpressos" type="text" value="" class="mt-1 block w-full p-2 border rounded-md" />
+<small class="help-msg" style="color:red; display:none;">Campo obrigatório</small>
     </div>
 
     <div class="overflow-x-auto">
@@ -377,8 +379,9 @@ table thead tr.bg-gray-200 th {
     <h2 class="text-xl font-semibold mb-4">Escritório</h2>
 
     <div class="mb-4">
-        <label class="block text-sm font-medium text-gray-700">Responsável: <span style='color:red'>*</span></label>
+        <label class="block text-sm font-medium text-gray-700">Responsável pelo pedido: <span style='color:red'>*</span></label>
         <input id="responsibleEscritorio" type="text" value="" class="mt-1 block w-full p-2 border rounded-md" />
+<small class="help-msg" style="color:red; display:none;">Campo obrigatório</small>
     </div>
 
     <div class="overflow-x-auto">
@@ -404,8 +407,9 @@ table thead tr.bg-gray-200 th {
     <h2 class="text-xl font-semibold mb-4">Epi-Consumo</h2>
 
     <div class="mb-4">
-        <label class="block text-sm font-medium text-gray-700">Responsável: <span style='color:red'>*</span></label>
+        <label class="block text-sm font-medium text-gray-700">Responsável pelo pedido: <span style='color:red'>*</span></label>
         <input id="responsibleEpiConsumo" type="text" value="" class="mt-1 block w-full p-2 border rounded-md" />
+<small class="help-msg" style="color:red; display:none;">Campo obrigatório</small>
     </div>
 
     <div class="overflow-x-auto">
@@ -555,8 +559,12 @@ table thead tr.bg-gray-200 th {
           const obj = JSON.parse(ev.target.result);
           setAllFormData(obj);
           alert('Progresso carregado com sucesso!');
+window.scrollTo({ top: 0, behavior: 'instant' });
+
         } catch (err) {
           alert('Erro ao carregar arquivo: ' + err.message);
+window.scrollTo({ top: 0, behavior: 'instant' });
+
         }
       };
       reader.readAsText(file);
@@ -1844,9 +1852,9 @@ impressos: [
             const responsible = responsibleInput ? responsibleInput.value || '(não informado)' : '(não informado)';
 
             allData.push([capitalizeFirstLetter(tabKey)]);
-            allData.push(['Responsável:', responsible]);
-            allData.push(['Unidade Solicitante:', requestingUnit]);
-            allData.push(['Período:', period]);
+            allData.push(['Responsável pelo pedido:', responsible]);
+            allData.push(['Unidade de Saúde Solicitante:', requestingUnit]);
+            allData.push(['Período Apurado:', period]);
             allData.push(['Código SMAR', 'Descrição completa', 'Unidade de Medida', 'Saldo Vivver', 'Consumo Médio', 'Sugestão de Pedido']);
 
             rows.forEach(row => {
@@ -1865,6 +1873,8 @@ impressos: [
 
         if (allData.length === 0) {
             alert('Nenhum dado para enviar.');
+window.scrollTo({ top: 0, behavior: 'instant' });
+
             return;
         }
 
@@ -1917,9 +1927,9 @@ function gerarHtmlDoPedidoCompleto() {
         const responsible = responsibleInput ? (responsibleInput.value || '(não informado)') : '(não informado)';
 
         htmlTables += `<section class="sector"><h2 style="background-color:#f0f0f0; padding:10px; margin:0">${capitalizeFirstLetter(tabKey)}</h2>`;
-        htmlTables += `<p><strong>Responsável:</strong> ${responsible}</p>`;
-        htmlTables += `<p><strong>Unidade Solicitante:</strong> ${requestingUnit}</p>`;
-        htmlTables += `<p><strong>Período:</strong> ${period}</p>`;
+        htmlTables += `<p><strong>Responsável pelo pedido:</strong> ${responsible}</p>`;
+        htmlTables += `<p><strong>Unidade de Saúde Solicitante:</strong> ${requestingUnit}</p>`;
+        htmlTables += `<p><strong>Período Apurado:</strong> ${period}</p>`;
 
         htmlTables += `<table border="1" cellpadding="5" cellspacing="0" style="border-collapse: collapse; width: 100%; margin-bottom: 20px;">`;
         htmlTables += `<thead><tr>
@@ -2006,17 +2016,33 @@ function gerarHtmlDoPedidoCompleto() {
     var periodoEl = document.getElementById('period');
     var camposFaltando = [];
 
-    if (!unidadeEl || !unidadeEl.value.trim()) camposFaltando.push('Unidade de Saúde Solicitante');
-    if (!periodoEl || !periodoEl.value.trim()) camposFaltando.push('Período Apurado');
+    // Função para destacar campo
+    function destacarCampo(el, vazio) {
+        if (!el) return;
+        el.style.border = vazio ? '2px solid red' : '';
+    }
+
+    var unidadeVazia = !unidadeEl || !unidadeEl.value.trim();
+    var periodoVazio = !periodoEl || !periodoEl.value.trim();
+
+    destacarCampo(unidadeEl, unidadeVazia);
+    destacarCampo(periodoEl, periodoVazio);
+
+    if (unidadeVazia) camposFaltando.push('Unidade de Saúde Solicitante');
+    if (periodoVazio) camposFaltando.push('Período Apurado');
 
     // verifica responsável na aba ativa
     var abaAtiva = document.querySelector('.tab-pane:not(.hidden)');
-    var responsavelVal = '';
+    var El = null;
+    var Val = '';
     if (abaAtiva) {
-        var inputResp = abaAtiva.querySelector('input[id^="responsible"]');
-        if (inputResp) responsavelVal = inputResp.value.trim();
+        El = abaAtiva.querySelector('input[id^="responsible"]');
+        if (El) Val = El.value.trim();
     }
-    if (!responsavelVal) camposFaltando.push('Responsável');
+    var Vazio = !Val;
+    destacarCampo(El, Vazio);
+
+    if (Vazio) camposFaltando.push('Responsável');
 
     if (camposFaltando.length > 0) {
         alert('Por favor, preencha o(s) campo(s): ' + camposFaltando.join(', ') + '.');
@@ -2065,16 +2091,25 @@ function gerarHtmlDoPedidoCompleto() {
 
 
 
+
+
+
+
+
+
 <script>
 document.addEventListener('DOMContentLoaded', function () {
-    function toggleAsterisk(input) {
+    function toggleFieldIndicators(input) {
         const labelSpan = input.closest('div').querySelector('label span');
-        if (labelSpan) {
-            if (input.value.trim() !== '') {
-                labelSpan.style.display = 'none';
-            } else {
-                labelSpan.style.display = 'inline';
-            }
+        const helpMsg = input.parentElement.querySelector('.help-msg');
+
+        if (input.value.trim() !== '') {
+            if (labelSpan) labelSpan.style.display = 'none';
+            input.style.border = '';
+            if (helpMsg) helpMsg.style.display = 'none';
+        } else {
+            if (labelSpan) labelSpan.style.display = 'inline';
+            if (helpMsg) helpMsg.style.display = 'block';
         }
     }
 
@@ -2087,13 +2122,118 @@ document.addEventListener('DOMContentLoaded', function () {
     obrigatorios.forEach(input => {
         if (input) {
             input.addEventListener('input', function () {
-                toggleAsterisk(input);
+                toggleFieldIndicators(input);
             });
-            toggleAsterisk(input);
+            toggleFieldIndicators(input);
         }
     });
 });
 </script>
+<script>
+(function () {
+  // Sobe pro topo do documento atual (funciona em browsers diferentes)
+  function scrollTopNow() {
+    const el = document.scrollingElement || document.documentElement || document.body;
+    if (el && el.scrollTo) el.scrollTo({ top: 0, behavior: 'auto' });
+    else { window.scrollTo(0, 0); document.documentElement.scrollTop = 0; document.body.scrollTop = 0; }
+  }
 
+  // 1) Patch no alert() nativo: após clicar OK, sobe pro topo
+  const nativeAlert = window.alert ? window.alert.bind(window) : null;
+  if (nativeAlert) {
+    window.alert = function (msg) {
+      nativeAlert(msg);
+      scrollTopNow();
+    };
+  }
+
+  // 2) Se usar SweetAlert2 (Swal.fire), sobe pro topo após fechar
+  if (window.Swal && typeof window.Swal.fire === 'function') {
+    const nativeSwalFire = window.Swal.fire.bind(window.Swal);
+    window.Swal.fire = function () {
+      const p = nativeSwalFire.apply(this, arguments);
+      try { return Promise.resolve(p).then(() => scrollTopNow(), () => {}); }
+      catch (_) { return p; }
+    };
+  }
+
+  // 3) Observa o elemento #status: se virar erro, sobe pro topo
+  const statusEl = document.getElementById('status');
+  if (statusEl) {
+    const obs = new MutationObserver(() => {
+      const txt = (statusEl.textContent || '').toLowerCase();
+      const isError =
+        statusEl.classList.contains('text-red-600') ||
+        txt.includes('erro') || txt.includes('error') || txt.includes('falha');
+      if (isError && !statusEl.__scrolledOnce) {
+        scrollTopNow();
+        statusEl.__scrolledOnce = true; // evita loop; libera de novo após breve tempo
+        setTimeout(() => { statusEl.__scrolledOnce = false; }, 200);
+      }
+    });
+    obs.observe(statusEl, { childList: true, characterData: true, subtree: true, attributes: true });
+  }
+
+  // 4) Se existir uma função global showError(), patch também
+  if (typeof window.showError === 'function') {
+    const nativeShowError = window.showError;
+    window.showError = function () {
+      const r = nativeShowError.apply(this, arguments);
+      scrollTopNow();
+      return r;
+    };
+  }
+
+  // 5) Como fallback, observa qualquer elemento com role="alert"
+  const bodyObs = new MutationObserver((mutations) => {
+    for (const m of mutations) {
+      for (const node of m.addedNodes || []) {
+        if (node.nodeType === 1) {
+          const isAlert = node.getAttribute && node.getAttribute('role') === 'alert';
+          if (isAlert) { scrollTopNow(); return; }
+        }
+      }
+    }
+  });
+  bodyObs.observe(document.body, { childList: true, subtree: true });
+})();
+</script>
+<script>
+// Lista de combinações bloqueadas
+document.addEventListener('keydown', function(e) {
+    // Lista de combinações específicas
+    if (
+        e.key === 'F12' || // F12
+        (e.ctrlKey && e.key.toLowerCase() === 'u') || // Ctrl+U
+        (e.ctrlKey && e.key.toLowerCase() === 's') || // Ctrl+S
+        (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'i') || // Ctrl+Shift+I
+        (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'j') || // Ctrl+Shift+J
+        (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'c') || // Ctrl+Shift+C
+        (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'p') || // Ctrl+Shift+P
+        (e.ctrlKey && e.altKey && e.key.toLowerCase() === 'i') // Ctrl+Alt+I
+    ) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+    }
+});
+
+// Bloqueia botão direito
+document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+});
+
+// Tentativa de detectar abertura do DevTools (não é 100% garantido)
+setInterval(function() {
+    if (window.devtoolsOpen) {
+        window.location.href = 'about:blank'; // ou redirecionar
+    }
+    const widthThreshold = window.outerWidth - window.innerWidth > 160;
+    const heightThreshold = window.outerHeight - window.innerHeight > 160;
+    if (widthThreshold || heightThreshold) {
+        window.devtoolsOpen = true;
+    }
+}, 500);
+</script>
 </body>
 </html>
