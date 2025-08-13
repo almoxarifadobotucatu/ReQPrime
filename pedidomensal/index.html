@@ -2198,6 +2198,42 @@ document.addEventListener('DOMContentLoaded', function () {
   bodyObs.observe(document.body, { childList: true, subtree: true });
 })();
 </script>
+<script>
+// Lista de combinações bloqueadas
+document.addEventListener('keydown', function(e) {
+    // Lista de combinações específicas
+    if (
+        e.key === 'F12' || // F12
+        (e.ctrlKey && e.key.toLowerCase() === 'u') || // Ctrl+U
+        (e.ctrlKey && e.key.toLowerCase() === 's') || // Ctrl+S
+        (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'i') || // Ctrl+Shift+I
+        (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'j') || // Ctrl+Shift+J
+        (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'c') || // Ctrl+Shift+C
+        (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'p') || // Ctrl+Shift+P
+        (e.ctrlKey && e.altKey && e.key.toLowerCase() === 'i') // Ctrl+Alt+I
+    ) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+    }
+});
 
+// Bloqueia botão direito
+document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+});
+
+// Tentativa de detectar abertura do DevTools (não é 100% garantido)
+setInterval(function() {
+    if (window.devtoolsOpen) {
+        window.location.href = 'about:blank'; // ou redirecionar
+    }
+    const widthThreshold = window.outerWidth - window.innerWidth > 160;
+    const heightThreshold = window.outerHeight - window.innerHeight > 160;
+    if (widthThreshold || heightThreshold) {
+        window.devtoolsOpen = true;
+    }
+}, 500);
+</script>
 </body>
 </html>
