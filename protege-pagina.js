@@ -7,11 +7,14 @@
 
   const caminhoAtual = window.location.pathname.toLowerCase();
 
-  if (paginasProtegidas.some(p => caminhoAtual.includes("/" + p + "/"))) {
-    if (sessionStorage.getItem("logado") !== "true") {
-      // Redireciona imediatamente antes de renderizar
-      window.stop(); // Interrompe o carregamento da página
-      location.replace("../login/index.html"); // Evita que "voltar" retorne à página protegida
-    }
+  // Se estiver em uma página protegida e não estiver logado
+  if (paginasProtegidas.some(p => caminhoAtual.includes("/" + p + "/")) &&
+      sessionStorage.getItem("logado") !== "true") {
+
+    // Para de carregar imediatamente
+    window.stop();
+
+    // Redireciona sem deixar voltar
+    location.replace("../index.html");
   }
 })();
