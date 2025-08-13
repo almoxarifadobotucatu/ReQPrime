@@ -11,6 +11,11 @@ if (sessionStorage.getItem("logado") !== "true") {
     window.location.href = "/";
 }
 </script>
+<script>
+if (!sessionStorage.getItem("usuarioLogado")) {
+  window.location.href = "/login/index.html";
+}
+</script>
 
 <style>
 :root {
@@ -211,4 +216,5 @@ setInterval(function() {
 </script>
 </body>
 </html>
+
 
