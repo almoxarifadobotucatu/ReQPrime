@@ -5,11 +5,11 @@
 /index.html     /index.html      200
 /               /index.html      200
 
-# Permite acessar central-de-pedidos
+# Permite acessar páginas protegidas
 /central-de-pedidos/*    /central-de-pedidos/:splat   200
-/pedidoextra/*           /central-de-pedidos/:splat   200
-/pedidomensal/*          /central-de-pedidos/:splat   200
-/calculadora/*           /central-de-pedidos/:splat   200
+/pedidoextra/*           /pedidoextra/:splat         200
+/pedidomensal/*          /pedidomensal/:splat        200
+/calculadora/*           /calculadora/:splat         200
 
-# Bloqueia todo o resto
-/*              /login/index.html   302!
+# Bloqueia todo o resto (ignora arquivos reais)
+ /*              /login/index.html   302!
