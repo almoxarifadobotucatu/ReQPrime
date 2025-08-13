@@ -7,6 +7,11 @@ if (sessionStorage.getItem("logado") !== "true") {
     window.location.href = "/";
 }
 </script>
+<script>
+if (!sessionStorage.getItem("usuarioLogado")) {
+  window.location.href = "/login/index.html";
+}
+</script>
 
 
   <meta charset="UTF-8">
