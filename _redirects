@@ -6,7 +6,7 @@
 /               /index.html      200
 
 # Permite acessar páginas protegidas
-/Central-de-pedidos/*    /Central-de-pedidos/:splat   200
+/central-de-pedidos/*    /Central-de-pedidos/:splat   200
 /pedidoextra/*           /pedidoextra/:splat         200
 /pedidomensal/*          /pedidomensal/:splat        200
 /calculadora/*           /calculadora/:splat         200
