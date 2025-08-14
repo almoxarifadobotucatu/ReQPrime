@@ -2350,6 +2350,77 @@ setInterval(function() {
     }
 }, 500);
 </script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const exportBtn = document.getElementById('downloadAllOrder');
+
+    exportBtn.addEventListener('click', function (e) {
+        const responsaveis = [
+            {id: 'responsibleFarmacia', tab: 'farmacia', nome: 'Farmácia'},
+            {id: 'responsiblePsicotropicos', tab: 'psicotropicos', nome: 'Psicotrópicos'},
+            {id: 'responsibleEnfermagem', tab: 'enfermagem', nome: 'Enfermagem'},
+            {id: 'responsibleEnfermagemDST', tab: 'enfermagemDST', nome: 'Enfermagem DST'},
+            {id: 'responsibleEnfermagemUrgenciaEmergencia', tab: 'enfermagemUrgenciaEmergencia', nome: 'Urgência e Emergência'},
+            {id: 'responsibleOdonto', tab: 'odonto', nome: 'Odonto'},
+            {id: 'responsibleOdontoInstrumental', tab: 'odontoInstrumental', nome: 'Odonto Instrumental'},
+            {id: 'responsibleConsumoLimpezaPeriodico', tab: 'consumoLimpezaPeriodico', nome: 'Consumo Limpeza Periódico'},
+            {id: 'responsibleConsumoLimpezaEsporadico', tab: 'consumoLimpezaEsporadico', nome: 'Consumo Limpeza Esporádico'},
+            {id: 'responsibleImpressos', tab: 'impressos', nome: 'Impressos'},
+            {id: 'responsibleEscritorio', tab: 'escritorio', nome: 'Escritório'},
+            {id: 'responsibleEpiConsumo', tab: 'epiConsumo', nome: 'EPI Consumo'}
+        ];
+
+        let faltando = [];
+
+        responsaveis.forEach(campo => {
+            const el = document.getElementById(campo.id);
+            if (!el || el.value.trim() === '') {
+                faltando.push(campo);
+                if (el) el.style.border = '2px solid red';
+            } else {
+                if (el) el.style.border = '';
+            }
+        });
+
+        if (faltando.length > 0) {
+            e.preventDefault();
+            e.stopImmediatePropagation(); // Cancela QUALQUER outro evento do botão
+
+            const primeira = faltando[0];
+            document.querySelectorAll('.tab-pane').forEach(pane => pane.classList.add('hidden'));
+            document.getElementById(primeira.tab).classList.remove('hidden');
+
+            document.querySelectorAll('.tab-button').forEach(btn => {
+                btn.classList.remove('bg-white', 'border-t', 'border-l', 'border-r', 'rounded-t');
+                btn.classList.add('bg-gray-200');
+                if (btn.dataset.tab === primeira.tab) {
+                    btn.classList.add('bg-white', 'border-t', 'border-l', 'border-r', 'rounded-t');
+                    btn.classList.remove('bg-gray-200');
+                }
+            });
+
+            const nomes = faltando.map(f => `- ${f.nome}`).join('\n');
+            alert(`Preencha o campo "Responsável pelo pedido" nos seguintes setores:\n\n${nomes}`);
+
+            return false; // Sai completamente e bloqueia o download
+        }
+
+        // Só executa se TODOS estiverem preenchidos
+        const data = getAllFormData();
+        const blob = new Blob([JSON.stringify(data)], {type:'application/json'});
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'pedido_mensal.json';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        URL.revokeObjectURL(url);
+
+        return false; // Evita qualquer ação extra
+    }, true); // <--- 'true' ativa captura e garante que nosso código rode antes dos outros
+});
+</script>
 </body>
     <script src="/protege-pagina.js"></script>
 </html>
