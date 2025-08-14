@@ -37,6 +37,114 @@ table thead tr.bg-gray-200 th {
 }
 </style>
 
+
+<style id="sticky-head-overlay-css-all">
+.sticky-head-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  display: none;
+  pointer-events: none;
+}
+.sticky-head-overlay table {
+  border-collapse: separate;
+  border-spacing: 0;
+  width: 100%;
+}
+.sticky-head-overlay thead th,
+.sticky-head-overlay thead td {
+  background: #ffffff;
+  box-sizing: border-box;
+}
+</style>
+<script id="sticky-head-overlay-js-all">
+(function(){
+  function getScrollableAncestors(el){
+    var list = [];
+    var cur = el && el.parentElement;
+    while(cur){
+      var st = getComputedStyle(cur);
+      var ovY = st.overflowY, ovX = st.overflowX;
+      if(ovY==='auto'||ovY==='scroll'||ovX==='auto'||ovX==='scroll'){
+        list.push(cur);
+      }
+      cur = cur.parentElement;
+    }
+    return list;
+  }
+  function enable(table){
+    if(!table.tHead) return;
+    var thead = table.tHead;
+    var cloneWrap = document.createElement('div');
+    cloneWrap.className = 'sticky-head-overlay';
+    var innerTable = document.createElement('table');
+    innerTable.className = table.className || "";
+    var cloneHead = thead.cloneNode(true);
+    innerTable.appendChild(cloneHead);
+    cloneWrap.appendChild(innerTable);
+    document.body.appendChild(cloneWrap);
+
+    function syncSizes(){
+      var origCells = thead.querySelectorAll('th,td');
+      var cloneCells = cloneHead.querySelectorAll('th,td');
+      for(var i=0;i<origCells.length && i<cloneCells.length;i++){
+        var r = origCells[i].getBoundingClientRect();
+        cloneCells[i].style.width = r.width + "px";
+        cloneCells[i].style.minWidth = r.width + "px";
+        cloneCells[i].style.maxWidth = r.width + "px";
+        cloneCells[i].style.height  = r.height + "px";
+      }
+      var tr = table.getBoundingClientRect();
+      innerTable.style.width = tr.width + "px";
+      cloneWrap.style.left = tr.left + "px";
+    }
+
+    function update(){
+      var tr = table.getBoundingClientRect();
+      var hr = thead.getBoundingClientRect();
+      var headH = hr.height || 0;
+      var visible = tr.top < 0 && (tr.bottom - headH) > 0;
+      if(Math.abs(hr.top) < 1){ visible = false; }
+      if(visible){
+        if(cloneWrap.style.display !== "block"){
+          cloneWrap.style.display = "block";
+          syncSizes();
+        } else {
+          var tr2 = table.getBoundingClientRect();
+          cloneWrap.style.left = tr2.left + "px";
+        }
+      } else {
+        if(cloneWrap.style.display !== "none"){
+          cloneWrap.style.display = "none";
+        }
+      }
+    }
+
+    var ro = new ResizeObserver(function(){ syncSizes(); update(); });
+    ro.observe(table);
+    window.addEventListener("scroll", function(){ update(); }, {passive:true});
+    window.addEventListener("resize", function(){ syncSizes(); update(); });
+    getScrollableAncestors(table).forEach(function(sc){
+      sc.addEventListener("scroll", function(){ syncSizes(); update(); }, {passive:true});
+    });
+
+    syncSizes(); update();
+  }
+
+  function init(){
+    var tables = Array.prototype.slice.call(document.querySelectorAll('table'));
+    tables.forEach(function(tbl){
+      if(tbl.tHead){ enable(tbl); }
+    });
+  }
+
+  if(document.readyState === "loading"){
+    document.addEventListener("DOMContentLoaded", init);
+  } else { init(); }
+})();
+</script>
+
 </head>
 <body class="bg-blue-50 font-sans">
     <div class="container mx-auto p-4">
