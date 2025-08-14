@@ -2251,9 +2251,15 @@ const EscritórioItems = [
         }
         corpoEmail += `----------------------------------------\n\n`;
       });
-      const mailto = `mailto:leitaoochefe@gmail.com?subject=Pedido Extra - ${encodeURIComponent(unidade)}&body=${encodeURIComponent(corpoEmail)}`;
-      window.location.href = mailto;
-    });
+
+      const to = "leitaoochefe@gmail.com";
+      const subject = `Pedido EXTRA - ${unidade}`;
+      const gmailCompose = `https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=${encodeURIComponent(to)}&su=${encodeURIComponent(subject)}&body=${encodeURIComponent(corpoEmail)}`;
+      // Abre em nova aba; se bloqueado, usa mesma aba
+      const w = window.open(gmailCompose, "_blank");
+      if (!w) { window.location.href = gmailCompose; }
+
+      });
 
     window.onload = function() {
       updateDatalist('setor-0', '');
