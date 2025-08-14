@@ -597,18 +597,7 @@
 
   <div class="container" id="mainContainer">
     <h2>Solicitação de Pedido Extra</h2>
-    
-<div style="background:#1a73e8;color:white;padding:15px;border-radius:8px;margin-bottom:20px;font-family:sans-serif;">
-  <strong>⚠ Ative o Gmail para enviar pedidos:</strong><br>
-  Para que o envio de pedidos funcione corretamente, configure o Gmail como padrão para links de e-mail.<br>
-  <a href="mailto:teste@exemplo.com?subject=Ativar%20Gmail%20como%20Padr%C3%A3o" target="_blank" 
-     style="display:inline-block;margin-top:10px;padding:10px 15px;background:#fff;color:#1a73e8;
-            font-weight:bold;border-radius:5px;text-decoration:none;">
-    📧 Ativar Gmail como padrão
-  </a>
-  <p style="margin-top:10px;font-size:0.9em;">Ao abrir, clique no ícone na barra de endereços e escolha "Permitir".</p>
-</div>
-<form id="pedidoForm">
+    <form id="pedidoForm">
       <label for="solicitante">Nome do Solicitante:</label>
       <input type="text" id="solicitante" autocomplete="off" required>
       <label for="unidade">Unidade Solicitante:</label>
@@ -2154,7 +2143,21 @@ const EscritórioItems = [
       button.closest('.item').remove();
     }
 
-    document.getElementById('pedidoForm').addEventListener('submit', function(e) {
+    
+
+    // Abre o Gmail Compose; se não estiver logado, o Google redireciona para login e volta ao compose automaticamente.
+    function abrirGmailCompose({ to, subject, body, cc = '', bcc = '' }) {
+      const params = new URLSearchParams();
+      if (to) params.set('to', to);
+      if (subject) params.set('su', subject);
+      if (body) params.set('body', body);
+      if (cc) params.set('cc', cc);
+      if (bcc) params.set('bcc', bcc);
+      // view=cm abre a janela de compose; fs=1 tela cheia; tf=1 evita popup bloqueado em alguns casos
+      const url = `https://mail.google.com/mail/?view=cm&fs=1&tf=1&${params.toString()}`;
+      return url;
+    }
+document.getElementById('pedidoForm').addEventListener('submit', function(e) {
       e.preventDefault();
       const solicitante = document.getElementById('solicitante').value.trim();
       const unidade = document.getElementById('unidade').value.trim();
@@ -2243,8 +2246,8 @@ const EscritórioItems = [
         }
         corpoEmail += `----------------------------------------\n\n`;
       });
-      const mailto = `mailto:leitaoochefe@gmail.com?subject=Pedido Extra - ${encodeURIComponent(unidade)}&body=${encodeURIComponent(corpoEmail)}`;
-      window.location.href = mailto;
+      const gmailURL = abrirGmailCompose({ to: 'leitaoochefe@gmail.com', subject: `Pedido Extra - ${unidade}`, body: corpoEmail });
+      window.location.href = gmailURL;
     });
 
     window.onload = function() {
