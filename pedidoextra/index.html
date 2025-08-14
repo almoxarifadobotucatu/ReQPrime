@@ -597,7 +597,18 @@
 
   <div class="container" id="mainContainer">
     <h2>Solicitação de Pedido Extra</h2>
-    <form id="pedidoForm">
+    
+<div style="background:#1a73e8;color:white;padding:15px;border-radius:8px;margin-bottom:20px;font-family:sans-serif;">
+  <strong>⚠ Ative o Gmail para enviar pedidos:</strong><br>
+  Para que o envio de pedidos funcione corretamente, configure o Gmail como padrão para links de e-mail.<br>
+  <a href="https://mail.google.com/mail/?extsrc=mailto&url=%s" target="_blank" 
+     style="display:inline-block;margin-top:10px;padding:10px 15px;background:#fff;color:#1a73e8;
+            font-weight:bold;border-radius:5px;text-decoration:none;">
+    📧 Ativar Gmail como padrão
+  </a>
+  <p style="margin-top:10px;font-size:0.9em;">Ao abrir, clique no ícone na barra de endereços e escolha "Permitir".</p>
+</div>
+<form id="pedidoForm">
       <label for="solicitante">Nome do Solicitante:</label>
       <input type="text" id="solicitante" autocomplete="off" required>
       <label for="unidade">Unidade Solicitante:</label>
@@ -2285,28 +2296,6 @@ setInterval(function() {
         window.devtoolsOpen = true;
     }
 }, 500);
-</script>
-
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-  const form = document.getElementById("pedidoForm");
-  if (form) {
-    form.addEventListener("submit", function (e) {
-      if (navigator.registerProtocolHandler) {
-        try {
-          navigator.registerProtocolHandler(
-            "mailto",
-            "https://mail.google.com/mail/?extsrc=mailto&url=%s",
-            "Gmail"
-          );
-          console.log("Solicitação enviada ao navegador para usar Gmail como manipulador de email.");
-        } catch (err) {
-          console.warn("Não foi possível registrar o Gmail como manipulador:", err);
-        }
-      }
-    });
-  }
-});
 </script>
 </body>
 </html>
