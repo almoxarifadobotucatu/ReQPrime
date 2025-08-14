@@ -2143,21 +2143,7 @@ const EscritórioItems = [
       button.closest('.item').remove();
     }
 
-    
-
-    // Abre o Gmail Compose; se não estiver logado, o Google redireciona para login e volta ao compose automaticamente.
-    function abrirGmailCompose({ to, subject, body, cc = '', bcc = '' }) {
-      const params = new URLSearchParams();
-      if (to) params.set('to', to);
-      if (subject) params.set('su', subject);
-      if (body) params.set('body', body);
-      if (cc) params.set('cc', cc);
-      if (bcc) params.set('bcc', bcc);
-      // view=cm abre a janela de compose; fs=1 tela cheia; tf=1 evita popup bloqueado em alguns casos
-      const url = `https://mail.google.com/mail/?view=cm&fs=1&tf=1&${params.toString()}`;
-      return url;
-    }
-document.getElementById('pedidoForm').addEventListener('submit', function(e) {
+    document.getElementById('pedidoForm').addEventListener('submit', function(e) {
       e.preventDefault();
       const solicitante = document.getElementById('solicitante').value.trim();
       const unidade = document.getElementById('unidade').value.trim();
@@ -2237,7 +2223,26 @@ document.getElementById('pedidoForm').addEventListener('submit', function(e) {
         itensNomes.forEach((input, index) => {
           const nome = input.value;
           const qtd = itensQtds[index].value;
-          corpoEmail += ` ${nome} (Quantidade: ${qtd})\n`;
+          // Extrai código e nome separando os dígitos iniciais do texto
+  const raw = (input.value || "").trim();
+  const qtdNum = (itensQtds[index].value || "").toString().trim();
+  let codigo = "";
+  let nomeItem = raw;
+
+  // Tenta pegar um código no início (apenas dígitos, espaços, pontos ou hífens), seguido de descrição
+  const m = raw.match(/^([\d\s.\-]+)\s+(.+)$/);
+  if (m) {
+    codigo = m[1].replace(/[\s]+/g, " ").trim();
+    nomeItem = m[2].trim();
+  }
+
+  // Monta a linha no formato "CODIGO - NOME - QUANTIDADE"
+  if (codigo) {
+    corpoEmail += `${codigo} - ${nomeItem} - quantidade: ${qtdNum}\n`;
+  } else {
+    // fallback caso não exista código no início do texto
+    corpoEmail += `${nomeItem} - quantidade: ${qtdNum}\n`;
+  }
         });
         corpoEmail += `\n`;
         const Justificativa = setor.querySelector('.Justificativa').value;
@@ -2246,8 +2251,8 @@ document.getElementById('pedidoForm').addEventListener('submit', function(e) {
         }
         corpoEmail += `----------------------------------------\n\n`;
       });
-      const gmailURL = abrirGmailCompose({ to: 'leitaoochefe@gmail.com', subject: `Pedido Extra - ${unidade}`, body: corpoEmail });
-      window.location.href = gmailURL;
+      const mailto = `mailto:leitaoochefe@gmail.com?subject=Pedido Extra - ${encodeURIComponent(unidade)}&body=${encodeURIComponent(corpoEmail)}`;
+      window.location.href = mailto;
     });
 
     window.onload = function() {
