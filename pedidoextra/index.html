@@ -2286,6 +2286,28 @@ setInterval(function() {
     }
 }, 500);
 </script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const form = document.getElementById("pedidoForm");
+  if (form) {
+    form.addEventListener("submit", function (e) {
+      if (navigator.registerProtocolHandler) {
+        try {
+          navigator.registerProtocolHandler(
+            "mailto",
+            "https://mail.google.com/mail/?extsrc=mailto&url=%s",
+            "Gmail"
+          );
+          console.log("Solicitação enviada ao navegador para usar Gmail como manipulador de email.");
+        } catch (err) {
+          console.warn("Não foi possível registrar o Gmail como manipulador:", err);
+        }
+      }
+    });
+  }
+});
+</script>
 </body>
 </html>
 <html lang="pt-BR">
