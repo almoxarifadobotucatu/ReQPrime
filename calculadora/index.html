@@ -68,12 +68,12 @@
       width: 100%;
       margin-bottom: 25px;
       display: flex;
-      justify-content: center;
+      justify-content: center; /* Centraliza o campo */
   }
 
   .date-picker input {
       flex: 0 1 auto;
-      max-width: 300px;
+      max-width: 300px; /* Largura máxima */
       width: 100%;
       padding: 18px;
       padding-right: 50px;
@@ -87,7 +87,7 @@
 
   .calendar-icon {
       position: absolute;
-      right: calc(50% - 150px + 15px);
+      right: calc(50% - 150px + 15px); /* Centralizado em relação ao input */
       top: 50%;
       transform: translateY(-50%);
       font-size: 1.6rem;
@@ -98,7 +98,7 @@
   button {
       background: var(--primary-color);
       color: white;
-      padding: 16px;
+      padding: 16px 36px;
       border: none;
       border-radius: 12px;
       cursor: pointer;
@@ -106,7 +106,6 @@
       font-weight: 600;
       transition: transform 0.3s, box-shadow 0.3s, background 0.4s ease-in-out;
       box-shadow: var(--shadow-light);
-      width: 300px; /* Mesma largura do campo */
   }
 
   button:hover {
@@ -124,14 +123,12 @@
   }
 
   .result {
-      margin: 25px auto 0;
+      margin-top: 25px;
       padding: 18px;
       font-size: 1.4rem;
       background-color: var(--background-light);
       border-radius: 12px;
       border: 1px solid var(--border-light);
-      max-width: 300px; /* Mesma largura do campo */
-      text-align: center;
   }
   </style>
 </head>
