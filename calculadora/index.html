@@ -8,9 +8,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>45 Dias Úteis Retroativos</title>
 
-  <!-- Ícones Font Awesome -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+  <!-- Bloqueio de acesso direto -->
   <script>
   if (sessionStorage.getItem("logado") !== "true") {
       window.location.href = "/";
@@ -69,17 +67,9 @@
       font-size: 1.4rem;
   }
 
-  /* Estilo do campo com ícone */
-  .date-picker {
-      position: relative;
-      display: inline-block;
-      width: 100%;
-  }
-
-  .date-picker input[type="date"] {
+  input[type="date"] {
       width: 100%;
       padding: 18px;
-      padding-right: 50px;
       font-size: 1.4rem;
       border: 1px solid var(--border-light);
       border-radius: 12px;
@@ -89,14 +79,14 @@
       text-align: center;
   }
 
-  .calendar-icon {
-      position: absolute;
-      right: 15px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-size: 1.6rem;
-      color: var(--primary-extra-color);
-      pointer-events: none;
+  /* Deixa o ícone do calendário branco */
+  input[type="date"]::-webkit-calendar-picker-indicator {
+      filter: invert(1);
+  }
+
+  /* Ajuste para Firefox */
+  input[type="date"]::-moz-focus-inner {
+      filter: invert(1);
   }
 
   button {
@@ -142,10 +132,7 @@
 <div class="container">
     <h1>45 Dias Úteis Retroativos</h1>
     <label for="endDate">Data Final:</label>
-    <div class="date-picker">
-        <input type="date" id="endDate">
-        <i class="fa-solid fa-calendar-days calendar-icon"></i>
-    </div>
+    <input type="date" id="endDate">
 
     <button type="button" onclick="calcular()">Calcular</button>
 
