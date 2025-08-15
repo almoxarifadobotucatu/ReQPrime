@@ -6,129 +6,146 @@
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Central de Pedidos</title>
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Calculadora Retroativa de 45 Dias Úteis</title>
+  <title>45 Dias Úteis Retroativos</title>
 
-<!-- Bloqueio de acesso direto -->
-<script>
-if (sessionStorage.getItem("logado") !== "true") {
-    window.location.href = "/";
-}
-</script>
+  <!-- Ícones Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
-<style>
-:root {
-    --primary-color: #0a66c2;
-    --primary-hover-color: #004182;
-    --primary-extra-color: #1db954;
-    --danger-color: #e53e3e;
-    --danger-hover-color: #c53030;
-    --background-light: #1a1a2e;
-    --background-white: #16213e;
-    --text-dark: #ffffff;
-    --text-medium: #b8b8b8;
-    --border-light: #2a2a3a;
-    --shadow-light: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
-    --transition-all: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
+  <script>
+  if (sessionStorage.getItem("logado") !== "true") {
+      window.location.href = "/";
+  }
+  </script>
 
-body {
-    background-color: var(--background-light);
-    font-family: 'Inter', sans-serif;
-    margin: 0;
-    padding-top: 60px;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    height: 100vh;
-    box-sizing: border-box;
-    color: var(--text-dark);
-}
+  <style>
+  :root {
+      --primary-color: #0a66c2;
+      --primary-hover-color: #004182;
+      --primary-extra-color: #1db954;
+      --danger-color: #e53e3e;
+      --danger-hover-color: #c53030;
+      --background-light: #1a1a2e;
+      --background-white: #16213e;
+      --text-dark: #ffffff;
+      --text-medium: #b8b8b8;
+      --border-light: #2a2a3a;
+      --shadow-light: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+      --transition-all: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
 
-.container {
-    background-color: var(--background-white);
-    padding: 40px;
-    border-radius: 18px;
-    box-shadow: var(--shadow-light);
-    max-width: 550px;
-    width: 100%;
-    text-align: center;
-}
+  body {
+      background-color: var(--background-light);
+      font-family: 'Inter', sans-serif;
+      margin: 0;
+      padding-top: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      height: 100vh;
+      box-sizing: border-box;
+      color: var(--text-dark);
+  }
 
-h1 {
-    color: var(--text-dark);
-    margin-bottom: 30px;
-    font-size: 2.4rem;
-}
+  .container {
+      background-color: var(--background-white);
+      padding: 40px;
+      border-radius: 18px;
+      box-shadow: var(--shadow-light);
+      max-width: 550px;
+      width: 100%;
+      text-align: center;
+  }
 
-label {
-    display: block;
-    margin-bottom: 12px;
-    color: var(--text-medium);
-    font-size: 1.4rem;
-}
+  h1 {
+      color: var(--text-dark);
+      margin-bottom: 30px;
+      font-size: 2.4rem;
+  }
 
-input {
-    width: 100%;
-    padding: 18px;
-    font-size: 1.4rem;
-    border: 1px solid var(--border-light);
-    border-radius: 12px;
-    background-color: var(--background-light);
-    color: var(--text-dark);
-    margin-bottom: 25px;
-    text-align: center;
-}
+  label {
+      display: block;
+      margin-bottom: 12px;
+      color: var(--text-medium);
+      font-size: 1.4rem;
+  }
 
-button {
-    background: var(--primary-color);
-    color: white;
-    padding: 16px 36px;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    font-size: 1.2rem;
-    font-weight: 600;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                background 0.4s ease-in-out;
-    box-shadow: var(--shadow-light);
-}
+  /* Estilo do campo com ícone */
+  .date-picker {
+      position: relative;
+      display: inline-block;
+      width: 100%;
+  }
 
-button:hover {
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
-    background: linear-gradient(270deg, var(--primary-color), var(--primary-hover-color), var(--primary-extra-color));
-    background-size: 600% 600%;
-    animation: gradientShift 6s ease infinite;
-}
+  .date-picker input[type="date"] {
+      width: 100%;
+      padding: 18px;
+      padding-right: 50px;
+      font-size: 1.4rem;
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      background-color: var(--background-light);
+      color: var(--text-dark);
+      margin-bottom: 25px;
+      text-align: center;
+  }
 
-@keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
+  .calendar-icon {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.6rem;
+      color: var(--primary-extra-color);
+      pointer-events: none;
+  }
 
-.result {
-    margin-top: 25px;
-    padding: 18px;
-    font-size: 1.4rem;
-    background-color: var(--background-light);
-    border-radius: 12px;
-    border: 1px solid var(--border-light);
-}
-</style>
+  button {
+      background: var(--primary-color);
+      color: white;
+      padding: 16px 36px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 1.2rem;
+      font-weight: 600;
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                  box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+                  background 0.4s ease-in-out;
+      box-shadow: var(--shadow-light);
+  }
+
+  button:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+      background: linear-gradient(270deg, var(--primary-color), var(--primary-hover-color), var(--primary-extra-color));
+      background-size: 600% 600%;
+      animation: gradientShift 6s ease infinite;
+  }
+
+  @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+  }
+
+  .result {
+      margin-top: 25px;
+      padding: 18px;
+      font-size: 1.4rem;
+      background-color: var(--background-light);
+      border-radius: 12px;
+      border: 1px solid var(--border-light);
+  }
+  </style>
 </head>
 <body>
 <div class="container">
     <h1>45 Dias Úteis Retroativos</h1>
     <label for="endDate">Data Final:</label>
-    <input type="date" id="endDate">
+    <div class="date-picker">
+        <input type="date" id="endDate">
+        <i class="fa-solid fa-calendar-days calendar-icon"></i>
+    </div>
 
     <button type="button" onclick="calcular()">Calcular</button>
 
@@ -181,19 +198,19 @@ function calcular() {
     resultEl.textContent = `Data inicial retroativa (45 dias úteis): ${currentDate.toLocaleDateString('pt-BR')}`;
 }
 </script>
-    <script>
+
+<script>
 // Lista de combinações bloqueadas
 document.addEventListener('keydown', function(e) {
-    // Lista de combinações específicas
     if (
-        e.key === 'F12' || // F12
-        (e.ctrlKey && e.key.toLowerCase() === 'u') || // Ctrl+U
-        (e.ctrlKey && e.key.toLowerCase() === 's') || // Ctrl+S
-        (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'i') || // Ctrl+Shift+I
-        (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'j') || // Ctrl+Shift+J
-        (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'c') || // Ctrl+Shift+C
-        (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'p') || // Ctrl+Shift+P
-        (e.ctrlKey && e.altKey && e.key.toLowerCase() === 'i') // Ctrl+Alt+I
+        e.key === 'F12' ||
+        (e.ctrlKey && e.key.toLowerCase() === 'u') ||
+        (e.ctrlKey && e.key.toLowerCase() === 's') ||
+        (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'i') ||
+        (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'j') ||
+        (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'c') ||
+        (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'p') ||
+        (e.ctrlKey && e.altKey && e.key.toLowerCase() === 'i')
     ) {
         e.preventDefault();
         e.stopPropagation();
@@ -206,10 +223,10 @@ document.addEventListener('contextmenu', function(e) {
     e.preventDefault();
 });
 
-// Tentativa de detectar abertura do DevTools (não é 100% garantido)
+// Tentativa de detectar abertura do DevTools
 setInterval(function() {
     if (window.devtoolsOpen) {
-        window.location.href = 'about:blank'; // ou redirecionar
+        window.location.href = 'about:blank';
     }
     const widthThreshold = window.outerWidth - window.innerWidth > 160;
     const heightThreshold = window.outerHeight - window.innerHeight > 160;
@@ -219,8 +236,5 @@ setInterval(function() {
 }, 500);
 </script>
 </body>
-    <script src="/protege-pagina.js"></script>
+<script src="/protege-pagina.js"></script>
 </html>
-
-
-
