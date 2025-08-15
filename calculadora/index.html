@@ -8,12 +8,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>45 Dias Úteis Retroativos</title>
 
-  <!-- Bloqueio de acesso direto -->
-  <script>
-  if (sessionStorage.getItem("logado") !== "true") {
-      window.location.href = "/";
-  }
-  </script>
+  <!-- Flatpickr CSS (tema escuro) -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css">
 
   <style>
   :root {
@@ -28,7 +25,6 @@
       --text-medium: #b8b8b8;
       --border-light: #2a2a3a;
       --shadow-light: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
-      --transition-all: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   body {
@@ -40,7 +36,6 @@
       justify-content: center;
       align-items: flex-start;
       height: 100vh;
-      box-sizing: border-box;
       color: var(--text-dark);
   }
 
@@ -67,7 +62,7 @@
       font-size: 1.4rem;
   }
 
-  input[type="date"] {
+  input {
       width: 100%;
       padding: 18px;
       font-size: 1.4rem;
@@ -79,16 +74,6 @@
       text-align: center;
   }
 
-  /* Deixa o ícone do calendário branco */
-  input[type="date"]::-webkit-calendar-picker-indicator {
-      filter: invert(1);
-  }
-
-  /* Ajuste para Firefox */
-  input[type="date"]::-moz-focus-inner {
-      filter: invert(1);
-  }
-
   button {
       background: var(--primary-color);
       color: white;
@@ -98,9 +83,7 @@
       cursor: pointer;
       font-size: 1.2rem;
       font-weight: 600;
-      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                  box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                  background 0.4s ease-in-out;
+      transition: transform 0.3s, box-shadow 0.3s, background 0.4s ease-in-out;
       box-shadow: var(--shadow-light);
   }
 
@@ -132,14 +115,24 @@
 <div class="container">
     <h1>45 Dias Úteis Retroativos</h1>
     <label for="endDate">Data Final:</label>
-    <input type="date" id="endDate">
+    <input type="text" id="endDate" placeholder="Selecione a data">
 
     <button type="button" onclick="calcular()">Calcular</button>
 
     <div class="result" id="result"></div>
 </div>
 
+<!-- Flatpickr JS -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
 <script>
+flatpickr("#endDate", {
+    dateFormat: "Y-m-d",
+    locale: "pt",
+    position: "below",
+    allowInput: true
+});
+
 function parseDateFromInput(value) {
     if (!value) return null;
     const parts = value.split('-');
@@ -187,7 +180,7 @@ function calcular() {
 </script>
 
 <script>
-// Lista de combinações bloqueadas
+// Proteção contra inspeção
 document.addEventListener('keydown', function(e) {
     if (
         e.key === 'F12' ||
@@ -205,12 +198,10 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
-// Bloqueia botão direito
 document.addEventListener('contextmenu', function(e) {
     e.preventDefault();
 });
 
-// Tentativa de detectar abertura do DevTools
 setInterval(function() {
     if (window.devtoolsOpen) {
         window.location.href = 'about:blank';
