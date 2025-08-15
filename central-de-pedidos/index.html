@@ -7,11 +7,14 @@
     // Bloqueia clique com botão direito
     document.addEventListener('contextmenu', event => event.preventDefault());
 
-    // Bloqueia atalhos para código-fonte e devtools
+    // Bloqueia atalhos para código-fonte, devtools e salvar página
     document.addEventListener('keydown', function(e) {
-      if (e.key === 'F12' || 
-          (e.ctrlKey && e.shiftKey && ['I','J','C'].includes(e.key.toUpperCase())) ||
-          (e.ctrlKey && e.key.toUpperCase() === 'U')) {
+      if (
+        e.key === 'F12' || // DevTools
+        (e.ctrlKey && e.shiftKey && ['I','J','C'].includes(e.key.toUpperCase())) || // Atalhos DevTools
+        (e.ctrlKey && e.key.toUpperCase() === 'U') || // Ver código-fonte
+        (e.ctrlKey && e.key.toUpperCase() === 'S') // Salvar página
+      ) {
         e.preventDefault();
         return false;
       }
@@ -19,21 +22,11 @@
 
     // Detecção contínua de DevTools
     (function() {
-      const devtools = {
-        open: false,
-        orientation: null
-      };
       const threshold = 160;
       setInterval(function() {
         if (window.outerWidth - window.innerWidth > threshold || 
             window.outerHeight - window.innerHeight > threshold) {
-          devtools.open = true;
-        } else {
-          devtools.open = false;
-        }
-        if (devtools.open) {
-          // Fecha ou redireciona
-          window.location.href = "/acesso-negado.html"; // Página de bloqueio
+          window.location.href = "/acesso-negado.html";
         }
       }, 500);
     })();
