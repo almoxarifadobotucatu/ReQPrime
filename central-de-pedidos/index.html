@@ -1,39 +1,27 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <!-- Força URL sem index.html -->
-  <script>
-  if (location.pathname.endsWith('/index.html')) {
-      location.replace(location.pathname.replace('/index.html', '/') + location.search + location.hash);
-  }
-  </script>
-
-  <!-- Proteção deve ser a primeira coisa do head -->
+  <!-- Proteção -->
   <script src="/protege-pagina.js"></script>
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Central de Pedidos</title>
 
-  <script>
-  if (sessionStorage.getItem("logado") !== "true") {
-      window.location.href = "/";
-  }
-  </script>
+  <!-- Fonte Remix Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
 
+  <!-- Fonte Inter -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
   <style>
     :root {
       --primary-color: #0a66c2;
       --primary-hover-color: #004182;
       --primary-extra-color: #1db954;
-      --danger-color: #e53e3e;
-      --danger-hover-color: #c53030;
       --background-light: #1a1a2e;
       --background-white: #16213e;
       --text-dark: #ffffff;
-      --text-medium: #b8b8b8;
-      --border-light: #2a2a3a;
       --shadow-light: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
     }
 
@@ -46,7 +34,6 @@
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      box-sizing: border-box;
       color: var(--text-dark);
     }
 
@@ -55,26 +42,17 @@
       padding: 50px;
       border-radius: 20px;
       box-shadow: var(--shadow-light);
-      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                  box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       text-align: center;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
       gap: 40px;
       transform: translateY(-80px);
     }
 
-    .container:hover {
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
-    }
-
     h2 {
-      color: var(--text-dark);
       font-weight: 700;
       font-size: 2rem;
-      letter-spacing: -0.025em;
       margin: 0;
     }
 
@@ -83,6 +61,23 @@
       justify-content: center;
       gap: 20px;
       flex-wrap: wrap;
+    }
+
+    .btn-block {
+      text-align: center;
+    }
+
+    .btn-block i {
+      font-size: 60px;
+      display: block;
+      margin-bottom: 8px;
+      transition: transform 0.3s ease, filter 0.3s ease;
+      filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.4));
+    }
+
+    .btn-block:hover i {
+      transform: scale(1.15);
+      filter: drop-shadow(0px 4px 8px rgba(0,0,0,0.6)) brightness(1.3);
     }
 
     button {
@@ -94,9 +89,7 @@
       cursor: pointer;
       font-size: 1.2rem;
       font-weight: 600;
-      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                  box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                  background 0.4s ease-in-out;
+      transition: transform 0.3s, box-shadow 0.3s, background 0.4s;
       box-shadow: var(--shadow-light);
     }
 
@@ -138,77 +131,36 @@
       right: 12px;
       font-size: 9px;
       color: #888888;
-      background-color: transparent;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       opacity: 0.75;
-      user-select: none;
-      text-shadow: 0 0 1px rgba(0,0,0,0.1);
-      letter-spacing: 0.02em;
     }
   </style>
 </head>
-<body oncontextmenu="return false;">
+<body>
   <div class="container">
     <h2>Central de Pedidos</h2>
     <div class="buttons">
-      <button type="button" onclick="window.location.href='/pedidoextra/'">Pedido Extra</button>
-      <button type="button" onclick="window.location.href='/pedidomensal/'">Pedido Mensal</button>
-      <button type="button" onclick="window.location.href='/calculadora/'">Calculadora</button>
+      <!-- Pedido Extra -->
+      <div class="btn-block">
+        <i class="ri-add-circle-fill" style="color:#FF9800;"></i>
+        <button type="button" onclick="window.location.href='/pedidoextra/'">Pedido Extra</button>
+      </div>
+
+      <!-- Pedido Mensal -->
+      <div class="btn-block">
+        <i class="ri-calendar-fill" style="color:#4CAF50;"></i>
+        <button type="button" onclick="window.location.href='/pedidomensal/'">Pedido Mensal</button>
+      </div>
+
+      <!-- Calculadora -->
+      <div class="btn-block">
+        <i class="ri-calculator-fill" style="color:#2196F3;"></i>
+        <button type="button" onclick="window.location.href='/calculadora/'">Calculadora</button>
+      </div>
     </div>
   </div>
 
   <footer>
     © 2025. Todos os direitos reservados.
   </footer>
-
-  <!-- Script de proteção -->
-  <script src="/protege-pagina.js"></script>
-
-  <script>
-  // Bloquear F12, Ctrl+S, Ctrl+U
-  document.addEventListener('keydown', function (event) {
-      if (event.key === "F12" || event.keyCode === 123) {
-          event.preventDefault();
-          return false;
-      }
-      if ((event.ctrlKey && event.key.toLowerCase() === 's') || 
-          (event.ctrlKey && event.key.toLowerCase() === 'u')) {
-          event.preventDefault();
-          return false;
-      }
-  });
-
-  // Bloquear clique direito do mouse
-  document.addEventListener('contextmenu', function (event) {
-      event.preventDefault();
-  });
-
-  // Bloquear combinações adicionais
-  document.addEventListener('keydown', function(e) {
-      if (
-          e.key === 'F12' ||
-          (e.ctrlKey && e.key.toLowerCase() === 'u') ||
-          (e.ctrlKey && e.key.toLowerCase() === 's') ||
-          (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'i') ||
-          (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'j') ||
-          (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'c') ||
-          (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'p') ||
-          (e.ctrlKey && e.altKey && e.key.toLowerCase() === 'i')
-      ) {
-          e.preventDefault();
-          e.stopPropagation();
-          return false;
-      }
-  });
-
-  // Tentativa de detectar abertura do DevTools
-  setInterval(function() {
-      const widthThreshold = window.outerWidth - window.innerWidth > 160;
-      const heightThreshold = window.outerHeight - window.innerHeight > 160;
-      if (widthThreshold || heightThreshold) {
-          window.location.href = 'about:blank';
-      }
-  }, 500);
-  </script>
 </body>
 </html>
