@@ -598,7 +598,7 @@
   <div class="container" id="mainContainer">
     <h2>Solicitação de Pedido Extra</h2>
     <form id="pedidoForm">
-      <label for="solicitante">Nome do Solicitante:</label>
+      <label for="solicitante">Responsável pela solicitação:</label>
       <input type="text" id="solicitante" autocomplete="off" required>
       <label for="unidade">Unidade de Saúde:</label>
       <input type="text" id="unidade" autocomplete="off" required>
@@ -2212,7 +2212,7 @@ const EscritórioItems = [
         return;
       }
       let corpoEmail = `SOLICITAÇÃO DE PEDIDO EXTRA\n\n`;
-      corpoEmail += `Solicitante: ${solicitante}\n`;
+      corpoEmail += `Responsável pela solicitação: ${solicitante}\n`;
       corpoEmail += `Unidade de Saúde: ${unidade}\n\n`;
       corpoEmail += `----------------------------------------\n\n`;
       setores.forEach(setor => {
