@@ -1,9 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <!-- Proteção deve ser a primeira coisa do head -->
   <script src="/protege-pagina.js"></script>
-
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>45 Dias Úteis Retroativos</title>
@@ -11,6 +9,9 @@
   <!-- Flatpickr CSS (tema escuro) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css">
+
+  <!-- Ícones -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
   :root {
@@ -62,16 +63,32 @@
       font-size: 1.4rem;
   }
 
-  input {
+  .date-picker {
+      position: relative;
+      width: 100%;
+      margin-bottom: 25px;
+  }
+
+  .date-picker input {
       width: 100%;
       padding: 18px;
+      padding-right: 50px;
       font-size: 1.4rem;
       border: 1px solid var(--border-light);
       border-radius: 12px;
       background-color: var(--background-light);
       color: var(--text-dark);
-      margin-bottom: 25px;
       text-align: center;
+  }
+
+  .calendar-icon {
+      position: absolute;
+      right: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.6rem;
+      color: white;
+      cursor: pointer;
   }
 
   button {
@@ -115,29 +132,50 @@
 <div class="container">
     <h1>45 Dias Úteis Retroativos</h1>
     <label for="endDate">Data Final:</label>
-    <input type="text" id="endDate" placeholder="Selecione a data">
+    <div class="date-picker">
+        <input type="text" id="endDate" placeholder="dd/mm/aaaa" maxlength="10">
+        <i class="fa-solid fa-calendar-days calendar-icon" id="calendarBtn"></i>
+    </div>
 
     <button type="button" onclick="calcular()">Calcular</button>
 
     <div class="result" id="result"></div>
 </div>
 
-<!-- Flatpickr JS -->
+<!-- Flatpickr JS + pt-BR -->
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
 
 <script>
-flatpickr("#endDate", {
-    dateFormat: "Y-m-d",
-    locale: "pt",
+// Ativa o calendário Flatpickr
+const fp = flatpickr("#endDate", {
+    dateFormat: "d/m/Y",
+    locale: flatpickr.l10ns.pt,
     position: "below",
     allowInput: true
 });
 
+// Faz o clique no ícone abrir o calendário
+document.getElementById("calendarBtn").addEventListener("click", () => {
+    fp.open();
+});
+
+// Máscara para formato brasileiro dd/mm/yyyy
+document.getElementById("endDate").addEventListener("input", function(e) {
+    let value = e.target.value.replace(/\D/g, "");
+    if (value.length > 2 && value.length <= 4) {
+        value = value.replace(/(\d{2})(\d+)/, "$1/$2");
+    } else if (value.length > 4) {
+        value = value.replace(/(\d{2})(\d{2})(\d+)/, "$1/$2/$3");
+    }
+    e.target.value = value;
+});
+
 function parseDateFromInput(value) {
     if (!value) return null;
-    const parts = value.split('-');
+    const parts = value.split('/');
     if (parts.length !== 3) return null;
-    const [y, m, d] = parts.map(Number);
+    const [d, m, y] = parts.map(Number);
     if (!y || !m || !d) return null;
     return new Date(y, m - 1, d);
 }
