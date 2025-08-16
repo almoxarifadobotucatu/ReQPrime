@@ -2256,7 +2256,7 @@ let m = nome.trim().match(/^((?:\d+\s+){4}\d+)\s+(.*)$/);
 let codigo = '';
 let descricao = nome;
 if (m) { codigo = m[1]; descricao = m[2]; }
-corpoEmail += ` ${codigo ? codigo + ' - ' : ''}${descricao} - ${qtd} ${unidade}\n`;
+corpoEmail += `${codigo ? codigo + ' - ' : ''}${descricao} - ${qtd} ${unidade}\n`;
         });
         corpoEmail += `\n`;
         const Justificativa = setor.querySelector('.Justificativa').value;
