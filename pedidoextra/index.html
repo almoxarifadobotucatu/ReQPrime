@@ -612,7 +612,7 @@
     <form id="pedidoForm">
       <label for="solicitante">Responsável pela solicitação:</label>
       <input type="text" id="solicitante" autocomplete="off" required>
-      <label for="unidade">Unidade de saúde solicitante:</label>
+      <label for="unidade">Unidade de saúde:</label>
       <input type="text" id="unidade" autocomplete="off" required>
       <div id="setoresContainer"></div>
       <div class="buttons">
@@ -2184,7 +2184,7 @@ const EscritórioItems = [
       const solicitante = document.getElementById('solicitante').value.trim();
       const unidade = document.getElementById('unidade').value.trim();
       if (!solicitante || !unidade) {
-        alert('Por favor, preencha os campos de solicitante e unidade.');
+        alert('Por favor, preencha os campos: Responsável pela solicitação e Unidade de sáude.');
         return;
       }
       const setores = document.querySelectorAll('.setor');
@@ -2249,7 +2249,7 @@ const EscritórioItems = [
       }
       let corpoEmail = `SOLICITAÇÃO DE PEDIDO EXTRA\n\n`;
       corpoEmail += `Responsável pela solicitação: ${solicitante}\n`;
-      corpoEmail += `Unidade de saúde solicitante: ${unidade}\n\n`;
+      corpoEmail += `Unidade de saúde: ${unidade}\n\n`;
       corpoEmail += `----------------------------------------\n\n`;
       setores.forEach(setor => {
         const nomeSetor = setor.querySelector('input[name="setor"]').value;
