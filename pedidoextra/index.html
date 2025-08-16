@@ -1,8 +1,9 @@
 <!DOCTYPE html>
+
 <html lang="pt-BR">
 <head>
-  <!-- Proteção deve ser a primeira coisa do head -->
-  <script src="/protege-pagina.js">
+<!-- Proteção deve ser a primeira coisa do head -->
+<script src="/protege-pagina.js">
 document.addEventListener("input", function(e) {
   if (e.target.classList.contains("erro-campo")) {
     e.target.classList.remove("erro-campo");
@@ -14,18 +15,18 @@ document.addEventListener("change", function(e) {
   }
 });
 </script>
-
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Central de Pedidos</title>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Central de Pedidos</title>
 <!DOCTYPE html>
+
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Solicitação de Pedido Extra</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Solicitação de Pedido Extra</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<style>
     :root {
       --primary-extra-color: #1db954;
       --danger-extra-color: #ff6b6b;
@@ -613,8 +614,7 @@ document.addEventListener("change", function(e) {
 
     }
   </style>
-
-  <style>
+<style>
     .erro-campo {
       outline: 2px solid #ff4d4d !important;
       background-color: rgba(255, 0, 0, 0.08) !important;
@@ -644,38 +644,32 @@ document.addEventListener("change", function(e) {
       margin-bottom: 4px;
     }
   </style>
-
-
 <style>
   #enviarPedido {
     display: none;
   }
 </style>
-
 </head>
 <body oncontextmenu="return false;">
-    </form>
-  </div>
 
-  <div class="container" id="mainContainer">
-    <h2>Solicitação de Pedido Extra</h2>
-    <div id="mensagensErros"></div>
+
+<div class="container" id="mainContainer">
+<h2>Solicitação de Pedido Extra</h2>
+<div id="mensagensErros"></div>
 <form id="pedidoForm">
-      <label for="solicitante">Responsável pela solicitação:</label>
-      <input type="text" id="solicitante" autocomplete="off" required>
-      <label for="unidade">Unidade de saúde:</label>
-      <input type="text" id="unidade" autocomplete="off" required>
-      <div id="setoresContainer"></div>
-      <div class="buttons">
-        <button type="button" onclick="adicionarSetor()">Adicionar novo setor</button>
-        <button id="enviarPedido" type="button">Enviar pedido</button>
-      </div>
-    </form>
-  </div>
-
-  <datalist id="lista-itens"></datalist>
-
-  <script>
+<label for="solicitante">Responsável pela solicitação:</label>
+<input autocomplete="off" id="solicitante" required="" type="text"/>
+<label for="unidade">Unidade de saúde:</label>
+<input autocomplete="off" id="unidade" required="" type="text"/>
+<div id="setoresContainer"></div>
+<div class="buttons">
+<button onclick="adicionarSetor()" type="button">Adicionar novo setor</button>
+<button id="enviarPedido" type="button">Enviar pedido</button>
+</div>
+</form>
+</div>
+<datalist id="lista-itens"></datalist>
+<script>
 function pluralizarUnidade(unidade, quantidade) {
   const pluraisIrregulares = {
     "Ampola": "Ampolas",
@@ -2372,7 +2366,6 @@ if (win) {
       updateDatalist('setor-0', '');
     };
   </script>
-
 <script>
   document.addEventListener('keydown', function(e) {
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
@@ -2381,7 +2374,7 @@ if (win) {
     }
   });
 </script>
-  <script>
+<script>
 // Lista de combinações bloqueadas
 document.addEventListener('keydown', function(e) {
     // Lista de combinações específicas
@@ -2418,7 +2411,6 @@ setInterval(function() {
     }
 }, 500);
 </script>
-
 <script>
 function selectOptionUnidade(unidadeId, value) {
   try {
@@ -2435,7 +2427,6 @@ function selectOptionUnidade(unidadeId, value) {
   }
 }
 </script>
-
 <script>
 // === VALIDADOR_AUTOMATICO ===
 (function() {
@@ -2576,8 +2567,6 @@ function selectOptionUnidade(unidadeId, value) {
   }
 })();
 </script>
-
-
 <script>
 function isSetorValido(selectElement) {
   if (!selectElement) return false;
@@ -2601,13 +2590,39 @@ document.addEventListener("change", function(e) {
   }
 });
 </script>
+
+<script>
+(function() {
+  var container = document.getElementById('setoresContainer');
+  var enviar = document.getElementById('enviarPedido');
+  if (!container || !enviar) return;
+
+  function toggleEnviar() {
+    try {
+      enviar.style.display = (container.children && container.children.length > 0) ? 'inline-block' : 'none';
+    } catch(e) {}
+  }
+
+  // Verificação inicial (caso a página carregue sem setores)
+  toggleEnviar();
+
+  // Observa adições/remoções diretas de setores
+  var observer = new MutationObserver(function() {
+    toggleEnviar();
+  });
+  observer.observe(container, { childList: true });
+
+  // (Opcional) expõe função global segura para uso em outros pontos do código
+  window.__toggleEnviarPedido__ = toggleEnviar;
+})();
+</script>
 </body>
 </html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <title>Rodapé Profissional Pequeno</title>
-  <style>
+<meta charset="utf-8">
+<title>Rodapé Profissional Pequeno</title>
+<style>
     footer {
       position: fixed;
       bottom: 8px;
@@ -2694,17 +2709,14 @@ document.addEventListener("change", function(e) {
   line-height: 40px;  /* centraliza verticalmente */
 }
 </style>
-
 <style>
   #enviarPedido {
     display: none;
   }
 </style>
-
-</head>
+</meta></head>
 <body>
-  <script src="/protege-pagina.js"></script>
-
-  <footer>
+<script src="/protege-pagina.js"></script>
+<footer>
     © 2025.Todos os direitos reservados.
-  </footer>
+  </footer></body></html></head></html>
