@@ -616,8 +616,8 @@
       <input type="text" id="unidade" autocomplete="off" required>
       <div id="setoresContainer"></div>
       <div class="buttons">
-        <button type="button" onclick="adicionarSetor()">Adicionar Novo Setor</button>
-        <button id="enviarPedido" type="button">Enviar Pedido</button>
+        <button type="button" onclick="adicionarSetor()">Adicionar novo setor</button>
+        <button id="enviarPedido" type="button">Enviar pedido</button>
       </div>
     </form>
   </div>
@@ -625,6 +625,34 @@
   <datalist id="lista-itens"></datalist>
 
   <script>
+function pluralizarUnidade(unidade, quantidade) {
+  const pluraisIrregulares = {
+    "Ampola": "Ampolas",
+    "Frasco": "Frascos",
+    "Comprimido": "Comprimidos",
+    "Cartela": "Cartelas",
+    "Caixa": "Caixas",
+    "Tubo": "Tubos",
+    "Envelope": "Envelopes",
+    "Bisnaga": "Bisnagas",
+    "Gota": "Gotas",
+    "Unidade": "Unidades",
+    "Cápsula": "Cápsulas",
+    "Sachê": "Sachês",
+    "Drágea": "Drágeas",
+    "Caneta": "Canetas",
+    "Refil": "Refis", // pode não variar em alguns contextos, ajuste se necessário
+    "UI": "UI",
+    "ML": "ML",
+    "MG": "MG",
+    "L": "L"
+  };
+  if (Number(quantidade) > 1 && pluraisIrregulares[unidade]) {
+    return pluraisIrregulares[unidade];
+  }
+  return unidade;
+}
+
     // Initialize users from localStorage or use default
     let users = JSON.parse(localStorage.getItem('users')) || [
       { username: "sms6786", password: "Master1@" },
@@ -2143,19 +2171,19 @@ const EscritórioItems = [
     <div class="selected" onclick="toggleOptions('${unidadeId}')">Selecione</div>
     <input type="hidden" class="item-unidade" name="unidade" value="" required>
     <div class="options">
-      <div class="option" data-value="Comprimidos" onclick="selectOptionUnidade(\'${unidadeId}\', 'Comprimidos')">Comprimidos</div>
-      <div class="option" data-value="Cápsulas" onclick="selectOptionUnidade(\'${unidadeId}\', 'Cápsulas')">Cápsulas</div>
-      <div class="option" data-value="Frascos" onclick="selectOptionUnidade(\'${unidadeId}\', 'Frascos')">Frascos</div>
-      <div class="option" data-value="Ampolas" onclick="selectOptionUnidade(\'${unidadeId}\', 'Ampolas')">Ampolas</div>
-      <div class="option" data-value="Tubos" onclick="selectOptionUnidade(\'${unidadeId}\', 'Tubos')">Tubos</div>
+      <div class="option" data-value="Comprimido" onclick="selectOptionUnidade(\'${unidadeId}\', 'Comprimido')">Comprimido</div>
+      <div class="option" data-value="Cápsula" onclick="selectOptionUnidade(\'${unidadeId}\', 'Cápsula')">Cápsula</div>
+      <div class="option" data-value="Frasco" onclick="selectOptionUnidade(\'${unidadeId}\', 'Frasco')">Frasco</div>
+      <div class="option" data-value="Ampola" onclick="selectOptionUnidade(\'${unidadeId}\', 'Ampola')">Ampola</div>
+      <div class="option" data-value="Tubo" onclick="selectOptionUnidade(\'${unidadeId}\', 'Tubo')">Tubo</div>
       <div class="option" data-value="Refil" onclick="selectOptionUnidade(\'${unidadeId}\', 'Refil')">Refil</div>
-      <div class="option" data-value="Sachê" onclick="selectOptionUnidade(\'${unidadeId}\', 'Sachês')">Sachês</div>
-      <div class="option" data-value="Drágeas" onclick="selectOptionUnidade(\'${unidadeId}\', 'Drágeas')">Drágeas</div>
-      <div class="option" data-value="Canetas" onclick="selectOptionUnidade(\'${unidadeId}\', 'Canetas')">Canetas</div>
-      <div class="option" data-value="Unidades" onclick="selectOptionUnidade(\'${unidadeId}\', 'Unidades')">Unidades</div>
-      <div class="option" data-value="Cartelas" onclick="selectOptionUnidade(\'${unidadeId}\', 'Cartelas')">Cartelas</div>
-      <div class="option" data-value="Bisnagas" onclick="selectOptionUnidade(\'${unidadeId}\', 'Bisnagas')">Bisnagas</div>
-      <div class="option" data-value="Envelopes" onclick="selectOptionUnidade(\'${unidadeId}\', 'Envelopes')">Envelopes</div>
+      <div class="option" data-value="Sachê" onclick="selectOptionUnidade(\'${unidadeId}\', 'Sachê')">Sachê</div>
+      <div class="option" data-value="Drágea" onclick="selectOptionUnidade(\'${unidadeId}\', 'Drágea')">Drágea</div>
+      <div class="option" data-value="Caneta" onclick="selectOptionUnidade(\'${unidadeId}\', 'Caneta')">Caneta</div>
+      <div class="option" data-value="Unidade" onclick="selectOptionUnidade(\'${unidadeId}\', 'Unidade')">Unidade</div>
+      <div class="option" data-value="Cartela" onclick="selectOptionUnidade(\'${unidadeId}\', 'Cartela')">Cartela</div>
+      <div class="option" data-value="Bisnaga" onclick="selectOptionUnidade(\'${unidadeId}\', 'Bisnaga')">Bisnaga</div>
+      <div class="option" data-value="Envelope" onclick="selectOptionUnidade(\'${unidadeId}\', 'Envelope')">Envelope</div>
     </div>
   </div>
 </div>
@@ -2265,7 +2293,8 @@ let m = nome.trim().match(/^((?:\d+\s+){4}\d+)\s+(.*)$/);
 let codigo = '';
 let descricao = nome;
 if (m) { codigo = m[1]; descricao = m[2]; }
-corpoEmail += `${codigo ? codigo + ' - ' : ''}${descricao} - ${qtd} ${unidade}\n`;
+corpoEmail += `${codigo ? codigo + ' - ' : ''}${descricao} - ${qtd} ${pluralizarUnidade(unidade, qtd)}
+`;
         });
         corpoEmail += `\n`;
         const Justificativa = setor.querySelector('.Justificativa').value;
