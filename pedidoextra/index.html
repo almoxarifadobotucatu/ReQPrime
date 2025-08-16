@@ -602,6 +602,38 @@
 
     }
   </style>
+
+  <style>
+    .erro-campo {
+      outline: 2px solid #ff4d4d !important;
+      background-color: rgba(255, 0, 0, 0.08) !important;
+      transition: background-color 0.2s ease;
+    }
+    #mensagensErros {
+      display: none;
+      margin: 15px 0;
+      padding: 15px;
+      border: 1px solid #ff4d4d;
+      border-radius: 8px;
+      background-color: #ffe5e5;
+      color: #a70000;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+    }
+    #mensagensErros h3 {
+      margin-top: 0;
+      font-size: 16px;
+      font-weight: bold;
+    }
+    #mensagensErros ul {
+      margin: 5px 0 0 20px;
+      padding: 0;
+    }
+    #mensagensErros li {
+      margin-bottom: 4px;
+    }
+  </style>
+
 </head>
 <body oncontextmenu="return false;">
     </form>
@@ -609,7 +641,8 @@
 
   <div class="container" id="mainContainer">
     <h2>Solicitação de Pedido Extra</h2>
-    <form id="pedidoForm">
+    <div id="mensagensErros"></div>
+<form id="pedidoForm">
       <label for="solicitante">Responsável pela solicitação:</label>
       <input type="text" id="solicitante" autocomplete="off" required>
       <label for="unidade">Unidade de saúde:</label>
@@ -2380,6 +2413,148 @@ function selectOptionUnidade(unidadeId, value) {
   }
 }
 </script>
+
+<script>
+// === VALIDADOR_AUTOMATICO ===
+(function() {
+  function limparErros(root) {
+    (root || document).querySelectorAll('.erro-campo').forEach(el => el.classList.remove('erro-campo'));
+    const painel = document.getElementById('mensagensErros');
+    if (painel) painel.style.display = 'none';
+  }
+
+  function getCampo(refs) {
+    for (const sel of refs) {
+      const el = document.querySelector(sel);
+      if (el) return el;
+    }
+    return null;
+  }
+
+  function validarFormulario() {
+    limparErros(document);
+    let errosPorSetor = {};
+
+    // Campos principais
+    const solicitanteEl = getCampo(['#solicitante','input[name="solicitante" i]']);
+    const unidadeSaudeEl = getCampo(['#unidade','input[name="unidade" i]:not(.item-unidade)']);
+
+    if (solicitanteEl && !solicitanteEl.value.trim()) {
+      errosPorSetor["Geral"] = errosPorSetor["Geral"] || [];
+      errosPorSetor["Geral"].push("Responsável pela solicitação");
+      solicitanteEl.classList.add('erro-campo');
+    }
+    if (unidadeSaudeEl && !unidadeSaudeEl.value.trim()) {
+      errosPorSetor["Geral"] = errosPorSetor["Geral"] || [];
+      errosPorSetor["Geral"].push("Unidade de saúde");
+      unidadeSaudeEl.classList.add('erro-campo');
+    }
+
+    // Setores
+    const setores = Array.from(document.querySelectorAll('.setor'));
+    setores.forEach((setor, sIndex) => {
+      const setorInput = setor.querySelector('input[name="setor"]');
+      const setorNomeSelecionado = (setorInput && setorInput.value.trim()) ? setorInput.value.trim() : "Setor não selecionado";
+
+      if (!errosPorSetor[setorNomeSelecionado]) {
+        errosPorSetor[setorNomeSelecionado] = [];
+      }
+
+      if (!setorInput || !setorInput.value.trim()) {
+        errosPorSetor[setorNomeSelecionado].push("Setor não selecionado");
+        if (setorInput) setorInput.classList.add('erro-campo');
+      }
+
+      const itens = Array.from(setor.querySelectorAll('.item'));
+      if (itens.length === 0) {
+        errosPorSetor[setorNomeSelecionado].push("Nenhum item adicionado");
+      }
+
+      itens.forEach((item, iIndex) => {
+        const nomeItem = item.querySelector('.item-nome');
+        const qtdItem = item.querySelector('.item-qtd');
+        const unidadeItem = item.querySelector('.item-unidade');
+
+        if (nomeItem && !nomeItem.value.trim()) {
+          errosPorSetor[setorNomeSelecionado].push(`Nome do item ${iIndex + 1} não preenchido`);
+          nomeItem.classList.add('erro-campo');
+        }
+        if (qtdItem && (!qtdItem.value || Number(qtdItem.value) <= 0)) {
+          errosPorSetor[setorNomeSelecionado].push(`Quantidade do item ${iIndex + 1} inválida`);
+          qtdItem.classList.add('erro-campo');
+        }
+        if (unidadeItem && !unidadeItem.value.trim()) {
+          errosPorSetor[setorNomeSelecionado].push(`Unidade de controle do item ${iIndex + 1} não preenchida`);
+          unidadeItem.classList.add('erro-campo');
+        }
+      });
+    });
+    // Remover setores sem erros para evitar listar "Setor" sem itens de erro
+    for (const key of Object.keys(errosPorSetor)) {
+      if (!Array.isArray(errosPorSetor[key]) || errosPorSetor[key].length === 0) {
+        delete errosPorSetor[key];
+      }
+    }
+
+
+
+    if (Object.keys(errosPorSetor).length) {
+      let msgHTML = "<h3>⚠️ Preencha os seguintes campos obrigatórios:</h3>";
+      for (const setor in errosPorSetor) {
+        msgHTML += `<strong>${setor}</strong><ul>`;
+        errosPorSetor[setor].forEach(err => {
+          msgHTML += `<li>${err}</li>`;
+        });
+        msgHTML += "</ul>";
+      }
+      const painel = document.getElementById('mensagensErros');
+      if (painel) {
+        painel.innerHTML = msgHTML;
+        painel.style.display = 'block';
+        painel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      const primeiroErro = document.querySelector('.erro-campo');
+      if (primeiroErro) {
+        try { primeiroErro.focus(); } catch (_e) {}
+      }
+      return false;
+    }
+    return true;
+  }
+
+  function armarListeners() {
+    const form = document.getElementById('pedidoForm') || document.querySelector('form');
+    const enviarBtn = document.getElementById('enviarPedido') || document.querySelector('button[id*="enviar" i]') || document.querySelector('button[type="submit"]');
+
+    if (form) {
+      form.addEventListener('submit', function(e) {
+        if (!validarFormulario()) {
+          e.preventDefault();
+          e.stopPropagation();
+          e.stopImmediatePropagation();
+        }
+      }, true);
+    }
+
+    if (enviarBtn) {
+      enviarBtn.addEventListener('click', function(e) {
+        if (!validarFormulario()) {
+          e.preventDefault();
+          e.stopPropagation();
+          e.stopImmediatePropagation();
+        }
+      }, true);
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', armarListeners);
+  } else {
+    armarListeners();
+  }
+})();
+</script>
+
 </body>
 </html>
 <html lang="pt-BR">
