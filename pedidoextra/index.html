@@ -645,6 +645,13 @@ document.addEventListener("change", function(e) {
     }
   </style>
 
+
+<style>
+  #enviarPedido {
+    display: none;
+  }
+</style>
+
 </head>
 <body oncontextmenu="return false;">
     </form>
@@ -2100,6 +2107,10 @@ const EscritórioItems = [
     let setorIndex = 0;
 
     function adicionarSetor() {
+
+      // Exibe o botão Enviar Pedido assim que um setor for adicionado
+      document.getElementById("enviarPedido").style.display = "inline-block";
+
       const setores = document.querySelectorAll('.setor input[name="setor"]');
       const setoresSelecionados = Array.from(setores).map(input => input.value.trim());
       const container = document.getElementById('setoresContainer');
@@ -2683,6 +2694,13 @@ document.addEventListener("change", function(e) {
   line-height: 40px;  /* centraliza verticalmente */
 }
 </style>
+
+<style>
+  #enviarPedido {
+    display: none;
+  }
+</style>
+
 </head>
 <body>
   <script src="/protege-pagina.js"></script>
