@@ -2,7 +2,18 @@
 <html lang="pt-BR">
 <head>
   <!-- Proteção deve ser a primeira coisa do head -->
-  <script src="/protege-pagina.js"></script>
+  <script src="/protege-pagina.js">
+document.addEventListener("input", function(e) {
+  if (e.target.classList.contains("erro-campo")) {
+    e.target.classList.remove("erro-campo");
+  }
+});
+document.addEventListener("change", function(e) {
+  if (e.target.classList.contains("erro-campo")) {
+    e.target.classList.remove("erro-campo");
+  }
+});
+</script>
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -2555,6 +2566,30 @@ function selectOptionUnidade(unidadeId, value) {
 })();
 </script>
 
+
+<script>
+function isSetorValido(selectElement) {
+  if (!selectElement) return false;
+  const value = (selectElement.value || "").trim();
+  return value !== "" && value !== "Selecione";
+}
+</script>
+<script>
+document.addEventListener("input", function(e) {
+  if (e.target.classList.contains("erro-campo")) {
+    e.target.classList.remove("erro-campo");
+    e.target.style.backgroundColor = "";
+    e.target.style.outline = "";
+  }
+});
+document.addEventListener("change", function(e) {
+  if (e.target.classList.contains("erro-campo")) {
+    e.target.classList.remove("erro-campo");
+    e.target.style.backgroundColor = "";
+    e.target.style.outline = "";
+  }
+});
+</script>
 </body>
 </html>
 <html lang="pt-BR">
