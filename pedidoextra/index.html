@@ -617,7 +617,7 @@
       <div id="setoresContainer"></div>
       <div class="buttons">
         <button type="button" onclick="adicionarSetor()">Adicionar Novo Setor</button>
-        <button type="submit">Enviar Pedido</button>
+        <button id="enviarPedido" type="button">Enviar Pedido</button>
       </div>
     </form>
   </div>
@@ -2170,7 +2170,7 @@ const EscritórioItems = [
       button.closest('.item').remove();
     }
 
-    document.getElementById('pedidoForm').addEventListener('submit', function(e) {
+    document.getElementById('enviarPedido').addEventListener('click', function(e) {
       e.preventDefault();
       const solicitante = document.getElementById('solicitante').value.trim();
       const unidade = document.getElementById('unidade').value.trim();
@@ -2265,8 +2265,14 @@ corpoEmail += ` ${codigo ? codigo + ' - ' : ''}${descricao} - ${qtd} ${unidade}\
         }
         corpoEmail += `----------------------------------------\n\n`;
       });
-      const mailto = `mailto:leitaoochefe@gmail.com?subject=Pedido Extra - ${encodeURIComponent(unidade)}&body=${encodeURIComponent(corpoEmail)}`;
-      window.location.href = mailto;
+      const bodyEncoded = encodeURIComponent(corpoEmail);
+const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=leitaoochefe@gmail.com&su=Pedido Extra - ${encodeURIComponent(unidade)}&body=${bodyEncoded}`;
+let win = window.open('about:blank', '_blank');
+if (win) {
+  win.location.href = gmailUrl;
+} else {
+  window.location.href = gmailUrl;
+}
     });
 
     window.onload = function() {
