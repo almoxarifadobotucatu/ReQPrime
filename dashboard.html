@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard de Pedidos</title>
+  <style>
+    :root { --primary:#0B5FFF; }
+    * { box-sizing: border-box; }
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 24px;
+      background: #f4f6f9;
+      color: #222;
+    }
+    .wrap { max-width: 1100px; margin: 0 auto; }
+    h1 { text-align: center; margin: 0 0 16px; }
+    .status {
+      background:#fff; border:1px solid #e5e7eb; border-radius:10px;
+      padding:12px 16px; margin: 0 auto 16px; display:flex; gap:12px; align-items:center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    .status b { color:#111; }
+    .status .badge { padding:2px 8px; border-radius:999px; background:#eef2ff; color:#1e40af; font-size:12px; }
+    .actions { display:flex; gap:8px; margin-left:auto; }
+    .btn {
+      border:none; border-radius:8px; padding:10px 14px; cursor:pointer;
+      background: var(--primary); color:#fff; font-weight:bold;
+    }
+    .btn.secondary { background:#111827; }
+    .btn.ghost { background:#fff; border:1px solid #e5e7eb; color:#111; }
+    table {
+      width: 100%; border-collapse: collapse; background: white;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1); border-radius:10px; overflow:hidden;
+    }
+    th, td { padding: 12px; text-align: left; border-bottom: 1px solid #eee; }
+    th { background: var(--primary); color: white; }
+    tr:hover { background: #f9fafb; }
+    .empty { text-align:center; padding:24px; color:#6b7280; }
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Dashboard de Pedidos</h1>
+
+  <div class="status">
+    <span class="badge" id="originBadge"></span>
+    <div>Origem atual: <b id="originText"></b> · <span id="countText">0</span> pedidos</div>
+    <div class="actions">
+      <button class="btn ghost" id="btnAtualizar">Atualizar</button>
+      <button class="btn secondary" id="btnLimpar">Limpar lista</button>
+    </div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Solicitante</th>
+        <th>Unidade</th>
+        <th>Item</th>
+        <th>Quantidade</th>
+        <th>Data</th>
+        <th>Hora</th>
+      </tr>
+    </thead>
+    <tbody id="tabelaPedidos">
+      <tr class="empty"><td colspan="6">Nenhum pedido encontrado.</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<script>
+(function(){
+  const tabela = document.getElementById("tabelaPedidos");
+  const originText = document.getElementById("originText");
+  const originBadge = document.getElementById("originBadge");
+  const countText = document.getElementById("countText");
+
+  function getPedidos(){
+    try {
+      const raw = localStorage.getItem("pedidosExtras");
+      return raw ? JSON.parse(raw) : [];
+    } catch(e) {
+      console.error("Erro lendo localStorage:", e);
+      return [];
+    }
+  }
+
+  function render(){
+    const pedidos = getPedidos();
+    countText.textContent = pedidos.length;
+    tabela.innerHTML = "";
+
+    if(pedidos.length === 0){
+      const tr = document.createElement("tr");
+      tr.className = "empty";
+      tr.innerHTML = '<td colspan="6">Nenhum pedido encontrado.</td>';
+      tabela.appendChild(tr);
+      return;
+    }
+
+    const frag = document.createDocumentFragment();
+    pedidos.forEach(p => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${p.solicitante ?? ""}</td>
+        <td>${p.unidade ?? ""}</td>
+        <td>${p.item ?? ""}</td>
+        <td>${p.quantidade ?? ""}</td>
+        <td>${p.data ?? ""}</td>
+        <td>${p.hora ?? ""}</td>`;
+      frag.appendChild(tr);
+    });
+    tabela.appendChild(frag);
+  }
+
+  // Botões
+  document.getElementById("btnAtualizar").addEventListener("click", render);
+  document.getElementById("btnLimpar").addEventListener("click", () => {
+    if(confirm("Limpar todos os pedidos salvos?")){
+      localStorage.removeItem("pedidosExtras");
+      render();
+    }
+  });
+
+  // Mostrar origem
+  const origin = location.protocol + "//" + location.host;
+  originText.textContent = origin || "file://";
+  originBadge.textContent = location.protocol === "file:" ? "Arquivo local" : "Web";
+
+  // Atualiza ao abrir
+  render();
+
+  // Atualiza em tempo real se outra aba salvar (mesma origem)
+  window.addEventListener("storage", (e) => {
+    if(e.key === "pedidosExtras") render();
+  });
+})();
+</script>
+</body>
+</html>
