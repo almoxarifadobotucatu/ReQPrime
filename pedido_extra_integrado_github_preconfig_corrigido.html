@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Pedido Extra (GitHub – Corrigido)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 1000px; margin: 0 auto; padding: 16px; }
+    .hint { background: #f6f8fa; border: 1px solid #e1e4e8; padding: 10px; border-radius: 6px; margin-bottom: 16px; }
+    label { display:block; margin: 8px 0 4px; }
+    input, button { padding: 8px; }
+    .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  </style>
+</head>
+<body>
+  <h1>Pedido Extra</h1>
+
+  <div class="hint">
+    <strong>Configuração GitHub</strong><br />
+    Arquivo alvo: <code>almoxarifadobotucatu / portal-projetos / main / pedidos-sus/pedidos.json</code><br />
+    Cole seu <strong>token</strong> abaixo e clique em salvar. (Ele fica salvo no navegador).
+  </div>
+
+  <div class="row">
+    <div>
+      <label>Dono do repositório (owner):</label>
+      <input id="ghOwner" value="almoxarifadobotucatu" />
+    </div>
+    <div>
+      <label>Repositório:</label>
+      <input id="ghRepo" value="portal-projetos" />
+    </div>
+    <div>
+      <label>Branch:</label>
+      <input id="ghBranch" value="main" />
+    </div>
+    <div style="min-width:320px;">
+      <label>Caminho do arquivo JSON:</label>
+      <input id="ghPath" value="pedidos-sus/pedidos.json" style="min-width:300px;" />
+    </div>
+  </div>
+  <div class="row" style="margin-top:8px;">
+    <div style="min-width:420px;">
+      <label>GitHub Token (repo:contents):</label>
+      <input id="ghToken" type="password" placeholder="ghp_xxx..." style="min-width:400px;" />
+    </div>
+    <button id="salvarCfg">Salvar Config</button>
+  </div>
+
+  <hr />
+
+  <h3>Novo Pedido</h3>
+  <div class="row">
+    <div>
+      <label>Unidade de Saúde</label>
+      <input id="unidadeSaude" placeholder="UBS Central" />
+    </div>
+    <div>
+      <label>Setor</label>
+      <input id="setor" placeholder="Farmácia" />
+    </div>
+    <div>
+      <label>Item</label>
+      <input id="itemSimples" placeholder="Abaixador de língua" />
+    </div>
+    <div>
+      <label>Quantidade</label>
+      <input id="quantidadeInput" type="number" value="1" min="1" />
+    </div>
+    <div>
+      <label>&nbsp;</label>
+      <button id="enviarPedido">Enviar Pedido</button>
+    </div>
+  </div>
+
+  <p><a href="dashboard_github_preconfig.html" target="_blank">📊 Abrir Dashboard</a></p>
+
+  <script>
+    const CFG_KEY = "gh_cfg";
+    function getCfg() {
+      try { return JSON.parse(localStorage.getItem(CFG_KEY)) || {}; } catch(e){ return {}; }
+    }
+    function setCfg(cfg) { localStorage.setItem(CFG_KEY, JSON.stringify(cfg)); }
+
+    // Popular config
+    (function(){
+      const cfg = getCfg();
+      if (!cfg.owner) cfg.owner = "almoxarifadobotucatu";
+      if (!cfg.repo) cfg.repo = "portal-projetos";
+      if (!cfg.branch) cfg.branch = "main";
+      if (!cfg.path) cfg.path = "pedidos-sus/pedidos.json";
+      document.getElementById("ghOwner").value = cfg.owner;
+      document.getElementById("ghRepo").value = cfg.repo;
+      document.getElementById("ghBranch").value = cfg.branch;
+      document.getElementById("ghPath").value = cfg.path;
+      if (cfg.token) document.getElementById("ghToken").value = cfg.token;
+      setCfg(cfg);
+    })();
+
+    document.getElementById("salvarCfg").addEventListener("click", () => {
+      setCfg({
+        owner: document.getElementById("ghOwner").value.trim(),
+        repo: document.getElementById("ghRepo").value.trim(),
+        branch: document.getElementById("ghBranch").value.trim(),
+        path: document.getElementById("ghPath").value.trim(),
+        token: document.getElementById("ghToken").value.trim()
+      });
+      alert("Configuração do GitHub salva!");
+    });
+
+    // ---------- GitHub API ----------
+    async function ghGetFile(owner, repo, path, token, ref) {
+      const url = `https://api.github.com/repos/${owner}/${repo}/contents/${encodeURIComponent(path)}?ref=${encodeURIComponent(ref)}`;
+      const resp = await fetch(url, {
+        headers: token ? { "Authorization": `Bearer ${token}` } : {}
+      });
+      if (!resp.ok) throw new Error("Falha ao ler arquivo do GitHub: " + resp.status);
+      return resp.json();
+    }
+    async function ghPutFile(owner, repo, path, token, branch, contentText, sha) {
+      const url = `https://api.github.com/repos/${owner}/${repo}/contents/${encodeURIComponent(path)}`;
+      const body = {
+        message: "Atualiza pedidos.json via formulário",
+        content: btoa(unescape(encodeURIComponent(contentText))),
+        branch
+      };
+      if (sha) body.sha = sha;
+      const resp = await fetch(url, {
+        method: "PUT",
+        headers: {
+          "Authorization": `Bearer ${token}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(body)
+      });
+      if (!resp.ok) {
+        const t = await resp.text();
+        console.error("Erro detalhado:", t);
+        throw new Error("Falha ao gravar no GitHub: " + resp.status + " - " + t);
+      }
+      return resp.json();
+    }
+
+    function coletarPedido() {
+      const agora = new Date().toLocaleString("pt-BR");
+      return {
+        tipo: "Extra",
+        unidade: document.getElementById("unidadeSaude").value || "Não informado",
+        setor: document.getElementById("setor").value || "Não informado",
+        item: document.getElementById("itemSimples").value || "Não informado",
+        quantidade: document.getElementById("quantidadeInput").value || "1",
+        data: agora
+      };
+    }
+
+    async function enviarParaGitHub(pedido) {
+      const cfg = getCfg();
+      if (!cfg.owner || !cfg.repo || !cfg.path || !cfg.branch || !cfg.token) {
+        alert("Configure o GitHub (owner, repo, branch, path e token).");
+        throw new Error("Configuração ausente");
+      }
+
+      let current = [];
+      let sha = null;
+
+      try {
+        const meta = await ghGetFile(cfg.owner, cfg.repo, cfg.path, cfg.token, cfg.branch);
+        sha = meta.sha;
+        const decoded = decodeURIComponent(escape(atob(meta.content)));
+        current = JSON.parse(decoded || "[]");
+        if (!Array.isArray(current)) current = [];
+      } catch (e) {
+        console.warn("Arquivo não encontrado ou inválido, será criado novo:", e.message);
+        current = [];
+      }
+
+      const atualizado = current.concat([pedido]);
+      await ghPutFile(cfg.owner, cfg.repo, cfg.path, cfg.token, cfg.branch, JSON.stringify(atualizado, null, 2), sha);
+      return atualizado.length;
+    }
+
+    document.getElementById("enviarPedido").addEventListener("click", async () => {
+      try {
+        const pedido = coletarPedido();
+        const local = JSON.parse(localStorage.getItem("pedidosExtras")) || [];
+        local.push(pedido);
+        localStorage.setItem("pedidosExtras", JSON.stringify(local));
+        const total = await enviarParaGitHub(pedido);
+        alert("✅ Pedido enviado! Total de pedidos no GitHub: " + total);
+      } catch(ex) {
+        console.error(ex);
+        alert("❌ Erro ao enviar para o GitHub: " + ex.message);
+      }
+    });
+  </script>
+</body>
+</html>
