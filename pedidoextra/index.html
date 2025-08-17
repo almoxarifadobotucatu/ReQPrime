@@ -2656,6 +2656,28 @@ document.addEventListener("change", function(e) {
   });
 </script>
 
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const btnEnviar = document.getElementById("enviarPedido");
+  if (btnEnviar) {
+    btnEnviar.addEventListener("click", function(e) {
+      e.preventDefault();
+      if (btnEnviar.disabled) return;
+      btnEnviar.disabled = true;
+
+      // Chama a função original de envio, se existir
+      if (typeof enviarPedido === "function") {
+        enviarPedido();
+      }
+
+      // Reativa depois de alguns segundos para permitir novo envio
+      setTimeout(() => { btnEnviar.disabled = false; }, 5000);
+    }, { once: false });
+  }
+});
+</script>
+
 </body>
 </html>
 <html lang="pt-BR">
@@ -2878,6 +2900,28 @@ const pedido = {
       alert("❌ Erro ao enviar o pedido.");
     }
   });
+</script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const btnEnviar = document.getElementById("enviarPedido");
+  if (btnEnviar) {
+    btnEnviar.addEventListener("click", function(e) {
+      e.preventDefault();
+      if (btnEnviar.disabled) return;
+      btnEnviar.disabled = true;
+
+      // Chama a função original de envio, se existir
+      if (typeof enviarPedido === "function") {
+        enviarPedido();
+      }
+
+      // Reativa depois de alguns segundos para permitir novo envio
+      setTimeout(() => { btnEnviar.disabled = false; }, 5000);
+    }, { once: false });
+  }
+});
 </script>
 
 </body></html></head></html>
