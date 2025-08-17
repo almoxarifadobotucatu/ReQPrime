@@ -2669,15 +2669,21 @@ document.addEventListener("DOMContentLoaded", function() {
       return;
     }
 
-    const dados = {
-      solicitante,
-      unidade,
-      setores,
-      data: new Date().toISOString()
-    };
-
     try {
-      await addDoc(collection(db, "pedidos"), dados);
+      // 🔹 Cada item é salvo como documento separado no Firestore
+      for (const setor of setores) {
+        for (const item of setor.itens) {
+          const dados = {
+            solicitante,
+            unidade,
+            item: item.nome,
+            quantidade: item.quantidade,
+            unidadeControle: item.unidade,
+            data: new Date().toISOString()
+          };
+          await addDoc(collection(db, "pedidos"), dados);
+        }
+      }
       alert("✅ Pedido enviado com sucesso!");
       document.getElementById("pedidoForm").reset();
       document.getElementById("setoresContainer").innerHTML = "";
@@ -2874,15 +2880,21 @@ document.addEventListener("DOMContentLoaded", function() {
       return;
     }
 
-    const dados = {
-      solicitante,
-      unidade,
-      setores,
-      data: new Date().toISOString()
-    };
-
     try {
-      await addDoc(collection(db, "pedidos"), dados);
+      // 🔹 Cada item é salvo como documento separado no Firestore
+      for (const setor of setores) {
+        for (const item of setor.itens) {
+          const dados = {
+            solicitante,
+            unidade,
+            item: item.nome,
+            quantidade: item.quantidade,
+            unidadeControle: item.unidade,
+            data: new Date().toISOString()
+          };
+          await addDoc(collection(db, "pedidos"), dados);
+        }
+      }
       alert("✅ Pedido enviado com sucesso!");
       document.getElementById("pedidoForm").reset();
       document.getElementById("setoresContainer").innerHTML = "";
