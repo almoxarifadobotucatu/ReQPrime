@@ -3,10 +3,29 @@
 <head>
   <meta charset="UTF-8">
   <title>Dashboard de Pedidos</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f4f4f9; padding: 20px; }
+    table { width: 100%; border-collapse: collapse; background: #fff; }
+    th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
+    th { background: #0a66c2; color: #fff; }
+    tr:nth-child(even) { background: #f9f9f9; }
+  </style>
 </head>
-<body style="font-family: Arial, sans-serif; background: #f4f4f9; padding: 20px;">
+<body>
   <h2>📊 Pedidos Registrados</h2>
-  <ul id="listaPedidos" style="background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);"></ul>
+  <table>
+    <thead>
+      <tr>
+        <th>Responsável</th>
+        <th>Unidade de Saúde</th>
+        <th>Item</th>
+        <th>Quantidade</th>
+        <th>Unidade de Controle</th>
+        <th>Data</th>
+      </tr>
+    </thead>
+    <tbody id="tabelaPedidos"></tbody>
+  </table>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
@@ -27,35 +46,26 @@
     async function carregarPedidos() {
       const pedidosRef = collection(db, "pedidos");
       const snapshot = await getDocs(pedidosRef);
+      const tabela = document.getElementById("tabelaPedidos");
+      tabela.innerHTML = "";
 
-      snapshot.forEach(doc => {
-  const data = doc.data();
-  if (data.itens && data.itens.length > 0) {
-    data.itens.forEach(item => {
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td>${data.solicitante}</td>
-        <td>${data.unidade}</td>
-        <td>${item.nome}</td>
-        <td>${item.quantidade}</td>
-        <td>${item.unidadeControle}</td>
-        <td>${new Date(data.data).toLocaleString()}</td>
-      `;
-      tabela.appendChild(tr);
-    });
-  }
-});
-
-
-      const lista = document.getElementById("listaPedidos");
-      lista.innerHTML = "";
-
+      // Inserindo pedidos na tabela
       snapshot.forEach(doc => {
         const data = doc.data();
-        const li = document.createElement("li");
-        li.style.margin = "10px 0";
-        li.textContent = `${data.solicitante} - ${data.unidade} (${new Date(data.data).toLocaleString()})`;
-        lista.appendChild(li);
+        if (data.itens && data.itens.length > 0) {
+          data.itens.forEach(item => {
+            const tr = document.createElement("tr");
+            tr.innerHTML = `
+              <td>${data.solicitante}</td>
+              <td>${data.unidade}</td>
+              <td>${item.nome}</td>
+              <td>${item.quantidade}</td>
+              <td>${item.unidadeControle}</td>
+              <td>${new Date(data.data).toLocaleString()}</td>
+            `;
+            tabela.appendChild(tr);
+          });
+        }
       });
     }
 
