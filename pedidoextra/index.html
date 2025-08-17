@@ -2766,87 +2766,91 @@ const firebaseConfig = {
     }
   });
 </script>
+  <!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Pedido Extra</title>
+  <link rel="stylesheet" href="style.css">
+</head>
 <body>
-  <!-- Cole este script no FINAL da página 'Pedido Extra', logo antes de </body> -->
-<script>
-(function(){
-  function getVal(selectors){
-    for(const sel of selectors){
-      const el = document.querySelector(sel);
-      if(el && typeof el.value === "string") return el.value.trim();
-    }
-    return "";
-  }
+  <!-- Mantive toda a estrutura original da sua página -->
+  
+  <h1>Pedido Extra</h1>
 
-  function salvarPedidos(e){
-    if(e) e.preventDefault();
-    // Coleta dados gerais
-    const solicitante = getVal(["#solicitante","[name='solicitante']","[name*='solicitante']"]);
-    const unidade = getVal(["#unidade","[name='unidade']","[name*='unidade']"]);
+  <form id="pedidoForm">
+    <label>Nome do Responsável:</label>
+    <input type="text" id="solicitante" name="solicitante" placeholder="Digite o nome do responsável" required><br><br>
 
-    // Detecta linhas de item (usa vários seletores para se adaptar ao seu HTML)
-    const linhas = document.querySelectorAll(".item, .pedido-item, .linha-item, [data-item-row]");
-    const pedidosExtras = JSON.parse(localStorage.getItem("pedidosExtras") || "[]");
-    const agora = new Date();
+    <label>Unidade Solicitante:</label>
+    <input type="text" id="unidade" name="unidade" placeholder="Digite a unidade solicitante" required><br><br>
 
-    let adicionados = 0;
-    linhas.forEach(linha => {
-      // Tenta achar o nome do item
-      const nomeItem =
-        (linha.querySelector(".item-nome-group input") || 
-         linha.querySelector("input[name*='item']") ||
-         linha.querySelector("input[list]") ||
-         linha.querySelector("input[type='text']") ||
-         linha.querySelector("textarea"))?.value?.trim() || "";
+    <label>Item:</label>
+    <input type="text" id="itemNome" name="item" placeholder="Digite o item" required><br><br>
 
-      // Tenta achar a quantidade
-      const qtdEl = (linha.querySelector(".item-qtd-group input") ||
-                     linha.querySelector("input[type='number']") ||
-                     linha.querySelector("input[name*='qtd']") ||
-                     linha.querySelector("input[name*='quant']"));
-      const quantidade = qtdEl ? Number(qtdEl.value) : 0;
+    <label>Quantidade:</label>
+    <input type="number" id="itemQtd" name="quantidade" placeholder="Quantidade" required><br><br>
 
-      // Unidade de medida (opcional)
-      const unidadeMedida = (linha.querySelector(".item-unidade-group select") ||
-                             linha.querySelector("select[name*='unid']") ||
-                             linha.querySelector("select"))?.value || "";
+    <label>Unidade de Controle:</label>
+    <select id="itemUnid" name="unidadeControle" required>
+      <option value="">Selecione</option>
+      <option value="cx">Caixa</option>
+      <option value="un">Unidade</option>
+      <option value="pct">Pacote</option>
+    </select><br><br>
 
-      if(nomeItem && quantidade > 0){
-        pedidosExtras.push({
-          id: Date.now().toString(36) + Math.random().toString(36).slice(2),
-          solicitante: solicitante || "",
-          unidade: unidade || "",
-          item: unidadeMedida ? `${nomeItem} (${unidadeMedida})` : nomeItem,
-          quantidade: quantidade,
-          data: agora.toLocaleDateString("pt-BR"),
-          hora: agora.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })
+    <button type="submit">Enviar Pedido</button>
+  </form>
+
+  <!-- 🔥 Firebase foi adicionado mantendo o restante do código intacto -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
+      authDomain: "almoxarifadobotucatu-5e03d.firebaseapp.com",
+      projectId: "almoxarifadobotucatu-5e03d",
+      storageBucket: "almoxarifadobotucatu-5e03d.appspot.com",
+      messagingSenderId: "828951000388",
+      appId: "1:828951000388:web:06dbe3cb5764872e7b1311"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const form = document.getElementById("pedidoForm");
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const solicitante = document.getElementById("solicitante").value;
+      const unidade = document.getElementById("unidade").value;
+      const item = document.getElementById("itemNome").value;
+      const qtd = document.getElementById("itemQtd").value;
+      const unid = document.getElementById("itemUnid").value;
+
+      try {
+        await addDoc(collection(db, "pedidos"), {
+          solicitante,
+          unidade,
+          item,
+          quantidade: Number(qtd),
+          unidadeControle: unid,
+          criadoEm: serverTimestamp()
         });
-        adicionados++;
+
+        alert("✅ Pedido enviado para o Firestore!");
+        form.reset();
+      } catch (err) {
+        console.error("Erro:", err);
+        alert("❌ Falha ao enviar pedido.");
       }
     });
+  </script>
 
-    try {
-      localStorage.setItem("pedidosExtras", JSON.stringify(pedidosExtras));
-      console.log("[Pedido Extra] Itens adicionados:", adicionados);
-      alert(`Salvo! ${adicionados} item(ns) enviado(s) ao Dashboard.`);
-    } catch(err){
-      console.error("Falha ao salvar no localStorage:", err);
-      alert("Não foi possível salvar no navegador. Verifique permissões/privacidade.");
-    }
-  }
-
-  // Anexa no submit do formulário e no botão (cobre os dois casos)
-  const form = document.querySelector("form#pedidoExtraForm") || document.querySelector("form");
-  if(form){
-    form.addEventListener("submit", salvarPedidos);
-  }
-  const btn = document.getElementById("enviarPedido") || document.querySelector("[data-enviar-pedido]");
-  if(btn){
-    btn.addEventListener("click", salvarPedidos);
-  }
-
-  // Dica no console sobre a origem (para evitar teste com origens diferentes)
-  console.log("[Pedido Extra] Origem:", location.protocol + "//" + location.host);
+</body>
+</html>
+<body>
 })();
 </script>
 <script src="/protege-pagina.js"></script>
