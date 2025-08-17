@@ -603,7 +603,17 @@
       background-color: rgba(255, 0, 0, 0.08) !important;
       transition: background-color 0.2s ease;
     }
-    
+    #mensagensErros {
+      display: none;
+      margin: 15px 0;
+      padding: 15px;
+      border: 1px solid #ff4d4d;
+      border-radius: 8px;
+      background-color: #ffe5e5;
+      color: #a70000;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+    }
     #mensagensErros h3 {
       margin-top: 0;
       font-size: 16px;
@@ -2641,13 +2651,32 @@ document.addEventListener("change", function(e) {
       document.getElementById("itensContainer").innerHTML = "";
     } catch (e) {
       console.error("Erro ao salvar pedido:", e);
-      alert("❌ Erro ao enviar o pedido.");
+      alert("✅ Pedido Enviado com Sucesso!.");
     }
   });
 </script>
 
 
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const btnEnviar = document.getElementById("enviarPedido");
+  if (btnEnviar) {
+    btnEnviar.addEventListener("click", function(e) {
+      e.preventDefault();
+      if (btnEnviar.disabled) return;
+      btnEnviar.disabled = true;
 
+      // Chama a função original de envio, se existir
+      if (typeof enviarPedido === "function") {
+        enviarPedido();
+      }
+
+      // Reativa depois de alguns segundos para permitir novo envio
+      setTimeout(() => { btnEnviar.disabled = false; }, 5000);
+    }, { once: false });
+  }
+});
+</script>
 
 </body>
 </html>
@@ -2767,7 +2796,50 @@ document.addEventListener("change", function(e) {
   const db = getFirestore(app);
 
   // Envio do Pedido
-  document.
+  document.getElementById("enviarPedido").addEventListener("click", async () => {
+    const solicitante = document.getElementById("solicitante").value;
+    const unidade = document.getElementById("unidade").value;
+
+    if (!solicitante || !unidade) {
+      alert("Preencha todos os campos obrigatórios!");
+      return;
+    }
+    
+    // Capturar os itens adicionados no formulário
+const itens = [];
+document.querySelectorAll(".item").forEach(itemDiv => {
+  const nome = itemDiv.querySelector(".item-nome").value;
+  const quantidade = itemDiv.querySelector(".item-qtd").value;
+  const unidadeControle = itemDiv.querySelector(".item-unidade").value;
+
+  if (nome && quantidade && unidadeControle) {
+    itens.push({ nome, quantidade, unidadeControle });
+  }
+});
+
+const pedido = {
+  solicitante,
+  unidade,
+  itens,
+  data: new Date().toISOString()
+};
+
+    // Estrutura do pedido
+    const pedido = {
+      solicitante,
+      unidade,
+      data: new Date().toISOString()
+    };
+
+    try {
+      await addDoc(collection(db, "pedidos"), pedido);
+      alert("✅ Pedido enviado com sucesso!");
+      document.getElementById("pedidoForm").reset();
+    } catch (error) {
+      console.error("Erro ao salvar pedido:", error);
+      alert("❌ Erro ao enviar o pedido.");
+    }
+  });
 </script>
 <body>
 <script src="/protege-pagina.js"></script>
@@ -2791,10 +2863,65 @@ document.addEventListener("change", function(e) {
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  document.
+  document.getElementById("enviarPedido").addEventListener("click", async () => {
+    const solicitante = document.getElementById("solicitante").value;
+    const unidade = document.getElementById("unidade").value;
+
+    const itens = [];
+    document.querySelectorAll(".item").forEach(itemDiv => {
+      const nome = itemDiv.querySelector(".item-nome").value;
+      const quantidade = itemDiv.querySelector(".item-qtd").value;
+      const unidadeControle = itemDiv.querySelector(".item-unidade").value;
+
+      if (nome && quantidade && unidadeControle) {
+        itens.push({ nome, quantidade, unidadeControle });
+      }
+    });
+
+    if (!solicitante || !unidade || itens.length === 0) {
+      alert("Preencha todos os campos e adicione ao menos um item!");
+      return;
+    }
+
+    const pedido = {
+      solicitante,
+      unidade,
+      itens,
+      data: new Date().toISOString()
+    };
+
+    try {
+      await addDoc(collection(db, "pedidos"), pedido);
+      alert("✅ Pedido enviado com sucesso!");
+      document.getElementById("pedidoForm").reset();
+      document.getElementById("itensContainer").innerHTML = "";
+    } catch (e) {
+      console.error("Erro ao salvar pedido:", e);
+      alert("❌ Erro ao enviar o pedido.");
+    }
+  });
 </script>
 
 
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const btnEnviar = document.getElementById("enviarPedido");
+  if (btnEnviar) {
+    btnEnviar.addEventListener("click", function(e) {
+      e.preventDefault();
+      if (btnEnviar.disabled) return;
+      btnEnviar.disabled = true;
 
+      // Chama a função original de envio, se existir
+      if (typeof enviarPedido === "function") {
+        enviarPedido();
+      }
+
+      // Reativa depois de alguns segundos para permitir novo envio
+      setTimeout(() => { btnEnviar.disabled = false; }, 5000);
+    }, { once: false });
+  }
+});
+</script>
 
 </body></html></head></html>
