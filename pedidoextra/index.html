@@ -2674,12 +2674,12 @@ document.addEventListener("DOMContentLoaded", function() {
       for (const setor of setores) {
         for (const item of setor.itens) {
           const dados = {
-            solicitante,
-            unidade,
-            item: item.nome,
-            quantidade: item.quantidade,
-            unidadeControle: item.unidade,
-            data: new Date().toISOString()
+            "Responsável": solicitante,
+            "Unidade de Saúde": unidade,
+            "Item": item.nome,
+            "Quantidade": item.quantidade,
+            "Unidade de Controle": item.unidade,
+            "Data": new Date().toLocaleString("pt-BR")
           };
           await addDoc(collection(db, "pedidos"), dados);
         }
@@ -2885,12 +2885,12 @@ document.addEventListener("DOMContentLoaded", function() {
       for (const setor of setores) {
         for (const item of setor.itens) {
           const dados = {
-            solicitante,
-            unidade,
-            item: item.nome,
-            quantidade: item.quantidade,
-            unidadeControle: item.unidade,
-            data: new Date().toISOString()
+            "Responsável": solicitante,
+            "Unidade de Saúde": unidade,
+            "Item": item.nome,
+            "Quantidade": item.quantidade,
+            "Unidade de Controle": item.unidade,
+            "Data": new Date().toLocaleString("pt-BR")
           };
           await addDoc(collection(db, "pedidos"), dados);
         }
