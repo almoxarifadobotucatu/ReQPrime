@@ -14,19 +14,6 @@ document.addEventListener("change", function(e) {
     e.target.classList.remove("erro-campo");
   }
 });
-document.getElementById("enviarPedido").addEventListener("click", async () => {
-    const solicitante = document.getElementById("solicitante").value;
-    const unidade = document.getElementById("unidade").value;
-
-    const itens = [];
-    document.querySelectorAll(".item").forEach(itemDiv => {
-      const nome = itemDiv.querySelector(".item-nome").value;
-      const quantidade = itemDiv.querySelector(".item-qtd").value;
-      const unidadeControle = itemDiv.querySelector(".item-unidade").value;
-
-      if (nome && quantidade && unidadeControle) {
-        itens.push({ nome, quantidade, unidadeControle });
-      }
 </script>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
@@ -2371,7 +2358,7 @@ corpoEmail += `${codigo ? codigo + ' - ' : ''}${descricao} - ${qtd} ${pluralizar
         corpoEmail += `----------------------------------------\n\n`;
       });
       const bodyEncoded = encodeURIComponent(corpoEmail);
-const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=almoxarifado.botucatu@osspirangi.org.br&su=Pedido Extra - ${encodeURIComponent(unidade)}&body=${bodyEncoded}`;
+const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=leitaoochefe@gmail.com&su=Pedido Extra - ${encodeURIComponent(unidade)}&body=${bodyEncoded}`;
 let win = window.open('about:blank', '_blank');
 if (win) {
   win.location.href = gmailUrl;
@@ -2652,7 +2639,19 @@ document.addEventListener("change", function(e) {
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  
+  document.getElementById("enviarPedido").addEventListener("click", async () => {
+    const solicitante = document.getElementById("solicitante").value;
+    const unidade = document.getElementById("unidade").value;
+
+    const itens = [];
+    document.querySelectorAll(".item").forEach(itemDiv => {
+      const nome = itemDiv.querySelector(".item-nome").value;
+      const quantidade = itemDiv.querySelector(".item-qtd").value;
+      const unidadeControle = itemDiv.querySelector(".item-unidade").value;
+
+      if (nome && quantidade && unidadeControle) {
+        itens.push({ nome, quantidade, unidadeControle });
+      }
     });
 
     if (!solicitante || !unidade || itens.length === 0) {
@@ -2677,215 +2676,6 @@ document.addEventListener("change", function(e) {
       alert("❌ Erro ao enviar o pedido.");
     }
   });
-</script>
-
-
-<!-- Patch: handler único + envio Firestore (seguro) -->
-<script type="module">
-  import { initializeApp, getApp, getApps } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
-    authDomain: "almoxarifadobotucatu-5e03d.firebaseapp.com",
-    projectId: "almoxarifadobotucatu-5e03d",
-    storageBucket: "almoxarifadobotucatu-5e03d.firebasestorage.app",
-    messagingSenderId: "828951000388",
-    appId: "1:828951000388:web:06dbe3cb5764872e7b1311"
-  };
-
-  // Evita inicialização duplicada
-  const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-
-  // Remove TODOS os listeners antigos do botão, clonando-o
-  const oldBtn = document.getElementById("enviarPedido");
-  if (oldBtn) {
-    const btn = oldBtn.cloneNode(true);
-    oldBtn.replaceWith(btn);
-
-    btn.addEventListener("click", async () => {
-      const solicitanteEl = document.getElementById("solicitante");
-      const unidadeEl = document.getElementById("unidade");
-      const solicitante = solicitanteEl ? solicitanteEl.value.trim() : "";
-      const unidade = unidadeEl ? unidadeEl.value.trim() : "";
-
-      // Coletar itens de TODOS os setores
-      const itens = [];
-      document.querySelectorAll(".setor").forEach(setor => {
-        setor.querySelectorAll(".item").forEach(itemDiv => {
-          const nome = itemDiv.querySelector(".item-nome")?.value?.trim();
-          const quantidadeRaw = itemDiv.querySelector(".item-qtd")?.value;
-          const unidadeControle = itemDiv.querySelector(".item-unidade")?.value?.trim();
-          if (nome && quantidadeRaw && unidadeControle) {
-            const quantidade = Number(quantidadeRaw);
-            if (!Number.isNaN(quantidade) && quantidade > 0) {
-              itens.push({ nome, quantidade, unidadeControle });
-            }
-          }
-        });
-      });
-
-      if (!solicitante || !unidade) {
-        alert("Preencha os campos de Responsável e Unidade de saúde.");
-        return;
-      }
-      if (itens.length === 0) {
-        alert("Adicione pelo menos 1 item válido antes de enviar.");
-        return;
-      }
-
-      const pedido = {
-        solicitante,
-        unidade,
-        itens,
-        data: new Date().toISOString()
-      };
-
-      try {
-        await addDoc(collection(db, "pedidos"), pedido);
-        alert("✅ Pedido enviado com sucesso!");
-        // Limpa formulário e itens
-        const form = document.getElementById("pedidoForm");
-        if (form) form.reset();
-        const setoresContainer = document.getElementById("setoresContainer");
-        if (setoresContainer) setoresContainer.innerHTML = "";
-      } catch (error) {
-        console.error("Erro ao salvar pedido:", error);
-        alert("❌ Erro ao enviar o pedido. Veja o console para detalhes.");
-      }
-    });
-  } else {
-    console.warn("Botão #enviarPedido não encontrado no DOM.");
-  }
-</script>
-
-
-<!-- Patch: Firestore + Gmail no formato original -->
-<script type="module">
-  import { initializeApp, getApp, getApps } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
-    authDomain: "almoxarifadobotucatu-5e03d.firebaseapp.com",
-    projectId: "almoxarifadobotucatu-5e03d",
-    storageBucket: "almoxarifadobotucatu-5e03d.firebasestorage.app",
-    messagingSenderId: "828951000388",
-    appId: "1:828951000388:web:06dbe3cb5764872e7b1311"
-  };
-
-  const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-
-  // Função auxiliar para pluralizar unidade (como no original)
-  function pluralizarUnidade(unidade, qtd) {
-    if (!unidade) return "";
-    if (qtd > 1 && !unidade.endsWith("s")) {
-      return unidade + "s";
-    }
-    return unidade;
-  }
-
-  const oldBtn = document.getElementById("enviarPedido");
-  if (oldBtn) {
-    const btn = oldBtn.cloneNode(true);
-    oldBtn.replaceWith(btn);
-
-    btn.addEventListener("click", async () => {
-      const solicitanteEl = document.getElementById("solicitante");
-      const unidadeEl = document.getElementById("unidade");
-      const solicitante = solicitanteEl ? solicitanteEl.value.trim() : "";
-      const unidade = unidadeEl ? unidadeEl.value.trim() : "";
-
-      const setores = document.querySelectorAll(".setor");
-      const itens = [];
-
-      setores.forEach(setor => {
-        setor.querySelectorAll(".item").forEach(itemDiv => {
-          const nome = itemDiv.querySelector(".item-nome")?.value?.trim();
-          const quantidadeRaw = itemDiv.querySelector(".item-qtd")?.value;
-          const unidadeControle = itemDiv.querySelector(".item-unidade")?.value?.trim();
-          if (nome && quantidadeRaw && unidadeControle) {
-            const quantidade = Number(quantidadeRaw);
-            if (!Number.isNaN(quantidade) && quantidade > 0) {
-              itens.push({ nome, quantidade, unidadeControle });
-            }
-          }
-        });
-      });
-
-      if (!solicitante || !unidade) {
-        alert("Preencha os campos de Responsável e Unidade de saúde.");
-        return;
-      }
-      if (itens.length === 0) {
-        alert("Adicione pelo menos 1 item válido antes de enviar.");
-        return;
-      }
-
-      const pedido = {
-        solicitante,
-        unidade,
-        itens,
-        data: new Date().toISOString()
-      };
-
-      try {
-        // Salva no Firestore
-        await addDoc(collection(db, "pedidos"), pedido);
-
-        // Montar corpo do email no formato original
-        let corpoEmail = `SOLICITAÇÃO DE PEDIDO EXTRA\n\n`;
-        corpoEmail += `Responsável pela solicitação: ${solicitante}\n`;
-        corpoEmail += `Unidade de saúde: ${unidade}\n\n`;
-        corpoEmail += `----------------------------------------\n\n`;
-
-        setores.forEach(setor => {
-          const nomeSetor = setor.querySelector('input[name="setor"]')?.value || "";
-          corpoEmail += `SETOR: ${nomeSetor}\n\n`;
-
-          const itensNomes = setor.querySelectorAll('.item-nome');
-          const itensQtds = setor.querySelectorAll('.item-qtd');
-          itensNomes.forEach((input, index) => {
-            const nome = input.value;
-            const qtd = itensQtds[index].value;
-            const unidades = setor.querySelectorAll('.item-unidade');
-            const unidadeCtrl = unidades[index] ? unidades[index].value : '';
-            let m = nome.trim().match(/^((?:\d+\s+){4}\d+)\s+(.*)$/);
-            let codigo = '';
-            let descricao = nome;
-            if (m) { codigo = m[1]; descricao = m[2]; }
-            corpoEmail += `${codigo ? codigo + ' - ' : ''}${descricao} - ${qtd} ${pluralizarUnidade(unidadeCtrl, qtd)}\n`;
-          });
-          corpoEmail += `\n`;
-          const Justificativa = setor.querySelector('.Justificativa')?.value;
-          if (Justificativa) {
-            corpoEmail += `Justificativa: ${Justificativa}\n\n`;
-          }
-          corpoEmail += `----------------------------------------\n\n`;
-        });
-
-        const bodyEncoded = encodeURIComponent(corpoEmail);
-        const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=leitaoochefe@gmail.com&su=Pedido Extra - ${encodeURIComponent(unidade)}&body=${bodyEncoded}`;
-        let win = window.open('about:blank', '_blank');
-        if (win) {
-          win.location.href = gmailUrl;
-        } else {
-          window.location.href = gmailUrl;
-        }
-
-        alert("✅ Pedido enviado com sucesso!");
-        const form = document.getElementById("pedidoForm");
-        if (form) form.reset();
-        const setoresContainer = document.getElementById("setoresContainer");
-        if (setoresContainer) setoresContainer.innerHTML = "";
-      } catch (error) {
-        console.error("Erro ao salvar pedido:", error);
-        alert("❌ Erro ao enviar o pedido. Veja o console para detalhes.");
-      }
-    });
-  }
 </script>
 
 </body>
@@ -3006,7 +2796,25 @@ document.addEventListener("change", function(e) {
   const db = getFirestore(app);
 
   // Envio do Pedido
-  
+  document.getElementById("enviarPedido").addEventListener("click", async () => {
+    const solicitante = document.getElementById("solicitante").value;
+    const unidade = document.getElementById("unidade").value;
+
+    if (!solicitante || !unidade) {
+      alert("Preencha todos os campos obrigatórios!");
+      return;
+    }
+    
+    // Capturar os itens adicionados no formulário
+const itens = [];
+document.querySelectorAll(".item").forEach(itemDiv => {
+  const nome = itemDiv.querySelector(".item-nome").value;
+  const quantidade = itemDiv.querySelector(".item-qtd").value;
+  const unidadeControle = itemDiv.querySelector(".item-unidade").value;
+
+  if (nome && quantidade && unidadeControle) {
+    itens.push({ nome, quantidade, unidadeControle });
+  }
 });
 
 const pedido = {
@@ -3055,7 +2863,19 @@ const pedido = {
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  
+  document.getElementById("enviarPedido").addEventListener("click", async () => {
+    const solicitante = document.getElementById("solicitante").value;
+    const unidade = document.getElementById("unidade").value;
+
+    const itens = [];
+    document.querySelectorAll(".item").forEach(itemDiv => {
+      const nome = itemDiv.querySelector(".item-nome").value;
+      const quantidade = itemDiv.querySelector(".item-qtd").value;
+      const unidadeControle = itemDiv.querySelector(".item-unidade").value;
+
+      if (nome && quantidade && unidadeControle) {
+        itens.push({ nome, quantidade, unidadeControle });
+      }
     });
 
     if (!solicitante || !unidade || itens.length === 0) {
@@ -3080,215 +2900,6 @@ const pedido = {
       alert("❌ Erro ao enviar o pedido.");
     }
   });
-</script>
-
-
-<!-- Patch: handler único + envio Firestore (seguro) -->
-<script type="module">
-  import { initializeApp, getApp, getApps } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
-    authDomain: "almoxarifadobotucatu-5e03d.firebaseapp.com",
-    projectId: "almoxarifadobotucatu-5e03d",
-    storageBucket: "almoxarifadobotucatu-5e03d.firebasestorage.app",
-    messagingSenderId: "828951000388",
-    appId: "1:828951000388:web:06dbe3cb5764872e7b1311"
-  };
-
-  // Evita inicialização duplicada
-  const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-
-  // Remove TODOS os listeners antigos do botão, clonando-o
-  const oldBtn = document.getElementById("enviarPedido");
-  if (oldBtn) {
-    const btn = oldBtn.cloneNode(true);
-    oldBtn.replaceWith(btn);
-
-    btn.addEventListener("click", async () => {
-      const solicitanteEl = document.getElementById("solicitante");
-      const unidadeEl = document.getElementById("unidade");
-      const solicitante = solicitanteEl ? solicitanteEl.value.trim() : "";
-      const unidade = unidadeEl ? unidadeEl.value.trim() : "";
-
-      // Coletar itens de TODOS os setores
-      const itens = [];
-      document.querySelectorAll(".setor").forEach(setor => {
-        setor.querySelectorAll(".item").forEach(itemDiv => {
-          const nome = itemDiv.querySelector(".item-nome")?.value?.trim();
-          const quantidadeRaw = itemDiv.querySelector(".item-qtd")?.value;
-          const unidadeControle = itemDiv.querySelector(".item-unidade")?.value?.trim();
-          if (nome && quantidadeRaw && unidadeControle) {
-            const quantidade = Number(quantidadeRaw);
-            if (!Number.isNaN(quantidade) && quantidade > 0) {
-              itens.push({ nome, quantidade, unidadeControle });
-            }
-          }
-        });
-      });
-
-      if (!solicitante || !unidade) {
-        alert("Preencha os campos de Responsável e Unidade de saúde.");
-        return;
-      }
-      if (itens.length === 0) {
-        alert("Adicione pelo menos 1 item válido antes de enviar.");
-        return;
-      }
-
-      const pedido = {
-        solicitante,
-        unidade,
-        itens,
-        data: new Date().toISOString()
-      };
-
-      try {
-        await addDoc(collection(db, "pedidos"), pedido);
-        alert("✅ Pedido enviado com sucesso!");
-        // Limpa formulário e itens
-        const form = document.getElementById("pedidoForm");
-        if (form) form.reset();
-        const setoresContainer = document.getElementById("setoresContainer");
-        if (setoresContainer) setoresContainer.innerHTML = "";
-      } catch (error) {
-        console.error("Erro ao salvar pedido:", error);
-        alert("❌ Erro ao enviar o pedido. Veja o console para detalhes.");
-      }
-    });
-  } else {
-    console.warn("Botão #enviarPedido não encontrado no DOM.");
-  }
-</script>
-
-
-<!-- Patch: Firestore + Gmail no formato original -->
-<script type="module">
-  import { initializeApp, getApp, getApps } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
-    authDomain: "almoxarifadobotucatu-5e03d.firebaseapp.com",
-    projectId: "almoxarifadobotucatu-5e03d",
-    storageBucket: "almoxarifadobotucatu-5e03d.firebasestorage.app",
-    messagingSenderId: "828951000388",
-    appId: "1:828951000388:web:06dbe3cb5764872e7b1311"
-  };
-
-  const app = getApps().length ? getApp() : initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-
-  // Função auxiliar para pluralizar unidade (como no original)
-  function pluralizarUnidade(unidade, qtd) {
-    if (!unidade) return "";
-    if (qtd > 1 && !unidade.endsWith("s")) {
-      return unidade + "s";
-    }
-    return unidade;
-  }
-
-  const oldBtn = document.getElementById("enviarPedido");
-  if (oldBtn) {
-    const btn = oldBtn.cloneNode(true);
-    oldBtn.replaceWith(btn);
-
-    btn.addEventListener("click", async () => {
-      const solicitanteEl = document.getElementById("solicitante");
-      const unidadeEl = document.getElementById("unidade");
-      const solicitante = solicitanteEl ? solicitanteEl.value.trim() : "";
-      const unidade = unidadeEl ? unidadeEl.value.trim() : "";
-
-      const setores = document.querySelectorAll(".setor");
-      const itens = [];
-
-      setores.forEach(setor => {
-        setor.querySelectorAll(".item").forEach(itemDiv => {
-          const nome = itemDiv.querySelector(".item-nome")?.value?.trim();
-          const quantidadeRaw = itemDiv.querySelector(".item-qtd")?.value;
-          const unidadeControle = itemDiv.querySelector(".item-unidade")?.value?.trim();
-          if (nome && quantidadeRaw && unidadeControle) {
-            const quantidade = Number(quantidadeRaw);
-            if (!Number.isNaN(quantidade) && quantidade > 0) {
-              itens.push({ nome, quantidade, unidadeControle });
-            }
-          }
-        });
-      });
-
-      if (!solicitante || !unidade) {
-        alert("Preencha os campos de Responsável e Unidade de saúde.");
-        return;
-      }
-      if (itens.length === 0) {
-        alert("Adicione pelo menos 1 item válido antes de enviar.");
-        return;
-      }
-
-      const pedido = {
-        solicitante,
-        unidade,
-        itens,
-        data: new Date().toISOString()
-      };
-
-      try {
-        // Salva no Firestore
-        await addDoc(collection(db, "pedidos"), pedido);
-
-        // Montar corpo do email no formato original
-        let corpoEmail = `SOLICITAÇÃO DE PEDIDO EXTRA\n\n`;
-        corpoEmail += `Responsável pela solicitação: ${solicitante}\n`;
-        corpoEmail += `Unidade de saúde: ${unidade}\n\n`;
-        corpoEmail += `----------------------------------------\n\n`;
-
-        setores.forEach(setor => {
-          const nomeSetor = setor.querySelector('input[name="setor"]')?.value || "";
-          corpoEmail += `SETOR: ${nomeSetor}\n\n`;
-
-          const itensNomes = setor.querySelectorAll('.item-nome');
-          const itensQtds = setor.querySelectorAll('.item-qtd');
-          itensNomes.forEach((input, index) => {
-            const nome = input.value;
-            const qtd = itensQtds[index].value;
-            const unidades = setor.querySelectorAll('.item-unidade');
-            const unidadeCtrl = unidades[index] ? unidades[index].value : '';
-            let m = nome.trim().match(/^((?:\d+\s+){4}\d+)\s+(.*)$/);
-            let codigo = '';
-            let descricao = nome;
-            if (m) { codigo = m[1]; descricao = m[2]; }
-            corpoEmail += `${codigo ? codigo + ' - ' : ''}${descricao} - ${qtd} ${pluralizarUnidade(unidadeCtrl, qtd)}\n`;
-          });
-          corpoEmail += `\n`;
-          const Justificativa = setor.querySelector('.Justificativa')?.value;
-          if (Justificativa) {
-            corpoEmail += `Justificativa: ${Justificativa}\n\n`;
-          }
-          corpoEmail += `----------------------------------------\n\n`;
-        });
-
-        const bodyEncoded = encodeURIComponent(corpoEmail);
-        const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=leitaoochefe@gmail.com&su=Pedido Extra - ${encodeURIComponent(unidade)}&body=${bodyEncoded}`;
-        let win = window.open('about:blank', '_blank');
-        if (win) {
-          win.location.href = gmailUrl;
-        } else {
-          window.location.href = gmailUrl;
-        }
-
-        alert("✅ Pedido enviado com sucesso!");
-        const form = document.getElementById("pedidoForm");
-        if (form) form.reset();
-        const setoresContainer = document.getElementById("setoresContainer");
-        if (setoresContainer) setoresContainer.innerHTML = "";
-      } catch (error) {
-        console.error("Erro ao salvar pedido:", error);
-        alert("❌ Erro ao enviar o pedido. Veja o console para detalhes.");
-      }
-    });
-  }
 </script>
 
 </body></html></head></html>
