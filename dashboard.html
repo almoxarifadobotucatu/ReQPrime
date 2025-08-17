@@ -28,6 +28,25 @@
       const pedidosRef = collection(db, "pedidos");
       const snapshot = await getDocs(pedidosRef);
 
+      snapshot.forEach(doc => {
+  const data = doc.data();
+  if (data.itens && data.itens.length > 0) {
+    data.itens.forEach(item => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${data.solicitante}</td>
+        <td>${data.unidade}</td>
+        <td>${item.nome}</td>
+        <td>${item.quantidade}</td>
+        <td>${item.unidadeControle}</td>
+        <td>${new Date(data.data).toLocaleString()}</td>
+      `;
+      tabela.appendChild(tr);
+    });
+  }
+});
+
+
       const lista = document.getElementById("listaPedidos");
       lista.innerHTML = "";
 
