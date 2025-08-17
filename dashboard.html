@@ -5,31 +5,56 @@
   <title>Dashboard de Pedidos</title>
   <style>
     body { font-family: Arial, sans-serif; background: #f4f4f9; padding: 20px; }
-    table { width: 100%; border-collapse: collapse; background: #fff; }
+    table { width: 100%; border-collapse: collapse; background: #fff; margin-top: 20px; }
     th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
     th { background: #0a66c2; color: #fff; }
     tr:nth-child(even) { background: #f9f9f9; }
+    #dashboard { display: none; } /* escondido até escolher unidade */
+    #resetarBtn {
+      margin-top: 15px;
+      padding: 10px 15px;
+      background: #c62828;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    #resetarBtn:hover {
+      background: #a31818;
+    }
   </style>
 </head>
 <body>
   <h2>📊 Pedidos Registrados</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Responsável</th>
-        <th>Unidade de Saúde</th>
-        <th>Item</th>
-        <th>Quantidade</th>
-        <th>Unidade de Controle</th>
-        <th>Data</th>
-      </tr>
-    </thead>
-    <tbody id="tabelaPedidos"></tbody>
-  </table>
+
+  <label for="unidadeSelect"><b>Selecione a Unidade de Saúde:</b></label>
+  <select id="unidadeSelect">
+    <option value="">-- Escolha uma unidade --</option>
+  </select>
+
+  <!-- Botão de reset -->
+  <button id="resetarBtn">🔄 Resetar Pedidos</button>
+
+  <div id="dashboard">
+    <table>
+      <thead>
+        <tr>
+          <th>Responsável</th>
+          <th>Unidade de Saúde</th>
+          <th>Item</th>
+          <th>Quantidade</th>
+          <th>Unidade de Controle</th>
+          <th>Data</th>
+        </tr>
+      </thead>
+      <tbody id="tabelaPedidos"></tbody>
+    </table>
+  </div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+    import { getFirestore, collection, getDocs, deleteDoc, doc, query, orderBy } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
@@ -43,16 +68,40 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    async function carregarPedidos() {
+    // Carregar unidades automaticamente
+    async function carregarUnidades() {
       const pedidosRef = collection(db, "pedidos");
       const snapshot = await getDocs(pedidosRef);
+
+      const unidades = new Set();
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        if (data.unidade) {
+          unidades.add(data.unidade);
+        }
+      });
+
+      const select = document.getElementById("unidadeSelect");
+      unidades.forEach(unidade => {
+        const option = document.createElement("option");
+        option.value = unidade;
+        option.textContent = unidade;
+        select.appendChild(option);
+      });
+    }
+
+    // Carregar pedidos filtrados e ordenados por data DESC
+    async function carregarPedidos(unidadeSelecionada) {
+      const pedidosRef = collection(db, "pedidos");
+      const q = query(pedidosRef, orderBy("data", "desc"));
+      const snapshot = await getDocs(q);
+
       const tabela = document.getElementById("tabelaPedidos");
       tabela.innerHTML = "";
 
-      // Inserindo pedidos na tabela
       snapshot.forEach(doc => {
         const data = doc.data();
-        if (data.itens && data.itens.length > 0) {
+        if (data.unidade === unidadeSelecionada && data.itens && data.itens.length > 0) {
           data.itens.forEach(item => {
             const tr = document.createElement("tr");
             tr.innerHTML = `
@@ -69,7 +118,37 @@
       });
     }
 
-    carregarPedidos();
+    // Resetar coleção "pedidos"
+    async function resetarPedidos() {
+      if (!confirm("⚠️ Tem certeza que deseja APAGAR todos os pedidos?")) return;
+
+      const pedidosRef = collection(db, "pedidos");
+      const snapshot = await getDocs(pedidosRef);
+
+      const promises = snapshot.docs.map(d => deleteDoc(doc(db, "pedidos", d.id)));
+      await Promise.all(promises);
+
+      alert("✅ Todos os pedidos foram apagados!");
+      document.getElementById("tabelaPedidos").innerHTML = "";
+      document.getElementById("dashboard").style.display = "none";
+      document.getElementById("unidadeSelect").value = "";
+    }
+
+    // Eventos
+    document.getElementById("unidadeSelect").addEventListener("change", (e) => {
+      const unidade = e.target.value;
+      const dashboard = document.getElementById("dashboard");
+      if (unidade) {
+        dashboard.style.display = "block";
+        carregarPedidos(unidade);
+      } else {
+        dashboard.style.display = "none";
+      }
+    });
+
+    document.getElementById("resetarBtn").addEventListener("click", resetarPedidos);
+
+    carregarUnidades();
   </script>
 </body>
 </html>
