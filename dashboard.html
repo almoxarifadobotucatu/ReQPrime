@@ -1,47 +1,269 @@
-.gate {
-  max-width: 1400px;
-  margin: 20px auto;
-  padding: 0 20px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard de Pedidos Extras</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', Arial, sans-serif;
+      background: #1a1a2e;
+      color: #fff;
+    }
+    .topbar {
+      text-align: center;
+      padding: 20px;
+      background: #16213e;
+      border-bottom: 2px solid #0a66c2;
+    }
+    .topbar h1 {
+      margin: 0;
+      font-size: 1.8rem;
+      font-weight: 800;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+    }
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      padding: 20px;
+      max-width: 1400px;
+      margin: auto;
+    }
+    .card {
+      background: #16213e;
+      border: 1px solid #2a2a3a;
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+    }
+    .card div:first-child {
+      color: #b8b8b8;
+      font-size: .9rem;
+    }
+    .card div:last-child {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-top: 8px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: #16213e;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #2a2a3a;
+    }
+    th {
+      background: #0a66c2;
+      color: #fff;
+    }
+    tr:hover td {
+      background: rgba(255,255,255,0.05);
+    }
+    .gate {
+      max-width: 1400px;
+      margin: 20px auto;
+      padding: 0 20px;
+    }
+    select, button {
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: none;
+      font-size: 1rem;
+    }
+    select {
+      background: #fff;
+      color: #000;
+      min-width: 240px;
+    }
+    /* Botão estilizado igual pedido extra */
+    button {
+      background: #0a66c2;
+      color: #fff;
+      font-weight: 600;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+      cursor: pointer;
+      margin-left: 8px;
+      transition: all 0.3s ease;
+    }
+    button:hover {
+      background: linear-gradient(270deg,#0a66c2,#1db954);
+      background-size: 600% 600%;
+      animation: gradientShift 6s ease infinite;
+      transform: translateY(-2px);
+    }
+    @keyframes gradientShift {
+      0% { background-position: 0% 50% }
+      50% { background-position: 100% 50% }
+      100% { background-position: 0% 50% }
+    }
+  </style>
+</head>
+<body>
+  <div class="topbar">
+    <h1>📊 Dashboard de Pedidos Extras</h1>
+  </div>
 
-select {
-  background: #fff;
-  color: #000;
-  min-width: 240px;
-  font-size: 1rem;
-  padding: 10px 14px;
-  border-radius: 12px;
-  border: 1px solid #ccc;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-  transition: all 0.3s ease;
-}
-select:focus {
-  outline: none;
-  border-color: #0a66c2;
-  box-shadow: 0 0 0 3px rgba(10,102,194,0.4);
-}
+  <!-- Seletor de unidade -->
+  <div class="gate">
+    <label for="unidadeSelect">Selecione a unidade de saúde:</label>
+    <select id="unidadeSelect">
+      <option value="">Todas</option>
+    </select>
+    <button id="confirmarUnidade">Carregar</button>
+  </div>
 
-button {
-  background: #0a66c2;
-  color: #fff;
-  font-weight: 600;
-  border-radius: 12px;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.2);
-  cursor: pointer;
-  padding: 10px 20px;
-  transition: all 0.3s ease;
-}
-button:hover {
-  background: linear-gradient(270deg,#0a66c2,#1db954);
-  background-size: 600% 600%;
-  animation: gradientShift 6s ease infinite;
-  transform: translateY(-2px);
-}
-@keyframes gradientShift {
-  0% { background-position: 0% 50% }
-  50% { background-position: 100% 50% }
-  100% { background-position: 0% 50% }
-}
+  <!-- KPIs -->
+  <section class="cards">
+    <div class="card">
+      <div>Total de pedidos</div>
+      <div id="kpiTotal">—</div>
+    </div>
+    <div class="card">
+      <div>Hoje</div>
+      <div id="kpiHoje">—</div>
+    </div>
+    <div class="card">
+      <div>Últimos 7 dias</div>
+      <div id="kpi7d">—</div>
+    </div>
+    <div class="card">
+      <div>Pendentes</div>
+      <div id="kpiPendentes">—</div>
+    </div>
+  </section>
+
+  <!-- Tabela -->
+  <div style="padding:20px; max-width:1400px; margin:auto;">
+    <table>
+      <thead>
+        <tr>
+          <th>Responsável</th>
+          <th>Unidade de Saúde</th>
+          <th>Item</th>
+          <th>Quantidade</th>
+          <th>Unidade de Controle</th>
+          <th>Data</th>
+        </tr>
+      </thead>
+      <tbody id="tabelaPedidos">
+        <tr><td colspan="6" style="text-align:center;">Selecione uma unidade para carregar os pedidos...</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
+      authDomain: "almoxarifadobotucatu-5e03d.firebaseapp.com",
+      projectId: "almoxarifadobotucatu-5e03d",
+      storageBucket: "almoxarifadobotucatu-5e03d.firebasestorage.app",
+      messagingSenderId: "828951000388",
+      appId: "1:828951000388:web:06dbe3cb5764872e7b1311"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const unidadeSelect = document.getElementById("unidadeSelect");
+    const confirmarBtn = document.getElementById("confirmarUnidade");
+    const tabela = document.getElementById("tabelaPedidos");
+
+    function toDate(any) {
+      if (!any) return null;
+      if (any.seconds) return new Date(any.seconds * 1000);
+      return new Date(any);
+    }
+
+    async function carregarUnidades(pedidos) {
+      const unidades = new Set(pedidos.map(p => p.unidade));
+      unidades.forEach(u => {
+        if (u) {
+          const opt = document.createElement("option");
+          opt.value = u;
+          opt.textContent = u;
+          unidadeSelect.appendChild(opt);
+        }
+      });
+    }
+
+    async function carregarPedidos(unidade) {
+      const pedidosRef = collection(db, "pedidos");
+      const snapshot = await getDocs(pedidosRef);
+      const pedidos = [];
+
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        if (data.itens && data.itens.length > 0) {
+          data.itens.forEach(item => {
+            pedidos.push({
+              solicitante: data.solicitante,
+              unidade: data.unidade,
+              item: item.nome,
+              quantidade: item.quantidade,
+              unidadeControle: item.unidadeControle,
+              data: toDate(data.data)
+            });
+          });
+        }
+      });
+
+      // ordenar por data desc
+      pedidos.sort((a,b)=>(b.data?.getTime?.()||0) - (a.data?.getTime?.()||0));
+
+      // aplicar filtro
+      const filtrados = unidade ? pedidos.filter(p => p.unidade === unidade) : pedidos;
+
+      // KPIs
+      document.getElementById("kpiTotal").textContent = filtrados.length;
+      const hojeKey = new Date().toDateString();
+      document.getElementById("kpiHoje").textContent = filtrados.filter(p=>p.data && p.data.toDateString()===hojeKey).length;
+      document.getElementById("kpi7d").textContent = filtrados.filter(p=>p.data && (new Date()-p.data)<=7*24*60*60*1000).length;
+      document.getElementById("kpiPendentes").textContent = filtrados.filter(p=>(p.status||"").toLowerCase().includes("pend")).length;
+
+      // render tabela
+      tabela.innerHTML = "";
+      filtrados.forEach(p => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${p.solicitante||"—"}</td>
+          <td>${p.unidade||"—"}</td>
+          <td>${p.item||"—"}</td>
+          <td>${p.quantidade||"—"}</td>
+          <td>${p.unidadeControle||"—"}</td>
+          <td>${p.data? p.data.toLocaleString():"—"}</td>
+        `;
+        tabela.appendChild(tr);
+      });
+    }
+
+    confirmarBtn.addEventListener("click", ()=> {
+      const unidade = unidadeSelect.value;
+      carregarPedidos(unidade);
+    });
+
+    // inicializar
+    (async ()=>{
+      const pedidosRef = collection(db, "pedidos");
+      const snapshot = await getDocs(pedidosRef);
+      const pedidos = [];
+      snapshot.forEach(doc => pedidos.push(doc.data()));
+      carregarUnidades(pedidos);
+    })();
+  </script>
+</body>
+</html>
