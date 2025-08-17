@@ -2794,12 +2794,7 @@ document.addEventListener("change", function(e) {
   // Inicializa Firebase
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
-
-  // Envio do Pedido
-  document.getElementById("enviarPedido").addEventListener("click", async () => {
-    const solicitante = document.getElementById("solicitante").value;
-    const unidade = document.getElementById("unidade").value;
-
+    
     if (!solicitante || !unidade) {
       alert("Preencha todos os campos obrigatórios!");
       return;
@@ -2862,11 +2857,7 @@ const pedido = {
 
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
-
-  document.getElementById("enviarPedido").addEventListener("click", async () => {
-    const solicitante = document.getElementById("solicitante").value;
-    const unidade = document.getElementById("unidade").value;
-
+  
     const itens = [];
     document.querySelectorAll(".item").forEach(itemDiv => {
       const nome = itemDiv.querySelector(".item-nome").value;
