@@ -2,6 +2,20 @@
 
 <html lang="pt-BR">
 <head>
+
+  <script>
+    (function() {
+      const keys = [
+        "loggedInUser", "isLoggedIn", "user", "usuarioLogado",
+        "authToken", "token", "netlifyIdentity.user", "gotrue.user", "firebase:authUser"
+      ];
+      const okLocal = keys.some(k => localStorage.getItem(k));
+      if (!okLocal) {
+        window.location.replace("https://almoxarifadobotucatu.netlify.app/");
+      }
+    })();
+  </script>
+
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 
