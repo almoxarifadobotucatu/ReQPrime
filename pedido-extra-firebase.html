@@ -2,13 +2,11 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Pedido Extra</title>
+  <title>Pedido Extra (com Firebase)</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <!-- Mantida toda a estrutura original -->
-
-  <h1>Pedido Extra</h1>
+  <h1>Pedido Extra (Teste Firebase)</h1>
 
   <form id="pedidoForm">
     <label>Nome do Responsável:</label>
@@ -34,7 +32,7 @@
     <button type="submit">Enviar Pedido</button>
   </form>
 
-  <!-- 🔥 Script Firebase (adicionado sem alterar as funções existentes) -->
+  <!-- 🔥 Script Firebase -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
     import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
