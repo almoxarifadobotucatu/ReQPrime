@@ -14,19 +14,6 @@ document.addEventListener("change", function(e) {
     e.target.classList.remove("erro-campo");
   }
 });
-document.getElementById("enviarPedido").addEventListener("click", async () => {
-    const solicitante = document.getElementById("solicitante").value;
-    const unidade = document.getElementById("unidade").value;
-
-    const itens = [];
-    document.querySelectorAll(".item").forEach(itemDiv => {
-      const nome = itemDiv.querySelector(".item-nome").value;
-      const quantidade = itemDiv.querySelector(".item-qtd").value;
-      const unidadeControle = itemDiv.querySelector(".item-unidade").value;
-
-      if (nome && quantidade && unidadeControle) {
-        itens.push({ nome, quantidade, unidadeControle });
-      }
 </script>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
@@ -2652,7 +2639,19 @@ document.addEventListener("change", function(e) {
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  
+  document.getElementById("enviarPedido").addEventListener("click", async () => {
+    const solicitante = document.getElementById("solicitante").value;
+    const unidade = document.getElementById("unidade").value;
+
+    const itens = [];
+    document.querySelectorAll(".item").forEach(itemDiv => {
+      const nome = itemDiv.querySelector(".item-nome").value;
+      const quantidade = itemDiv.querySelector(".item-qtd").value;
+      const unidadeControle = itemDiv.querySelector(".item-unidade").value;
+
+      if (nome && quantidade && unidadeControle) {
+        itens.push({ nome, quantidade, unidadeControle });
+      }
     });
 
     if (!solicitante || !unidade || itens.length === 0) {
@@ -2797,7 +2796,25 @@ document.addEventListener("change", function(e) {
   const db = getFirestore(app);
 
   // Envio do Pedido
-  
+  document.getElementById("enviarPedido").addEventListener("click", async () => {
+    const solicitante = document.getElementById("solicitante").value;
+    const unidade = document.getElementById("unidade").value;
+
+    if (!solicitante || !unidade) {
+      alert("Preencha todos os campos obrigatórios!");
+      return;
+    }
+    
+    // Capturar os itens adicionados no formulário
+const itens = [];
+document.querySelectorAll(".item").forEach(itemDiv => {
+  const nome = itemDiv.querySelector(".item-nome").value;
+  const quantidade = itemDiv.querySelector(".item-qtd").value;
+  const unidadeControle = itemDiv.querySelector(".item-unidade").value;
+
+  if (nome && quantidade && unidadeControle) {
+    itens.push({ nome, quantidade, unidadeControle });
+  }
 });
 
 const pedido = {
@@ -2846,7 +2863,19 @@ const pedido = {
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  
+  document.getElementById("enviarPedido").addEventListener("click", async () => {
+    const solicitante = document.getElementById("solicitante").value;
+    const unidade = document.getElementById("unidade").value;
+
+    const itens = [];
+    document.querySelectorAll(".item").forEach(itemDiv => {
+      const nome = itemDiv.querySelector(".item-nome").value;
+      const quantidade = itemDiv.querySelector(".item-qtd").value;
+      const unidadeControle = itemDiv.querySelector(".item-unidade").value;
+
+      if (nome && quantidade && unidadeControle) {
+        itens.push({ nome, quantidade, unidadeControle });
+      }
     });
 
     if (!solicitante || !unidade || itens.length === 0) {
