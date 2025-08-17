@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Pedido Extra</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- Mantida toda a estrutura original -->
+
+  <h1>Pedido Extra</h1>
+
+  <form id="pedidoForm">
+    <label>Nome do Responsável:</label>
+    <input type="text" id="solicitante" name="solicitante" placeholder="Digite o nome do responsável" required><br><br>
+
+    <label>Unidade Solicitante:</label>
+    <input type="text" id="unidade" name="unidade" placeholder="Digite a unidade solicitante" required><br><br>
+
+    <label>Item:</label>
+    <input type="text" id="itemNome" name="item" placeholder="Digite o item" required><br><br>
+
+    <label>Quantidade:</label>
+    <input type="number" id="itemQtd" name="quantidade" placeholder="Quantidade" required><br><br>
+
+    <label>Unidade de Controle:</label>
+    <select id="itemUnid" name="unidadeControle" required>
+      <option value="">Selecione</option>
+      <option value="cx">Caixa</option>
+      <option value="un">Unidade</option>
+      <option value="pct">Pacote</option>
+    </select><br><br>
+
+    <button type="submit">Enviar Pedido</button>
+  </form>
+
+  <!-- 🔥 Script Firebase (adicionado sem alterar as funções existentes) -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+    import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
+      authDomain: "almoxarifadobotucatu-5e03d.firebaseapp.com",
+      projectId: "almoxarifadobotucatu-5e03d",
+      storageBucket: "almoxarifadobotucatu-5e03d.appspot.com",
+      messagingSenderId: "828951000388",
+      appId: "1:828951000388:web:06dbe3cb5764872e7b1311"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const form = document.getElementById("pedidoForm");
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const solicitante = document.getElementById("solicitante").value;
+      const unidade = document.getElementById("unidade").value;
+      const item = document.getElementById("itemNome").value;
+      const qtd = document.getElementById("itemQtd").value;
+      const unid = document.getElementById("itemUnid").value;
+
+      try {
+        await addDoc(collection(db, "pedidos"), {
+          solicitante,
+          unidade,
+          item,
+          quantidade: Number(qtd),
+          unidadeControle: unid,
+          criadoEm: serverTimestamp()
+        });
+
+        alert("✅ Pedido enviado para o Firestore!");
+        form.reset();
+      } catch (err) {
+        console.error("Erro:", err);
+        alert("❌ Falha ao enviar pedido.");
+      }
+    });
+  </script>
+
+</body>
+</html>
