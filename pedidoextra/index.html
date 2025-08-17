@@ -4,7 +4,12 @@
 <head>
 
   <script>
-    window.location.replace("https://almoxarifadobotucatu.netlify.app/");
+    // Verifica se o usuário está logado
+    const loggedInUser = localStorage.getItem("loggedInUser");
+    if (!loggedInUser) {
+      // Se não estiver logado, redireciona para a página inicial
+      window.location.replace("https://almoxarifadobotucatu.netlify.app/");
+    }
   </script>
 
 <meta charset="utf-8"/>
