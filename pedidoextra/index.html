@@ -2,40 +2,6 @@
 
 <html lang="pt-BR">
 <head>
-
-  <style>
-    body { display: none; }
-  </style>
-  <script type="module">
-    import { initializeApp, getApp, getApps } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
-      authDomain: "almoxarifadobotucatu-5e03d.firebaseapp.com",
-      projectId: "almoxarifadobotucatu-5e03d",
-      storageBucket: "almoxarifadobotucatu-5e03d.firebasestorage.app",
-      messagingSenderId: "828951000388",
-      appId: "1:828951000388:web:06dbe3cb5764872e7b1311"
-    };
-
-    const app = (getApps().length ? getApp() : initializeApp(firebaseConfig));
-    const auth = getAuth(app);
-
-    onAuthStateChanged(auth, (user) => {
-      const okLocal = [
-        "loggedInUser","isLoggedIn","user","usuarioLogado",
-        "authToken","token","netlifyIdentity.user","gotrue.user","firebase:authUser"
-      ].some(k => localStorage.getItem(k));
-
-      if (user || okLocal) {
-        document.body.style.display = "block"; // libera a página
-      } else {
-        window.location.replace("https://almoxarifadobotucatu.netlify.app/");
-      }
-    });
-  </script>
-
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 
@@ -2608,6 +2574,32 @@ document.addEventListener("change", function(e) {
 });
 </script>
 
+<script>
+(function() {
+  var container = document.getElementById('setoresContainer');
+  var enviar = document.getElementById('enviarPedido');
+  if (!container || !enviar) return;
+
+  function toggleEnviar() {
+    try {
+      enviar.style.display = (container.children && container.children.length > 0) ? 'inline-block' : 'none';
+    } catch(e) {}
+  }
+
+  // Verificação inicial (caso a página carregue sem setores)
+  toggleEnviar();
+
+  // Observa adições/remoções diretas de setores
+  var observer = new MutationObserver(function() {
+    toggleEnviar();
+  });
+  observer.observe(container, { childList: true });
+
+  // (Opcional) expõe função global segura para uso em outros pontos do código
+  window.__toggleEnviarPedido__ = toggleEnviar;
+})();
+</script>
+
 <!-- Firebase integração -->
 
 
@@ -2636,9 +2628,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-  import { getApp, getApps } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
   import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-auth.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
@@ -2650,7 +2640,7 @@ document.addEventListener("DOMContentLoaded", function() {
   };
 
   // Inicializa Firebase e Firestore
-  const app = (getApps().length ? getApp() : initializeApp(firebaseConfig));
+  const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
   async function enviarPedido() {
