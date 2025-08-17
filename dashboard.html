@@ -53,7 +53,7 @@
       gap:12px; 
       font-weight:800; 
       letter-spacing:-.02em;
-      font-size:1.8rem; /* destaque maior */
+      font-size:1.8rem;
       text-transform:uppercase;
     }
     .brand svg {
@@ -223,14 +223,12 @@
   <footer>© 2025. Todos os direitos reservados.</footer>
 
   <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
+    import { getFirestore, collection, query, where, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
+
     const firebaseConfig = window.FIREBASE_CONFIG || null;
     let db = null;
-    if (firebaseConfig) {
-      const [{ initializeApp }, { getFirestore, collection, getDocs, query, where }] =
-        await Promise.all([
-          import('https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js'),
-          import('https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js')
-        ]);
+    if(firebaseConfig){
       const app = initializeApp(firebaseConfig);
       db = getFirestore(app);
     }
@@ -262,9 +260,9 @@
     async function carregarPedidosPorUnidade(unid){
       if(!db){tabelaBody.innerHTML=`<tr><td colspan="6" style="text-align:center;color:var(--text-medium)">Conecte o Firebase.</td></tr>`;return;}
       try{
-        const { getDocs, collection, query, where }=await import('https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js');
-        const q=query(collection(db,'pedidos'),where('unidade','==',unid));
-        const snap=await getDocs(q);const pedidos=[];snap.forEach(doc=>pedidos.push(normalizePedido(doc)));
+        const q=query(collection(db,'pedidos'), where('unidade','==',unid), orderBy('data','desc'));
+        const snap=await getDocs(q);
+        const pedidos=[];snap.forEach(doc=>pedidos.push(normalizePedido(doc)));
         pedidos.sort((a,b)=>(b.__dt?.getTime?.()||0)-(a.__dt?.getTime?.()||0));
         document.getElementById('kpiTotal').textContent=pedidos.length;
         const agora=new Date(),hojeKey=agora.toDateString();
