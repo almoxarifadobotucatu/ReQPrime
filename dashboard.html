@@ -20,6 +20,7 @@
       justify-content: center;
       align-items: center;
       gap: 20px;
+      flex-wrap: wrap;
     }
     .topbar h1 {
       margin: 0;
@@ -77,6 +78,10 @@
       max-width: 1400px;
       margin: 20px auto;
       padding: 0 20px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
     }
     select, button {
       padding: 10px 14px;
@@ -96,10 +101,13 @@
       border-radius: 12px;
       box-shadow: 0 4px 6px rgba(0,0,0,0.2);
       cursor: pointer;
-      margin-left: 8px;
-      transition: all 0.3s ease;
+      transition: all 0.2s ease;
     }
-    button:hover {
+    button:disabled {
+      opacity: .6;
+      cursor: not-allowed;
+    }
+    button:hover:not(:disabled) {
       background: linear-gradient(270deg,#0a66c2,#1db954);
       background-size: 600% 600%;
       animation: gradientShift 6s ease infinite;
@@ -107,9 +115,8 @@
     }
     #resetPedidosBtn {
       background: #e53e3e;
-      margin-left: 20px;
     }
-    #resetPedidosBtn:hover {
+    #resetPedidosBtn:hover:not(:disabled) {
       background: linear-gradient(270deg,#e53e3e,#ff6b6b);
     }
     @keyframes gradientShift {
@@ -117,13 +124,24 @@
       50% { background-position: 100% 50% }
       100% { background-position: 0% 50% }
     }
+    .msg {
+      max-width: 1400px;
+      margin: 12px auto 0;
+      padding: 10px 14px;
+      border-radius: 10px;
+      display: none;
+    }
+    .msg.ok { background: #153e2b; border:1px solid #2f855a; color: #c6f6d5; }
+    .msg.err { background: #3e1515; border:1px solid #c53030; color: #fed7d7; }
   </style>
 </head>
 <body>
   <div class="topbar">
     <h1>📊 Dashboard de Pedidos Extras</h1>
-    <button id="resetPedidosBtn">Resetar Pedidos</button>
+    <button id="resetPedidosBtn" title="Apaga todos os documentos da coleção 'pedidos'">Resetar Pedidos</button>
   </div>
+
+  <div id="flash" class="msg"></div>
 
   <!-- Seletor de unidade -->
   <div class="gate">
@@ -177,6 +195,7 @@
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
     import { getFirestore, collection, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
+    // TODO: confirme as credenciais do seu projeto
     const firebaseConfig = {
       apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
       authDomain: "almoxarifadobotucatu-5e03d.firebaseapp.com",
@@ -192,105 +211,161 @@
     const unidadeSelect = document.getElementById("unidadeSelect");
     const confirmarBtn = document.getElementById("confirmarUnidade");
     const tabela = document.getElementById("tabelaPedidos");
+    const flash = document.getElementById("flash");
+    const resetBtn = document.getElementById("resetPedidosBtn");
 
     function toDate(any) {
       if (!any) return null;
       if (any.seconds) return new Date(any.seconds * 1000);
-      return new Date(any);
+      const d = new Date(any);
+      return isNaN(d) ? null : d;
     }
 
-    async function carregarUnidades(pedidos) {
-      unidadeSelect.innerHTML = '<option value="">Todas</option>'; // <-- limpa antes
-      const unidades = new Set(pedidos.map(p => p.unidade));
-      unidades.forEach(u => {
-        if (u) {
-          const opt = document.createElement("option");
-          opt.value = u;
-          opt.textContent = u;
-          unidadeSelect.appendChild(opt);
-        }
+    function showMsg(text, type="ok", ms=2500){
+      flash.textContent = text;
+      flash.className = "msg " + (type==="ok" ? "ok" : "err");
+      flash.style.display = "block";
+      setTimeout(()=>{ flash.style.display = "none"; }, ms);
+    }
+
+    async function obterPedidosSnapshot() {
+      const pedidosRef = collection(db, "pedidos");
+      return await getDocs(pedidosRef);
+    }
+
+    function montarLinhas(snapshot, unidade) {
+      const linhas = [];
+      const seen = new Set(); // evita duplicações idênticas
+
+      snapshot.forEach(docSnap => {
+        const data = docSnap.data() || {};
+        if (unidade && data.unidade !== unidade) return;
+
+        const itens = Array.isArray(data.itens) ? data.itens : [];
+
+        itens.forEach((item, idx) => {
+          const row = {
+            solicitante: data.solicitante || "—",
+            unidade: data.unidade || "—",
+            item: (item && item.nome) || "—",
+            quantidade: (item && item.quantidade) ?? "—",
+            unidadeControle: (item && item.unidadeControle) || "—",
+            data: toDate(data.data)
+          };
+
+          // chave única baseada no documento + conteúdo do item
+          const key = [
+            docSnap.id,
+            row.solicitante,
+            row.unidade,
+            row.item,
+            row.quantidade,
+            row.unidadeControle,
+            row.data ? row.data.getTime() : ""
+          ].join("|");
+
+          if (!seen.has(key)) {
+            seen.add(key);
+            linhas.push(row);
+          }
+        });
+      });
+
+      // ordena por data desc
+      linhas.sort((a,b)=>(b.data?.getTime?.()||0) - (a.data?.getTime?.()||0));
+      return linhas;
+    }
+
+    function renderTabela(linhas) {
+      tabela.innerHTML = "";
+      if (!linhas.length) {
+        tabela.innerHTML = "<tr><td colspan='6' style='text-align:center;'>Nenhum pedido encontrado</td></tr>";
+        return;
+      }
+      const frag = document.createDocumentFragment();
+      for (const p of linhas) {
+        const tr = document.createElement("tr");
+        tr.innerHTML = \`
+          <td>\${p.solicitante}</td>
+          <td>\${p.unidade}</td>
+          <td>\${p.item}</td>
+          <td>\${p.quantidade}</td>
+          <td>\${p.unidadeControle}</td>
+          <td>\${p.data ? p.data.toLocaleString() : "—"}</td>
+        \`;
+        frag.appendChild(tr);
+      }
+      tabela.appendChild(frag);
+    }
+
+    async function carregarUnidades() {
+      const snapshot = await obterPedidosSnapshot();
+      // limpar opções antes de popular
+      unidadeSelect.innerHTML = '<option value="">Todas</option>';
+      const unidades = new Set();
+      snapshot.forEach(docSnap => {
+        const u = (docSnap.data() || {}).unidade;
+        if (u) unidades.add(u);
+      });
+      [...unidades].sort().forEach(u => {
+        const opt = document.createElement("option");
+        opt.value = u;
+        opt.textContent = u;
+        unidadeSelect.appendChild(opt);
       });
     }
 
     async function carregarPedidos(unidade) {
-      const pedidosRef = collection(db, "pedidos");
-      const snapshot = await getDocs(pedidosRef);
-      const pedidos = [];
-
-      snapshot.forEach(docSnap => {
-        const data = docSnap.data();
-        if (data.itens && data.itens.length > 0) {
-          data.itens.forEach(item => {
-            pedidos.push({
-              solicitante: data.solicitante,
-              unidade: data.unidade,
-              item: item.nome,
-              quantidade: item.quantidade,
-              unidadeControle: item.unidadeControle,
-              data: toDate(data.data)
-            });
-          });
-        }
-      });
-
-      pedidos.sort((a,b)=>(b.data?.getTime?.()||0) - (a.data?.getTime?.()||0));
-      const filtrados = unidade ? pedidos.filter(p => p.unidade === unidade) : pedidos;
-
-      document.getElementById("kpiTotal").textContent = filtrados.length;
-      const hojeKey = new Date().toDateString();
-      document.getElementById("kpiHoje").textContent = filtrados.filter(p=>p.data && p.data.toDateString()===hojeKey).length;
-      document.getElementById("kpi7d").textContent = filtrados.filter(p=>p.data && (new Date()-p.data)<=7*24*60*60*1000).length;
-      document.getElementById("kpiPendentes").textContent = filtrados.filter(p=>(p.status||"").toLowerCase().includes("pend")).length;
-
-      tabela.innerHTML = ""; // <-- garante que limpa antes de renderizar
-      filtrados.forEach(p => {
-        const tr = document.createElement("tr");
-        tr.innerHTML = `
-          <td>${p.solicitante||"—"}</td>
-          <td>${p.unidade||"—"}</td>
-          <td>${p.item||"—"}</td>
-          <td>${p.quantidade||"—"}</td>
-          <td>${p.unidadeControle||"—"}</td>
-          <td>${p.data? p.data.toLocaleString():"—"}</td>
-        `;
-        tabela.appendChild(tr);
-      });
+      confirmarBtn.disabled = true;
+      try {
+        const snapshot = await obterPedidosSnapshot();
+        const linhas = montarLinhas(snapshot, unidade);
+        // KPIs
+        document.getElementById("kpiTotal").textContent = linhas.length;
+        const hojeKey = new Date().toDateString();
+        document.getElementById("kpiHoje").textContent = linhas.filter(p=>p.data && p.data.toDateString()===hojeKey).length;
+        document.getElementById("kpi7d").textContent = linhas.filter(p=>p.data && (new Date()-p.data)<=7*24*60*60*1000).length;
+        document.getElementById("kpiPendentes").textContent = linhas.filter(p=> (p.status||"").toLowerCase().includes("pend")).length;
+        // Tabela
+        renderTabela(linhas);
+      } finally {
+        confirmarBtn.disabled = false;
+      }
     }
 
     confirmarBtn.addEventListener("click", ()=> {
       const unidade = unidadeSelect.value;
       carregarPedidos(unidade);
-    });
+    }, { once: false });
 
-    // inicializar (apenas carrega unidades, sem renderizar duplicado)
+    // inicializar
     (async ()=>{
-      const pedidosRef = collection(db, "pedidos");
-      const snapshot = await getDocs(pedidosRef);
-      const pedidos = [];
-      snapshot.forEach(docSnap => pedidos.push(docSnap.data()));
-      carregarUnidades(pedidos);
+      await carregarUnidades();
     })();
 
-    // resetar pedidos
-    const resetBtn = document.getElementById("resetPedidosBtn");
+    // RESET pedidos
     resetBtn.addEventListener("click", async () => {
-      if (confirm("⚠️ Tem certeza que deseja apagar TODOS os pedidos do Firebase?")) {
-        try {
-          const pedidosRef = collection(db, "pedidos");
-          const snapshot = await getDocs(pedidosRef);
-          for (const d of snapshot.docs) {
-            await deleteDoc(doc(db, "pedidos", d.id));
-          }
-          alert("✅ Todos os pedidos foram apagados!");
-          tabela.innerHTML = "<tr><td colspan='6' style='text-align:center;'>Nenhum pedido encontrado</td></tr>";
-          document.getElementById("kpiTotal").textContent = "0";
-          document.getElementById("kpiHoje").textContent = "0";
-          document.getElementById("kpi7d").textContent = "0";
-          document.getElementById("kpiPendentes").textContent = "0";
-        } catch (err) {
-          console.error("Erro ao resetar pedidos:", err);
-          alert("❌ Erro ao resetar pedidos.");
+      if (!confirm("⚠️ Tem certeza que deseja apagar TODOS os documentos da coleção 'pedidos'?")) return;
+      resetBtn.disabled = true;
+      try {
+        const snapshot = await obterPedidosSnapshot();
+        const total = snapshot.size;
+        for (const d of snapshot.docs) {
+          await deleteDoc(doc(db, "pedidos", d.id));
         }
+        showMsg(`✅ ${total} pedido(s) apagado(s).`, "ok");
+        // Limpa UI
+        renderTabela([]);
+        document.getElementById("kpiTotal").textContent = "0";
+        document.getElementById("kpiHoje").textContent = "0";
+        document.getElementById("kpi7d").textContent = "0";
+        document.getElementById("kpiPendentes").textContent = "0";
+        await carregarUnidades();
+      } catch (err) {
+        console.error(err);
+        showMsg("❌ Erro ao resetar pedidos.", "err");
+      } finally {
+        resetBtn.disabled = false;
       }
     });
   </script>
