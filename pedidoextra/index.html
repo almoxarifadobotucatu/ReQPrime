@@ -2335,17 +2335,6 @@ corpoEmail += `${codigo ? codigo + ' - ' : ''}${descricao} - ${qtd} ${pluralizar
         }
         corpoEmail += `----------------------------------------\n\n`;
       });
-      
-   // ✅ usa o mesmo corpo para Gmail
-    window.location.href = `mailto:seuemail@gmail.com?subject=Pedido Extra&body=${encodeURIComponent(corpoEmail)}`;
-
-    // ✅ e o mesmo corpo para o dashboard
-    fetch("https://seu-backend-ou-planilha", {
-        method: "POST",
-        body: JSON.stringify({ conteudo: corpoEmail }),
-        headers: { "Content-Type": "application/json" }
-    });
-}   
       const bodyEncoded = encodeURIComponent(corpoEmail);
 const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=leitaoochefe@gmail.com&su=Pedido Extra - ${encodeURIComponent(unidade)}&body=${bodyEncoded}`;
 let win = window.open('about:blank', '_blank');
@@ -2668,26 +2657,7 @@ document.addEventListener("change", function(e) {
 </script>
 
 
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-  const btnEnviar = document.getElementById("enviarPedido");
-  if (btnEnviar) {
-    btnEnviar.addEventListener("click", function(e) {
-      e.preventDefault();
-      if (btnEnviar.disabled) return;
-      btnEnviar.disabled = true;
 
-      // Chama a função original de envio, se existir
-      if (typeof enviarPedido === "function") {
-        enviarPedido();
-      }
-
-      // Reativa depois de alguns segundos para permitir novo envio
-      setTimeout(() => { btnEnviar.disabled = false; }, 5000);
-    }, { once: false });
-  }
-});
-</script>
 
 </body>
 </html>
@@ -2807,50 +2777,7 @@ document.addEventListener("DOMContentLoaded", function() {
   const db = getFirestore(app);
 
   // Envio do Pedido
-  document.getElementById("enviarPedido").addEventListener("click", async () => {
-    const solicitante = document.getElementById("solicitante").value;
-    const unidade = document.getElementById("unidade").value;
-
-    if (!solicitante || !unidade) {
-      alert("Preencha todos os campos obrigatórios!");
-      return;
-    }
-    
-    // Capturar os itens adicionados no formulário
-const itens = [];
-document.querySelectorAll(".item").forEach(itemDiv => {
-  const nome = itemDiv.querySelector(".item-nome").value;
-  const quantidade = itemDiv.querySelector(".item-qtd").value;
-  const unidadeControle = itemDiv.querySelector(".item-unidade").value;
-
-  if (nome && quantidade && unidadeControle) {
-    itens.push({ nome, quantidade, unidadeControle });
-  }
-});
-
-const pedido = {
-  solicitante,
-  unidade,
-  itens,
-  data: new Date().toISOString()
-};
-
-    // Estrutura do pedido
-    const pedido = {
-      solicitante,
-      unidade,
-      data: new Date().toISOString()
-    };
-
-    try {
-      await addDoc(collection(db, "pedidos"), pedido);
-      alert("✅ Pedido enviado com sucesso!");
-      document.getElementById("pedidoForm").reset();
-    } catch (error) {
-      console.error("Erro ao salvar pedido:", error);
-      alert("❌ Erro ao enviar o pedido.");
-    }
-  });
+  document.
 </script>
 <body>
 <script src="/protege-pagina.js"></script>
@@ -2874,65 +2801,10 @@ const pedido = {
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  document.getElementById("enviarPedido").addEventListener("click", async () => {
-    const solicitante = document.getElementById("solicitante").value;
-    const unidade = document.getElementById("unidade").value;
-
-    const itens = [];
-    document.querySelectorAll(".item").forEach(itemDiv => {
-      const nome = itemDiv.querySelector(".item-nome").value;
-      const quantidade = itemDiv.querySelector(".item-qtd").value;
-      const unidadeControle = itemDiv.querySelector(".item-unidade").value;
-
-      if (nome && quantidade && unidadeControle) {
-        itens.push({ nome, quantidade, unidadeControle });
-      }
-    });
-
-    if (!solicitante || !unidade || itens.length === 0) {
-      alert("Preencha todos os campos e adicione ao menos um item!");
-      return;
-    }
-
-    const pedido = {
-      solicitante,
-      unidade,
-      itens,
-      data: new Date().toISOString()
-    };
-
-    try {
-      await addDoc(collection(db, "pedidos"), pedido);
-      alert("✅ Pedido enviado com sucesso!");
-      document.getElementById("pedidoForm").reset();
-      document.getElementById("itensContainer").innerHTML = "";
-    } catch (e) {
-      console.error("Erro ao salvar pedido:", e);
-      alert("❌ Erro ao enviar o pedido.");
-    }
-  });
+  document.
 </script>
 
 
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-  const btnEnviar = document.getElementById("enviarPedido");
-  if (btnEnviar) {
-    btnEnviar.addEventListener("click", function(e) {
-      e.preventDefault();
-      if (btnEnviar.disabled) return;
-      btnEnviar.disabled = true;
 
-      // Chama a função original de envio, se existir
-      if (typeof enviarPedido === "function") {
-        enviarPedido();
-      }
-
-      // Reativa depois de alguns segundos para permitir novo envio
-      setTimeout(() => { btnEnviar.disabled = false; }, 5000);
-    }, { once: false });
-  }
-});
-</script>
 
 </body></html></head></html>
