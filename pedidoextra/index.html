@@ -2335,7 +2335,7 @@ corpoEmail += `${codigo ? codigo + ' - ' : ''}${descricao} - ${qtd} ${pluralizar
         }
         corpoEmail += `----------------------------------------\n\n`;
       });
-
+      
    // ✅ usa o mesmo corpo para Gmail
     window.location.href = `mailto:seuemail@gmail.com?subject=Pedido Extra&body=${encodeURIComponent(corpoEmail)}`;
 
@@ -2345,8 +2345,7 @@ corpoEmail += `${codigo ? codigo + ' - ' : ''}${descricao} - ${qtd} ${pluralizar
         body: JSON.stringify({ conteudo: corpoEmail }),
         headers: { "Content-Type": "application/json" }
     });
-}
-      
+}   
       const bodyEncoded = encodeURIComponent(corpoEmail);
 const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=leitaoochefe@gmail.com&su=Pedido Extra - ${encodeURIComponent(unidade)}&body=${bodyEncoded}`;
 let win = window.open('about:blank', '_blank');
