@@ -2720,6 +2720,51 @@ document.addEventListener("change", function(e) {
   }
 </style>
 </meta></head>
+  <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+  // Config do Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
+    authDomain: "almoxarifadobotucatu-5e03d.firebaseapp.com",
+    projectId: "almoxarifadobotucatu-5e03d",
+    storageBucket: "almoxarifadobotucatu-5e03d.firebasestorage.app",
+    messagingSenderId: "828951000388",
+    appId: "1:828951000388:web:06dbe3cb5764872e7b1311"
+  };
+
+  // Inicializa Firebase
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // Envio do Pedido
+  document.getElementById("enviarPedido").addEventListener("click", async () => {
+    const solicitante = document.getElementById("solicitante").value;
+    const unidade = document.getElementById("unidade").value;
+
+    if (!solicitante || !unidade) {
+      alert("Preencha todos os campos obrigatórios!");
+      return;
+    }
+
+    // Estrutura do pedido
+    const pedido = {
+      solicitante,
+      unidade,
+      data: new Date().toISOString()
+    };
+
+    try {
+      await addDoc(collection(db, "pedidos"), pedido);
+      alert("✅ Pedido enviado com sucesso!");
+      document.getElementById("pedidoForm").reset();
+    } catch (error) {
+      console.error("Erro ao salvar pedido:", error);
+      alert("❌ Erro ao enviar o pedido.");
+    }
+  });
+</script>
 <body>
 <script src="/protege-pagina.js"></script>
 <footer>
