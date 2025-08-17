@@ -56,14 +56,10 @@
       font-size:1.8rem;
       text-transform:uppercase;
     }
-    .brand svg {
-      flex-shrink: 0;
-    }
+    .brand svg { flex-shrink:0 }
 
     /* Gate de unidade */
-    .gate{
-      max-width:1400px; margin:18px auto 0; padding:0 20px 18px;
-    }
+    .gate{ max-width:1400px; margin:18px auto 0; padding:0 20px 18px }
     .gate-card{
       background:var(--background-white);
       border:1px solid var(--border-light);
@@ -74,14 +70,10 @@
     .row{display:flex; gap:12px; align-items:center; flex-wrap:wrap}
     label{color:var(--text-medium); font-weight:500}
     select{
-      min-width:240px;
-      padding:12px 14px;
-      border:1px solid var(--border-light);
-      border-radius:12px;
-      background-color:rgba(255,255,255,.1);
-      color:var(--text-dark);
-      transition:var(--transition-all);
-      font-size:1rem;
+      min-width:260px; padding:12px 14px;
+      border:1px solid var(--border-light); border-radius:12px;
+      background-color:rgba(255,255,255,.1); color:var(--text-dark);
+      transition:var(--transition-all); font-size:1rem;
     }
     select:focus{
       outline:none; border-color:var(--primary-color);
@@ -224,57 +216,124 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
-    import { getFirestore, collection, query, where, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js";
 
+    // 1) Config & DB
     const firebaseConfig = window.FIREBASE_CONFIG || null;
     let db = null;
     if(firebaseConfig){
       const app = initializeApp(firebaseConfig);
       db = getFirestore(app);
+    } else {
+      console.warn("FIREBASE_CONFIG ausente em window.FIREBASE_CONFIG");
     }
 
+    // 2) DOM refs
     const unidadeSelect = document.getElementById('unidadeSelect');
     const confirmarBtn  = document.getElementById('confirmarUnidade');
     const limparLocal   = document.getElementById('limparLocal');
     const dashboard     = document.getElementById('dashboard');
     const tabelaBody    = document.querySelector('#tabelaPedidos tbody');
 
+    // 3) Utils
     function fmtDate(d){try{return new Intl.DateTimeFormat('pt-BR',{dateStyle:'short',timeStyle:'short'}).format(d);}catch(_){return d?.toLocaleString?.()||'—'}}
-    function toDate(any){if(!any)return null;if(typeof any==='object'&&any.seconds)return new Date(any.seconds*1000);if(typeof any==='number')return new Date(any);const d=new Date(any);return isNaN(+d)?null:d}
-    function normalizePedido(doc){const p={id:doc.id,...doc.data?.()??doc};const dt=toDate(p.data)||toDate(p.dataSolicitacao)||toDate(p.createdAt)||toDate(p.timestamp);p.__dt=dt||new Date(0);p.unidade=p.unidade||p.unidadeSaude||p.unidadeNome||'';p.setor=p.setor||p.setorNome||'';p.status=p.status||p.situacao||'';p.solicitante=p.solicitante||p.usuario||p.nome||'';p.itens=Array.isArray(p.itens)?p.itens:(typeof p.itens==='string'?p.itens:'');return p}
-    function renderTabela(pedidos){const rows=pedidos.map(p=>`<tr>
-      <td>${p.__dt?fmtDate(p.__dt):'—'}</td>
-      <td>${p.solicitante||'—'}</td>
-      <td>${p.setor||'—'}</td>
-      <td>${p.unidade||'—'}</td>
-      <td>${Array.isArray(p.itens)?p.itens.length+' item(ns)':(p.itens||'—')}</td>
-      <td>${p.status||'—'}</td>
-    </tr>`).join('');tabelaBody.innerHTML=rows||`<tr><td colspan="6" style="text-align:center;color:var(--text-medium)">Nenhum pedido encontrado.</td></tr>`}
+    function toDate(any){
+      if(!any) return null;
+      if(typeof any==='object' && any.seconds) return new Date(any.seconds*1000);
+      if(typeof any==='number') return new Date(any);
+      const d=new Date(any);
+      return isNaN(+d)?null:d
+    }
+    function normalizePedido(doc){
+      const raw = doc.data ? doc.data() : (doc || {});
+      const p = { id: doc.id || raw.id || '', ...raw };
+      const dt = toDate(p.data) || toDate(p.dataSolicitacao) || toDate(p.createdAt) || toDate(p.timestamp);
+      p.__dt = dt || new Date(0);
+      p.unidade = p.unidade || p.unidadeSaude || p.unidadeNome || '';
+      p.setor = p.setor || p.setorNome || '';
+      p.status = p.status || p.situacao || '';
+      p.solicitante = p.solicitante || p.usuario || p.nome || '';
+      p.itens = Array.isArray(p.itens) ? p.itens : (typeof p.itens==='string' ? p.itens : '');
+      return p;
+    }
+    function renderTabela(pedidos){
+      const rows = pedidos.map(p=>`<tr>
+        <td>${p.__dt?fmtDate(p.__dt):'—'}</td>
+        <td>${p.solicitante||'—'}</td>
+        <td>${p.setor||'—'}</td>
+        <td>${p.unidade||'—'}</td>
+        <td>${Array.isArray(p.itens)?p.itens.length+' item(ns)':(p.itens||'—')}</td>
+        <td>${p.status||'—'}</td>
+      </tr>`).join('');
+      tabelaBody.innerHTML = rows || `<tr><td colspan="6" style="text-align:center;color:var(--text-medium)">Nenhum pedido encontrado.</td></tr>`;
+    }
 
+    // 4) Carregar unidades (sem where/orderBy para cobrir variações de campos)
     async function carregarUnidades(){
-      const opts=new Set();
-      if(db){try{const snap=await getDocs(collection(db,'pedidos'));snap.forEach(doc=>{const p=normalizePedido(doc);if(p.unidade)opts.add(p.unidade)});}catch(e){console.warn(e);}}
-      unidadeSelect.innerHTML=`<option value="">— Escolha a unidade —</option>`+Array.from(opts).sort((a,b)=>a.localeCompare(b,'pt-BR')).map(u=>`<option value="${u}">${u}</option>`).join('');
-    }
-
-    async function carregarPedidosPorUnidade(unid){
-      if(!db){tabelaBody.innerHTML=`<tr><td colspan="6" style="text-align:center;color:var(--text-medium)">Conecte o Firebase.</td></tr>`;return;}
+      const opts = new Set();
+      if(!db){
+        unidadeSelect.innerHTML = `<option value="">— Informe o Firebase —</option>`;
+        return;
+      }
       try{
-        const q=query(collection(db,'pedidos'), where('unidade','==',unid), orderBy('data','desc'));
-        const snap=await getDocs(q);
-        const pedidos=[];snap.forEach(doc=>pedidos.push(normalizePedido(doc)));
-        pedidos.sort((a,b)=>(b.__dt?.getTime?.()||0)-(a.__dt?.getTime?.()||0));
-        document.getElementById('kpiTotal').textContent=pedidos.length;
-        const agora=new Date(),hojeKey=agora.toDateString();
-        document.getElementById('kpiHoje').textContent=pedidos.filter(p=>p.__dt&&p.__dt.toDateString()===hojeKey).length;
-        document.getElementById('kpi7d').textContent=pedidos.filter(p=>p.__dt&&(agora-p.__dt)<=7*24*60*60*1000).length;
-        document.getElementById('kpiPendentes').textContent=pedidos.filter(p=>String(p.status||'').toLowerCase().includes('pend')).length;
-        renderTabela(pedidos);
-      }catch(e){console.error(e);tabelaBody.innerHTML=`<tr><td colspan="6" style="text-align:center;color:var(--danger-extra-color)">Erro ao carregar pedidos.</td></tr>`}
+        const snap = await getDocs(collection(db,'pedidos'));
+        snap.forEach(doc=>{
+          const p = normalizePedido(doc);
+          if(p.unidade) opts.add(p.unidade);
+        });
+        const options = Array.from(opts).sort((a,b)=>a.localeCompare(b,'pt-BR'))
+          .map(u=>`<option value="${u}">${u}</option>`).join('');
+        unidadeSelect.innerHTML = `<option value="">— Escolha a unidade —</option>` + options;
+      }catch(e){
+        console.error('Erro ao carregar unidades', e);
+        unidadeSelect.innerHTML = `<option value="">— Erro ao carregar —</option>`;
+      }
     }
 
-    confirmarBtn.addEventListener('click',async()=>{const unid=unidadeSelect.value;if(!unid){unidadeSelect.focus();return;}dashboard.style.display='block';await carregarPedidosPorUnidade(unid);window.scrollTo({top:document.querySelector('.wrap').offsetTop-60,behavior:'smooth'});});
-    limparLocal.addEventListener('click',()=>{unidadeSelect.selectedIndex=0;dashboard.style.display='none';tabelaBody.innerHTML=`<tr><td colspan="6" style="text-align:center;color:var(--text-medium)">Selecione uma unidade para carregar os pedidos…</td></tr>`});
+    // 5) Carregar pedidos por unidade (busca todos e filtra/ordena no cliente)
+    async function carregarPedidosPorUnidade(unid){
+      if(!db){
+        tabelaBody.innerHTML=`<tr><td colspan="6" style="text-align:center;color:var(--text-medium)">Conecte o Firebase.</td></tr>`;
+        return;
+      }
+      try{
+        const snap = await getDocs(collection(db,'pedidos'));
+        const pedidos = [];
+        snap.forEach(doc=>pedidos.push(normalizePedido(doc)));
+        // filtra pela unidade normalizada
+        const filtrados = pedidos.filter(p => (p.unidade||'') === unid);
+        // ordena por data (desc) — mesmo comportamento "do arquivo original"
+        filtrados.sort((a,b)=>(b.__dt?.getTime?.()||0)-(a.__dt?.getTime?.()||0));
+
+        // KPIs
+        document.getElementById('kpiTotal').textContent = filtrados.length;
+        const agora=new Date(), todayKey=agora.toDateString();
+        document.getElementById('kpiHoje').textContent = filtrados.filter(p=>p.__dt && p.__dt.toDateString()===todayKey).length;
+        document.getElementById('kpi7d').textContent   = filtrados.filter(p=>p.__dt && (agora-p.__dt)<=7*24*60*60*1000).length;
+        document.getElementById('kpiPendentes').textContent = filtrados.filter(p=>String(p.status||'').toLowerCase().includes('pend')).length;
+
+        renderTabela(filtrados);
+      }catch(e){
+        console.error('Erro ao carregar pedidos', e);
+        tabelaBody.innerHTML=`<tr><td colspan="6" style="text-align:center;color:var(--danger-extra-color)">Erro ao carregar pedidos.</td></tr>`;
+      }
+    }
+
+    // 6) Eventos
+    confirmarBtn.addEventListener('click', async ()=>{
+      const unid = unidadeSelect.value;
+      if(!unid){ unidadeSelect.focus(); return; }
+      dashboard.style.display='block';
+      await carregarPedidosPorUnidade(unid);
+      window.scrollTo({top:document.querySelector('.wrap').offsetTop-60,behavior:'smooth'});
+    });
+    limparLocal.addEventListener('click', ()=>{
+      unidadeSelect.selectedIndex=0;
+      dashboard.style.display='none';
+      tabelaBody.innerHTML=`<tr><td colspan="6" style="text-align:center;color:var(--text-medium)">Selecione uma unidade para carregar os pedidos…</td></tr>`;
+    });
+
+    // 7) Boot
     carregarUnidades();
   </script>
 </body>
