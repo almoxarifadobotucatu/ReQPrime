@@ -2747,6 +2747,25 @@ document.addEventListener("change", function(e) {
       alert("Preencha todos os campos obrigatórios!");
       return;
     }
+    
+    // Capturar os itens adicionados no formulário
+const itens = [];
+document.querySelectorAll(".item").forEach(itemDiv => {
+  const nome = itemDiv.querySelector(".item-nome").value;
+  const quantidade = itemDiv.querySelector(".item-qtd").value;
+  const unidadeControle = itemDiv.querySelector(".item-unidade").value;
+
+  if (nome && quantidade && unidadeControle) {
+    itens.push({ nome, quantidade, unidadeControle });
+  }
+});
+
+const pedido = {
+  solicitante,
+  unidade,
+  itens,
+  data: new Date().toISOString()
+};
 
     // Estrutura do pedido
     const pedido = {
