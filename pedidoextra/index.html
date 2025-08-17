@@ -2720,6 +2720,58 @@ document.addEventListener("change", function(e) {
   }
 </style>
 </meta></head>
+  <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+  import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+  // 🔑 Cole aqui suas credenciais do Firebase
+const firebaseConfig = {
+
+  apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
+
+  authDomain: "almoxarifadobotucatu-5e03d.firebaseapp.com",
+
+  projectId: "almoxarifadobotucatu-5e03d",
+
+  storageBucket: "almoxarifadobotucatu-5e03d.firebasestorage.app",
+
+  messagingSenderId: "828951000388",
+
+  appId: "1:828951000388:web:06dbe3cb5764872e7b1311"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  // Captura o formulário
+  const form = document.querySelector("form"); // ajusta se tiver ID específico
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    // Captura os campos — ajuste para os IDs/names corretos do seu HTML
+    const solicitante = document.querySelector("#solicitante")?.value || "";
+    const unidade = document.querySelector("#unidade")?.value || "";
+    const item = document.querySelector("#itemNome")?.value || "";
+    const quantidade = document.querySelector("#itemQtd")?.value || "";
+    const unid = document.querySelector("#itemUnid")?.value || "";
+
+    try {
+      await addDoc(collection(db, "pedidos"), {
+        solicitante,
+        unidade,
+        item: item + " (" + unid + ")",
+        quantidade: Number(quantidade),
+        criadoEm: serverTimestamp()
+      });
+
+      alert("✅ Pedido enviado com sucesso!");
+      form.reset();
+    } catch (err) {
+      console.error("Erro ao salvar:", err);
+      alert("❌ Falha ao salvar pedido.");
+    }
+  });
+</script>
 <body>
   <!-- Cole este script no FINAL da página 'Pedido Extra', logo antes de </body> -->
 <script>
