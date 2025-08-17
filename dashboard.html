@@ -2,70 +2,21 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard de Pedidos</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 20px;
-      background: #f4f6f9;
-      color: #333;
-    }
-    h1 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: white;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-    th, td {
-      padding: 12px;
-      text-align: left;
-      border-bottom: 1px solid #ddd;
-    }
-    th {
-      background: #007BFF;
-      color: white;
-    }
-    tr:hover {
-      background: #f1f1f1;
-    }
-  </style>
 </head>
-<body>
-  <h1>📊 Dashboard de Pedidos Extras</h1>
+<body style="font-family: Arial, sans-serif; background: #f4f4f9; padding: 20px;">
+  <h2>📊 Pedidos Registrados</h2>
+  <ul id="listaPedidos" style="background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);"></ul>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Nome do Responsável</th>
-        <th>Unidade Solicitante</th>
-        <th>Item</th>
-        <th>Quantidade</th>
-        <th>Unidade de Controle</th>
-        <th>Data</th>
-        <th>Hora</th>
-      </tr>
-    </thead>
-    <tbody id="tabelaPedidos">
-      <tr><td colspan="7">Carregando pedidos...</td></tr>
-    </tbody>
-  </table>
-
-  <!-- 🔥 Firebase + Firestore -->
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
-    import { getFirestore, collection, query, orderBy, onSnapshot } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
       authDomain: "almoxarifadobotucatu-5e03d.firebaseapp.com",
       projectId: "almoxarifadobotucatu-5e03d",
-      storageBucket: "almoxarifadobotucatu-5e03d.appspot.com",
+      storageBucket: "almoxarifadobotucatu-5e03d.firebasestorage.app",
       messagingSenderId: "828951000388",
       appId: "1:828951000388:web:06dbe3cb5764872e7b1311"
     };
@@ -73,36 +24,23 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    const tabela = document.getElementById("tabelaPedidos");
+    async function carregarPedidos() {
+      const pedidosRef = collection(db, "pedidos");
+      const snapshot = await getDocs(pedidosRef);
 
-    // 🔄 Escuta em tempo real os pedidos salvos no Firestore
-    const q = query(collection(db, "pedidos"), orderBy("criadoEm", "desc"));
-    onSnapshot(q, (snapshot) => {
-      tabela.innerHTML = "";
-      if (snapshot.empty) {
-        tabela.innerHTML = '<tr><td colspan="7">Nenhum pedido encontrado.</td></tr>';
-        return;
-      }
+      const lista = document.getElementById("listaPedidos");
+      lista.innerHTML = "";
 
-      snapshot.forEach((doc) => {
-        const pedido = doc.data();
-        const dataHora = pedido.criadoEm?.toDate ? pedido.criadoEm.toDate() : new Date();
-        const data = dataHora.toLocaleDateString("pt-BR");
-        const hora = dataHora.toLocaleTimeString("pt-BR", { hour: '2-digit', minute: '2-digit' });
-
-        const row = `<tr>
-          <td>${pedido.solicitante || "-"}</td>
-          <td>${pedido.unidade || "-"}</td>
-          <td>${pedido.item || "-"}</td>
-          <td>${pedido.quantidade || "-"}</td>
-          <td>${pedido.unidadeControle || "-"}</td>
-          <td>${data}</td>
-          <td>${hora}</td>
-        </tr>`;
-
-        tabela.innerHTML += row;
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const li = document.createElement("li");
+        li.style.margin = "10px 0";
+        li.textContent = `${data.solicitante} - ${data.unidade} (${new Date(data.data).toLocaleString()})`;
+        lista.appendChild(li);
       });
-    });
+    }
+
+    carregarPedidos();
   </script>
 </body>
 </html>
