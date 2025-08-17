@@ -2646,44 +2646,31 @@ document.addEventListener("DOMContentLoaded", function() {
   async function enviarPedido() {
     const solicitante = document.getElementById("solicitante").value.trim();
     const unidade = document.getElementById("unidade").value.trim();
-    const setores = [];
+    const itens = [];
 
-    document.querySelectorAll(".setor").forEach(setorDiv => {
-      const nomeSetor = setorDiv.querySelector('input[name="setor"]').value;
-      const itens = [];
-      setorDiv.querySelectorAll(".item").forEach(itemDiv => {
-        const nome = itemDiv.querySelector(".item-nome")?.value;
-        const quantidade = itemDiv.querySelector(".item-qtd")?.value;
-        const unidadeControle = itemDiv.querySelector(".item-unidade")?.value;
-        if (nome && quantidade && unidadeControle) {
-          itens.push({ nome, quantidade, unidade: unidadeControle });
-        }
-      });
-      if (nomeSetor && itens.length > 0) {
-        setores.push({ setor: nomeSetor, itens });
+    document.querySelectorAll(".item").forEach(itemDiv => {
+      const nome = itemDiv.querySelector(".item-nome")?.value;
+      const quantidade = itemDiv.querySelector(".item-qtd")?.value;
+      const unidadeControle = itemDiv.querySelector(".item-unidade")?.value;
+      if (nome && quantidade && unidadeControle) {
+        itens.push({ nome, quantidade, unidadeControle });
       }
     });
 
-    if (!solicitante || !unidade || setores.length === 0) {
+    if (!solicitante || !unidade || itens.length === 0) {
       alert("⚠️ Preencha todos os campos e adicione pelo menos um item.");
       return;
     }
 
+    const dados = {
+      solicitante,
+      unidade,
+      itens,
+      data: new Date().toISOString()
+    };
+
     try {
-      // 🔹 Cada item é salvo como documento separado no Firestore
-      for (const setor of setores) {
-        for (const item of setor.itens) {
-          const dados = {
-            "Responsável": solicitante,
-            "Unidade de Saúde": unidade,
-            "Item": item.nome,
-            "Quantidade": item.quantidade,
-            "Unidade de Controle": item.unidade,
-            "Data": new Date().toLocaleString("pt-BR")
-          };
-          await addDoc(collection(db, "pedidos"), dados);
-        }
-      }
+      await addDoc(collection(db, "pedidos"), dados);
       alert("✅ Pedido enviado com sucesso!");
       document.getElementById("pedidoForm").reset();
       document.getElementById("setoresContainer").innerHTML = "";
@@ -2857,44 +2844,31 @@ document.addEventListener("DOMContentLoaded", function() {
   async function enviarPedido() {
     const solicitante = document.getElementById("solicitante").value.trim();
     const unidade = document.getElementById("unidade").value.trim();
-    const setores = [];
+    const itens = [];
 
-    document.querySelectorAll(".setor").forEach(setorDiv => {
-      const nomeSetor = setorDiv.querySelector('input[name="setor"]').value;
-      const itens = [];
-      setorDiv.querySelectorAll(".item").forEach(itemDiv => {
-        const nome = itemDiv.querySelector(".item-nome")?.value;
-        const quantidade = itemDiv.querySelector(".item-qtd")?.value;
-        const unidadeControle = itemDiv.querySelector(".item-unidade")?.value;
-        if (nome && quantidade && unidadeControle) {
-          itens.push({ nome, quantidade, unidade: unidadeControle });
-        }
-      });
-      if (nomeSetor && itens.length > 0) {
-        setores.push({ setor: nomeSetor, itens });
+    document.querySelectorAll(".item").forEach(itemDiv => {
+      const nome = itemDiv.querySelector(".item-nome")?.value;
+      const quantidade = itemDiv.querySelector(".item-qtd")?.value;
+      const unidadeControle = itemDiv.querySelector(".item-unidade")?.value;
+      if (nome && quantidade && unidadeControle) {
+        itens.push({ nome, quantidade, unidadeControle });
       }
     });
 
-    if (!solicitante || !unidade || setores.length === 0) {
+    if (!solicitante || !unidade || itens.length === 0) {
       alert("⚠️ Preencha todos os campos e adicione pelo menos um item.");
       return;
     }
 
+    const dados = {
+      solicitante,
+      unidade,
+      itens,
+      data: new Date().toISOString()
+    };
+
     try {
-      // 🔹 Cada item é salvo como documento separado no Firestore
-      for (const setor of setores) {
-        for (const item of setor.itens) {
-          const dados = {
-            "Responsável": solicitante,
-            "Unidade de Saúde": unidade,
-            "Item": item.nome,
-            "Quantidade": item.quantidade,
-            "Unidade de Controle": item.unidade,
-            "Data": new Date().toLocaleString("pt-BR")
-          };
-          await addDoc(collection(db, "pedidos"), dados);
-        }
-      }
+      await addDoc(collection(db, "pedidos"), dados);
       alert("✅ Pedido enviado com sucesso!");
       document.getElementById("pedidoForm").reset();
       document.getElementById("setoresContainer").innerHTML = "";
