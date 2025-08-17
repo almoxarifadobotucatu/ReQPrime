@@ -16,13 +16,16 @@
       padding: 20px;
       background: #16213e;
       border-bottom: 2px solid #0a66c2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
     }
     .topbar h1 {
       margin: 0;
       font-size: 1.8rem;
       font-weight: 800;
       display: flex;
-      justify-content: center;
       align-items: center;
       gap: 10px;
     }
@@ -86,7 +89,6 @@
       color: #000;
       min-width: 240px;
     }
-    /* Botão estilizado igual pedido extra */
     button {
       background: #0a66c2;
       color: #fff;
@@ -103,6 +105,13 @@
       animation: gradientShift 6s ease infinite;
       transform: translateY(-2px);
     }
+    #resetPedidosBtn {
+      background: #e53e3e;
+      margin-left: 20px;
+    }
+    #resetPedidosBtn:hover {
+      background: linear-gradient(270deg,#e53e3e,#ff6b6b);
+    }
     @keyframes gradientShift {
       0% { background-position: 0% 50% }
       50% { background-position: 100% 50% }
@@ -113,6 +122,7 @@
 <body>
   <div class="topbar">
     <h1>📊 Dashboard de Pedidos Extras</h1>
+    <button id="resetPedidosBtn">Resetar Pedidos</button>
   </div>
 
   <!-- Seletor de unidade -->
@@ -165,7 +175,7 @@
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-    import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+    import { getFirestore, collection, getDocs, deleteDoc, doc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
@@ -190,6 +200,7 @@
     }
 
     async function carregarUnidades(pedidos) {
+      unidadeSelect.innerHTML = '<option value="">Todas</option>'; // <-- limpa antes
       const unidades = new Set(pedidos.map(p => p.unidade));
       unidades.forEach(u => {
         if (u) {
@@ -206,8 +217,8 @@
       const snapshot = await getDocs(pedidosRef);
       const pedidos = [];
 
-      snapshot.forEach(doc => {
-        const data = doc.data();
+      snapshot.forEach(docSnap => {
+        const data = docSnap.data();
         if (data.itens && data.itens.length > 0) {
           data.itens.forEach(item => {
             pedidos.push({
@@ -222,21 +233,16 @@
         }
       });
 
-      // ordenar por data desc
       pedidos.sort((a,b)=>(b.data?.getTime?.()||0) - (a.data?.getTime?.()||0));
-
-      // aplicar filtro
       const filtrados = unidade ? pedidos.filter(p => p.unidade === unidade) : pedidos;
 
-      // KPIs
       document.getElementById("kpiTotal").textContent = filtrados.length;
       const hojeKey = new Date().toDateString();
       document.getElementById("kpiHoje").textContent = filtrados.filter(p=>p.data && p.data.toDateString()===hojeKey).length;
       document.getElementById("kpi7d").textContent = filtrados.filter(p=>p.data && (new Date()-p.data)<=7*24*60*60*1000).length;
       document.getElementById("kpiPendentes").textContent = filtrados.filter(p=>(p.status||"").toLowerCase().includes("pend")).length;
 
-      // render tabela
-      tabela.innerHTML = "";
+      tabela.innerHTML = ""; // <-- garante que limpa antes de renderizar
       filtrados.forEach(p => {
         const tr = document.createElement("tr");
         tr.innerHTML = `
@@ -256,14 +262,37 @@
       carregarPedidos(unidade);
     });
 
-    // inicializar
+    // inicializar (apenas carrega unidades, sem renderizar duplicado)
     (async ()=>{
       const pedidosRef = collection(db, "pedidos");
       const snapshot = await getDocs(pedidosRef);
       const pedidos = [];
-      snapshot.forEach(doc => pedidos.push(doc.data()));
+      snapshot.forEach(docSnap => pedidos.push(docSnap.data()));
       carregarUnidades(pedidos);
     })();
+
+    // resetar pedidos
+    const resetBtn = document.getElementById("resetPedidosBtn");
+    resetBtn.addEventListener("click", async () => {
+      if (confirm("⚠️ Tem certeza que deseja apagar TODOS os pedidos do Firebase?")) {
+        try {
+          const pedidosRef = collection(db, "pedidos");
+          const snapshot = await getDocs(pedidosRef);
+          for (const d of snapshot.docs) {
+            await deleteDoc(doc(db, "pedidos", d.id));
+          }
+          alert("✅ Todos os pedidos foram apagados!");
+          tabela.innerHTML = "<tr><td colspan='6' style='text-align:center;'>Nenhum pedido encontrado</td></tr>";
+          document.getElementById("kpiTotal").textContent = "0";
+          document.getElementById("kpiHoje").textContent = "0";
+          document.getElementById("kpi7d").textContent = "0";
+          document.getElementById("kpiPendentes").textContent = "0";
+        } catch (err) {
+          console.error("Erro ao resetar pedidos:", err);
+          alert("❌ Erro ao resetar pedidos.");
+        }
+      }
+    });
   </script>
 </body>
 </html>
