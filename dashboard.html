@@ -4,53 +4,158 @@
   <meta charset="UTF-8">
   <title>Dashboard de Pedidos</title>
   <style>
-    body { font-family: Arial, sans-serif; background: #f4f4f9; padding: 20px; }
-    table { width: 100%; border-collapse: collapse; background: #fff; margin-top: 20px; }
-    th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
-    th { background: #0a66c2; color: #fff; }
-    tr:nth-child(even) { background: #f9f9f9; }
-    #dashboard { display: none; } /* escondido até escolher unidade */
+    body {
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background: #f0f2f5;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background: #0a66c2;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    main {
+      max-width: 1100px;
+      margin: 30px auto;
+      padding: 20px;
+    }
+
+    .card {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 10px;
+    }
+
+    select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+      margin-bottom: 15px;
+    }
+
     #resetarBtn {
-      margin-top: 15px;
-      padding: 10px 15px;
+      padding: 10px 20px;
       background: #c62828;
       color: white;
       border: none;
-      border-radius: 5px;
+      border-radius: 6px;
       cursor: pointer;
       font-weight: bold;
+      transition: background 0.3s;
     }
+
     #resetarBtn:hover {
       background: #a31818;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    thead {
+      background: #0a66c2;
+      color: #fff;
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: left;
+    }
+
+    tr:nth-child(even) {
+      background: #f9f9f9;
+    }
+
+    tr:hover {
+      background: #eef5ff;
+    }
+
+    @media (max-width: 768px) {
+      table, thead, tbody, th, td, tr {
+        display: block;
+      }
+      thead {
+        display: none;
+      }
+      tr {
+        margin-bottom: 15px;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+        padding: 10px;
+      }
+      td {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 10px;
+        border: none;
+        border-bottom: 1px solid #eee;
+      }
+      td:last-child {
+        border-bottom: none;
+      }
+      td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        color: #333;
+      }
     }
   </style>
 </head>
 <body>
-  <h2>📊 Pedidos Registrados</h2>
+  <header>
+    <h1>📊 Dashboard de Pedidos</h1>
+  </header>
 
-  <label for="unidadeSelect"><b>Selecione a Unidade de Saúde:</b></label>
-  <select id="unidadeSelect">
-    <option value="">-- Escolha uma unidade --</option>
-  </select>
+  <main>
+    <div class="card">
+      <label for="unidadeSelect">Selecione a Unidade de Saúde:</label>
+      <select id="unidadeSelect">
+        <option value="">-- Escolha uma unidade --</option>
+      </select>
+      <button id="resetarBtn">🔄 Resetar Pedidos</button>
+    </div>
 
-  <!-- Botão de reset -->
-  <button id="resetarBtn">🔄 Resetar Pedidos</button>
-
-  <div id="dashboard">
-    <table>
-      <thead>
-        <tr>
-          <th>Responsável</th>
-          <th>Unidade de Saúde</th>
-          <th>Item</th>
-          <th>Quantidade</th>
-          <th>Unidade de Controle</th>
-          <th>Data</th>
-        </tr>
-      </thead>
-      <tbody id="tabelaPedidos"></tbody>
-    </table>
-  </div>
+    <div class="card" id="dashboard" style="display:none;">
+      <table>
+        <thead>
+          <tr>
+            <th>Responsável</th>
+            <th>Unidade de Saúde</th>
+            <th>Item</th>
+            <th>Quantidade</th>
+            <th>Unidade de Controle</th>
+            <th>Data</th>
+          </tr>
+        </thead>
+        <tbody id="tabelaPedidos"></tbody>
+      </table>
+    </div>
+  </main>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
@@ -68,7 +173,6 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    // Carregar unidades automaticamente
     async function carregarUnidades() {
       const pedidosRef = collection(db, "pedidos");
       const snapshot = await getDocs(pedidosRef);
@@ -90,7 +194,6 @@
       });
     }
 
-    // Carregar pedidos filtrados e ordenados por data DESC
     async function carregarPedidos(unidadeSelecionada) {
       const pedidosRef = collection(db, "pedidos");
       const q = query(pedidosRef, orderBy("data", "desc"));
@@ -105,12 +208,12 @@
           data.itens.forEach(item => {
             const tr = document.createElement("tr");
             tr.innerHTML = `
-              <td>${data.solicitante}</td>
-              <td>${data.unidade}</td>
-              <td>${item.nome}</td>
-              <td>${item.quantidade}</td>
-              <td>${item.unidadeControle}</td>
-              <td>${new Date(data.data).toLocaleString()}</td>
+              <td data-label="Responsável">${data.solicitante}</td>
+              <td data-label="Unidade de Saúde">${data.unidade}</td>
+              <td data-label="Item">${item.nome}</td>
+              <td data-label="Quantidade">${item.quantidade}</td>
+              <td data-label="Unidade de Controle">${item.unidadeControle}</td>
+              <td data-label="Data">${new Date(data.data).toLocaleString()}</td>
             `;
             tabela.appendChild(tr);
           });
@@ -118,7 +221,6 @@
       });
     }
 
-    // Resetar coleção "pedidos"
     async function resetarPedidos() {
       if (!confirm("⚠️ Tem certeza que deseja APAGAR todos os pedidos?")) return;
 
@@ -132,9 +234,9 @@
       document.getElementById("tabelaPedidos").innerHTML = "";
       document.getElementById("dashboard").style.display = "none";
       document.getElementById("unidadeSelect").value = "";
+      document.getElementById("unidadeSelect").innerHTML = '<option value="">-- Escolha uma unidade --</option>';
     }
 
-    // Eventos
     document.getElementById("unidadeSelect").addEventListener("change", (e) => {
       const unidade = e.target.value;
       const dashboard = document.getElementById("dashboard");
