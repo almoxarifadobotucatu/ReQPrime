@@ -1,255 +1,282 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Dashboard de Pedidos</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dashboard de Pedidos Extras</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-      background: #f0f2f5;
-      margin: 0;
-      padding: 0;
+    :root{
+      --primary-extra-color:#1db954;
+      --danger-extra-color:#ff6b6b;
+      --primary-color:#0a66c2;
+      --primary-hover-color:#004182;
+      --danger-color:#e53e3e;
+      --danger-hover-color:#c53030;
+      --background-light:#1a1a2e;
+      --background-white:#16213e;
+      --text-dark:#ffffff;
+      --text-medium:#b8b8b8;
+      --border-light:#2a2a3a;
+      --shadow-light:0 4px 6px -1px rgba(0,0,0,.3),0 2px 4px -1px rgba(0,0,0,.2);
+      --transition-all:all .3s cubic-bezier(.4,0,.2,1);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Helvetica Neue',Arial,sans-serif;
+      color:var(--text-dark);
+      background:var(--background-light);
     }
 
-    header {
-      background: #0a66c2;
-      color: #fff;
-      padding: 20px;
-      text-align: center;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    /* Barra superior fixa */
+    .topbar{
+      position:sticky; top:0; z-index:50;
+      width:100%;
+      background:rgba(22,33,62,.9);
+      backdrop-filter:saturate(140%) blur(6px);
+      border-bottom:1px solid var(--border-light);
+      box-shadow:var(--shadow-light);
+    }
+    .topbar-inner{
+      display:flex; 
+      align-items:center; 
+      justify-content:center; 
+      padding:20px;
+      max-width:1400px; 
+      margin:0 auto;
+    }
+    .brand{
+      display:flex; 
+      align-items:center; 
+      gap:12px; 
+      font-weight:800; 
+      letter-spacing:-.02em;
+      font-size:1.8rem; /* destaque maior */
+      text-transform:uppercase;
+    }
+    .brand svg {
+      flex-shrink: 0;
     }
 
-    header h1 {
-      margin: 0;
-      font-size: 24px;
+    /* Gate de unidade */
+    .gate{
+      max-width:1400px; margin:18px auto 0; padding:0 20px 18px;
+    }
+    .gate-card{
+      background:var(--background-white);
+      border:1px solid var(--border-light);
+      border-radius:16px;
+      padding:18px;
+      box-shadow:var(--shadow-light);
+    }
+    .row{display:flex; gap:12px; align-items:center; flex-wrap:wrap}
+    label{color:var(--text-medium); font-weight:500}
+    select{
+      min-width:240px;
+      padding:12px 14px;
+      border:1px solid var(--border-light);
+      border-radius:12px;
+      background-color:rgba(255,255,255,.1);
+      color:var(--text-dark);
+      transition:var(--transition-all);
+      font-size:1rem;
+    }
+    select:focus{
+      outline:none; border-color:var(--primary-color);
+      box-shadow:0 0 0 4px rgba(10,102,194,.3);
+      background-color:rgba(255,255,255,.15);
+    }
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center; gap:.5rem;
+      padding:12px 18px; border:0; border-radius:12px; cursor:pointer;
+      background:var(--primary-color); color:#fff; font-weight:600;
+      box-shadow:var(--shadow-light); transition:var(--transition-all);
+      white-space:nowrap;
+    }
+    .btn:hover{
+      transform:translateY(-3px) scale(1.02);
+      box-shadow:0 10px 15px -3px rgba(0,0,0,.3);
+      background:linear-gradient(270deg,var(--primary-color),var(--primary-hover-color),var(--primary-extra-color));
+      background-size:600% 600%; animation:gradientShift 6s ease infinite;
+    }
+    .btn-danger{background:var(--danger-color)}
+    .btn-danger:hover{
+      background:linear-gradient(270deg,var(--danger-color),var(--danger-hover-color),var(--danger-extra-color));
+      background-size:600% 600%; animation:gradientShift 6s ease infinite;
+    }
+    @keyframes gradientShift{
+      0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%}
     }
 
-    main {
-      max-width: 1100px;
-      margin: 30px auto;
-      padding: 20px;
+    /* Área do dashboard */
+    .wrap{max-width:1400px; margin:14px auto 40px; padding:0 20px}
+    .cards{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:16px}
+    .card{
+      background:var(--background-white); border:1px solid var(--border-light);
+      border-radius:16px; padding:16px; box-shadow:var(--shadow-light);
+      transition:var(--transition-all);
     }
+    .card:hover{transform:translateY(-2px); box-shadow:0 10px 15px -3px rgba(0,0,0,.3)}
 
-    .card {
-      background: #fff;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-      padding: 20px;
-      margin-bottom: 20px;
+    /* Tabela */
+    .table{
+      width:100%; border-collapse:separate; border-spacing:0;
+      background:var(--background-white); border:1px solid var(--border-light);
+      border-radius:16px; overflow:hidden;
     }
+    .table thead th{
+      text-align:left; padding:14px 16px; color:var(--text-medium);
+      border-bottom:1px solid var(--border-light); background:rgba(0,0,0,.2);
+    }
+    .table tbody td{ padding:14px 16px; border-bottom:1px solid var(--border-light) }
+    .table tbody tr:hover{ background:rgba(255,255,255,.05) }
 
-    label {
-      font-weight: bold;
-      display: block;
-      margin-bottom: 10px;
-    }
+    #dashboard{ display:none }
 
-    select {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 16px;
-      margin-bottom: 15px;
-    }
-
-    #resetarBtn {
-      padding: 10px 20px;
-      background: #c62828;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: background 0.3s;
-    }
-
-    #resetarBtn:hover {
-      background: #a31818;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 15px;
-      border-radius: 8px;
-      overflow: hidden;
-    }
-
-    thead {
-      background: #0a66c2;
-      color: #fff;
-    }
-
-    th, td {
-      padding: 12px;
-      text-align: left;
-    }
-
-    tr:nth-child(even) {
-      background: #f9f9f9;
-    }
-
-    tr:hover {
-      background: #eef5ff;
-    }
-
-    @media (max-width: 768px) {
-      table, thead, tbody, th, td, tr {
-        display: block;
-      }
-      thead {
-        display: none;
-      }
-      tr {
-        margin-bottom: 15px;
-        background: #fff;
-        border-radius: 8px;
-        box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-        padding: 10px;
-      }
-      td {
-        display: flex;
-        justify-content: space-between;
-        padding: 8px 10px;
-        border: none;
-        border-bottom: 1px solid #eee;
-      }
-      td:last-child {
-        border-bottom: none;
-      }
-      td::before {
-        content: attr(data-label);
-        font-weight: bold;
-        color: #333;
-      }
-    }
+    footer{ position:fixed; bottom:8px; right:12px; font-size:9px; color:#888; opacity:.75; user-select:none }
+    @media (max-width: 1100px){ .cards{grid-template-columns:repeat(2,minmax(0,1fr))} }
+    @media (max-width: 640px){ .cards{grid-template-columns:1fr} .topbar-inner{flex-direction:column} }
   </style>
 </head>
 <body>
-  <header>
-    <h1>📊 Dashboard de Pedidos</h1>
-  </header>
-
-  <main>
-    <div class="card">
-      <label for="unidadeSelect">Selecione a Unidade de Saúde:</label>
-      <select id="unidadeSelect">
-        <option value="">-- Escolha uma unidade --</option>
-      </select>
-      <button id="resetarBtn">🔄 Resetar Pedidos</button>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="brand">
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="url(#grad1)" stroke="none">
+          <defs>
+            <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" style="stop-color:#0a66c2;stop-opacity:1" />
+              <stop offset="100%" style="stop-color:#1db954;stop-opacity:1" />
+            </linearGradient>
+          </defs>
+          <rect x="3" y="3" width="7" height="7" rx="2"/>
+          <rect x="14" y="3" width="7" height="7" rx="2"/>
+          <rect x="3" y="14" width="7" height="7" rx="2"/>
+          <rect x="14" y="14" width="7" height="7" rx="2"/>
+        </svg>
+        Dashboard de Pedidos Extras
+      </div>
     </div>
+  </div>
 
-    <div class="card" id="dashboard" style="display:none;">
-      <table>
-        <thead>
-          <tr>
-            <th>Responsável</th>
-            <th>Unidade de Saúde</th>
-            <th>Item</th>
-            <th>Quantidade</th>
-            <th>Unidade de Controle</th>
-            <th>Data</th>
-          </tr>
-        </thead>
-        <tbody id="tabelaPedidos"></tbody>
-      </table>
+  <!-- Gate de Unidade -->
+  <section class="gate">
+    <div class="gate-card">
+      <div class="row" style="justify-content:space-between">
+        <div class="row" style="gap:10px">
+          <label for="unidadeSelect">Selecione a unidade de saúde</label>
+          <select id="unidadeSelect">
+            <option value="">— Escolha a unidade —</option>
+          </select>
+          <button id="confirmarUnidade" class="btn">Confirmar</button>
+        </div>
+        <button id="limparLocal" class="btn btn-danger">Limpar seleção</button>
+      </div>
+      <small style="color:var(--text-medium);display:block;margin-top:8px">O dashboard só é exibido após a escolha da unidade.</small>
     </div>
+  </section>
+
+  <!-- Dashboard -->
+  <main id="dashboard" class="wrap">
+    <section class="cards">
+      <div class="card">
+        <div style="color:var(--text-medium);font-size:.9rem">Total de pedidos</div>
+        <div id="kpiTotal" style="font-size:2rem;font-weight:700;margin-top:6px">—</div>
+      </div>
+      <div class="card">
+        <div style="color:var(--text-medium);font-size:.9rem">Hoje</div>
+        <div id="kpiHoje" style="font-size:2rem;font-weight:700;margin-top:6px">—</div>
+      </div>
+      <div class="card">
+        <div style="color:var(--text-medium);font-size:.9rem">Últimos 7 dias</div>
+        <div id="kpi7d" style="font-size:2rem;font-weight:700;margin-top:6px">—</div>
+      </div>
+      <div class="card">
+        <div style="color:var(--text-medium);font-size:.9rem">Pendentes</div>
+        <div id="kpiPendentes" style="font-size:2rem;font-weight:700;margin-top:6px">—</div>
+      </div>
+    </section>
+
+    <section style="margin-top:16px">
+      <div class="card" style="padding:0">
+        <table class="table" id="tabelaPedidos">
+          <thead>
+            <tr>
+              <th style="width:160px">Data</th>
+              <th>Solicitante</th>
+              <th>Setor</th>
+              <th>Unidade</th>
+              <th>Itens</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td colspan="6" style="text-align:center;color:var(--text-medium)">Selecione uma unidade para carregar os pedidos…</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
   </main>
 
+  <footer>© 2025. Todos os direitos reservados.</footer>
+
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
-    import { getFirestore, collection, getDocs, deleteDoc, doc, query, orderBy } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
-      authDomain: "almoxarifadobotucatu-5e03d.firebaseapp.com",
-      projectId: "almoxarifadobotucatu-5e03d",
-      storageBucket: "almoxarifadobotucatu-5e03d.firebasestorage.app",
-      messagingSenderId: "828951000388",
-      appId: "1:828951000388:web:06dbe3cb5764872e7b1311"
-    };
-
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-
-    async function carregarUnidades() {
-      const pedidosRef = collection(db, "pedidos");
-      const snapshot = await getDocs(pedidosRef);
-
-      const unidades = new Set();
-      snapshot.forEach(doc => {
-        const data = doc.data();
-        if (data.unidade) {
-          unidades.add(data.unidade);
-        }
-      });
-
-      const select = document.getElementById("unidadeSelect");
-      unidades.forEach(unidade => {
-        const option = document.createElement("option");
-        option.value = unidade;
-        option.textContent = unidade;
-        select.appendChild(option);
-      });
+    const firebaseConfig = window.FIREBASE_CONFIG || null;
+    let db = null;
+    if (firebaseConfig) {
+      const [{ initializeApp }, { getFirestore, collection, getDocs, query, where }] =
+        await Promise.all([
+          import('https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js'),
+          import('https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js')
+        ]);
+      const app = initializeApp(firebaseConfig);
+      db = getFirestore(app);
     }
 
-    async function carregarPedidos(unidadeSelecionada) {
-      const pedidosRef = collection(db, "pedidos");
-      const q = query(pedidosRef, orderBy("data", "desc"));
-      const snapshot = await getDocs(q);
+    const unidadeSelect = document.getElementById('unidadeSelect');
+    const confirmarBtn  = document.getElementById('confirmarUnidade');
+    const limparLocal   = document.getElementById('limparLocal');
+    const dashboard     = document.getElementById('dashboard');
+    const tabelaBody    = document.querySelector('#tabelaPedidos tbody');
 
-      const tabela = document.getElementById("tabelaPedidos");
-      tabela.innerHTML = "";
+    function fmtDate(d){try{return new Intl.DateTimeFormat('pt-BR',{dateStyle:'short',timeStyle:'short'}).format(d);}catch(_){return d?.toLocaleString?.()||'—'}}
+    function toDate(any){if(!any)return null;if(typeof any==='object'&&any.seconds)return new Date(any.seconds*1000);if(typeof any==='number')return new Date(any);const d=new Date(any);return isNaN(+d)?null:d}
+    function normalizePedido(doc){const p={id:doc.id,...doc.data?.()??doc};const dt=toDate(p.data)||toDate(p.dataSolicitacao)||toDate(p.createdAt)||toDate(p.timestamp);p.__dt=dt||new Date(0);p.unidade=p.unidade||p.unidadeSaude||p.unidadeNome||'';p.setor=p.setor||p.setorNome||'';p.status=p.status||p.situacao||'';p.solicitante=p.solicitante||p.usuario||p.nome||'';p.itens=Array.isArray(p.itens)?p.itens:(typeof p.itens==='string'?p.itens:'');return p}
+    function renderTabela(pedidos){const rows=pedidos.map(p=>`<tr>
+      <td>${p.__dt?fmtDate(p.__dt):'—'}</td>
+      <td>${p.solicitante||'—'}</td>
+      <td>${p.setor||'—'}</td>
+      <td>${p.unidade||'—'}</td>
+      <td>${Array.isArray(p.itens)?p.itens.length+' item(ns)':(p.itens||'—')}</td>
+      <td>${p.status||'—'}</td>
+    </tr>`).join('');tabelaBody.innerHTML=rows||`<tr><td colspan="6" style="text-align:center;color:var(--text-medium)">Nenhum pedido encontrado.</td></tr>`}
 
-      snapshot.forEach(doc => {
-        const data = doc.data();
-        if (data.unidade === unidadeSelecionada && data.itens && data.itens.length > 0) {
-          data.itens.forEach(item => {
-            const tr = document.createElement("tr");
-            tr.innerHTML = `
-              <td data-label="Responsável">${data.solicitante}</td>
-              <td data-label="Unidade de Saúde">${data.unidade}</td>
-              <td data-label="Item">${item.nome}</td>
-              <td data-label="Quantidade">${item.quantidade}</td>
-              <td data-label="Unidade de Controle">${item.unidadeControle}</td>
-              <td data-label="Data">${new Date(data.data).toLocaleString()}</td>
-            `;
-            tabela.appendChild(tr);
-          });
-        }
-      });
+    async function carregarUnidades(){
+      const opts=new Set();
+      if(db){try{const snap=await getDocs(collection(db,'pedidos'));snap.forEach(doc=>{const p=normalizePedido(doc);if(p.unidade)opts.add(p.unidade)});}catch(e){console.warn(e);}}
+      unidadeSelect.innerHTML=`<option value="">— Escolha a unidade —</option>`+Array.from(opts).sort((a,b)=>a.localeCompare(b,'pt-BR')).map(u=>`<option value="${u}">${u}</option>`).join('');
     }
 
-    async function resetarPedidos() {
-      if (!confirm("⚠️ Tem certeza que deseja APAGAR todos os pedidos?")) return;
-
-      const pedidosRef = collection(db, "pedidos");
-      const snapshot = await getDocs(pedidosRef);
-
-      const promises = snapshot.docs.map(d => deleteDoc(doc(db, "pedidos", d.id)));
-      await Promise.all(promises);
-
-      alert("✅ Todos os pedidos foram apagados!");
-      document.getElementById("tabelaPedidos").innerHTML = "";
-      document.getElementById("dashboard").style.display = "none";
-      document.getElementById("unidadeSelect").value = "";
-      document.getElementById("unidadeSelect").innerHTML = '<option value="">-- Escolha uma unidade --</option>';
+    async function carregarPedidosPorUnidade(unid){
+      if(!db){tabelaBody.innerHTML=`<tr><td colspan="6" style="text-align:center;color:var(--text-medium)">Conecte o Firebase.</td></tr>`;return;}
+      try{
+        const { getDocs, collection, query, where }=await import('https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore.js');
+        const q=query(collection(db,'pedidos'),where('unidade','==',unid));
+        const snap=await getDocs(q);const pedidos=[];snap.forEach(doc=>pedidos.push(normalizePedido(doc)));
+        pedidos.sort((a,b)=>(b.__dt?.getTime?.()||0)-(a.__dt?.getTime?.()||0));
+        document.getElementById('kpiTotal').textContent=pedidos.length;
+        const agora=new Date(),hojeKey=agora.toDateString();
+        document.getElementById('kpiHoje').textContent=pedidos.filter(p=>p.__dt&&p.__dt.toDateString()===hojeKey).length;
+        document.getElementById('kpi7d').textContent=pedidos.filter(p=>p.__dt&&(agora-p.__dt)<=7*24*60*60*1000).length;
+        document.getElementById('kpiPendentes').textContent=pedidos.filter(p=>String(p.status||'').toLowerCase().includes('pend')).length;
+        renderTabela(pedidos);
+      }catch(e){console.error(e);tabelaBody.innerHTML=`<tr><td colspan="6" style="text-align:center;color:var(--danger-extra-color)">Erro ao carregar pedidos.</td></tr>`}
     }
 
-    document.getElementById("unidadeSelect").addEventListener("change", (e) => {
-      const unidade = e.target.value;
-      const dashboard = document.getElementById("dashboard");
-      if (unidade) {
-        dashboard.style.display = "block";
-        carregarPedidos(unidade);
-      } else {
-        dashboard.style.display = "none";
-      }
-    });
-
-    document.getElementById("resetarBtn").addEventListener("click", resetarPedidos);
-
+    confirmarBtn.addEventListener('click',async()=>{const unid=unidadeSelect.value;if(!unid){unidadeSelect.focus();return;}dashboard.style.display='block';await carregarPedidosPorUnidade(unid);window.scrollTo({top:document.querySelector('.wrap').offsetTop-60,behavior:'smooth'});});
+    limparLocal.addEventListener('click',()=>{unidadeSelect.selectedIndex=0;dashboard.style.display='none';tabelaBody.innerHTML=`<tr><td colspan="6" style="text-align:center;color:var(--text-medium)">Selecione uma unidade para carregar os pedidos…</td></tr>`});
     carregarUnidades();
   </script>
 </body>
