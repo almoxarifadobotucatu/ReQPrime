@@ -2336,7 +2336,7 @@ corpoEmail += `${codigo ? codigo + ' - ' : ''}${descricao} - ${qtd} ${pluralizar
         corpoEmail += `----------------------------------------\n\n`;
       });
       const bodyEncoded = encodeURIComponent(corpoEmail);
-const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=leitaoochefe@gmail.com&su=Pedido Extra - ${encodeURIComponent(unidade)}&body=${bodyEncoded}`;
+const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&toalmoxarifado.botucatu@osspirangi.org.br&su=Pedido Extra - ${encodeURIComponent(unidade)}&body=${bodyEncoded}`;
 let win = window.open('about:blank', '_blank');
 if (win) {
   win.location.href = gmailUrl;
