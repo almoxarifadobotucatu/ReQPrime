@@ -6,120 +6,35 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
     body { margin:0; font-family:'Inter',Arial,sans-serif; background:#1a1a2e; color:#fff; }
-    
-
-
-.topbar {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-  background: #16213e;
-  border-bottom: 2px solid #0a66c2;
-  position: relative;
-}
-.topbar h1 {
-  margin: 0;
-  font-size: 2.2rem;
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-#resetPedidosBtn {
-  position: absolute;
-  right: 20px;
-}
-
-
-
-    .cards { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; padding:20px; max-width:1400px; margin:auto;  max-width:1000px; margin:auto; }
+    .topbar { display: flex; justify-content: center; align-items: center; padding: 20px; background: #16213e; border-bottom: 2px solid #0a66c2; position: relative; }
+    .topbar h1 { margin: 0; font-size: 2.2rem; font-weight: 800; display: flex; align-items: center; gap: 10px; }
+    #resetPedidosBtn { position: absolute; right: 20px; }
+    .cards { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; padding:20px; max-width:1000px; margin:auto; }
     .card { background:#16213e; border:1px solid #2a2a3a; border-radius:12px; padding:16px; text-align:center; }
     .card div:first-child { color:#b8b8b8; font-size:.9rem; }
     .card div:last-child { font-size:2rem; font-weight:700; margin-top:8px; }
-    table {
-  width: 90%;
-  border-collapse: collapse;
-  margin: 20px auto;
-  background: #16213e;
-  border-radius: 12px;
-  overflow: hidden;
-}
+    table { width: 90%; border-collapse: collapse; margin: 20px auto; background: #16213e; border-radius: 12px; overflow: hidden; }
     th,td { padding:12px; text-align:left; border-bottom:1px solid #2a2a3a; }
     th { background:#0a66c2; color:#fff; }
     tr:hover td { background:rgba(255,255,255,0.05); }
-    .gate {
-  max-width: 1400px;
-  margin: 20px auto;
-  padding: 0 20px;
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  flex-wrap: wrap;
-}
+    .gate { max-width: 1400px; margin: 20px auto; padding: 0 20px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
     select,button { padding:10px 14px; border-radius:8px; border:none; font-size:1rem; }
-    select {
-  background: #16213e;
-  color: #fff;
-  border: 1px solid #2a2a3a;
-  border-radius: 8px;
-  padding: 10px 14px;
-  font-size: 1rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  min-width: 240px;
-}
-    button { background:#0a66c2; color:#fff; font-weight:600; border-radius:12px; box-shadow:0 4px 6px rgba(0,0,0,0.2);
-             cursor:pointer; transition:all 0.2s ease; }
+    select { background: #16213e; color: #fff; border: 1px solid #2a2a3a; border-radius: 8px; padding: 10px 14px; font-size: 1rem; cursor: pointer; transition: all 0.2s ease; min-width: 80px; }
+    button { background:#0a66c2; color:#fff; font-weight:600; border-radius:12px; box-shadow:0 4px 6px rgba(0,0,0,0.2); cursor:pointer; transition:all 0.2s ease; }
     button:hover { background:linear-gradient(270deg,#0a66c2,#1db954); transform:translateY(-2px); }
     #resetPedidosBtn { background:#e53e3e; }
     #resetPedidosBtn:hover { background:linear-gradient(270deg,#e53e3e,#ff6b6b); }
-  
-.export-buttons {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  padding: 20px;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: #16213e;
-  border-top: 2px solid #0a66c2;
-}
-.export-buttons button {
-  padding: 12px 20px;
-  border-radius: 10px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  border: none;
-}
-#exportExcel { background: #1db954; color: #fff; }
-#exportExcel:hover { background: #17a34a; }
-#exportPDF { background: #e53e3e; color: #fff; }
-#exportPDF:hover { background: #c53030; }
-
-
-select:hover {
-  border-color: #0a66c2;
-}
-select:focus {
-  outline: none;
-  border-color: #0a66c2;
-  box-shadow: 0 0 6px rgba(10,102,194,0.6);
-}
-option {
-  background: #16213e;
-  color: #fff;
-}
-
-
-#resetPedidosBtn {
-  margin-left: auto;
-}
-
-</style>
+    .export-buttons { display: flex; justify-content: center; gap: 20px; padding: 20px; position: fixed; bottom: 0; left: 0; right: 0; background: #16213e; border-top: 2px solid #0a66c2; }
+    .export-buttons button { padding: 12px 20px; border-radius: 10px; font-size: 1rem; font-weight: 600; cursor: pointer; border: none; }
+    #exportExcel { background: #1db954; color: #fff; }
+    #exportExcel:hover { background: #17a34a; }
+    #exportPDF { background: #e53e3e; color: #fff; }
+    #exportPDF:hover { background: #c53030; }
+    select:hover { border-color: #0a66c2; }
+    select:focus { outline: none; border-color: #0a66c2; box-shadow: 0 0 6px rgba(10,102,194,0.6); }
+    option { background: #16213e; color: #fff; }
+    #resetPedidosBtn { margin-left: auto; }
+  </style>
 </head>
 <body>
   <div class="topbar">
@@ -131,12 +46,17 @@ option {
     <label for="unidadeSelect">Selecione a unidade de saúde:</label>
     <select id="unidadeSelect"><option value="">Todas</option></select>
     <button id="confirmarUnidade">Carregar</button>
+
+    <!-- Ajuste: Últimos X dias com select -->
+    <span>Últimos</span>
+    <select id="diasFiltro"></select>
+    <span>dias</span>
   </div>
 
   <section class="cards">
     <div class="card"><div>Total de pedidos</div><div id="kpiTotal">—</div></div>
     <div class="card"><div>Hoje</div><div id="kpiHoje">—</div></div>
-    <div class="card"><div>Últimos 7 dias</div><div id="kpi7d">—</div></div>
+    <div class="card"><div>Últimos <span id="diasSelecionados">7</span> dias</div><div id="kpiXd">—</div></div>
   </section>
 
   <div style="padding:20px; max-width:1400px; margin:auto;">
@@ -168,6 +88,16 @@ option {
     const unidadeSelect = document.getElementById("unidadeSelect");
     const confirmarBtn = document.getElementById("confirmarUnidade");
     const tabela = document.getElementById("tabelaPedidos");
+    const diasFiltro = document.getElementById("diasFiltro");
+
+    // preencher select de dias 0-30
+    for (let i = 0; i <= 30; i++) {
+      const opt = document.createElement("option");
+      opt.value = i;
+      opt.textContent = i;
+      if (i === 7) opt.selected = true; // padrão 7 dias
+      diasFiltro.appendChild(opt);
+    }
 
     function toDate(any){ if(!any) return null; if(any.seconds) return new Date(any.seconds*1000); return new Date(any); }
 
@@ -205,18 +135,18 @@ option {
       pedidos.sort((a,b)=>(b.data?.getTime?.()||0)-(a.data?.getTime?.()||0));
       const filtrados = unidade? pedidos.filter(p=>p.unidade===unidade):pedidos;
 
-      
-      // KPIs por envio (1 pedido = 1 solicitação, mesmo que tenha vários itens)
-      const idsUnicos = new Set(filtrados.map(p => p.id));
+      // KPIs por envio
       const pedidosUnicos = filtrados.filter((p, i, arr) => arr.findIndex(x => x.id === p.id) === i);
 
       document.getElementById("kpiTotal").textContent = pedidosUnicos.length;
       const hojeKey = new Date().toDateString();
       document.getElementById("kpiHoje").textContent = pedidosUnicos.filter(p => p.data && p.data.toDateString() === hojeKey).length;
-      document.getElementById("kpi7d").textContent = pedidosUnicos.filter(p => p.data && (new Date() - p.data) <= 7*24*60*60*1000).length;
+
+      const dias = parseInt(diasFiltro.value) || 0;
+      document.getElementById("diasSelecionados").textContent = dias;
+      document.getElementById("kpiXd").textContent = pedidosUnicos.filter(p => p.data && (new Date() - p.data) <= dias*24*60*60*1000).length;
 
       tabela.innerHTML="";
-
       filtrados.forEach(p=>{
         const tr=document.createElement("tr");
         tr.innerHTML=`<td>${p.solicitante}</td><td>${p.unidade}</td><td>${p.item}</td><td>${p.quantidade}</td><td>${p.unidadeControle}</td><td>${p.data?p.data.toLocaleString():"—"}</td>`;
@@ -225,70 +155,15 @@ option {
     }
 
     confirmarBtn.addEventListener("click",()=>{ carregarPedidos(unidadeSelect.value); });
-
-    
-    // exportar Excel
-    document.getElementById("exportExcel").addEventListener("click", ()=>{
-      const unidadeSelecionada = document.getElementById("unidadeSelect").value || "Todas";
-      const wb = XLSX.utils.book_new();
-      const headers = ["Responsável","Unidade de Saúde","Item","Quantidade","Unidade de Controle","Data"];
-      const linhas = [];
-      document.querySelectorAll("#tabelaPedidos tr").forEach(tr => {
-        const cols = Array.from(tr.querySelectorAll("td")).map(td=>td.innerText);
-        if(cols.length===6) linhas.push(cols);
-      });
-      const ws = XLSX.utils.aoa_to_sheet([[`Relatório de Pedidos - Unidade: ${unidadeSelecionada}`], [], headers, ...linhas]);
-      XLSX.utils.book_append_sheet(wb, ws, "Pedidos");
-      XLSX.writeFile(wb, `pedidos_${unidadeSelecionada}.xlsx`);
-    });
-
-    // exportar PDF em tabela
-    document.getElementById("exportPDF").addEventListener("click", ()=>{
-      const unidadeSelecionada = document.getElementById("unidadeSelect").value || "Todas";
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
-      doc.setFontSize(14);
-      doc.text(`Relatório de Pedidos - Unidade: ${unidadeSelecionada}`, 14, 16);
-
-      const headers = [["Responsável","Unidade de Saúde","Item","Quantidade","Unidade de Controle","Data"]];
-      const rows = [];
-      document.querySelectorAll("#tabelaPedidos tr").forEach(tr=>{
-        const cols = Array.from(tr.querySelectorAll("td")).map(td=>td.innerText);
-        if(cols.length===6) rows.push(cols);
-      });
-
-      doc.autoTable({
-        head: headers,
-        body: rows,
-        startY: 25,
-        styles: { fontSize: 10, cellPadding: 3 }
-      });
-
-      doc.save(`pedidos_${unidadeSelecionada}.pdf`);
-    });
+    diasFiltro.addEventListener("change",()=>{ carregarPedidos(unidadeSelect.value); });
 
     // inicializar apenas unidades
     carregarUnidades();
-
-    // resetar pedidos
-    document.getElementById("resetPedidosBtn").addEventListener("click", async()=>{
-      if(confirm("⚠️ Apagar todos os pedidos extras?")){
-        const snapshot=await getDocs(collection(db,"pedidos"));
-        for(const d of snapshot.docs){ await deleteDoc(doc(db,"pedidos",d.id)); }
-        tabela.innerHTML="<tr><td colspan='6' style='text-align:center;'>Nenhum pedido encontrado</td></tr>";
-        document.getElementById("kpiTotal").textContent="0";
-        document.getElementById("kpiHoje").textContent="0";
-        document.getElementById("kpi7d").textContent="0";
-        carregarUnidades();
-        alert("✅ Todos os pedidos apagados!");
-      }
-    });
   </script>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
-
 
   <div class="export-buttons">
     <button id="exportExcel">Exportar Excel</button>
