@@ -6,20 +6,69 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
     body { margin:0; font-family:'Inter',Arial,sans-serif; background:#1a1a2e; color:#fff; }
-    .topbar { text-align:center; padding:20px; background:#16213e; border-bottom:2px solid #0a66c2;
-              display:flex; justify-content:center; align-items:center; gap:20px; flex-wrap:wrap; }
-    .topbar h1 { margin:0; font-size:1.8rem; font-weight:800; display:flex; align-items:center; gap:10px; }
+    
+
+
+.topbar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background: #16213e;
+  border-bottom: 2px solid #0a66c2;
+  position: relative;
+}
+.topbar h1 {
+  margin: 0;
+  font-size: 2.2rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+#resetPedidosBtn {
+  position: absolute;
+  right: 20px;
+}
+
+
+
     .cards { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; padding:20px; max-width:1400px; margin:auto;  max-width:1000px; margin:auto; }
     .card { background:#16213e; border:1px solid #2a2a3a; border-radius:12px; padding:16px; text-align:center; }
     .card div:first-child { color:#b8b8b8; font-size:.9rem; }
     .card div:last-child { font-size:2rem; font-weight:700; margin-top:8px; }
-    table { width:100%; border-collapse:collapse; margin-top:20px; background:#16213e; border-radius:12px; overflow:hidden; }
+    table {
+  width: 90%;
+  border-collapse: collapse;
+  margin: 20px auto;
+  background: #16213e;
+  border-radius: 12px;
+  overflow: hidden;
+}
     th,td { padding:12px; text-align:left; border-bottom:1px solid #2a2a3a; }
     th { background:#0a66c2; color:#fff; }
     tr:hover td { background:rgba(255,255,255,0.05); }
-    .gate { max-width:1400px; margin:20px auto; padding:0 20px; display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+    .gate {
+  max-width: 1400px;
+  margin: 20px auto;
+  padding: 0 20px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  flex-wrap: wrap;
+}
     select,button { padding:10px 14px; border-radius:8px; border:none; font-size:1rem; }
-    select { background:#fff; color:#000; min-width:240px; }
+    select {
+  background: #16213e;
+  color: #fff;
+  border: 1px solid #2a2a3a;
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 240px;
+}
     button { background:#0a66c2; color:#fff; font-weight:600; border-radius:12px; box-shadow:0 4px 6px rgba(0,0,0,0.2);
              cursor:pointer; transition:all 0.2s ease; }
     button:hover { background:linear-gradient(270deg,#0a66c2,#1db954); transform:translateY(-2px); }
@@ -50,6 +99,25 @@
 #exportExcel:hover { background: #17a34a; }
 #exportPDF { background: #e53e3e; color: #fff; }
 #exportPDF:hover { background: #c53030; }
+
+
+select:hover {
+  border-color: #0a66c2;
+}
+select:focus {
+  outline: none;
+  border-color: #0a66c2;
+  box-shadow: 0 0 6px rgba(10,102,194,0.6);
+}
+option {
+  background: #16213e;
+  color: #fff;
+}
+
+
+#resetPedidosBtn {
+  margin-left: auto;
+}
 
 </style>
 </head>
@@ -121,6 +189,7 @@
         if(!data.itens) return;
         data.itens.forEach(item => {
           const row = {
+            id: docSnap.id,
             solicitante:data.solicitante||"—",
             unidade:data.unidade||"—",
             item:item.nome||"—",
@@ -136,11 +205,18 @@
       pedidos.sort((a,b)=>(b.data?.getTime?.()||0)-(a.data?.getTime?.()||0));
       const filtrados = unidade? pedidos.filter(p=>p.unidade===unidade):pedidos;
 
-      document.getElementById("kpiTotal").textContent=filtrados.length;
-      const hojeKey=new Date().toDateString();
-      document.getElementById("kpiHoje").textContent=filtrados.filter(p=>p.data&&p.data.toDateString()===hojeKey).length;
-      document.getElementById("kpi7d").textContent=filtrados.filter(p=>p.data&&(new Date()-p.data)<=7*24*60*60*1000).length;
+      
+      // KPIs por envio (1 pedido = 1 solicitação, mesmo que tenha vários itens)
+      const idsUnicos = new Set(filtrados.map(p => p.id));
+      const pedidosUnicos = filtrados.filter((p, i, arr) => arr.findIndex(x => x.id === p.id) === i);
+
+      document.getElementById("kpiTotal").textContent = pedidosUnicos.length;
+      const hojeKey = new Date().toDateString();
+      document.getElementById("kpiHoje").textContent = pedidosUnicos.filter(p => p.data && p.data.toDateString() === hojeKey).length;
+      document.getElementById("kpi7d").textContent = pedidosUnicos.filter(p => p.data && (new Date() - p.data) <= 7*24*60*60*1000).length;
+
       tabela.innerHTML="";
+
       filtrados.forEach(p=>{
         const tr=document.createElement("tr");
         tr.innerHTML=`<td>${p.solicitante}</td><td>${p.unidade}</td><td>${p.item}</td><td>${p.quantidade}</td><td>${p.unidadeControle}</td><td>${p.data?p.data.toLocaleString():"—"}</td>`;
