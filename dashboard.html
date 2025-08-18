@@ -54,7 +54,7 @@
   </div>
 
   <section class="cards">
-    <div class="card"><div>Total de pedidos</div><div id="kpiTotal">—</div></div>
+    <div class="card"><div>Total de pedidos em 2025</div><div id="kpiTotal">—</div></div>
     <div class="card"><div>Hoje</div><div id="kpiHoje">—</div></div>
     <div class="card"><div>Últimos <span id="diasSelecionados">7</span> dias</div><div id="kpiXd">—</div></div>
   </section>
@@ -156,6 +156,46 @@
 
     confirmarBtn.addEventListener("click",()=>{ carregarPedidos(unidadeSelect.value); });
     diasFiltro.addEventListener("change",()=>{ carregarPedidos(unidadeSelect.value); });
+
+    // exportar Excel
+    document.getElementById("exportExcel").addEventListener("click", ()=>{
+      const unidadeSelecionada = document.getElementById("unidadeSelect").value || "Todas";
+      const wb = XLSX.utils.book_new();
+      const headers = ["Responsável","Unidade de Saúde","Item","Quantidade","Unidade de Controle","Data"];
+      const linhas = [];
+      document.querySelectorAll("#tabelaPedidos tr").forEach(tr => {
+        const cols = Array.from(tr.querySelectorAll("td")).map(td=>td.innerText);
+        if(cols.length===6) linhas.push(cols);
+      });
+      const ws = XLSX.utils.aoa_to_sheet([[`Relatório de Pedidos - Unidade: ${unidadeSelecionada}`], [], headers, ...linhas]);
+      XLSX.utils.book_append_sheet(wb, ws, "Pedidos");
+      XLSX.writeFile(wb, `pedidos_${unidadeSelecionada}.xlsx`);
+    });
+
+    // exportar PDF
+    document.getElementById("exportPDF").addEventListener("click", ()=>{
+      const unidadeSelecionada = document.getElementById("unidadeSelect").value || "Todas";
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      doc.setFontSize(14);
+      doc.text(`Relatório de Pedidos - Unidade: ${unidadeSelecionada}`, 14, 16);
+
+      const headers = [["Responsável","Unidade de Saúde","Item","Quantidade","Unidade de Controle","Data"]];
+      const rows = [];
+      document.querySelectorAll("#tabelaPedidos tr").forEach(tr=>{
+        const cols = Array.from(tr.querySelectorAll("td")).map(td=>td.innerText);
+        if(cols.length===6) rows.push(cols);
+      });
+
+      doc.autoTable({
+        head: headers,
+        body: rows,
+        startY: 25,
+        styles: { fontSize: 10, cellPadding: 3 }
+      });
+
+      doc.save(`pedidos_${unidadeSelecionada}.pdf`);
+    });
 
     // inicializar apenas unidades
     carregarUnidades();
