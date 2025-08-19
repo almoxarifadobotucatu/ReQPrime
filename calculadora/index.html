@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang='pt-BR'>
-<head>
-  <!-- Força URL sem index.html -->
-  <script>
-  if (location.pathname.endsWith('/index.html')) {
-      location.replace(location.pathname.replace('/index.html', '/') + location.search + location.hash);
-  }
 <html lang="pt-BR">
 <head>
+  <script>
+    // Redireciona imediatamente se tentar acessar direto
+    if (document.referrer === "" || document.referrer === window.location.href) {
+      window.location.replace("https://almoxarifadobotucatu.netlify.app/");
+    }
+  </script>
+
   <script src="/protege-pagina.js"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -269,6 +269,5 @@ setInterval(function() {
 </body>
 <script src="/protege-pagina.js"></script>
 </html>
-
 
 
