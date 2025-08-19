@@ -1,4 +1,11 @@
 <!DOCTYPE html>
+<html lang='pt-BR'>
+<head>
+  <!-- Força URL sem index.html -->
+  <script>
+  if (location.pathname.endsWith('/index.html')) {
+      location.replace(location.pathname.replace('/index.html', '/') + location.search + location.hash);
+  }
 <html lang="pt-BR">
 <head>
   <script src="/protege-pagina.js"></script>
@@ -262,5 +269,6 @@ setInterval(function() {
 </body>
 <script src="/protege-pagina.js"></script>
 </html>
+
 
 
