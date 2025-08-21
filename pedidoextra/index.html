@@ -3068,26 +3068,44 @@ function enviarPedido() {
 }
 
 
+
 function montarCorpoEmail() {
-  let corpoEmail = "Solicitação de Pedido Extra%0D%0A%0D%0A";
-  const responsavel = document.querySelector("input[name='responsavel']");
-  const unidadeSaude = document.querySelector("input[name='unidade']");
-  if (responsavel) corpoEmail += "Responsável: " + responsavel.value + "%0D%0A";
-  if (unidadeSaude) corpoEmail += "Unidade de Saúde: " + unidadeSaude.value + "%0D%0A%0D%0A";
+  const lines = [];
+  lines.push("Solicitação de Pedido Extra");
+  lines.push("");
+
+  const respEl = document.getElementById('solicitante');
+  const unidadeEl = document.getElementById('unidade');
+  const responsavel = respEl ? (respEl.value || "").trim() : "";
+  const unidadeSaude = unidadeEl ? (unidadeEl.value || "").trim() : "";
+
+  if (responsavel) lines.push("Responsável: " + responsavel);
+  if (unidadeSaude) {
+    lines.push("Unidade de Saúde: " + unidadeSaude);
+    lines.push("");
+  }
 
   document.querySelectorAll(".setor").forEach((setor, i) => {
-    const setorNome = setor.querySelector("select") ? setor.querySelector("select").value : "";
-    corpoEmail += "Setor: " + setorNome + "%0D%0A";
-    setor.querySelectorAll(".item-row").forEach(row => {
-      const item = row.querySelector(".item-input") ? row.querySelector(".item-input").value : "";
-      const qtd = row.querySelector(".quantidade-input") ? row.querySelector(".quantidade-input").value : "";
-      const unidade = row.querySelector(".unidade-input") ? row.querySelector(".unidade-input").value : "";
-      corpoEmail += " - " + item + " | Quantidade: " + qtd + " | Unidade: " + unidade + "%0D%0A";
+    const setorNome = setor.querySelector('input[name="setor"]') ? (setor.querySelector('input[name="setor"]').value || "").trim() : "";
+    if (setorNome) lines.push("Setor: " + setorNome);
+
+    setor.querySelectorAll(".item").forEach(row => {
+      const itemNome = row.querySelector(".item-nome") ? (row.querySelector(".item-nome").value || "").trim() : "";
+      const qtd = row.querySelector(".item-qtd") ? (row.querySelector(".item-qtd").value || "").trim() : "";
+      const unidadeCtrl = row.querySelector(".unidade-controle") ? (row.querySelector(".unidade-controle").value || "").trim() : "";
+      if (itemNome || qtd || unidadeCtrl) {
+        lines.push(" - " + itemNome + " | Quantidade: " + (qtd || "-") + " | Unidade: " + (unidadeCtrl || "-"));
+      }
     });
-    corpoEmail += "%0D%0A";
+
+    const justificativa = setor.querySelector(".Justificativa") ? (setor.querySelector(".Justificativa").value || "").trim() : "";
+    if (justificativa) {
+      lines.push("Justificativa: " + justificativa);
+    }
+    lines.push("");
   });
 
-  return corpoEmail;
+  return lines.join("\n");
 }
 
 </script>
