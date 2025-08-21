@@ -652,8 +652,7 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
 </style>
 
 <style>
-  /* Removido ocultamento do campo Unidade de Controle */
-</style>
+  </style>
 
 </head>
 <body oncontextmenu="return false;">
@@ -2205,11 +2204,7 @@ const EscritórioItems = [
       div.innerHTML = `
         <div class="item-input-group item-nome-group">
           <label>Item:</label>
-          <input type="text" class="item-nome" list="lista-itens" required onchange="verificarDuplicata(this, '${index}')" oninput="preencherUnidadeControle(this.value, this.closest(\'.item\').querySelector(\'.unidade-controle\'))">
-  <div class="item-input-group item-unidade-group">
-    <label>Unidade de Controle</label>
-    <input type="text" class="unidade-controle" readonly />
-  </div>
+          <input type="text" class="item-nome" list="lista-itens" required onchange="verificarDuplicata(this, '${index}')">
         </div>
         <div class="item-input-group item-qtd-group">
           <label>Quantidade:</label>
@@ -2356,7 +2351,6 @@ let m = nome.trim().match(/^((?:\d+\s+){4}\d+)\s+(.*)$/);
 let codigo = '';
 let descricao = nome;
 if (m) { codigo = m[1]; descricao = m[2]; }
-descricao = (descricao || '').replace(/unidade:\s*[^-,;|]+/i, '').replace(/\s{2,}/g, ' ').trim();
 corpoEmail += `${codigo ? codigo + ' - ' : ''}${descricao} - ${qtd} ${pluralizarUnidade(unidade, qtd)}
 `;
         });
@@ -2768,6 +2762,19 @@ function atualizarUnidade(selectElement) {
 }
 </script>
 
+
+<script>
+document.addEventListener("input", function(e) {
+  if (e.target && e.target.classList.contains("item-nome")) {
+    const itemDiv = e.target.closest(".item");
+    if (itemDiv) {
+      const unidadeControleInput = itemDiv.querySelector(".unidade-controle");
+      preencherUnidadeControle(e.target.value, unidadeControleInput);
+    }
+  }
+});
+</script>
+
 </body>
 </html>
 <html lang="pt-BR">
@@ -3007,6 +3014,19 @@ function atualizarUnidade(selectElement) {
     }
   }
 }
+</script>
+
+
+<script>
+document.addEventListener("input", function(e) {
+  if (e.target && e.target.classList.contains("item-nome")) {
+    const itemDiv = e.target.closest(".item");
+    if (itemDiv) {
+      const unidadeControleInput = itemDiv.querySelector(".unidade-controle");
+      preencherUnidadeControle(e.target.value, unidadeControleInput);
+    }
+  }
+});
 </script>
 
 </body></html></head></html>
