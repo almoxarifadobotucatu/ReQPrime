@@ -652,9 +652,7 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
 </style>
 
 <style>
-  .item-unidade-group {
-    display: none !important;
-  }
+  /* Removido ocultamento do campo Unidade de Controle */
 </style>
 
 </head>
@@ -2207,7 +2205,11 @@ const EscritórioItems = [
       div.innerHTML = `
         <div class="item-input-group item-nome-group">
           <label>Item:</label>
-          <input type="text" class="item-nome" list="lista-itens" required onchange="verificarDuplicata(this, '${index}')">
+          <input type="text" class="item-nome" list="lista-itens" required onchange="verificarDuplicata(this, '${index}')" oninput="preencherUnidadeControle(this.value, this.closest(\'.item\').querySelector(\'.unidade-controle\'))">
+  <div class="item-input-group item-unidade-group">
+    <label>Unidade de Controle</label>
+    <input type="text" class="unidade-controle" readonly />
+  </div>
         </div>
         <div class="item-input-group item-qtd-group">
           <label>Quantidade:</label>
@@ -2766,24 +2768,6 @@ function atualizarUnidade(selectElement) {
 }
 </script>
 
-
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js"></script>
-
-<script>
-const firebaseConfig = {
-    apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
-    authDomain: "almoxarifadobotucatu-5e03d.firebaseapp.com",
-    projectId: "almoxarifadobotucatu-5e03d",
-    storageBucket: "almoxarifadobotucatu-5e03d.firebasestorage.app",
-    messagingSenderId: "828951000388",
-    appId: "1:828951000388:web:06dbe3cb5764872e7b1311"
-  };
-
-const app = firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore(app);
-</script>
-
 </body>
 </html>
 <html lang="pt-BR">
@@ -3023,24 +3007,6 @@ function atualizarUnidade(selectElement) {
     }
   }
 }
-</script>
-
-
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore.js"></script>
-
-<script>
-const firebaseConfig = {
-    apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
-    authDomain: "almoxarifadobotucatu-5e03d.firebaseapp.com",
-    projectId: "almoxarifadobotucatu-5e03d",
-    storageBucket: "almoxarifadobotucatu-5e03d.firebasestorage.app",
-    messagingSenderId: "828951000388",
-    appId: "1:828951000388:web:06dbe3cb5764872e7b1311"
-  };
-
-const app = firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore(app);
 </script>
 
 </body></html></head></html>
