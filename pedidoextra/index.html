@@ -12,12 +12,14 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
     const match = (itemSelecionado || '').match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
     const valor = match ? match[1] : "";
     if (unidadeControleInput) {
-        unidadeControleInput.value = valor;
+        unidadeControleInput.value = valor; // mostra no campo visível
         const itemDiv = unidadeControleInput.closest('.item');
         if (itemDiv) {
             const hidden = itemDiv.querySelector('.item-unidade');
-            if (hidden) hidden.value = valor;
+            if (hidden) hidden.value = valor; // grava no hidden
         }
+    }
+}
     }
 } else {
         unidadeControleInput.value = "";
