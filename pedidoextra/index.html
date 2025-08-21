@@ -2076,11 +2076,14 @@ const EscritórioItems = [
         items = defaultItems;
       }
       items.forEach(item => {
-        const option = document.createElement('option');
-        option.value = item;
-        datalist.appendChild(option);
-      });
-    }
+    // Mostra a lista SEM a palavra "unidade:"
+    const display = item.replace(/\s*unidade:\s*/gi, ' ');
+    const option = document.createElement('option');
+    option.value = display;            // o usuário vê sem "unidade:"
+    option.setAttribute('data-raw', item); // preserva o texto original
+    datalist.appendChild(option);
+  });
+}
 
     document.addEventListener('contextmenu', function(e) {
       e.preventDefault();
@@ -2239,6 +2242,16 @@ const EscritórioItems = [
     }
 
     function verificarDuplicata(input, index) {
+  // Normaliza: se o valor selecionado veio do datalist (sem "unidade:"),
+  // trocamos pelo texto ORIGINAL (com "unidade:") antes das validações.
+  try {
+    const datalist = document.getElementById('lista-itens');
+    const matchOpt = Array.from(datalist.options || []).find(o => (o.value || '').trim() === (input.value || '').trim());
+    if (matchOpt && matchOpt.dataset && matchOpt.dataset.raw) {
+      input.value = matchOpt.dataset.raw;
+    }
+  } catch (e) { /* noop */ }
+
       const container = document.getElementById(`itens-${index}`);
       const itensExistentes = Array.from(container.querySelectorAll('.item-nome')).map(input => input.value.trim());
       const valorAtual = input.value.trim();
@@ -2781,27 +2794,6 @@ document.addEventListener("input", function(e) {
 
 
 
-
-<style>
-  .hide-unidade {
-    display: none;
-  }
-</style>
-
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    // Pega todos os <option> da lista de itens
-    const datalistOptions = document.querySelectorAll("#lista-itens option");
-
-    datalistOptions.forEach(opt => {
-      if (opt.value.includes("unidade:")) {
-        // Substitui "unidade:" por um span escondido
-        opt.innerHTML = opt.value.replace(/unidade:/gi, "<span class='hide-unidade'>unidade:</span>");
-      }
-    });
-  });
-</script>
-
 </body>
 </html>
 <html lang="pt-BR">
@@ -3058,26 +3050,5 @@ document.addEventListener("input", function(e) {
 
 
 
-
-
-<style>
-  .hide-unidade {
-    display: none;
-  }
-</style>
-
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    // Pega todos os <option> da lista de itens
-    const datalistOptions = document.querySelectorAll("#lista-itens option");
-
-    datalistOptions.forEach(opt => {
-      if (opt.value.includes("unidade:")) {
-        // Substitui "unidade:" por um span escondido
-        opt.innerHTML = opt.value.replace(/unidade:/gi, "<span class='hide-unidade'>unidade:</span>");
-      }
-    });
-  });
-</script>
 
 </body></html></head></html>
