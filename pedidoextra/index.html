@@ -679,7 +679,7 @@ function obterOriginalDoDatalist(valorVisivel) {
   </style>
 
 </head>
-<body oncontextmenu=" ">
+<body oncontextmenu="return false;">
 
 
 <div class="container" id="mainContainer">
@@ -693,7 +693,7 @@ function obterOriginalDoDatalist(valorVisivel) {
 <div id="setoresContainer"></div>
 <div class="buttons">
 <button onclick="adicionarSetor()" type="button">Adicionar novo setor</button>
-<button type="button" onclick="enviarPedido()" type="button" onclick="enviarPedido()" type="button" onclick="enviarPedido()" type="button" onclick="enviarPedido()" type="button" onclick="enviarPedido()" type="button" onclick="enviarPedido()" id="enviarPedido" type="button">Enviar pedido</button>
+<button id="enviarPedido" type="button" onclick="enviarPedido()">Enviar pedido</button>
 </div>
 </form>
 </div>
@@ -2108,10 +2108,16 @@ const EscritórioItems = [
 });
     }
 
-    document.addEventListener('contextmenu', function(e) { });
+    document.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+      return false;
+    });
 
     document.addEventListener('keydown', function(e) {
-      if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) || (e.ctrlKey && e.keyCode === 85)) { }
+      if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) || (e.ctrlKey && e.keyCode === 85)) {
+        e.preventDefault();
+        return false;
+      }
     });
 
     let setorIndex = 0;
@@ -2159,7 +2165,7 @@ const EscritórioItems = [
           <label>Digite aqui uma justificativa para itens do setor acima:</label>
           <textarea class="Justificativa" maxlength="300" rows="3" placeholder="Digite sua justificativa..."></textarea>
         </div>
-      `;
+
       container.appendChild(div);
       adicionarItem(setorIndex);
       setorIndex++;
@@ -2254,7 +2260,7 @@ return;
   </div>
 </div>
         <button type="button" onclick="removerItem(this)" class="remove-button remove-item-button">Remover</button>
-      `;
+
       container.appendChild(div);
     }
 
@@ -2286,7 +2292,9 @@ input.value = '';
       button.closest('.item').remove();
     }
 
-    document.getElementById('enviarPedido').addEventListener('click', function(e) { const solicitante = document.getElementById('solicitante').value.trim();
+    document.getElementById('enviarPedido').addEventListener('click', function(e) {
+      e.preventDefault();
+      const solicitante = document.getElementById('solicitante').value.trim();
       const unidade = document.getElementById('unidade').value.trim();
       if (!solicitante || !unidade) {
 // alerta desativado
@@ -2373,7 +2381,7 @@ if (m) { codigo = m[1]; descricao = m[2]; }
 
 descricao = descricao.replace(/\s*unidade:\s*[^,\n]+/gi, '').trim();
 corpoEmail += `${codigo ? codigo + ' - ' : ''}${descricao} - ${qtd} ${pluralizarUnidade(unidade, qtd)}
-`;
+
         });
         corpoEmail += `\n`;
         const Justificativa = setor.querySelector('.Justificativa').value;
@@ -2396,7 +2404,9 @@ corpoEmail += `${codigo ? codigo + ' - ' : ''}${descricao} - ${qtd} ${pluralizar
   </script>
 <script>
   document.addEventListener('keydown', function(e) {
-    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') { // alerta desativado
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
+      e.preventDefault();
+// alerta desativado
 }
   });
 </script>
@@ -2413,11 +2423,17 @@ document.addEventListener('keydown', function(e) {
         (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'c') || // Ctrl+Shift+C
         (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'p') || // Ctrl+Shift+P
         (e.ctrlKey && e.altKey && e.key.toLowerCase() === 'i') // Ctrl+Alt+I
-    ) { e.stopPropagation(); }
+    ) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+    }
 });
 
 // Bloqueia botão direito
-document.addEventListener('contextmenu', function(e) { });
+document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+});
 
 // Tentativa de detectar abertura do DevTools (não é 100% garantido)
 setInterval(function() {
@@ -2549,17 +2565,21 @@ function selectOptionUnidade(unidadeId, value) {
       const primeiroErro = document.querySelector('.erro-campo');
       if (primeiroErro) {
         try { primeiroErro.focus(); } catch (_e) {}
-      } }
+      }
+      return false;
+    }
     return true;
   }
 
-  function armarListeners() {
+  function armarListenerss() {
     const form = document.getElementById('pedidoForm') || document.querySelector('form');
     const enviarBtn = document.getElementById('enviarPedido') || document.querySelector('button[id*="enviar" i]') || document.querySelector('button[type="submit"]');
 
     if (form) {
       form.addEventListener('submit', function(e) {
-        if (!validarFormulario()) { e.stopPropagation();
+        if (!validarFormulario()) {
+          e.preventDefault();
+          e.stopPropagation();
           e.stopImmediatePropagation();
         }
       }, true);
@@ -2567,7 +2587,9 @@ function selectOptionUnidade(unidadeId, value) {
 
     if (enviarBtn) {
       enviarBtn.addEventListener('click', function(e) {
-        if (!validarFormulario()) { e.stopPropagation();
+        if (!validarFormulario()) {
+          e.preventDefault();
+          e.stopPropagation();
           e.stopImmediatePropagation();
         }
       }, true);
@@ -2575,15 +2597,16 @@ function selectOptionUnidade(unidadeId, value) {
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', armarListeners);
+    document.addEventListener('DOMContentLoaded', armarListenerss);
   } else {
-    armarListeners();
+    armarListenerss();
   }
 })();
 </script>
 <script>
 function isSetorValido(selectElement) {
-  if (!selectElement) const value = (selectElement.value || "").trim();
+  if (!selectElement) return false;
+  const value = (selectElement.value || "").trim();
   return value !== "" && value !== "Selecione";
 }
 </script>
@@ -2638,7 +2661,9 @@ document.addEventListener("change", function(e) {
 document.addEventListener("DOMContentLoaded", function() {
   const btnEnviar = document.getElementById("enviarPedido");
   if (btnEnviar) {
-    btnEnviar.addEventListener("click", function(e) { if (btnEnviar.disabled) return;
+    btnEnviar.addEventListener("click", function(e) {
+      e.preventDefault();
+      if (btnEnviar.disabled) return;
       btnEnviar.disabled = true;
 
       // Chama a função original de envio, se existir
@@ -2699,7 +2724,9 @@ document.getElementById("pedidoForm").reset();
   // Listener único para o botão
   const btn = document.getElementById("enviarPedido");
   if (btn) {
-    btn.addEventListener("click", async (e) => { if (btn.disabled) return;
+    btn.addEventListener("click", async (e) => {
+      e.preventDefault();
+      if (btn.disabled) return;
       btn.disabled = true;
       await enviarPedido();
       setTimeout(() => { btn.disabled = false; }, 2000);
@@ -2880,7 +2907,9 @@ document.addEventListener("input", function(e) {
 document.addEventListener("DOMContentLoaded", function() {
   const btnEnviar = document.getElementById("enviarPedido");
   if (btnEnviar) {
-    btnEnviar.addEventListener("click", function(e) { if (btnEnviar.disabled) return;
+    btnEnviar.addEventListener("click", function(e) {
+      e.preventDefault();
+      if (btnEnviar.disabled) return;
       btnEnviar.disabled = true;
 
       // Chama a função original de envio, se existir
@@ -2941,7 +2970,9 @@ document.getElementById("pedidoForm").reset();
   // Listener único para o botão
   const btn = document.getElementById("enviarPedido");
   if (btn) {
-    btn.addEventListener("click", async (e) => { if (btn.disabled) return;
+    btn.addEventListener("click", async (e) => {
+      e.preventDefault();
+      if (btn.disabled) return;
       btn.disabled = true;
       await enviarPedido();
       setTimeout(() => { btn.disabled = false; }, 2000);
@@ -3008,11 +3039,10 @@ document.addEventListener("input", function(e) {
 function validarItemSetor(itemSelecionado, setor) {
   const lista = (setor === 'Farmácia') ? farmaciaItems : PsicotópicoItems;
   const originalParaValidar = obterOriginalDoDatalist(itemSelecionado);
-  if (!originalParaValidar) return lista.includes(originalParaValidar);
+  if (!originalParaValidar) return false;
+  return lista.includes(originalParaValidar);
 }
 
-
-`;
     const mailtoUrl = `mailto:${destinatario}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(corpoEmail)}`;
     // força abrir no Gmail no navegador
     const gmailUrl = "https://mail.google.com/mail/?view=cm&fs=1" +
@@ -3076,8 +3106,6 @@ function montarCorpoEmail() {
   return corpoEmail;
 }
 
-
-`;
     const mailtoUrl = `mailto:${destinatario}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(corpoEmail)}`;
     window.location.href = mailtoUrl;
   } catch (e) {
@@ -3085,9 +3113,6 @@ function montarCorpoEmail() {
   }
 }
 
-
-
-`;
   const mailtoUrl = `mailto:${destinatario}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(corpoEmail)}`;
 
   // tentativa 1: clique programático em <a>
@@ -3105,14 +3130,21 @@ function montarCorpoEmail() {
     setTimeout(() => { window.location.href = mailtoUrl; }, 0);
   } catch (_) {}
 }
+
+  const mailtoUrl = `mailto:${destinatario}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(corpoEmail)}`;
+  window.location.href = mailtoUrl;
+  return false;
+}
+
+
 `;
   const mailtoUrl = `mailto:${destinatario}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(corpoEmail)}`;
-  window.location.href = mailtoUrl; }
-
+  window.location.href = mailtoUrl;
+}
 
 
 function enviarPedido() {
-  const corpoEmail = (typeof montarCorpoEmail === 'function') ? montarCorpoEmail() : "";
+  const corpoEmail = montarCorpoEmail();
   const unidadeInput = document.getElementById('unidade');
   const unidade = unidadeInput ? unidadeInput.value : '';
   const destinatario = "leitaoochefe@gmail.com";
@@ -3120,31 +3152,6 @@ function enviarPedido() {
   const mailtoUrl = `mailto:${destinatario}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(corpoEmail)}`;
   window.location.href = mailtoUrl;
 }
-`;
-  const mailtoUrl = `mailto:${destinatario}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(corpoEmail)}`;
-  window.location.href = mailtoUrl;
-}
-
-
-// Garantia de acionamento do mailto para o botão "Enviar pedido"
-(function(){
-  document.addEventListener('click', function(ev){
-    try {
-      var btn = ev.target && ev.target.closest ? ev.target.closest('button') : null;
-      if (btn && /enviar\s*pedido/i.test((btn.textContent || '').trim())) {
-        // Impede que outros listeners bloqueiem depois
-        if (ev.stopImmediatePropagation) ev.stopImmediatePropagation();
-        if (ev.stopPropagation) ev.stopPropagation();
-        // Executa o envio
-        if (typeof enviarPedido === 'function') enviarPedido();
-      }
-    } catch (e) {}
-  }, true); // captura para rodar antes de outros handlers
-})();
 
 </script>
-
-
-
-
-</body></html></head></html>
+</body></html>
