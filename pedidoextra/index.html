@@ -2210,10 +2210,11 @@ const EscritórioItems = [
           <label>Quantidade:</label>
           <input type="number" class="item-qtd" min="1" required>
         </div>
-        <div class="item-input-group item-unidade-group">
-  <label></label>
-  <div class="custom-select" id="${unidadeId}">
-    <div class="selected" onclick="toggleOptions('${unidadeId}')">Selecione</div>
+        
+<div class="item-input-group item-unidade-group">
+  <label>Unidade de Controle</label>
+  <input type="text" class="unidade-controle" readonly />
+</div>
     <input type="hidden" class="item-unidade" name="unidade" value="">
     <div class="options">
       <div class="option" data-value="Comprimido" onclick="selectOptionUnidade(\'${unidadeId}\', 'Comprimido')">Comprimido</div>
