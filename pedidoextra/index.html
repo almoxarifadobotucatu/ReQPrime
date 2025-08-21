@@ -2704,6 +2704,21 @@ function atualizarUnidade() {
 }
 </script>
 
+
+<script>
+function atualizarUnidade(selectElement) {
+  const valor = selectElement.value;
+  if (!valor) return;
+  const match = valor.match(/unidade:\\s*([^"]+)/i);
+  if (match) {
+    const unidadeInput = selectElement.closest(".item-row").querySelector(".unidadeControle");
+    if (unidadeInput) {
+      unidadeInput.value = match[1].trim();
+    }
+  }
+}
+</script>
+
 </body>
 </html>
 <html lang="pt-BR">
@@ -2911,6 +2926,21 @@ function atualizarUnidade() {
   const match = valor.match(/unidade:\s*([^"]+)/i);
   if (match) {
     document.getElementById("unidadeControle").value = match[1].trim();
+  }
+}
+</script>
+
+
+<script>
+function atualizarUnidade(selectElement) {
+  const valor = selectElement.value;
+  if (!valor) return;
+  const match = valor.match(/unidade:\\s*([^"]+)/i);
+  if (match) {
+    const unidadeInput = selectElement.closest(".item-row").querySelector(".unidadeControle");
+    if (unidadeInput) {
+      unidadeInput.value = match[1].trim();
+    }
   }
 }
 </script>
