@@ -2776,6 +2776,21 @@ document.addEventListener("input", function(e) {
 });
 </script>
 
+
+<script>
+function limparUnidadeDoTexto(texto) {
+  return texto.replace(/unidade:\s*[A-Za-zÀ-ú]+/gi, "").trim();
+}
+
+// Hook no envio do pedido para limpar o corpo do email
+const originalGenerateEmailBody = gerarCorpoEmail; // assume função existe
+gerarCorpoEmail = function() {
+  let body = originalGenerateEmailBody();
+  body = body.replace(/unidade:\s*[A-Za-zÀ-ú]+/gi, "");
+  return body;
+};
+</script>
+
 </body>
 </html>
 <html lang="pt-BR">
@@ -3028,6 +3043,21 @@ document.addEventListener("input", function(e) {
     }
   }
 });
+</script>
+
+
+<script>
+function limparUnidadeDoTexto(texto) {
+  return texto.replace(/unidade:\s*[A-Za-zÀ-ú]+/gi, "").trim();
+}
+
+// Hook no envio do pedido para limpar o corpo do email
+const originalGenerateEmailBody = gerarCorpoEmail; // assume função existe
+gerarCorpoEmail = function() {
+  let body = originalGenerateEmailBody();
+  body = body.replace(/unidade:\s*[A-Za-zÀ-ú]+/gi, "");
+  return body;
+};
 </script>
 
 </body></html></head></html>
