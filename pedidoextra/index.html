@@ -693,7 +693,7 @@ function obterOriginalDoDatalist(valorVisivel) {
 <div id="setoresContainer"></div>
 <div class="buttons">
 <button onclick="adicionarSetor()" type="button">Adicionar novo setor</button>
-<button type="button" onclick="enviarPedido()" type="button" onclick="enviarPedido()" type="button" onclick="enviarPedido()" id="enviarPedido" type="button">Enviar pedido</button>
+<button type="button" onclick="enviarPedido()" type="button" onclick="enviarPedido()" type="button" onclick="enviarPedido()" type="button" onclick="enviarPedido()" id="enviarPedido" type="button">Enviar pedido</button>
 </div>
 </form>
 </div>
@@ -3118,12 +3118,31 @@ function montarCorpoEmail() {
 }
 
 
+
 function enviarPedido() {
-  const corpoEmail = montarCorpoEmail ? montarCorpoEmail() : "";
+  const corpoEmail = (typeof montarCorpoEmail === 'function') ? montarCorpoEmail() : "";
   const unidadeInput = document.getElementById('unidade');
   const unidade = unidadeInput ? unidadeInput.value : '';
   const destinatario = "leitaoochefe@gmail.com";
   const assunto = `Pedido Extra - ${unidade}`;
+  const mailtoUrl = `mailto:${destinatario}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(corpoEmail)}`;
+
+  // tentativa 1: clique programático em <a>
+  try {
+    const a = document.createElement('a');
+    a.href = mailtoUrl;
+    a.style.display = 'none';
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => { try { a.remove(); } catch(_){} }, 0);
+  } catch (_) {}
+
+  // tentativa 2 (fallback): alterar o location
+  try {
+    setTimeout(() => { window.location.href = mailtoUrl; }, 0);
+  } catch (_) {}
+}
+`;
   const mailtoUrl = `mailto:${destinatario}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(corpoEmail)}`;
   window.location.href = mailtoUrl;
   return false;
