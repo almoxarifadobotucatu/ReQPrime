@@ -2249,6 +2249,10 @@ const EscritórioItems = [
     const matchOpt = Array.from(datalist.options || []).find(o => (o.value || '').trim() === (input.value || '').trim());
     if (matchOpt && matchOpt.dataset && matchOpt.dataset.raw) {
       input.value = matchOpt.dataset.raw;
+    // Mostra no campo SEM 'unidade:' mas mantém o valor original em data-raw
+    input.setAttribute('data-raw', matchOpt.dataset.raw);
+    input.value = matchOpt.dataset.raw.replace(/\s*unidade:\s*/gi, ' ');
+
     }
   } catch (e) { /* noop */ }
 
