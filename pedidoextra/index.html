@@ -669,7 +669,7 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
 <div id="setoresContainer"></div>
 <div class="buttons">
 <button onclick="adicionarSetor()" type="button">Adicionar novo setor</button>
-<button id="enviarPedido" type="button" onclick="if(validarFormulario()){ enviarPedido(); }">Enviar pedido</button>
+<button id="enviarPedido" type="submit">Enviar pedido</button>
 </div>
 </form>
 </div>
@@ -2826,6 +2826,49 @@ function validarFormulario() {
 }
 </script>
 
+
+<script>
+document.getElementById("pedidoForm").addEventListener("submit", function(event) {
+    event.preventDefault(); // Impede o alerta do navegador
+
+    if (validarFormulario()) {
+        enviarPedido();
+    } else {
+        exibirErroPersonalizado();
+    }
+});
+
+function validarFormulario() {
+    let valido = true;
+    let mensagens = [];
+    let camposObrigatorios = document.querySelectorAll("#pedidoForm [required]");
+
+    camposObrigatorios.forEach(campo => {
+        if (!campo.value.trim()) {
+            campo.classList.add("erro-campo");
+            mensagens.push("O campo '" + (campo.previousElementSibling?.innerText || campo.id) + "' é obrigatório.");
+            valido = false;
+        } else {
+            campo.classList.remove("erro-campo");
+        }
+    });
+
+    if (!valido) {
+        let caixaErro = document.getElementById("mensagensErros");
+        caixaErro.innerHTML = "<h3>Erros encontrados:</h3><ul>" + mensagens.map(m => "<li>" + m + "</li>").join("") + "</ul>";
+        caixaErro.style.display = "block";
+    } else {
+        document.getElementById("mensagensErros").style.display = "none";
+    }
+
+    return valido;
+}
+
+function exibirErroPersonalizado() {
+    // já tratado dentro de validarFormulario()
+}
+</script>
+
 </body>
 </html>
 <html lang="pt-BR">
@@ -3127,6 +3170,49 @@ function validarFormulario() {
     mensagensErros.style.display = "none";
     return true;
   }
+}
+</script>
+
+
+<script>
+document.getElementById("pedidoForm").addEventListener("submit", function(event) {
+    event.preventDefault(); // Impede o alerta do navegador
+
+    if (validarFormulario()) {
+        enviarPedido();
+    } else {
+        exibirErroPersonalizado();
+    }
+});
+
+function validarFormulario() {
+    let valido = true;
+    let mensagens = [];
+    let camposObrigatorios = document.querySelectorAll("#pedidoForm [required]");
+
+    camposObrigatorios.forEach(campo => {
+        if (!campo.value.trim()) {
+            campo.classList.add("erro-campo");
+            mensagens.push("O campo '" + (campo.previousElementSibling?.innerText || campo.id) + "' é obrigatório.");
+            valido = false;
+        } else {
+            campo.classList.remove("erro-campo");
+        }
+    });
+
+    if (!valido) {
+        let caixaErro = document.getElementById("mensagensErros");
+        caixaErro.innerHTML = "<h3>Erros encontrados:</h3><ul>" + mensagens.map(m => "<li>" + m + "</li>").join("") + "</ul>";
+        caixaErro.style.display = "block";
+    } else {
+        document.getElementById("mensagensErros").style.display = "none";
+    }
+
+    return valido;
+}
+
+function exibirErroPersonalizado() {
+    // já tratado dentro de validarFormulario()
 }
 </script>
 
