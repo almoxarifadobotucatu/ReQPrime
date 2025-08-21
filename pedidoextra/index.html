@@ -2691,6 +2691,19 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 </script>
 
+
+<script>
+function atualizarUnidade() {
+  const select = document.getElementById("medicamento");
+  const valor = select.value;
+  if (!valor) return;
+  const match = valor.match(/unidade:\s*([^"]+)/i);
+  if (match) {
+    document.getElementById("unidadeControle").value = match[1].trim();
+  }
+}
+</script>
+
 </body>
 </html>
 <html lang="pt-BR">
@@ -2887,6 +2900,19 @@ document.addEventListener("DOMContentLoaded", function() {
       setTimeout(() => { btn.disabled = false; }, 2000);
     });
   }
+</script>
+
+
+<script>
+function atualizarUnidade() {
+  const select = document.getElementById("medicamento");
+  const valor = select.value;
+  if (!valor) return;
+  const match = valor.match(/unidade:\s*([^"]+)/i);
+  if (match) {
+    document.getElementById("unidadeControle").value = match[1].trim();
+  }
+}
 </script>
 
 </body></html></head></html>
