@@ -2264,20 +2264,27 @@ const EscritórioItems = [
         alert('Este item já foi adicionado.');
         input.value = '';
       }
+      
       // Auto-preenche a unidade de controle a partir do texto do item
       try {
         const itemDiv = input.closest('.item');
         if (itemDiv) {
           const hiddenUnidade = itemDiv.querySelector('.item-unidade');
-          const selectedDiv = itemDiv.querySelector('.custom-select .selected');
-          const m = (input.value || '').match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
+          const unidadeInput = itemDiv.querySelector('.unidade-controle');
+          
+          // Pega o valor original com "unidade:" salvo anteriormente
+          const datalist = document.getElementById('lista-itens');
+          const matchOpt = Array.from((datalist && datalist.options) || []).find(o => (o.value || '').trim() === (input.value || '').trim());
+          const rawOriginal = input.getAttribute('data-raw') || (matchOpt && matchOpt.dataset ? matchOpt.dataset.raw : '') || '';
+          
+          const m = (rawOriginal || '').match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
           const unidadeEncontrada = m ? m[1] : '';
+          
           if (hiddenUnidade) hiddenUnidade.value = unidadeEncontrada;
-          if (selectedDiv) selectedDiv.textContent = unidadeEncontrada || 'Selecione';
+          if (unidadeInput) unidadeInput.value = unidadeEncontrada; // mostra no campo "Unidade de Controle"
         }
       } catch (e) { /* noop */ }
-    
-    }
+}
 
     function removerItem(button) {
       button.closest('.item').remove();
