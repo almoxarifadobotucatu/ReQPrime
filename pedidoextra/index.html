@@ -3096,6 +3096,39 @@ function atualizarUnidade(selectElement) {
 })();
 </script>
 
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const obs = new MutationObserver(function(mutations) {
+    mutations.forEach(function(m) {
+      m.addedNodes.forEach(function(node) {
+        if (!(node instanceof Element)) return;
+        // Se adicionaram uma nova linha de item
+        if (node.matches(".item-row, .linha-item, .item")) {
+          let unidadeSelect = node.querySelector('select[name*="unidadeControle"], select[id*="unidadeControle"]');
+          let unidadeLabel = node.querySelector('label');
+          if (unidadeSelect) {
+            unidadeSelect.remove();
+          }
+          if (unidadeLabel && /Unidade\s*de\s*Controle/i.test(unidadeLabel.textContent)) {
+            unidadeLabel.remove();
+          }
+          // Adicionar o input hidden se não existir
+          if (!node.querySelector("input.unidadeControleHidden")) {
+            let hidden = document.createElement("input");
+            hidden.type = "hidden";
+            hidden.name = "unidadeControle[]";
+            hidden.className = "unidadeControleHidden";
+            node.appendChild(hidden);
+          }
+        }
+      });
+    });
+  });
+  obs.observe(document.body, { childList: true, subtree: true });
+});
+</script>
+
 </body>
 </html>
 <html lang="pt-BR">
@@ -3697,6 +3730,39 @@ function atualizarUnidade(selectElement) {
     inicializarPagina();
   }
 })();
+</script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const obs = new MutationObserver(function(mutations) {
+    mutations.forEach(function(m) {
+      m.addedNodes.forEach(function(node) {
+        if (!(node instanceof Element)) return;
+        // Se adicionaram uma nova linha de item
+        if (node.matches(".item-row, .linha-item, .item")) {
+          let unidadeSelect = node.querySelector('select[name*="unidadeControle"], select[id*="unidadeControle"]');
+          let unidadeLabel = node.querySelector('label');
+          if (unidadeSelect) {
+            unidadeSelect.remove();
+          }
+          if (unidadeLabel && /Unidade\s*de\s*Controle/i.test(unidadeLabel.textContent)) {
+            unidadeLabel.remove();
+          }
+          // Adicionar o input hidden se não existir
+          if (!node.querySelector("input.unidadeControleHidden")) {
+            let hidden = document.createElement("input");
+            hidden.type = "hidden";
+            hidden.name = "unidadeControle[]";
+            hidden.className = "unidadeControleHidden";
+            node.appendChild(hidden);
+          }
+        }
+      });
+    });
+  });
+  obs.observe(document.body, { childList: true, subtree: true });
+});
 </script>
 
 </body></html></head></html>
