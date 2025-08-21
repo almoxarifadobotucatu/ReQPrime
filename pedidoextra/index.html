@@ -2217,7 +2217,7 @@ const EscritórioItems = [
   <label></label>
   <div class="custom-select" id="${unidadeId}">
     <div class="selected" onclick="toggleOptions('${unidadeId}')">Selecione</div>
-    <input type="hidden" class="item-unidade" name="unidade" value="" required>
+    <input type="hidden" class="item-unidade" name="unidade" value="">
     <div class="options">
       <div class="option" data-value="Comprimido" onclick="selectOptionUnidade(\'${unidadeId}\', 'Comprimido')">Comprimido</div>
       <div class="option" data-value="Cápsula" onclick="selectOptionUnidade(\'${unidadeId}\', 'Cápsula')">Cápsula</div>
@@ -2249,6 +2249,19 @@ const EscritórioItems = [
         alert('Este item já foi adicionado.');
         input.value = '';
       }
+      // Auto-preenche a unidade de controle a partir do texto do item
+      try {
+        const itemDiv = input.closest('.item');
+        if (itemDiv) {
+          const hiddenUnidade = itemDiv.querySelector('.item-unidade');
+          const selectedDiv = itemDiv.querySelector('.custom-select .selected');
+          const m = (input.value || '').match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
+          const unidadeEncontrada = m ? m[1] : '';
+          if (hiddenUnidade) hiddenUnidade.value = unidadeEncontrada;
+          if (selectedDiv) selectedDiv.textContent = unidadeEncontrada || 'Selecione';
+        }
+      } catch (e) { /* noop */ }
+    
     }
 
     function removerItem(button) {
@@ -2336,7 +2349,7 @@ const EscritórioItems = [
           const nome = input.value;
           const qtd = itensQtds[index].value;
           const unidades = setor.querySelectorAll('.item-unidade');
-const unidade = unidades[index] ? unidades[index].value : '';
+const unidade = (unidades[index] && unidades[index].value) ? unidades[index].value : '';
 let m = nome.trim().match(/^((?:\d+\s+){4}\d+)\s+(.*)$/);
 let codigo = '';
 let descricao = nome;
