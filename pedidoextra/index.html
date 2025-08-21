@@ -2354,6 +2354,7 @@ let m = nome.trim().match(/^((?:\d+\s+){4}\d+)\s+(.*)$/);
 let codigo = '';
 let descricao = nome;
 if (m) { codigo = m[1]; descricao = m[2]; }
+descricao = (descricao || '').replace(/unidade:\s*[^-,;|]+/i, '').replace(/\s{2,}/g, ' ').trim();
 corpoEmail += `${codigo ? codigo + ' - ' : ''}${descricao} - ${qtd} ${pluralizarUnidade(unidade, qtd)}
 `;
         });
