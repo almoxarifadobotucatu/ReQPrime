@@ -652,12 +652,6 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
 </style>
 
 <style>
-  /* Removido ocultamento do campo Unidade de Controle */
-</style>
-
-
-<style>
-  /* Oculta apenas a caixa de seleção de unidade (destacada em vermelho no print) */
   .item-unidade-group {
     display: none !important;
   }
@@ -2213,11 +2207,7 @@ const EscritórioItems = [
       div.innerHTML = `
         <div class="item-input-group item-nome-group">
           <label>Item:</label>
-          <input type="text" class="item-nome" list="lista-itens" required onchange="verificarDuplicata(this, '${index}')" oninput="preencherUnidadeControle(this.value, this.closest(\'.item\').querySelector(\'.unidade-controle\'))">
-  <div class="item-input-group item-unidade-group">
-    <label>Unidade de Controle</label>
-    <input type="text" class="unidade-controle" readonly />
-  </div>
+          <input type="text" class="item-nome" list="lista-itens" required onchange="verificarDuplicata(this, '${index}')">
         </div>
         <div class="item-input-group item-qtd-group">
           <label>Quantidade:</label>
@@ -2874,15 +2864,7 @@ function atualizarUnidade(selectElement) {
     display: none;
   }
 </style>
-</meta>
-<style>
-  /* Oculta apenas a caixa de seleção de unidade (destacada em vermelho no print) */
-  .item-unidade-group {
-    display: none !important;
-  }
-</style>
-
-</head>
+</meta></head>
   
 <body>
 <script src="/protege-pagina.js"></script>
@@ -3025,12 +3007,4 @@ function atualizarUnidade(selectElement) {
 }
 </script>
 
-</body></html>
-<style>
-  /* Oculta apenas a caixa de seleção de unidade (destacada em vermelho no print) */
-  .item-unidade-group {
-    display: none !important;
-  }
-</style>
-
-</head></html>
+</body></html></head></html>
