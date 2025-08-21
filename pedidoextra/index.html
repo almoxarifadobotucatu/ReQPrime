@@ -669,7 +669,7 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
 <div id="setoresContainer"></div>
 <div class="buttons">
 <button onclick="adicionarSetor()" type="button">Adicionar novo setor</button>
-<button id="enviarPedido" type="button">Enviar pedido</button>
+<button id="enviarPedido" type="button" onclick="if(validarFormulario()){ enviarPedido(); }">Enviar pedido</button>
 </div>
 </form>
 </div>
@@ -2791,6 +2791,41 @@ gerarCorpoEmail = function() {
 };
 </script>
 
+
+<script>
+function validarFormulario() {
+  const erros = [];
+  const mensagensErros = document.getElementById("mensagensErros");
+  mensagensErros.innerHTML = "";
+
+  // Remove erros anteriores
+  document.querySelectorAll(".erro-campo").forEach(el => {
+    el.classList.remove("erro-campo");
+  });
+
+  // Campos obrigatórios
+  const camposObrigatorios = document.querySelectorAll("#pedidoForm [required]");
+  camposObrigatorios.forEach(campo => {
+    if (!campo.value.trim()) {
+      erros.push(`O campo "${campo.previousElementSibling ? campo.previousElementSibling.innerText : campo.id}" deve ser preenchido.`);
+      campo.classList.add("erro-campo");
+    }
+  });
+
+  if (erros.length > 0) {
+    mensagensErros.style.display = "block";
+    mensagensErros.innerHTML = `
+      <h3>⚠️ Erros encontrados:</h3>
+      <ul>${erros.map(e => `<li>${e}</li>`).join("")}</ul>
+    `;
+    return false; // interrompe o envio
+  } else {
+    mensagensErros.style.display = "none";
+    return true;
+  }
+}
+</script>
+
 </body>
 </html>
 <html lang="pt-BR">
@@ -3058,6 +3093,41 @@ gerarCorpoEmail = function() {
   body = body.replace(/unidade:\s*[A-Za-zÀ-ú]+/gi, "");
   return body;
 };
+</script>
+
+
+<script>
+function validarFormulario() {
+  const erros = [];
+  const mensagensErros = document.getElementById("mensagensErros");
+  mensagensErros.innerHTML = "";
+
+  // Remove erros anteriores
+  document.querySelectorAll(".erro-campo").forEach(el => {
+    el.classList.remove("erro-campo");
+  });
+
+  // Campos obrigatórios
+  const camposObrigatorios = document.querySelectorAll("#pedidoForm [required]");
+  camposObrigatorios.forEach(campo => {
+    if (!campo.value.trim()) {
+      erros.push(`O campo "${campo.previousElementSibling ? campo.previousElementSibling.innerText : campo.id}" deve ser preenchido.`);
+      campo.classList.add("erro-campo");
+    }
+  });
+
+  if (erros.length > 0) {
+    mensagensErros.style.display = "block";
+    mensagensErros.innerHTML = `
+      <h3>⚠️ Erros encontrados:</h3>
+      <ul>${erros.map(e => `<li>${e}</li>`).join("")}</ul>
+    `;
+    return false; // interrompe o envio
+  } else {
+    mensagensErros.style.display = "none";
+    return true;
+  }
+}
 </script>
 
 </body></html></head></html>
