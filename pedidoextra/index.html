@@ -2214,7 +2214,7 @@ const EscritórioItems = [
           <input type="number" class="item-qtd" min="1" required>
         </div>
         <div class="item-input-group item-unidade-group">
-  <label>Unidade de Controle:</label>
+  <label></label>
   <div class="custom-select" id="${unidadeId}">
     <div class="selected" onclick="toggleOptions('${unidadeId}')">Selecione</div>
     <input type="hidden" class="item-unidade" name="unidade" value="" required>
@@ -2496,7 +2496,7 @@ function selectOptionUnidade(unidadeId, value) {
           qtdItem.classList.add('erro-campo');
         }
         if (unidadeItem && !unidadeItem.value.trim()) {
-          errosPorSetor[setorNomeSelecionado].push(`Unidade de controle do item ${iIndex + 1} não preenchida`);
+          errosPorSetor[setorNomeSelecionado].push(`
           unidadeItem.classList.add('erro-campo');
         }
       });
@@ -2668,8 +2668,7 @@ document.addEventListener("DOMContentLoaded", function() {
       const nome = itemDiv.querySelector(".item-nome")?.value;
       const quantidade = itemDiv.querySelector(".item-qtd")?.value;
       const unidadeControle = itemDiv.querySelector(".item-unidade")?.value;
-      if (nome && quantidade && unidadeControle) {
-        itens.push({ nome, quantidade, unidadeControle });
+      );
       }
     });
 
@@ -2809,7 +2808,7 @@ function atualizarUnidade(selectElement) {
   .item .item-input-group.item-unidade-group { flex: 1 1 100%; }
 }
 
-/* Unidade de Controle com mesmo estilo do campo Setor */
+/* 
 .item .item-input-group.item-unidade-group select {
   width: 100%;
   padding: 14px 18px;
@@ -2829,18 +2828,18 @@ function atualizarUnidade(selectElement) {
 }
 
 
-/* Unidade de Controle reutiliza o mesmo visual do Setor */
+/* 
 .item .item-input-group.item-unidade-group .custom-select {
   width: 100%;
 }
 
-/* === Correção mínima: altura da Unidade de Controle igual aos outros campos === */
+/* === Correção mínima: altura da 
 .item .item-input-group.item-unidade-group .custom-select .selected {
   height: 48px;       /* mesma altura do input */
   line-height: 48px;  /* centraliza verticalmente */
 }
 
-/* === Ajuste final: Unidade de Controle com a mesma altura da Quantidade === */
+/* === Ajuste final: 
 .item .item-input-group.item-unidade-group .custom-select .selected {
   height: 40px;       /* mesma altura da Quantidade */
   line-height: 40px;  /* centraliza verticalmente */
@@ -2910,8 +2909,7 @@ document.addEventListener("DOMContentLoaded", function() {
       const nome = itemDiv.querySelector(".item-nome")?.value;
       const quantidade = itemDiv.querySelector(".item-qtd")?.value;
       const unidadeControle = itemDiv.querySelector(".item-unidade")?.value;
-      if (nome && quantidade && unidadeControle) {
-        itens.push({ nome, quantidade, unidadeControle });
+      );
       }
     });
 
