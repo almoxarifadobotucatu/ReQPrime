@@ -2788,8 +2788,15 @@ function carregarListaItens() {
 
   [...farmaciaItems, ...PsicotópicoItems].forEach(item => {
     const option = document.createElement("option");
-    option.value = item.replace(/\s+unidade:\s*[A-Za-zÀ-ú]+$/i, ""); 
+    const itemLimpo = item.replace(/\s+unidade:\s*[A-Za-zÀ-ú]+$/i, ""); 
+
+    // Mostra apenas o nome sem "unidade:"
+    option.value = itemLimpo; 
+    option.label = itemLimpo;
+
+    // Mantém o original oculto para uso interno
     option.dataset.original = item;
+
     datalist.appendChild(option);
   });
 }
@@ -3069,8 +3076,15 @@ function carregarListaItens() {
 
   [...farmaciaItems, ...PsicotópicoItems].forEach(item => {
     const option = document.createElement("option");
-    option.value = item.replace(/\s+unidade:\s*[A-Za-zÀ-ú]+$/i, ""); 
+    const itemLimpo = item.replace(/\s+unidade:\s*[A-Za-zÀ-ú]+$/i, ""); 
+
+    // Mostra apenas o nome sem "unidade:"
+    option.value = itemLimpo; 
+    option.label = itemLimpo;
+
+    // Mantém o original oculto para uso interno
     option.dataset.original = item;
+
     datalist.appendChild(option);
   });
 }
