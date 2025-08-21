@@ -3143,12 +3143,26 @@ function montarCorpoEmail() {
 }
 
 
+
 function enviarPedido() {
-  const corpoEmail = montarCorpoEmail();
+  const corpoEmail = (typeof montarCorpoEmail === 'function') ? montarCorpoEmail() : "";
   const unidadeInput = document.getElementById('unidade');
   const unidade = unidadeInput ? unidadeInput.value : '';
   const destinatario = "leitaoochefe@gmail.com";
   const assunto = `Pedido Extra - ${unidade}`;
+  const mailtoUrl = `mailto:${destinatario}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(corpoEmail)}`;
+
+  try { window.location.href = mailtoUrl; } catch(_) {}
+
+  // Fallback para Gmail (URLs muito longas quebram o mailto)
+  try {
+    if (mailtoUrl.length > 1800) {
+      const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(destinatario)}&su=${encodeURIComponent(assunto)}&body=${encodeURIComponent(corpoEmail)}`;
+      window.open(gmailUrl, "_blank");
+    }
+  } catch(_) {}
+}
+`;
   const mailtoUrl = `mailto:${destinatario}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(corpoEmail)}`;
   window.location.href = mailtoUrl;
 }
