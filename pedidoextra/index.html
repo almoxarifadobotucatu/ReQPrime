@@ -38,7 +38,7 @@ function obterOriginalDoDatalist(valorVisivel) {
   const datalist = document.getElementById('lista-itens');
   const opt = Array.from(datalist.options)
     .find(o => o.value === valorVisivel || (o.dataset && o.dataset.original === valorVisivel));
-  return opt ? opt.dataset.original : valorVisivel;
+  return opt ? opt.dataset.original : null;
 }
 
 
@@ -3059,6 +3059,14 @@ document.addEventListener("input", function(e) {
     }
   }
 });
+
+function validarItemSetor(itemSelecionado, setor) {
+  const lista = (setor === 'Farmácia') ? farmaciaItems : PsicotópicoItems;
+  const originalParaValidar = obterOriginalDoDatalist(itemSelecionado);
+  if (!originalParaValidar) return false;
+  return lista.includes(originalParaValidar);
+}
+
 </script>
 
 
