@@ -2561,7 +2561,27 @@ function selectOptionUnidade(unidadeId, value) {
       }
       return false;
     }
-    return true;
+    
+  // --- Preencher automaticamente Unidade de Controle ---
+  try {
+    const datalist = document.getElementById("lista-itens");
+    const matchOpt = Array.from(datalist.options).find(
+      o => (o.value || '').trim() === (input.value || '').trim()
+    );
+    if (matchOpt && matchOpt.dataset.raw) {
+      const original = matchOpt.dataset.raw;
+      input.setAttribute("data-raw", original);
+      input.value = original.replace(/\s*unidade:\s*/gi, " ");
+
+      const unidadeControleInput = input.closest(".item")
+                                       .querySelector(".item-unidade-group select");
+      if (unidadeControleInput) {
+        preencherUnidadeControle(original, unidadeControleInput);
+      }
+    }
+  } catch (e) { /* noop */ }
+
+  return true;
   }
 
   function armarListeners() {
