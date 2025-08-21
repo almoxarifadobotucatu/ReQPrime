@@ -2180,8 +2180,8 @@ const EscritórioItems = [
       const setores = document.querySelectorAll('.setor input[name="setor"]');
       const setoresSelecionados = Array.from(setores).map(input => input.value.trim());
       if (setoresSelecionados.includes(value)) {
-        alert('Este setor já foi adicionado.');
-        return;
+// alerta desativado
+return;
       }
       const selected = document.querySelector(`#${setorId} .selected`);
       const hiddenInput = document.querySelector(`#${setorId} input[name="setor"]`);
@@ -2270,8 +2270,8 @@ const EscritórioItems = [
       const valorAtual = input.value.trim();
       const duplicatas = itensExistentes.filter((item, idx) => item === valorAtual && itensExistentes.indexOf(item) !== idx);
       if (duplicatas.length > 0) {
-        alert('Este item já foi adicionado.');
-        input.value = '';
+// alerta desativado
+input.value = '';
       }
       // Auto-preenche a unidade de controle a partir do texto do item
       try {
@@ -2297,8 +2297,8 @@ const EscritórioItems = [
       const solicitante = document.getElementById('solicitante').value.trim();
       const unidade = document.getElementById('unidade').value.trim();
       if (!solicitante || !unidade) {
-        alert('Por favor, preencha os campos: Responsável pela solicitação e Unidade de sáude.');
-        return;
+// alerta desativado
+return;
       }
       const setores = document.querySelectorAll('.setor');
       let todosSetoresValidos = true;
@@ -2308,21 +2308,21 @@ const EscritórioItems = [
         const itensQtds = setor.querySelectorAll('.item-qtd');
         if (!nomeSetor) {
           todosSetoresValidos = false;
-          alert('Por favor, selecione um setor.');
-          return;
+// alerta desativado
+return;
         }
         if (itensNomes.length === 0) {
           todosSetoresValidos = false;
-          alert('Por favor, adicione pelo menos um item em cada setor.');
-          return;
+// alerta desativado
+return;
         }
         itensNomes.forEach((input, index) => {
           const nome = input.value.trim();
           const qtd = itensQtds[index].value.trim();
           if (!nome || !qtd) {
             todosSetoresValidos = false;
-            alert('Por favor, preencha todos os campos de item e quantidade.');
-            return;
+// alerta desativado
+return;
           }
           let validItems;
           if (nomeSetor === 'Farmácia') {
@@ -2352,7 +2352,7 @@ const EscritórioItems = [
           }
           if (!validItems.includes(nome)) {
             todosSetoresValidos = false;
-            alert(`O item "${nome}" não é válido para o setor ${nomeSetor}.`);
+            // alerta desativado por solicitação do cliente
             return;
           }
         });
@@ -2408,8 +2408,8 @@ if (win) {
   document.addEventListener('keydown', function(e) {
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
       e.preventDefault();
-      alert("Salvar página está desativado.");
-    }
+// alerta desativado
+}
   });
 </script>
 <script>
@@ -2712,8 +2712,8 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     if (!solicitante || !unidade || itens.length === 0) {
-      alert("⚠️ Preencha todos os campos e adicione pelo menos um item.");
-      return;
+// alerta desativado
+return;
     }
 
     const dados = {
@@ -2725,13 +2725,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
     try {
       await addDoc(collection(db, "pedidos"), dados);
-      alert("✅ Pedido enviado com sucesso!");
-      document.getElementById("pedidoForm").reset();
+// alerta desativado
+document.getElementById("pedidoForm").reset();
       document.getElementById("setoresContainer").innerHTML = "";
     } catch (erro) {
       console.error("Erro ao salvar no Firebase:", erro);
-      alert("❌ Erro ao enviar o pedido. Tente novamente.");
-    }
+// alerta desativado
+}
   }
 
   // Listener único para o botão
@@ -2969,8 +2969,8 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     if (!solicitante || !unidade || itens.length === 0) {
-      alert("⚠️ Preencha todos os campos e adicione pelo menos um item.");
-      return;
+// alerta desativado
+return;
     }
 
     const dados = {
@@ -2982,13 +2982,13 @@ document.addEventListener("DOMContentLoaded", function() {
 
     try {
       await addDoc(collection(db, "pedidos"), dados);
-      alert("✅ Pedido enviado com sucesso!");
-      document.getElementById("pedidoForm").reset();
+// alerta desativado
+document.getElementById("pedidoForm").reset();
       document.getElementById("setoresContainer").innerHTML = "";
     } catch (erro) {
       console.error("Erro ao salvar no Firebase:", erro);
-      alert("❌ Erro ao enviar o pedido. Tente novamente.");
-    }
+// alerta desativado
+}
   }
 
   // Listener único para o botão
