@@ -693,7 +693,7 @@ function obterOriginalDoDatalist(valorVisivel) {
 <div id="setoresContainer"></div>
 <div class="buttons">
 <button onclick="adicionarSetor()" type="button">Adicionar novo setor</button>
-<button type="button" onclick="enviarPedido()" id="enviarPedido" type="button">Enviar pedido</button>
+<button type="button" onclick="enviarPedido()" type="button" onclick="enviarPedido()" id="enviarPedido" type="button">Enviar pedido</button>
 </div>
 </form>
 </div>
@@ -3044,13 +3044,7 @@ function validarItemSetor(itemSelecionado, setor) {
 }
 
 
-function enviarPedido() {
-  try {
-    let corpoEmail = montarCorpoEmail ? montarCorpoEmail() : document.body.innerText;
-    const unidadeInput = document.getElementById('unidadeControle-0');
-    const unidade = unidadeInput ? unidadeInput.value : '';
-    const destinatario = "leitaoochefe@gmail.com";
-    const assunto = `Pedido Extra - ${unidade}`;
+`;
     const mailtoUrl = `mailto:${destinatario}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(corpoEmail)}`;
     // força abrir no Gmail no navegador
     const gmailUrl = "https://mail.google.com/mail/?view=cm&fs=1" +
@@ -3112,6 +3106,21 @@ function montarCorpoEmail() {
   });
 
   return corpoEmail;
+}
+
+
+function enviarPedido() {
+  try {
+    const corpoEmail = montarCorpoEmail();
+    const unidadeInput = document.getElementById('unidade');
+    const unidade = unidadeInput ? unidadeInput.value : '';
+    const destinatario = "leitaoochefe@gmail.com";
+    const assunto = `Pedido Extra - ${unidade}`;
+    const mailtoUrl = `mailto:${destinatario}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(corpoEmail)}`;
+    window.location.href = mailtoUrl;
+  } catch (e) {
+    alert("Erro ao tentar enviar o pedido: " + e);
+  }
 }
 
 </script>
