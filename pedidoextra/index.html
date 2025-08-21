@@ -693,7 +693,7 @@ function obterOriginalDoDatalist(valorVisivel) {
 <div id="setoresContainer"></div>
 <div class="buttons">
 <button onclick="adicionarSetor()" type="button">Adicionar novo setor</button>
-<button type="button" onclick="enviarPedido()" type="button" onclick="enviarPedido()" type="button" onclick="enviarPedido()" type="button" onclick="enviarPedido()" id="enviarPedido" type="button">Enviar pedido</button>
+<button type="button" onclick="enviarPedido()" type="button" onclick="enviarPedido()" type="button" onclick="enviarPedido()" type="button" onclick="enviarPedido()" type="button" onclick="enviarPedido()" id="enviarPedido" type="button">Enviar pedido</button>
 </div>
 </form>
 </div>
@@ -3119,12 +3119,7 @@ function montarCorpoEmail() {
 
 
 
-function enviarPedido() {
-  const corpoEmail = (typeof montarCorpoEmail === 'function') ? montarCorpoEmail() : "";
-  const unidadeInput = document.getElementById('unidade');
-  const unidade = unidadeInput ? unidadeInput.value : '';
-  const destinatario = "leitaoochefe@gmail.com";
-  const assunto = `Pedido Extra - ${unidade}`;
+`;
   const mailtoUrl = `mailto:${destinatario}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(corpoEmail)}`;
 
   // tentativa 1: clique programático em <a>
@@ -3146,6 +3141,17 @@ function enviarPedido() {
   const mailtoUrl = `mailto:${destinatario}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(corpoEmail)}`;
   window.location.href = mailtoUrl;
   return false;
+}
+
+
+function enviarPedido() {
+  const corpoEmail = montarCorpoEmail();
+  const unidadeInput = document.getElementById('unidade');
+  const unidade = unidadeInput ? unidadeInput.value : '';
+  const destinatario = "leitaoochefe@gmail.com";
+  const assunto = `Pedido Extra - ${unidade}`;
+  const mailtoUrl = `mailto:${destinatario}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(corpoEmail)}`;
+  window.location.href = mailtoUrl;
 }
 
 </script>
