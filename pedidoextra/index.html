@@ -2781,6 +2781,27 @@ document.addEventListener("input", function(e) {
 
 
 
+
+<style>
+  .hide-unidade {
+    display: none;
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Pega todos os <option> da lista de itens
+    const datalistOptions = document.querySelectorAll("#lista-itens option");
+
+    datalistOptions.forEach(opt => {
+      if (opt.value.includes("unidade:")) {
+        // Substitui "unidade:" por um span escondido
+        opt.innerHTML = opt.value.replace(/unidade:/gi, "<span class='hide-unidade'>unidade:</span>");
+      }
+    });
+  });
+</script>
+
 </body>
 </html>
 <html lang="pt-BR">
@@ -3037,5 +3058,26 @@ document.addEventListener("input", function(e) {
 
 
 
+
+
+<style>
+  .hide-unidade {
+    display: none;
+  }
+</style>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // Pega todos os <option> da lista de itens
+    const datalistOptions = document.querySelectorAll("#lista-itens option");
+
+    datalistOptions.forEach(opt => {
+      if (opt.value.includes("unidade:")) {
+        // Substitui "unidade:" por um span escondido
+        opt.innerHTML = opt.value.replace(/unidade:/gi, "<span class='hide-unidade'>unidade:</span>");
+      }
+    });
+  });
+</script>
 
 </body></html></head></html>
