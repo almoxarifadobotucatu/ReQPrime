@@ -3069,23 +3069,7 @@ function enviarPedido() {
 
 
 
-function montarCorpoEmail() {
-  const lines = [];
-  lines.push("Solicitação de Pedido Extra");
-  lines.push("");
-
-  const respEl = document.getElementById('solicitante');
-  const unidadeEl = document.getElementById('unidade');
-  const responsavel = respEl ? (respEl.value || "").trim() : "";
-  const unidadeSaude = unidadeEl ? (unidadeEl.value || "").trim() : "";
-
-  if (responsavel) lines.push("Responsável: " + responsavel);
-  if (unidadeSaude) {
-    lines.push("Unidade de Saúde: " + unidadeSaude);
-    lines.push("");
-  }
-
-  document.querySelectorAll(".setor").forEach((setor, i) => {
+document.querySelectorAll(".setor").forEach((setor, i) => {
     const setorNome = setor.querySelector('input[name="setor"]') ? (setor.querySelector('input[name="setor"]').value || "").trim() : "";
     if (setorNome) lines.push("Setor: " + setorNome);
 
@@ -3106,6 +3090,28 @@ function montarCorpoEmail() {
   });
 
   return lines.join("\n");
+}
+
+
+function montarCorpoEmail() {
+  let corpoEmail = "Solicitação de Pedido Extra\n\n";
+  corpoEmail += "Responsável: " + document.getElementById("solicitante").value + "\n";
+  corpoEmail += "Unidade de Saúde: " + document.getElementById("unidade").value + "\n\n";
+
+  document.querySelectorAll(".setor").forEach((setor, index) => {
+    let setorNome = setor.querySelector("select").value;
+    corpoEmail += "Setor: " + setorNome + "\n";
+    setor.querySelectorAll(".item-row").forEach(row => {
+      let item = row.querySelector(".item-input").value;
+      let quantidade = row.querySelector(".quantidade-input").value;
+      let unidade = row.querySelector(".unidade-input").value;
+      corpoEmail += " - " + item + " | Quantidade: " + quantidade + " | Unidade: " + unidade + "\n";
+    });
+    let justificativa = setor.querySelector(".Justificativa").value;
+    corpoEmail += "Justificativa: " + justificativa + "\n\n";
+  });
+
+  return corpoEmail;
 }
 
 </script>
