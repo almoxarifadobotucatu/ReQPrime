@@ -693,7 +693,7 @@ function obterOriginalDoDatalist(valorVisivel) {
 <div id="setoresContainer"></div>
 <div class="buttons">
 <button onclick="adicionarSetor()" type="button">Adicionar novo setor</button>
-<button type="button" onclick="enviarPedido()" id="enviarPedido" type="button">Enviar pedido</button>
+<button id="enviarPedido" type="button">Enviar pedido</button>
 </div>
 </form>
 </div>
@@ -2390,14 +2390,12 @@ corpoEmail += `${codigo ? codigo + ' - ' : ''}${descricao} - ${qtd} ${pluralizar
         }
         corpoEmail += `----------------------------------------\n\n`;
       });
-      const bodyEncoded = encodeURIComponent(corpoEmail);
-const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=leitaoochefe@gmail.com&su=Pedido Extra - ${encodeURIComponent(unidade)}&body=${bodyEncoded}`;
-let win = window.open('about:blank', '_blank');
-if (win) {
-  win.location.href = gmailUrl;
-} else {
-  window.location.href = gmailUrl;
-}
+      
+      const destinatario = "leitaoochefe@gmail.com";
+      const assunto = `Pedido Extra - ${unidade}`;
+      const mailtoUrl = `mailto:${destinatario}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(corpoEmail)}`;
+      window.location.href = mailtoUrl;
+
     });
 
     window.onload = function() {
