@@ -2914,6 +2914,27 @@ function validarFormulario() {
 })();
 </script>
 
+
+<script>
+function enviarPedido() {
+    try {
+        let corpoEmail = (typeof gerarCorpoEmail === 'function') ? gerarCorpoEmail() : "";
+        let destinatario = "compras@empresa.com"; // ajuste conforme necessário
+        let assunto = "Solicitação de Pedido Extra";
+
+        let link = "https://mail.google.com/mail/?view=cm&fs=1"
+                 + "&to=" + encodeURIComponent(destinatario)
+                 + "&su=" + encodeURIComponent(assunto)
+                 + "&body=" + encodeURIComponent(corpoEmail);
+
+        window.open(link, "_blank");
+    } catch (e) {
+        console.error("Erro ao tentar abrir Gmail:", e);
+        alert("Não foi possível abrir o Gmail. Verifique se você está logado.");
+    }
+}
+</script>
+
 </body>
 </html>
 <html lang="pt-BR">
@@ -3304,6 +3325,27 @@ function validarFormulario() {
   // Também captura submit via teclado (Enter)
   if (form) form.addEventListener('submit', handleEnviar, true);
 })();
+</script>
+
+
+<script>
+function enviarPedido() {
+    try {
+        let corpoEmail = (typeof gerarCorpoEmail === 'function') ? gerarCorpoEmail() : "";
+        let destinatario = "compras@empresa.com"; // ajuste conforme necessário
+        let assunto = "Solicitação de Pedido Extra";
+
+        let link = "https://mail.google.com/mail/?view=cm&fs=1"
+                 + "&to=" + encodeURIComponent(destinatario)
+                 + "&su=" + encodeURIComponent(assunto)
+                 + "&body=" + encodeURIComponent(corpoEmail);
+
+        window.open(link, "_blank");
+    } catch (e) {
+        console.error("Erro ao tentar abrir Gmail:", e);
+        alert("Não foi possível abrir o Gmail. Verifique se você está logado.");
+    }
+}
 </script>
 
 </body></html></head></html>
