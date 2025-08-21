@@ -1,26 +1,96 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="utf-8"/>
-  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Solicitação de Pedido Extra</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f4f9;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    input, textarea, select, button {
+      width: 100%;
+      padding: 8px;
+      margin-top: 5px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+    textarea {
+      resize: vertical;
+      min-height: 60px;
+    }
+    .buttons {
+      margin-top: 20px;
+      text-align: center;
+    }
+    button {
+      width: auto;
+      padding: 10px 20px;
+      margin: 5px;
+      cursor: pointer;
+      background: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    .setor {
+      border: 1px solid #ddd;
+      padding: 10px;
+      border-radius: 5px;
+      margin-top: 10px;
+      background: #fafafa;
+    }
+    .remove-button {
+      background: #dc3545;
+      color: #fff;
+      margin-top: 10px;
+    }
+    .remove-button:hover {
+      background: #a71d2a;
+    }
+  </style>
 </head>
 <body oncontextmenu="return false;">
 <div class="container" id="mainContainer">
   <h2>Solicitação de Pedido Extra</h2>
-  <div id="mensagensErros"></div>
   <form id="pedidoForm">
     <label for="solicitante">Responsável pela solicitação:</label>
-    <input autocomplete="off" id="solicitante" required type="text"/>
+    <input autocomplete="off" id="solicitante" required type="text">
+
     <label for="unidade">Unidade de saúde:</label>
-    <input autocomplete="off" id="unidade" required type="text"/>
-    
+    <input autocomplete="off" id="unidade" required type="text">
+
     <label for="justificativa">Justificativa:</label>
-    <textarea id="justificativa" class="Justificativa" placeholder="Digite a justificativa (opcional)"></textarea>
+    <textarea id="justificativa" placeholder="Digite a justificativa (opcional)"></textarea>
 
     <div id="setoresContainer"></div>
+
     <div class="buttons">
-      <button onclick="adicionarSetor()" type="button">Adicionar novo setor</button>
+      <button onclick="adicionarSetor()" type="button">Adicionar novo item</button>
       <button id="enviarPedido" type="button">Enviar pedido</button>
     </div>
   </form>
