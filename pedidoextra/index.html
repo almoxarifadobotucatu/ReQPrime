@@ -669,7 +669,7 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
 <div id="setoresContainer"></div>
 <div class="buttons">
 <button onclick="adicionarSetor()" type="button">Adicionar novo setor</button>
-<button id="enviarPedido" type="submit">Enviar pedido</button>
+<button id="enviarPedido" type="button" >Enviar pedido</button>
 </div>
 </form>
 </div>
@@ -2828,45 +2828,90 @@ function validarFormulario() {
 
 
 <script>
-document.getElementById("pedidoForm").addEventListener("submit", function(event) {
-    event.preventDefault(); // Impede o alerta do navegador
+// === Patch: impedir alerta nativo e usar apenas a caixa vermelha ===
+(function(){
+  const form = document.getElementById('pedidoForm');
+  const painel = document.getElementById('mensagensErros');
 
-    if (validarFormulario()) {
-        enviarPedido();
-    } else {
-        exibirErroPersonalizado();
-    }
-});
+  function mostrarErrosLista(msgs) {
+    if (!painel) return;
+    const lista = Array.isArray(msgs) ? msgs : [String(msgs||'')];
+    painel.innerHTML = '<h3>⚠️ Erros encontrados:</h3><ul>' + lista.map(m => '<li>' + m + '</li>').join('') + '</ul>';
+    painel.style.display = 'block';
+    try { painel.scrollIntoView({behavior:'smooth', block:'start'}); } catch(e) {}
+  }
 
-function validarFormulario() {
-    let valido = true;
-    let mensagens = [];
-    let camposObrigatorios = document.querySelectorAll("#pedidoForm [required]");
+  // Desabilita validação nativa do navegador (tooltips)
+  if (form) {
+    form.setAttribute('novalidate','novalidate');
+    form.noValidate = true;
+    form.addEventListener('invalid', function(e){ e.preventDefault(); }, true);
+  }
 
-    camposObrigatorios.forEach(campo => {
-        if (!campo.value.trim()) {
-            campo.classList.add("erro-campo");
-            mensagens.push("O campo '" + (campo.previousElementSibling?.innerText || campo.id) + "' é obrigatório.");
-            valido = false;
-        } else {
-            campo.classList.remove("erro-campo");
-        }
+  // Intercepta alertas de validação existentes no código legado
+  (function(){
+    const __alertOriginal__ = window.alert;
+    window.alert = function(msg){
+      const m = String(msg||'');
+      if (/preencha|obrigat|selecione|inv[aá]lid|adicione|setor|item/i.test(m)) {
+        mostrarErrosLista(m);
+        return;
+      }
+      return __alertOriginal__(msg);
+    };
+  })();
+
+  function executarValidacao() {
+    try {
+      if (typeof window.validarFormulario === 'function') {
+        const r = window.validarFormulario();
+        if (typeof r === 'boolean') return r;
+      }
+    } catch(_){}
+    // Fallback simples
+    const erros = [];
+    document.querySelectorAll('#pedidoForm [required]').forEach(campo => {
+      const ok = !!String(campo.value||'').trim();
+      campo.classList.toggle('erro-campo', !ok);
+      if (!ok) {
+        const label = (campo.previousElementSibling && campo.previousElementSibling.innerText) || campo.id || 'Campo obrigatório';
+        erros.push('O campo "' + label + '" deve ser preenchido.');
+      }
     });
+    if (erros.length) { mostrarErrosLista(erros); return false; }
+    if (painel) painel.style.display = 'none';
+    return true;
+  }
 
-    if (!valido) {
-        let caixaErro = document.getElementById("mensagensErros");
-        caixaErro.innerHTML = "<h3>Erros encontrados:</h3><ul>" + mensagens.map(m => "<li>" + m + "</li>").join("") + "</ul>";
-        caixaErro.style.display = "block";
-    } else {
-        document.getElementById("mensagensErros").style.display = "none";
+  async function handleEnviar(e){
+    if (e) { e.preventDefault(); e.stopPropagation(); }
+    if (!executarValidacao()) return;
+    const btn = document.getElementById('enviarPedido');
+    if (btn && btn.disabled) return;
+    if (btn) btn.disabled = true;
+    try {
+      if (typeof window.enviarPedido === 'function') {
+        await window.enviarPedido();
+      }
+    } finally {
+      setTimeout(() => { if (btn) btn.disabled = false; }, 2000);
     }
+  }
 
-    return valido;
-}
+  // Limpa listeners antigos do botão clonando o nó
+  (function(){
+    const btn = document.getElementById('enviarPedido');
+    if (!btn) return;
+    btn.removeAttribute('onclick');
+    btn.setAttribute('type','button');
+    const clone = btn.cloneNode(true);
+    btn.parentNode.replaceChild(clone, btn);
+    clone.addEventListener('click', handleEnviar);
+  })();
 
-function exibirErroPersonalizado() {
-    // já tratado dentro de validarFormulario()
-}
+  // Também captura submit via teclado (Enter)
+  if (form) form.addEventListener('submit', handleEnviar, true);
+})();
 </script>
 
 </body>
@@ -3175,45 +3220,90 @@ function validarFormulario() {
 
 
 <script>
-document.getElementById("pedidoForm").addEventListener("submit", function(event) {
-    event.preventDefault(); // Impede o alerta do navegador
+// === Patch: impedir alerta nativo e usar apenas a caixa vermelha ===
+(function(){
+  const form = document.getElementById('pedidoForm');
+  const painel = document.getElementById('mensagensErros');
 
-    if (validarFormulario()) {
-        enviarPedido();
-    } else {
-        exibirErroPersonalizado();
-    }
-});
+  function mostrarErrosLista(msgs) {
+    if (!painel) return;
+    const lista = Array.isArray(msgs) ? msgs : [String(msgs||'')];
+    painel.innerHTML = '<h3>⚠️ Erros encontrados:</h3><ul>' + lista.map(m => '<li>' + m + '</li>').join('') + '</ul>';
+    painel.style.display = 'block';
+    try { painel.scrollIntoView({behavior:'smooth', block:'start'}); } catch(e) {}
+  }
 
-function validarFormulario() {
-    let valido = true;
-    let mensagens = [];
-    let camposObrigatorios = document.querySelectorAll("#pedidoForm [required]");
+  // Desabilita validação nativa do navegador (tooltips)
+  if (form) {
+    form.setAttribute('novalidate','novalidate');
+    form.noValidate = true;
+    form.addEventListener('invalid', function(e){ e.preventDefault(); }, true);
+  }
 
-    camposObrigatorios.forEach(campo => {
-        if (!campo.value.trim()) {
-            campo.classList.add("erro-campo");
-            mensagens.push("O campo '" + (campo.previousElementSibling?.innerText || campo.id) + "' é obrigatório.");
-            valido = false;
-        } else {
-            campo.classList.remove("erro-campo");
-        }
+  // Intercepta alertas de validação existentes no código legado
+  (function(){
+    const __alertOriginal__ = window.alert;
+    window.alert = function(msg){
+      const m = String(msg||'');
+      if (/preencha|obrigat|selecione|inv[aá]lid|adicione|setor|item/i.test(m)) {
+        mostrarErrosLista(m);
+        return;
+      }
+      return __alertOriginal__(msg);
+    };
+  })();
+
+  function executarValidacao() {
+    try {
+      if (typeof window.validarFormulario === 'function') {
+        const r = window.validarFormulario();
+        if (typeof r === 'boolean') return r;
+      }
+    } catch(_){}
+    // Fallback simples
+    const erros = [];
+    document.querySelectorAll('#pedidoForm [required]').forEach(campo => {
+      const ok = !!String(campo.value||'').trim();
+      campo.classList.toggle('erro-campo', !ok);
+      if (!ok) {
+        const label = (campo.previousElementSibling && campo.previousElementSibling.innerText) || campo.id || 'Campo obrigatório';
+        erros.push('O campo "' + label + '" deve ser preenchido.');
+      }
     });
+    if (erros.length) { mostrarErrosLista(erros); return false; }
+    if (painel) painel.style.display = 'none';
+    return true;
+  }
 
-    if (!valido) {
-        let caixaErro = document.getElementById("mensagensErros");
-        caixaErro.innerHTML = "<h3>Erros encontrados:</h3><ul>" + mensagens.map(m => "<li>" + m + "</li>").join("") + "</ul>";
-        caixaErro.style.display = "block";
-    } else {
-        document.getElementById("mensagensErros").style.display = "none";
+  async function handleEnviar(e){
+    if (e) { e.preventDefault(); e.stopPropagation(); }
+    if (!executarValidacao()) return;
+    const btn = document.getElementById('enviarPedido');
+    if (btn && btn.disabled) return;
+    if (btn) btn.disabled = true;
+    try {
+      if (typeof window.enviarPedido === 'function') {
+        await window.enviarPedido();
+      }
+    } finally {
+      setTimeout(() => { if (btn) btn.disabled = false; }, 2000);
     }
+  }
 
-    return valido;
-}
+  // Limpa listeners antigos do botão clonando o nó
+  (function(){
+    const btn = document.getElementById('enviarPedido');
+    if (!btn) return;
+    btn.removeAttribute('onclick');
+    btn.setAttribute('type','button');
+    const clone = btn.cloneNode(true);
+    btn.parentNode.replaceChild(clone, btn);
+    clone.addEventListener('click', handleEnviar);
+  })();
 
-function exibirErroPersonalizado() {
-    // já tratado dentro de validarFormulario()
-}
+  // Também captura submit via teclado (Enter)
+  if (form) form.addEventListener('submit', handleEnviar, true);
+})();
 </script>
 
 </body></html></head></html>
