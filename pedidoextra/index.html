@@ -33,6 +33,15 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
     console.error('Erro em preencherUnidadeControle:', err);
   }
 }
+
+function obterOriginalDoDatalist(valorVisivel) {
+  const datalist = document.getElementById('lista-itens');
+  const opt = Array.from(datalist.options)
+    .find(o => o.value === valorVisivel || (o.dataset && o.dataset.original === valorVisivel));
+  return opt ? opt.dataset.original : valorVisivel;
+}
+
+
 </script>
 
 <meta charset="utf-8"/>
