@@ -9,22 +9,30 @@
     }
   
 
+
+
 function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
-  const datalist = document.getElementById('lista-itens');
-  let option = Array.from(datalist.options).find(opt => opt.value === itemSelecionado);
-  if (!option) {
-    option = Array.from(datalist.options).find(opt => opt.dataset.original === itemSelecionado);
+  try {
+    const datalist = document.getElementById('lista-itens');
+    const options = Array.from(datalist ? datalist.options : []);
+    const norm = (s) => (s || '').toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .replace(/\s+/g, ' ').trim();
+
+    // Tenta recuperar a option correspondente (igual, igual normalizado, começa com, contém)
+    let option = options.find(opt => opt.value === itemSelecionado)
+             || options.find(opt => norm(opt.value) === norm(itemSelecionado))
+             || options.find(opt => norm(opt.value).startsWith(norm(itemSelecionado)))
+             || options.find(opt => norm(opt.value).includes(norm(itemSelecionado)));
+
+    const original = option && option.dataset ? option.dataset.original : itemSelecionado;
+    const match = original.match(/unidade:\s*(.*)$/i);
+    unidadeControleInput.value = match ? match[1].trim() : '';
+  } catch (err) {
+    if (unidadeControleInput) unidadeControleInput.value = '';
+    console.error('Erro em preencherUnidadeControle:', err);
   }
-  const original = option ? option.dataset.original : itemSelecionado;
-  const match = original.match(/unidade:\s*(.*)$/i);
-  unidadeControleInput.value = match ? match[1].trim() : '';
 }
-
- else {
-        unidadeControleInput.value = "";
-    }
-}
-
 </script>
 
 <meta charset="utf-8"/>
