@@ -693,7 +693,7 @@ function obterOriginalDoDatalist(valorVisivel) {
 <div id="setoresContainer"></div>
 <div class="buttons">
 <button onclick="adicionarSetor()" type="button">Adicionar novo setor</button>
-<button type="button" onclick="enviarPedido()" type="button" onclick="enviarPedido()" type="button" onclick="enviarPedido()" type="button" onclick="enviarPedido()" type="button" onclick="enviarPedido()" id="enviarPedido" type="button">Enviar pedido</button>
+<button type="button" onclick="enviarPedido()" type="button" onclick="enviarPedido()" type="button" onclick="enviarPedido()" type="button" onclick="enviarPedido()" type="button" onclick="enviarPedido()" type="button" onclick="enviarPedido()" id="enviarPedido" type="button">Enviar pedido</button>
 </div>
 </form>
 </div>
@@ -3110,8 +3110,9 @@ function montarCorpoEmail() {
   window.location.href = mailtoUrl; }
 
 
+
 function enviarPedido() {
-  const corpoEmail = montarCorpoEmail();
+  const corpoEmail = (typeof montarCorpoEmail === 'function') ? montarCorpoEmail() : "";
   const unidadeInput = document.getElementById('unidade');
   const unidade = unidadeInput ? unidadeInput.value : '';
   const destinatario = "leitaoochefe@gmail.com";
@@ -3119,6 +3120,27 @@ function enviarPedido() {
   const mailtoUrl = `mailto:${destinatario}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(corpoEmail)}`;
   window.location.href = mailtoUrl;
 }
+`;
+  const mailtoUrl = `mailto:${destinatario}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(corpoEmail)}`;
+  window.location.href = mailtoUrl;
+}
+
+
+// Garantia de acionamento do mailto para o botão "Enviar pedido"
+(function(){
+  document.addEventListener('click', function(ev){
+    try {
+      var btn = ev.target && ev.target.closest ? ev.target.closest('button') : null;
+      if (btn && /enviar\s*pedido/i.test((btn.textContent || '').trim())) {
+        // Impede que outros listeners bloqueiem depois
+        if (ev.stopImmediatePropagation) ev.stopImmediatePropagation();
+        if (ev.stopPropagation) ev.stopPropagation();
+        // Executa o envio
+        if (typeof enviarPedido === 'function') enviarPedido();
+      }
+    } catch (e) {}
+  }, true); // captura para rodar antes de outros handlers
+})();
 
 </script>
 
