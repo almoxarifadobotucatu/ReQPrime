@@ -9,11 +9,17 @@
     }
   
 function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
-    // Captura a unidade da string (ex: "unidade: Comprimido")
-    const match = itemSelecionado.match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
-    if (match) {
-        unidadeControleInput.value = match[1]; // Ex: "Comprimido"
-    } else {
+    const match = (itemSelecionado || '').match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
+    const valor = match ? match[1] : "";
+    if (unidadeControleInput) {
+        unidadeControleInput.value = valor;
+        const itemDiv = unidadeControleInput.closest('.item');
+        if (itemDiv) {
+            const hidden = itemDiv.querySelector('.item-unidade');
+            if (hidden) hidden.value = valor;
+        }
+    }
+} else {
         unidadeControleInput.value = "";
     }
 }
@@ -287,15 +293,7 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
 .item .item-input-group.item-unidade-group {
   flex: 0 0 140px;
 }
-.item .item-input-group.item-unidade-group select {
-  width: 100%;
-  padding: 10px 14px;
-  border: 1px solid var(--border-light);
-  border-radius: 12px;
-  font-size: 0.9rem;
-  background-color: rgba(255, 255, 255, 0.1);
-  color: var(--text-dark);
-}
+/* select de unidade removido */
 
 
 .item .item-input-group.item-unidade-group select:focus {
@@ -2210,36 +2208,8 @@ const EscritórioItems = [
       div.innerHTML = `
         <div class="item-input-group item-nome-group">
           <label>Item:</label>
-          <input type="text" class="item-nome" list="lista-itens" required onchange="verificarDuplicata(this, '${index}')" oninput="preencherUnidadeControle(this.value, this.closest(\'.item\').querySelector(\'.unidade-controle\'))">
-  <div class="item-input-group item-unidade-group">
-    <label>Unidade de Controle</label>
-    <input type="text" class="unidade-controle" readonly />
-  </div>
-        </div>
-        <div class="item-input-group item-qtd-group">
-          <label>Quantidade:</label>
-          <input type="number" class="item-qtd" min="1" required>
-        </div>
-        <div class="item-input-group item-unidade-group">
-  <label></label>
-  <div class="custom-select" id="${unidadeId}">
-    <div class="selected" onclick="toggleOptions('${unidadeId}')">Selecione</div>
-    <input type="hidden" class="item-unidade" name="unidade" value="">
-    <div class="options">
-      <div class="option" data-value="Comprimido" onclick="selectOptionUnidade(\'${unidadeId}\', 'Comprimido')">Comprimido</div>
-      <div class="option" data-value="Cápsula" onclick="selectOptionUnidade(\'${unidadeId}\', 'Cápsula')">Cápsula</div>
-      <div class="option" data-value="Frasco" onclick="selectOptionUnidade(\'${unidadeId}\', 'Frasco')">Frasco</div>
-      <div class="option" data-value="Ampola" onclick="selectOptionUnidade(\'${unidadeId}\', 'Ampola')">Ampola</div>
-      <div class="option" data-value="Tubo" onclick="selectOptionUnidade(\'${unidadeId}\', 'Tubo')">Tubo</div>
-      <div class="option" data-value="Refil" onclick="selectOptionUnidade(\'${unidadeId}\', 'Refil')">Refil</div>
-      <div class="option" data-value="Sachê" onclick="selectOptionUnidade(\'${unidadeId}\', 'Sachê')">Sachê</div>
-      <div class="option" data-value="Drágea" onclick="selectOptionUnidade(\'${unidadeId}\', 'Drágea')">Drágea</div>
-      <div class="option" data-value="Caneta" onclick="selectOptionUnidade(\'${unidadeId}\', 'Caneta')">Caneta</div>
-      <div class="option" data-value="Unidade" onclick="selectOptionUnidade(\'${unidadeId}\', 'Unidade')">Unidade</div>
-      <div class="option" data-value="Cartela" onclick="selectOptionUnidade(\'${unidadeId}\', 'Cartela')">Cartela</div>
-      <div class="option" data-value="Bisnaga" onclick="selectOptionUnidade(\'${unidadeId}\', 'Bisnaga')">Bisnaga</div>
-      <div class="option" data-value="Envelope" onclick="selectOptionUnidade(\'${unidadeId}\', 'Envelope')">Envelope</div>
-    </div>
+          <input type="text" class="item-nome" list="lista-itens" required onchange="verificarDuplicata(this, '${index}')" oninput="preencherUnidadeControle(this.value, this.closest(\'.item\').querySelector(\'.unidade-controle\'))" oninput="preencherUnidadeControle(this.value, this.closest(\'.item\').querySelector(\'.unidade-controle\'))">
+  <div class="item-input-group item-unidade-group"><label>Unidade de Controle</label><input type="text" class="unidade-controle" readonly /><input type="hidden" class="item-unidade" name="unidade" value=""/></div>
   </div>
 </div>
         <button type="button" onclick="removerItem(this)" class="remove-button remove-item-button">Remover</button>
@@ -2830,17 +2800,7 @@ function atualizarUnidade(selectElement) {
 }
 
 /* 
-.item .item-input-group.item-unidade-group select {
-  width: 100%;
-  padding: 14px 18px;
-  border: 1px solid var(--border-light);
-  border-radius: 12px;
-  box-sizing: border-box;
-  font-size: 1rem;
-  color: var(--text-dark);
-  background-color: rgba(255, 255, 255, 0.1);
-  transition: var(--transition-all);
-}
+/* select de unidade removido */
 .item .item-input-group.item-unidade-group select:focus {
   outline: none;
   border-color: var(--primary-color);
