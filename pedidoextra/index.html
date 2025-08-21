@@ -3010,6 +3010,92 @@ function atualizarUnidade(selectElement) {
 })();
 </script>
 
+
+<script>
+(function() {
+  function parseUnidade(texto) {
+    if (!texto) return "";
+    const m = String(texto).match(/unidade:\s*"?([^",]+)"?/i);
+    return m ? m[1].trim() : "";
+  }
+
+  function obterLinhaItem(el) {
+    return el.closest(".item-row") || el.closest(".linha-item") || el.closest(".item") || el.parentElement;
+  }
+
+  function garantirHidden(linha) {
+    if (!linha) return {};
+    // Pegar qualquer select presente na linha (ao lado de Quantidade)
+    let unidadeBox = linha.querySelector('select[name*="unidade"], select[id*="unidade"], select');
+    if (unidadeBox) {
+      const parentBox = unidadeBox.closest("div");
+      if (parentBox) {
+        parentBox.style.display = "none";
+      } else {
+        unidadeBox.style.display = "none";
+      }
+    }
+    // Criar input hidden se ainda não existir
+    let hidden = linha.querySelector("input.unidadeControleHidden");
+    if (!hidden) {
+      hidden = document.createElement("input");
+      hidden.type = "hidden";
+      hidden.name = "unidadeControle[]";
+      hidden.className = "unidadeControleHidden";
+      linha.appendChild(hidden);
+    }
+    return { hidden };
+  }
+
+  function atualizarAPartirDoItem(selectEl) {
+    const linha = obterLinhaItem(selectEl);
+    const refs = garantirHidden(linha);
+    const valorOption = selectEl.value || (selectEl.options && selectEl.options[selectEl.selectedIndex] ? selectEl.options[selectEl.selectedIndex].text : "");
+    const unidade = parseUnidade(valorOption);
+    if (refs && refs.hidden) refs.hidden.value = unidade || "";
+  }
+
+  function inicializarLinha(linha) {
+    if (!linha) return;
+    garantirHidden(linha);
+    const itemSelect = linha.querySelector(".medicamento, select[id*='medicamento'], select[name*='medicamento']");
+    if (itemSelect && !itemSelect.dataset._listenerBound) {
+      itemSelect.addEventListener("change", function() { atualizarAPartirDoItem(itemSelect); });
+      itemSelect.dataset._listenerBound = "1";
+      atualizarAPartirDoItem(itemSelect);
+    }
+  }
+
+  function inicializarPagina() {
+    document.querySelectorAll(".item-row, .linha-item, .item").forEach(inicializarLinha);
+    document.addEventListener("change", function(e) {
+      if (e.target && (e.target.matches(".medicamento") || e.target.matches("select[id*='medicamento']") || e.target.matches("select[name*='medicamento']"))) {
+        atualizarAPartirDoItem(e.target);
+      }
+    });
+    const obs = new MutationObserver(function(mutations) {
+      mutations.forEach(function(m) {
+        m.addedNodes.forEach(function(node) {
+          if (!(node instanceof Element)) return;
+          if (node.matches(".item-row, .linha-item, .item")) {
+            inicializarLinha(node);
+          } else {
+            node.querySelectorAll && node.querySelectorAll(".item-row, .linha-item, .item").forEach(inicializarLinha);
+          }
+        });
+      });
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", inicializarPagina);
+  } else {
+    inicializarPagina();
+  }
+})();
+</script>
+
 </body>
 </html>
 <html lang="pt-BR">
@@ -3462,6 +3548,92 @@ function atualizarUnidade(selectElement) {
       const parentBox = unidadeBox.closest(".form-group, div"); 
       if (parentBox) {
         parentBox.style.display = "none"; // Oculta a caixinha inteira
+      } else {
+        unidadeBox.style.display = "none";
+      }
+    }
+    // Criar input hidden se ainda não existir
+    let hidden = linha.querySelector("input.unidadeControleHidden");
+    if (!hidden) {
+      hidden = document.createElement("input");
+      hidden.type = "hidden";
+      hidden.name = "unidadeControle[]";
+      hidden.className = "unidadeControleHidden";
+      linha.appendChild(hidden);
+    }
+    return { hidden };
+  }
+
+  function atualizarAPartirDoItem(selectEl) {
+    const linha = obterLinhaItem(selectEl);
+    const refs = garantirHidden(linha);
+    const valorOption = selectEl.value || (selectEl.options && selectEl.options[selectEl.selectedIndex] ? selectEl.options[selectEl.selectedIndex].text : "");
+    const unidade = parseUnidade(valorOption);
+    if (refs && refs.hidden) refs.hidden.value = unidade || "";
+  }
+
+  function inicializarLinha(linha) {
+    if (!linha) return;
+    garantirHidden(linha);
+    const itemSelect = linha.querySelector(".medicamento, select[id*='medicamento'], select[name*='medicamento']");
+    if (itemSelect && !itemSelect.dataset._listenerBound) {
+      itemSelect.addEventListener("change", function() { atualizarAPartirDoItem(itemSelect); });
+      itemSelect.dataset._listenerBound = "1";
+      atualizarAPartirDoItem(itemSelect);
+    }
+  }
+
+  function inicializarPagina() {
+    document.querySelectorAll(".item-row, .linha-item, .item").forEach(inicializarLinha);
+    document.addEventListener("change", function(e) {
+      if (e.target && (e.target.matches(".medicamento") || e.target.matches("select[id*='medicamento']") || e.target.matches("select[name*='medicamento']"))) {
+        atualizarAPartirDoItem(e.target);
+      }
+    });
+    const obs = new MutationObserver(function(mutations) {
+      mutations.forEach(function(m) {
+        m.addedNodes.forEach(function(node) {
+          if (!(node instanceof Element)) return;
+          if (node.matches(".item-row, .linha-item, .item")) {
+            inicializarLinha(node);
+          } else {
+            node.querySelectorAll && node.querySelectorAll(".item-row, .linha-item, .item").forEach(inicializarLinha);
+          }
+        });
+      });
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", inicializarPagina);
+  } else {
+    inicializarPagina();
+  }
+})();
+</script>
+
+
+<script>
+(function() {
+  function parseUnidade(texto) {
+    if (!texto) return "";
+    const m = String(texto).match(/unidade:\s*"?([^",]+)"?/i);
+    return m ? m[1].trim() : "";
+  }
+
+  function obterLinhaItem(el) {
+    return el.closest(".item-row") || el.closest(".linha-item") || el.closest(".item") || el.parentElement;
+  }
+
+  function garantirHidden(linha) {
+    if (!linha) return {};
+    // Pegar qualquer select presente na linha (ao lado de Quantidade)
+    let unidadeBox = linha.querySelector('select[name*="unidade"], select[id*="unidade"], select');
+    if (unidadeBox) {
+      const parentBox = unidadeBox.closest("div");
+      if (parentBox) {
+        parentBox.style.display = "none";
       } else {
         unidadeBox.style.display = "none";
       }
