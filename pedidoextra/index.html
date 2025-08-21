@@ -8,39 +8,15 @@
       window.location.replace("https://almoxarifadobotucatu.netlify.app/");
     }
   
-
-
-
 function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
-  try {
-    const datalist = document.getElementById('lista-itens');
-    const options = Array.from(datalist ? datalist.options : []);
-    const norm = (s) => (s || '').toLowerCase()
-      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-      .replace(/\s+/g, ' ').trim();
-
-    // Tenta recuperar a option correspondente (igual, igual normalizado, começa com, contém)
-    let option = options.find(opt => opt.value === itemSelecionado)
-             || options.find(opt => norm(opt.value) === norm(itemSelecionado))
-             || options.find(opt => norm(opt.value).startsWith(norm(itemSelecionado)))
-             || options.find(opt => norm(opt.value).includes(norm(itemSelecionado)));
-
-    const original = option && option.dataset ? option.dataset.original : itemSelecionado;
-    const match = original.match(/unidade:\s*(.*)$/i);
-    unidadeControleInput.value = match ? match[1].trim() : '';
-  } catch (err) {
-    if (unidadeControleInput) unidadeControleInput.value = '';
-    console.error('Erro em preencherUnidadeControle:', err);
-  }
+    // Captura a unidade da string (ex: "unidade: Comprimido")
+    const match = itemSelecionado.match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
+    if (match) {
+        unidadeControleInput.value = match[1]; // Ex: "Comprimido"
+    } else {
+        unidadeControleInput.value = "";
+    }
 }
-
-function obterOriginalDoDatalist(valorVisivel) {
-  const datalist = document.getElementById('lista-itens');
-  const opt = Array.from(datalist.options)
-    .find(o => o.value === valorVisivel || (o.dataset && o.dataset.original === valorVisivel));
-  return opt ? opt.dataset.original : null;
-}
-
 
 </script>
 
@@ -693,7 +669,7 @@ function obterOriginalDoDatalist(valorVisivel) {
 <div id="setoresContainer"></div>
 <div class="buttons">
 <button onclick="adicionarSetor()" type="button">Adicionar novo setor</button>
-<button id="enviarPedido" type="button" onclick="enviarPedido()">Enviar pedido</button>
+<button id="enviarPedido" type="button">Enviar pedido</button>
 </div>
 </form>
 </div>
@@ -2100,12 +2076,10 @@ const EscritórioItems = [
         items = defaultItems;
       }
       items.forEach(item => {
-  const option = document.createElement('option');
-  const itemVisivel = item.replace(/\s+unidade:\s*.*$/i, '');
-  option.value = itemVisivel;
-  option.dataset.original = item;
-  datalist.appendChild(option);
-});
+        const option = document.createElement('option');
+        option.value = item;
+        datalist.appendChild(option);
+      });
     }
 
     document.addEventListener('contextmenu', function(e) {
@@ -2165,7 +2139,7 @@ const EscritórioItems = [
           <label>Digite aqui uma justificativa para itens do setor acima:</label>
           <textarea class="Justificativa" maxlength="300" rows="3" placeholder="Digite sua justificativa..."></textarea>
         </div>
-
+      `;
       container.appendChild(div);
       adicionarItem(setorIndex);
       setorIndex++;
@@ -2180,8 +2154,8 @@ const EscritórioItems = [
       const setores = document.querySelectorAll('.setor input[name="setor"]');
       const setoresSelecionados = Array.from(setores).map(input => input.value.trim());
       if (setoresSelecionados.includes(value)) {
-// alerta desativado
-return;
+        alert('Este setor já foi adicionado.');
+        return;
       }
       const selected = document.querySelector(`#${setorId} .selected`);
       const hiddenInput = document.querySelector(`#${setorId} input[name="setor"]`);
@@ -2260,7 +2234,7 @@ return;
   </div>
 </div>
         <button type="button" onclick="removerItem(this)" class="remove-button remove-item-button">Remover</button>
-
+      `;
       container.appendChild(div);
     }
 
@@ -2270,8 +2244,8 @@ return;
       const valorAtual = input.value.trim();
       const duplicatas = itensExistentes.filter((item, idx) => item === valorAtual && itensExistentes.indexOf(item) !== idx);
       if (duplicatas.length > 0) {
-// alerta desativado
-input.value = '';
+        alert('Este item já foi adicionado.');
+        input.value = '';
       }
       // Auto-preenche a unidade de controle a partir do texto do item
       try {
@@ -2297,8 +2271,8 @@ input.value = '';
       const solicitante = document.getElementById('solicitante').value.trim();
       const unidade = document.getElementById('unidade').value.trim();
       if (!solicitante || !unidade) {
-// alerta desativado
-return;
+        alert('Por favor, preencha os campos: Responsável pela solicitação e Unidade de sáude.');
+        return;
       }
       const setores = document.querySelectorAll('.setor');
       let todosSetoresValidos = true;
@@ -2308,21 +2282,21 @@ return;
         const itensQtds = setor.querySelectorAll('.item-qtd');
         if (!nomeSetor) {
           todosSetoresValidos = false;
-// alerta desativado
-return;
+          alert('Por favor, selecione um setor.');
+          return;
         }
         if (itensNomes.length === 0) {
           todosSetoresValidos = false;
-// alerta desativado
-return;
+          alert('Por favor, adicione pelo menos um item em cada setor.');
+          return;
         }
         itensNomes.forEach((input, index) => {
           const nome = input.value.trim();
           const qtd = itensQtds[index].value.trim();
           if (!nome || !qtd) {
             todosSetoresValidos = false;
-// alerta desativado
-return;
+            alert('Por favor, preencha todos os campos de item e quantidade.');
+            return;
           }
           let validItems;
           if (nomeSetor === 'Farmácia') {
@@ -2352,7 +2326,7 @@ return;
           }
           if (!validItems.includes(nome)) {
             todosSetoresValidos = false;
-            // alerta desativado por solicitação do cliente
+            alert(`O item "${nome}" não é válido para o setor ${nomeSetor}.`);
             return;
           }
         });
@@ -2381,7 +2355,7 @@ if (m) { codigo = m[1]; descricao = m[2]; }
 
 descricao = descricao.replace(/\s*unidade:\s*[^,\n]+/gi, '').trim();
 corpoEmail += `${codigo ? codigo + ' - ' : ''}${descricao} - ${qtd} ${pluralizarUnidade(unidade, qtd)}
-
+`;
         });
         corpoEmail += `\n`;
         const Justificativa = setor.querySelector('.Justificativa').value;
@@ -2390,12 +2364,14 @@ corpoEmail += `${codigo ? codigo + ' - ' : ''}${descricao} - ${qtd} ${pluralizar
         }
         corpoEmail += `----------------------------------------\n\n`;
       });
-      
-      const destinatario = "leitaoochefe@gmail.com";
-      const assunto = `Pedido Extra - ${unidade}`;
-      const mailtoUrl = `mailto:${destinatario}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(corpoEmail)}`;
-      window.location.href = mailtoUrl;
-
+      const bodyEncoded = encodeURIComponent(corpoEmail);
+const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=leitaoochefe@gmail.com&su=Pedido Extra - ${encodeURIComponent(unidade)}&body=${bodyEncoded}`;
+let win = window.open('about:blank', '_blank');
+if (win) {
+  win.location.href = gmailUrl;
+} else {
+  window.location.href = gmailUrl;
+}
     });
 
     window.onload = function() {
@@ -2406,8 +2382,8 @@ corpoEmail += `${codigo ? codigo + ' - ' : ''}${descricao} - ${qtd} ${pluralizar
   document.addEventListener('keydown', function(e) {
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
       e.preventDefault();
-// alerta desativado
-}
+      alert("Salvar página está desativado.");
+    }
   });
 </script>
 <script>
@@ -2571,7 +2547,7 @@ function selectOptionUnidade(unidadeId, value) {
     return true;
   }
 
-  function armarListenerss() {
+  function armarListeners() {
     const form = document.getElementById('pedidoForm') || document.querySelector('form');
     const enviarBtn = document.getElementById('enviarPedido') || document.querySelector('button[id*="enviar" i]') || document.querySelector('button[type="submit"]');
 
@@ -2597,9 +2573,9 @@ function selectOptionUnidade(unidadeId, value) {
   }
 
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', armarListenerss);
+    document.addEventListener('DOMContentLoaded', armarListeners);
   } else {
-    armarListenerss();
+    armarListeners();
   }
 })();
 </script>
@@ -2696,11 +2672,22 @@ document.addEventListener("DOMContentLoaded", function() {
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  async });
+  async function enviarPedido() {
+    const solicitante = document.getElementById("solicitante").value.trim();
+    const unidade = document.getElementById("unidade").value.trim();
+    const itens = [];
+
+    document.querySelectorAll(".item").forEach(itemDiv => {
+      const nome = itemDiv.querySelector(".item-nome")?.value;
+      const quantidade = itemDiv.querySelector(".item-qtd")?.value;
+      const unidadeControle = itemDiv.querySelector(".item-unidade")?.value;
+      );
+      }
+    });
 
     if (!solicitante || !unidade || itens.length === 0) {
-// alerta desativado
-return;
+      alert("⚠️ Preencha todos os campos e adicione pelo menos um item.");
+      return;
     }
 
     const dados = {
@@ -2712,13 +2699,13 @@ return;
 
     try {
       await addDoc(collection(db, "pedidos"), dados);
-// alerta desativado
-document.getElementById("pedidoForm").reset();
+      alert("✅ Pedido enviado com sucesso!");
+      document.getElementById("pedidoForm").reset();
       document.getElementById("setoresContainer").innerHTML = "";
     } catch (erro) {
       console.error("Erro ao salvar no Firebase:", erro);
-// alerta desativado
-}
+      alert("❌ Erro ao enviar o pedido. Tente novamente.");
+    }
   }
 
   // Listener único para o botão
@@ -2793,6 +2780,13 @@ document.addEventListener("input", function(e) {
 
 
 
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  document.body.innerHTML = document.body.innerHTML.replace(/unidade:\s*/gi, "");
+});
+</script>
 
 </body>
 </html>
@@ -2942,11 +2936,22 @@ document.addEventListener("DOMContentLoaded", function() {
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  async });
+  async function enviarPedido() {
+    const solicitante = document.getElementById("solicitante").value.trim();
+    const unidade = document.getElementById("unidade").value.trim();
+    const itens = [];
+
+    document.querySelectorAll(".item").forEach(itemDiv => {
+      const nome = itemDiv.querySelector(".item-nome")?.value;
+      const quantidade = itemDiv.querySelector(".item-qtd")?.value;
+      const unidadeControle = itemDiv.querySelector(".item-unidade")?.value;
+      );
+      }
+    });
 
     if (!solicitante || !unidade || itens.length === 0) {
-// alerta desativado
-return;
+      alert("⚠️ Preencha todos os campos e adicione pelo menos um item.");
+      return;
     }
 
     const dados = {
@@ -2958,13 +2963,13 @@ return;
 
     try {
       await addDoc(collection(db, "pedidos"), dados);
-// alerta desativado
-document.getElementById("pedidoForm").reset();
+      alert("✅ Pedido enviado com sucesso!");
+      document.getElementById("pedidoForm").reset();
       document.getElementById("setoresContainer").innerHTML = "";
     } catch (erro) {
       console.error("Erro ao salvar no Firebase:", erro);
-// alerta desativado
-}
+      alert("❌ Erro ao enviar o pedido. Tente novamente.");
+    }
   }
 
   // Listener único para o botão
@@ -3035,137 +3040,16 @@ document.addEventListener("input", function(e) {
     }
   }
 });
-
-function validarItemSetor(itemSelecionado, setor) {
-  const lista = (setor === 'Farmácia') ? farmaciaItems : PsicotópicoItems;
-  const originalParaValidar = obterOriginalDoDatalist(itemSelecionado);
-  if (!originalParaValidar) return false;
-  return lista.includes(originalParaValidar);
-}
-
-    const mailtoUrl = `mailto:${destinatario}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(corpoEmail)}`;
-    // força abrir no Gmail no navegador
-    const gmailUrl = "https://mail.google.com/mail/?view=cm&fs=1" +
-      "&to=" + encodeURIComponent(destinatario) +
-      "&su=" + encodeURIComponent(assunto) +
-      "&body=" + encodeURIComponent(corpoEmail);
-    // tenta abrir Gmail em nova aba, fallback para mailto
-    let win = window.open(gmailUrl, '_blank');
-    if (!win) {
-      window.location.href = mailtoUrl;
-    }
-  } catch (e) {
-    alert("Erro ao tentar enviar o pedido: " + e);
-  }
-}
-
-
-
-document.querySelectorAll(".setor").forEach((setor, i) => {
-    const setorNome = setor.querySelector('input[name="setor"]') ? (setor.querySelector('input[name="setor"]').value || "").trim() : "";
-    if (setorNome) lines.push("Setor: " + setorNome);
-
-    setor.querySelectorAll(".item").forEach(row => {
-      const itemNome = row.querySelector(".item-nome") ? (row.querySelector(".item-nome").value || "").trim() : "";
-      const qtd = row.querySelector(".item-qtd") ? (row.querySelector(".item-qtd").value || "").trim() : "";
-      const unidadeCtrl = row.querySelector(".unidade-controle") ? (row.querySelector(".unidade-controle").value || "").trim() : "";
-      if (itemNome || qtd || unidadeCtrl) {
-        lines.push(" - " + itemNome + " | Quantidade: " + (qtd || "-") + " | Unidade: " + (unidadeCtrl || "-"));
-      }
-    });
-
-    const justificativa = setor.querySelector(".Justificativa") ? (setor.querySelector(".Justificativa").value || "").trim() : "";
-    if (justificativa) {
-      lines.push("Justificativa: " + justificativa);
-    }
-    lines.push("");
-  });
-
-  return lines.join("\n");
-}
-
-
-function montarCorpoEmail() {
-  let corpoEmail = "Solicitação de Pedido Extra\n\n";
-  corpoEmail += "Responsável: " + document.getElementById("solicitante").value + "\n";
-  corpoEmail += "Unidade de Saúde: " + document.getElementById("unidade").value + "\n\n";
-
-  document.querySelectorAll(".setor").forEach((setor, index) => {
-    let setorNome = setor.querySelector("select").value;
-    corpoEmail += "Setor: " + setorNome + "\n";
-    setor.querySelectorAll(".item-row").forEach(row => {
-      let item = row.querySelector(".item-input").value;
-      let quantidade = row.querySelector(".quantidade-input").value;
-      let unidade = row.querySelector(".unidade-input").value;
-      corpoEmail += " - " + item + " | Quantidade: " + quantidade + " | Unidade: " + unidade + "\n";
-    });
-    let justificativa = setor.querySelector(".Justificativa").value;
-    corpoEmail += "Justificativa: " + justificativa + "\n\n";
-  });
-
-  return corpoEmail;
-}
-
-    const mailtoUrl = `mailto:${destinatario}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(corpoEmail)}`;
-    window.location.href = mailtoUrl;
-  } catch (e) {
-    alert("Erro ao tentar enviar o pedido: " + e);
-  }
-}
-
-  const mailtoUrl = `mailto:${destinatario}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(corpoEmail)}`;
-
-  // tentativa 1: clique programático em <a>
-  try {
-    const a = document.createElement('a');
-    a.href = mailtoUrl;
-    a.style.display = 'none';
-    document.body.appendChild(a);
-    a.click();
-    setTimeout(() => { try { a.remove(); } catch(_){} }, 0);
-  } catch (_) {}
-
-  // tentativa 2 (fallback): alterar o location
-  try {
-    setTimeout(() => { window.location.href = mailtoUrl; }, 0);
-  } catch (_) {}
-}
-
-  const mailtoUrl = `mailto:${destinatario}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(corpoEmail)}`;
-  window.location.href = mailtoUrl;
-  return false;
-}
-
-
-`;
-  const mailtoUrl = `mailto:${destinatario}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(corpoEmail)}`;
-  window.location.href = mailtoUrl;
-}
-
-
-
-function enviarPedido() {
-  const corpoEmail = (typeof montarCorpoEmail === 'function') ? montarCorpoEmail() : "";
-  const unidadeInput = document.getElementById('unidade');
-  const unidade = unidadeInput ? unidadeInput.value : '';
-  const destinatario = "leitaoochefe@gmail.com";
-  const assunto = `Pedido Extra - ${unidade}`;
-  const mailtoUrl = `mailto:${destinatario}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(corpoEmail)}`;
-
-  try { window.location.href = mailtoUrl; } catch(_) {}
-
-  // Fallback para Gmail (URLs muito longas quebram o mailto)
-  try {
-    if (mailtoUrl.length > 1800) {
-      const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(destinatario)}&su=${encodeURIComponent(assunto)}&body=${encodeURIComponent(corpoEmail)}`;
-      window.open(gmailUrl, "_blank");
-    }
-  } catch(_) {}
-}
-`;
-  const mailtoUrl = `mailto:${destinatario}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(corpoEmail)}`;
-  window.location.href = mailtoUrl;
-}
-
 </script>
-</body></html>
+
+
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  document.body.innerHTML = document.body.innerHTML.replace(/unidade:\s*/gi, "");
+});
+</script>
+
+</body></html></head></html>
