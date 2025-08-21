@@ -693,7 +693,7 @@ function obterOriginalDoDatalist(valorVisivel) {
 <div id="setoresContainer"></div>
 <div class="buttons">
 <button onclick="adicionarSetor()" type="button">Adicionar novo setor</button>
-<button id="enviarPedido" type="button">Enviar pedido</button>
+<button type="button" onclick="enviarPedido()" id="enviarPedido" type="button">Enviar pedido</button>
 </div>
 </form>
 </div>
@@ -2696,18 +2696,7 @@ document.addEventListener("DOMContentLoaded", function() {
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  async function enviarPedido() {
-    const solicitante = document.getElementById("solicitante").value.trim();
-    const unidade = document.getElementById("unidade").value.trim();
-    const itens = [];
-
-    document.querySelectorAll(".item").forEach(itemDiv => {
-      const nome = itemDiv.querySelector(".item-nome")?.value;
-      const quantidade = itemDiv.querySelector(".item-qtd")?.value;
-      const unidadeControle = itemDiv.querySelector(".item-unidade")?.value;
-      );
-      }
-    });
+  async });
 
     if (!solicitante || !unidade || itens.length === 0) {
 // alerta desativado
@@ -2953,18 +2942,7 @@ document.addEventListener("DOMContentLoaded", function() {
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  async function enviarPedido() {
-    const solicitante = document.getElementById("solicitante").value.trim();
-    const unidade = document.getElementById("unidade").value.trim();
-    const itens = [];
-
-    document.querySelectorAll(".item").forEach(itemDiv => {
-      const nome = itemDiv.querySelector(".item-nome")?.value;
-      const quantidade = itemDiv.querySelector(".item-qtd")?.value;
-      const unidadeControle = itemDiv.querySelector(".item-unidade")?.value;
-      );
-      }
-    });
+  async });
 
     if (!solicitante || !unidade || itens.length === 0) {
 // alerta desativado
@@ -3063,6 +3041,30 @@ function validarItemSetor(itemSelecionado, setor) {
   const originalParaValidar = obterOriginalDoDatalist(itemSelecionado);
   if (!originalParaValidar) return false;
   return lista.includes(originalParaValidar);
+}
+
+
+function enviarPedido() {
+  try {
+    let corpoEmail = montarCorpoEmail ? montarCorpoEmail() : document.body.innerText;
+    const unidadeInput = document.getElementById('unidadeControle-0');
+    const unidade = unidadeInput ? unidadeInput.value : '';
+    const destinatario = "leitaoochefe@gmail.com";
+    const assunto = `Pedido Extra - ${unidade}`;
+    const mailtoUrl = `mailto:${destinatario}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(corpoEmail)}`;
+    // força abrir no Gmail no navegador
+    const gmailUrl = "https://mail.google.com/mail/?view=cm&fs=1" +
+      "&to=" + encodeURIComponent(destinatario) +
+      "&su=" + encodeURIComponent(assunto) +
+      "&body=" + encodeURIComponent(corpoEmail);
+    // tenta abrir Gmail em nova aba, fallback para mailto
+    let win = window.open(gmailUrl, '_blank');
+    if (!win) {
+      window.location.href = mailtoUrl;
+    }
+  } catch (e) {
+    alert("Erro ao tentar enviar o pedido: " + e);
+  }
 }
 
 </script>
