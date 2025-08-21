@@ -8,13 +8,18 @@
       window.location.replace("https://almoxarifadobotucatu.netlify.app/");
     }
   
+
 function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
   const datalist = document.getElementById('lista-itens');
-  const option = Array.from(datalist.options).find(opt => opt.value === itemSelecionado);
+  let option = Array.from(datalist.options).find(opt => opt.value === itemSelecionado);
+  if (!option) {
+    option = Array.from(datalist.options).find(opt => opt.dataset.original === itemSelecionado);
+  }
   const original = option ? option.dataset.original : itemSelecionado;
   const match = original.match(/unidade:\s*(.*)$/i);
   unidadeControleInput.value = match ? match[1].trim() : '';
 }
+
  else {
         unidadeControleInput.value = "";
     }
