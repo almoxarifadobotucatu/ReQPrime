@@ -9,11 +9,13 @@
     }
   
 function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
-    // Captura a unidade da string (ex: "unidade: Comprimido")
-    const match = itemSelecionado.match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
-    if (match) {
-        unidadeControleInput.value = match[1]; // Ex: "Comprimido"
-    } else {
+  const datalist = document.getElementById('lista-itens');
+  const option = Array.from(datalist.options).find(opt => opt.value === itemSelecionado);
+  const original = option ? option.dataset.original : itemSelecionado;
+  const match = original.match(/unidade:\s*(.*)$/i);
+  unidadeControleInput.value = match ? match[1].trim() : '';
+}
+ else {
         unidadeControleInput.value = "";
     }
 }
@@ -2076,10 +2078,12 @@ const EscritórioItems = [
         items = defaultItems;
       }
       items.forEach(item => {
-        const option = document.createElement('option');
-        option.value = item;
-        datalist.appendChild(option);
-      });
+  const option = document.createElement('option');
+  const itemVisivel = item.replace(/\s+unidade:\s*.*$/i, '');
+  option.value = itemVisivel;
+  option.dataset.original = item;
+  datalist.appendChild(option);
+});
     }
 
     document.addEventListener('contextmenu', function(e) {
@@ -2781,37 +2785,6 @@ document.addEventListener("input", function(e) {
 
 
 
-<script>
-function carregarListaItens() {
-  const datalist = document.getElementById("lista-itens");
-  datalist.innerHTML = "";
-
-  [...farmaciaItems, ...PsicotópicoItems].forEach(item => {
-    const option = document.createElement("option");
-    const itemLimpo = item.replace(/\s+unidade:\s*[A-Za-zÀ-ú]+$/i, ""); 
-
-    // Mostra apenas o nome sem "unidade:"
-    option.value = itemLimpo; 
-    option.label = itemLimpo;
-
-    // Mantém o original oculto para uso interno
-    option.dataset.original = item;
-
-    datalist.appendChild(option);
-  });
-}
-
-function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
-  const datalist = document.getElementById("lista-itens");
-  const option = [...datalist.options].find(opt => opt.value === itemSelecionado);
-  const original = option ? option.dataset.original : itemSelecionado;
-
-  const match = original.match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
-  unidadeControleInput.value = match ? match[1] : "";
-}
-
-window.addEventListener("DOMContentLoaded", carregarListaItens);
-</script>
 </body>
 </html>
 <html lang="pt-BR">
@@ -3069,35 +3042,4 @@ document.addEventListener("input", function(e) {
 
 
 
-<script>
-function carregarListaItens() {
-  const datalist = document.getElementById("lista-itens");
-  datalist.innerHTML = "";
-
-  [...farmaciaItems, ...PsicotópicoItems].forEach(item => {
-    const option = document.createElement("option");
-    const itemLimpo = item.replace(/\s+unidade:\s*[A-Za-zÀ-ú]+$/i, ""); 
-
-    // Mostra apenas o nome sem "unidade:"
-    option.value = itemLimpo; 
-    option.label = itemLimpo;
-
-    // Mantém o original oculto para uso interno
-    option.dataset.original = item;
-
-    datalist.appendChild(option);
-  });
-}
-
-function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
-  const datalist = document.getElementById("lista-itens");
-  const option = [...datalist.options].find(opt => opt.value === itemSelecionado);
-  const original = option ? option.dataset.original : itemSelecionado;
-
-  const match = original.match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
-  unidadeControleInput.value = match ? match[1] : "";
-}
-
-window.addEventListener("DOMContentLoaded", carregarListaItens);
-</script>
 </body></html></head></html>
