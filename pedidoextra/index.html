@@ -2,25 +2,6 @@
 
 <html lang="pt-BR">
 <head>
-  <script>
-    // Redireciona imediatamente se tentar acessar direto
-    if (document.referrer === "" || document.referrer === window.location.href) {
-      window.location.replace("https://almoxarifadobotucatu.netlify.app/");
-    }
-  
-function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
-    // Captura a unidade da string (ex: "unidade: Comprimido")
-    const match = itemSelecionado.match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
-    if (match) {
-        unidadeControleInput.value = match[1]; // Ex: "Comprimido"
-    } else {
-        unidadeControleInput.value = "";
-    }
-}
-
-
-</script>
-
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 
@@ -28,673 +9,6 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
 
 <title>Solicitação de Pedido Extra</title>
   <link rel="icon" type="image/png" sizes="32x32" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAGtElEQVR4nMWXf2yV5RXHP8/7vve2vfcW0hbLGD9m+FEZUF3GGBRWmMgPldIwBJZBGDICQwlRBKc1mTj3i9AGx5iKmUbnBKXMGNkYxAJbZwWsFBQswYhbNjcyoKX0x6W9977Pc/bH895yu1RXYcu+yZu8eX8853vO+Z7znAeuDS7gBPdexv3/FCowrABcB7auJctRvZL6rxv2AJQC1wXXZQbwGvAXYHNBLjc5To/vu4leD5xgIZSCVWVEgKXAW4BM/wry8N3I8MEI0AnsAEpVT8vetRDpDqWjYOhQPg88DHyYHUa+NQup3Y6Wenw5gW49QGrn48idJUgkGwEOAQurNxJWV033SSfd5B0H8qIUA9uA5oH5yPrFyJlX8KUBLUeRKwcRU4fIe0iiDrPpXnzAZIeRkIcAjcD944sYkEGkTxqZAbwKpL54I7LlPuTiPlJyAm3qrGF5G5HjSOPLyMp5CCCei6xdhHzwCn7jTvw1C5C8XAT4J1AJ3PRJBp3A8yKleMt1kDsmIfu3Isk6UvIOJlmLdP0BkWOI1CMHf4HcXmINF+YhP7kHOf97RE4gcgSRw4gcQ1/Yj//0Q0jRUEQpupRiOxAiQxfp3PjABEcxWRtSzR04IjhK8FAQikG8DXbtgaodcOojuHkk/PoxWDgdsvqBdEBHM7gKciKkM0nSR5ra8UXIchQrBB4BLgUkBMALcrSwIIq/ZzX+7NHWu88VIlvuR36+Dhn9BUSBzJqIHNhmIyHHkWQt0l4TROgdRBqQky8h3ylHcBEH5KHbMZXfwAAXh/UnL0Nztr7TD4zgzhmLnjsZGj+CJ2rgwZ+Bxtb/nkoomw90QtcF8DVkZ0GsAEhCzWHY/DIcOAqDYlA5D5ZPhoKh8PpB2x/69wdae+a/By53gumAsYPh2e/CuSqoXAAjBsC8CpizDP5YC9lRiBVCSsPzr8GYJTDrPrj0MexaCX+vhA1zoSAb/FboTPUuQO/fH7iOTZ5OAAkojMGGMrh3Kuw6BlX74dY1MGEclH4JXtgLl1qgvBh++SBMGR24dQX8dhCBkGt7Sp8IdIdG2Q4oPuh2iHiw/FZYPhUONsKm38Fzu2DZZFg7E0YOAXxIxcGIdQRAC4TEqk0B2vTsjJ9IIA2lwFPWE9Nhid1WDLeNA90JbgxIQqoVPNdWjP0hMKABV1CWhJMTRn8mAt1EyPAqHmxMjo2OEQhFwU8p9tULtSeFc82QmwNfLoLyryqz6GvinjnP5o17aZNqXLXIEukzgUykiUjgZSgGdR8o1j4rvNusYMQNtgzak/B6ExXVXVTdDY9+n2Mb9wKNPRvRNUMMuBGoeU9RtlVIlgzDrShBFeVb5RmBi3FafvU+K55p4IHd3IWSN9QP0gm6jgFCBFQILlxWLH5KSM4cgffSXPSoAvy4j9+SwG9N4kfCqEdLXeenX9etcVlFyL2LoLVcFwEtoHIUT+4TmrIihH48DT+uoS1hleoqu3rIRT5uxSy9BTVnlJDUjyHVLmB6JaCNjdx/guuAJBV73gZ150jMDVHQGvKy7QLaQEEEtjfA/N3QlnDlm2MBxhFeMgZbJ04mAaXAz49hnLD9X5vejYuAcqC9Q/hHO8i4AoxS0NQJb/4NIiEYEIFt9faaP9rW6JB+hkgIUqlRgQwtARFwXfz2BN4DvyF09hzay8W4OfadNvCpQTECWR78+TKs+C3sOAXPvQtVR2BDib26Uhkjz1U4WEEoralJaSqeOMTZ4sdxlzyNU3cGo7LQbhRRgG8C75WtgNyYYnAuqNOXcDpTMGUIrC+BH70JP/yTvV8zAc7HIezBX1sd4ikIhT4MPDJOkAsB2oBNZeO5pSvFt3fWc7i0Cmd6Fe7uoyit8L0YolwbkZQGFRbKJ4LsPSvqYlwwwOrx8L3J9lozAZquWK+jIU31aYD3Se44HcTCZAYkPU77Kp0cxQytuQcoHzMIb2UpLJuEn5ePQwIHgQtxJTc/Iur8tJE4T802JmEcPMe61J6AsAsDcgwvntRUHAoRdheQ1K8GtnRve5QKUmMAcR3ol0NxS5xVwOKB/chfOhFWT0XfmIdxo4TeOK5a7tgmUTVtWFivL9GMyBfCwaTXFIcXT3lsbwDYArIescY/TVZp9BzRC66O6NEwUjQQmT2GIyIM9LK9KcAJlBKKC4WZw4WSIUL/bAGagXUZa35m9DikrJtEDrAMeBIY3v3VxmkeMBeowh5UngFWMSwyKGOd60KPY5oT7Igi3WkLEhh0QjcYKix69fxaz29pgwqrFdPL8/QMAjbffeiv/wf8C5QItWJWN/CxAAAAAElFTkSuQmCC">
-<style>
-    :root {
-      --primary-extra-color: #1db954;
-      --danger-extra-color: #ff6b6b;
-      --primary-color: #0a66c2;
-      --primary-hover-color: #004182;
-      --danger-color: #e53e3e;
-      --danger-hover-color: #c53030;
-      --background-light: #1a1a2e;
-      --background-white: #16213e;
-      --text-dark: #ffffff;
-      --text-medium: #b8b8b8;
-      --border-light: #2a2a3a;
-      --shadow-light: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
-      --transition-all: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    body {
-      background-color: var(--background-light);
-      font-family: 'Inter', sans-serif;
-      margin: 0;
-      padding: 20px;
-      display: flex;
-      justify-content: center;
-      align-items: flex-start;
-      min-height: 100vh;
-      box-sizing: border-box;
-      color: var(--text-dark);
-    }
-
-    .container, .login-container, .change-password-container {
-      max-width: 800px;
-      width: 100%;
-      background-color: var(--background-white);
-      margin: 40px auto;
-      padding: 50px;
-      border-radius: 20px;
-      box-shadow: var(--shadow-light);
-      transition: var(--transition-all);
-    }
-
-    .container:hover, .login-container:hover, .change-password-container:hover {
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
-    }
-
-    h2 {
-      text-align: center;
-      color: var(--text-dark);
-      margin-bottom: 40px;
-      font-weight: 700;
-      font-size: 1.5rem;
-      letter-spacing: -0.025em;
-    }
-
-    label {
-      display: block;
-      margin-top: 25px;
-      color: var(--text-medium);
-      font-weight: 500;
-      margin-bottom: 8px;
-      font-size: 0.95rem;
-    }
-
-    input[type="text"],
-    input[type="number"],
-    input[type="password"] {
-      width: 100%;
-      padding: 14px 18px;
-      border: 1px solid var(--border-light);
-      border-radius: 12px;
-      box-sizing: border-box;
-      font-size: 1rem;
-      color: var(--text-dark);
-      background-color: rgba(255, 255, 255, 0.1);
-      transition: var(--transition-all);
-    }
-
-    input[type="text"]:focus,
-    input[type="number"]:focus,
-    input[type="password"]:focus {
-      outline: none;
-      border-color: var(--primary-color);
-      box-shadow: 0 0 0 4px rgba(10, 102, 194, 0.3);
-      background-color: rgba(255, 255, 255, 0.15);
-    }
-
-    input:-webkit-autofill {
-      -webkit-box-shadow: 0 0 0px 1000px rgba(255, 255, 255, 0.1) inset !important;
-      -webkit-text-fill-color: var(--text-dark) !important;
-      transition: background-color 5000s ease-in-out 0s;
-    }
-
-    input:-webkit-autofill:focus {
-      -webkit-box-shadow: 0 0 0px 1000px rgba(255, 255, 255, 0.15) inset !important;
-    }
-
-    input:-internal-autofill-selected {
-      background-color: rgba(255, 255, 255, 0.1) !important;
-      color: var(--text-dark) !important;
-    }
-
-    .custom-select {
-      position: relative;
-      width: 100%;
-    }
-
-    .custom-select .selected {
-      width: 100%;
-      padding: 14px 18px;
-      border: 1px solid var(--border-light);
-      border-radius: 12px;
-      box-sizing: border-box;
-      font-size: 1rem;
-      color: var(--text-dark);
-      background-color: rgba(255, 255, 255, 0.1);
-      transition: var(--transition-all);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .custom-select .selected::after {
-      content: '▼';
-      font-size: 0.8rem;
-      color: var(--text-medium);
-      margin-left: 10px;
-    }
-
-    .custom-select .selected:hover,
-    .custom-select .selected:focus {
-      border-color: var(--primary-color);
-      box-shadow: 0 0 0 4px rgba(10, 102, 194, 0.3);
-      background-color: rgba(255, 255, 255, 0.15);
-    }
-
-    .custom-select .options {
-      position: absolute;
-      top: 100%;
-      left: 0;
-      width: 100%;
-      background-color: var(--background-white);
-      border: 1px solid var(--border-light);
-      border-radius: 12px;
-      box-shadow: var(--shadow-light);
-      max-height: 200px;
-      overflow-y: auto;
-      z-index: 10;
-      display: none;
-      margin-top: 4px;
-      animation: fadeIn 0.3s ease-in-out;
-    }
-
-    .custom-select .options .option {
-      padding: 12px 18px;
-      color: var(--text-dark);
-      cursor: pointer;
-      transition: var(--transition-all);
-      font-size: 1rem;
-    }
-
-    .custom-select .options .option:hover {
-      background-color: rgba(255, 255, 255, 0.1);
-    }
-
-    .custom-select .options .option.selected {
-      background-color: rgba(10, 102, 194, 0.2);
-    }
-
-    .setor {
-      margin-top: 40px;
-      padding: 30px;
-      border: 1px solid var(--border-light);
-      border-radius: 16px;
-      background-color: rgba(0, 0, 0, 0.2);
-      position: relative;
-      box-shadow: var(--shadow-light);
-      transition: var(--transition-all);
-    }
-
-    .setor:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
-    }
-
-    .setor > label {
-      margin-top: 0;
-    }
-
-    .setor-select-group {
-      display: flex;
-      align-items: flex-end;
-      gap: 20px;
-    }
-
-    .setor-select-group .custom-select {
-      flex: 1;
-    }
-
-    .setor-select-group .remove-setor-
-    /* Botões estilo Central de Pedidos */
-    button {
-      background: var(--primary-color);
-      color: white;
-      padding: 14px 30px;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      font-size: 1rem;
-      font-weight: 600;
-      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                  box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                  background 0.4s ease-in-out;
-      box-shadow: var(--shadow-light);
-    }
-
-    button:hover {
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
-      background: linear-gradient(270deg, var(--primary-color), var(--primary-hover-color), var(--primary-extra-color));
-      background-size: 600% 600%;
-      animation: gradientShift 6s ease infinite;
-    }
-
-    .remove-button {
-      background: var(--danger-color);
-    }
-
-    .remove-button:hover {
-      background: linear-gradient(270deg, var(--danger-color), var(--danger-hover-color), var(--danger-extra-color));
-      background-size: 600% 600%;
-      animation: gradientShift 6s ease infinite;
-    }
-
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-
-    .item {
-  display: flex;
-  flex-wrap: nowrap;
-  gap: 15px;
-  align-items: flex-end;
-}
-
-.item .item-input-group.item-nome-group {
-  flex: 2;
-  min-width: 250px;
-}
-
-.item .item-input-group.item-qtd-group {
-  flex: 0 0 90px;
-}
-
-.item .item-input-group.item-unidade-group {
-  flex: 0 0 140px;
-}
-.item .item-input-group.item-unidade-group select {
-  width: 100%;
-  padding: 10px 14px;
-  border: 1px solid var(--border-light);
-  border-radius: 12px;
-  font-size: 0.9rem;
-  background-color: rgba(255, 255, 255, 0.1);
-  color: var(--text-dark);
-}
-
-
-.item .item-input-group.item-unidade-group select:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 4px rgba(10, 102, 194, 0.3);
-  background-color: rgba(255, 255, 255, 0.15);
-}
-.item .item-input-group.item-unidade-group select:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 4px rgba(10, 102, 194, 0.3);
-  background-color: rgba(255, 255, 255, 0.15);
-}
-      min-width: 120px;
-      max-width: 150px;
-      flex-grow: 1;
-    }
-
-    .item .item-input-group label {
-      margin-top: 0;
-      margin-bottom: 8px;
-    }
-
-    .item .item-input-group input {
-      width: 100%;
-      margin-top: 0;
-    }
-
-    .item .remove-item-
-    /* Botões estilo Central de Pedidos */
-    button {
-      background: var(--primary-color);
-      color: white;
-      padding: 14px 30px;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      font-size: 1rem;
-      font-weight: 600;
-      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                  box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                  background 0.4s ease-in-out;
-      box-shadow: var(--shadow-light);
-    }
-
-    button:hover {
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
-      background: linear-gradient(270deg, var(--primary-color), var(--primary-hover-color), var(--primary-extra-color));
-      background-size: 600% 600%;
-      animation: gradientShift 6s ease infinite;
-    }
-
-    .remove-button {
-      background: var(--danger-color);
-    }
-
-    .remove-button:hover {
-      background: linear-gradient(270deg, var(--danger-color), var(--danger-hover-color), var(--danger-extra-color));
-      background-size: 600% 600%;
-      animation: gradientShift 6s ease infinite;
-    }
-
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-
-    .Justificativa-group {
-      margin-top: 20px;
-    }
-
-    .Justificativa {
-      width: 100%;
-      padding: 8px;
-      border: 1px solid #555;
-      border-radius: 4px;
-      font-size: 14px;
-      resize: vertical;
-      background-color: #333;
-      color: #fff;
-    }
-
-    .Justificativa:focus {
-      outline: none;
-      border-color: #007bff;
-      box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-    }
-
-    .Justificativa:placeholder {
-      color: #aaa;
-    }
-
-    .buttons {
-      margin-top: 50px;
-      text-align: center;
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-    }
-
-    
-    /* Botões estilo Central de Pedidos */
-    button {
-      background: var(--primary-color);
-      color: white;
-      padding: 14px 30px;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      font-size: 1rem;
-      font-weight: 600;
-      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                  box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                  background 0.4s ease-in-out;
-      box-shadow: var(--shadow-light);
-    }
-
-    button:hover {
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
-      background: linear-gradient(270deg, var(--primary-color), var(--primary-hover-color), var(--primary-extra-color));
-      background-size: 600% 600%;
-      animation: gradientShift 6s ease infinite;
-    }
-
-    .remove-button {
-      background: var(--danger-color);
-    }
-
-    .remove-button:hover {
-      background: linear-gradient(270deg, var(--danger-color), var(--danger-hover-color), var(--danger-extra-color));
-      background-size: 600% 600%;
-      animation: gradientShift 6s ease infinite;
-    }
-
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-
-    .remove-
-    /* Botões estilo Central de Pedidos */
-    button {
-      background: var(--primary-color);
-      color: white;
-      padding: 14px 30px;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      font-size: 1rem;
-      font-weight: 600;
-      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                  box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                  background 0.4s ease-in-out;
-      box-shadow: var(--shadow-light);
-    }
-
-    button:hover {
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
-      background: linear-gradient(270deg, var(--primary-color), var(--primary-hover-color), var(--primary-extra-color));
-      background-size: 600% 600%;
-      animation: gradientShift 6s ease infinite;
-    }
-
-    .remove-button {
-      background: var(--danger-color);
-    }
-
-    .remove-button:hover {
-      background: linear-gradient(270deg, var(--danger-color), var(--danger-hover-color), var(--danger-extra-color));
-      background-size: 600% 600%;
-      animation: gradientShift 6s ease infinite;
-    }
-
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-
-    .remove-button:hover {
-      background: linear-gradient(135deg, var(--danger-hover-color), var(--danger-color));
-    }
-
-    .remove-setor-button:hover {
-      transform: scale(1.05);
-    }
-
-    .item-buttons {
-      margin-top: 25px;
-      text-align: right;
-    }
-
-    .setor, .item {
-      animation: fadeIn 0.5s ease-in-out;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    @media (max-width: 768px) {
-      .container, .login-container, .change-password-container {
-        margin: 20px;
-        padding: 30px;
-      }
-      .buttons {
-        flex-direction: column;
-        gap: 15px;
-      }
-      .setor-select-group {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      .setor-select-group .remove-setor-
-    /* Botões estilo Central de Pedidos */
-    button {
-      background: var(--primary-color);
-      color: white;
-      padding: 14px 30px;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      font-size: 1rem;
-      font-weight: 600;
-      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                  box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                  background 0.4s ease-in-out;
-      box-shadow: var(--shadow-light);
-    }
-
-    button:hover {
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
-      background: linear-gradient(270deg, var(--primary-color), var(--primary-hover-color), var(--primary-extra-color));
-      background-size: 600% 600%;
-      animation: gradientShift 6s ease infinite;
-    }
-
-    .remove-button {
-      background: var(--danger-color);
-    }
-
-    .remove-button:hover {
-      background: linear-gradient(270deg, var(--danger-color), var(--danger-hover-color), var(--danger-extra-color));
-      background-size: 600% 600%;
-      animation: gradientShift 6s ease infinite;
-    }
-
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-      .item {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      .item .item-input-group {
-        min-width: unset;
-        max-width: 100%;
-      }
-      .item .remove-item-
-    /* Botões estilo Central de Pedidos */
-    button {
-      background: var(--primary-color);
-      color: white;
-      padding: 14px 30px;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      font-size: 1rem;
-      font-weight: 600;
-      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                  box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
-                  background 0.4s ease-in-out;
-      box-shadow: var(--shadow-light);
-    }
-
-    button:hover {
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
-      background: linear-gradient(270deg, var(--primary-color), var(--primary-hover-color), var(--primary-extra-color));
-      background-size: 600% 600%;
-      animation: gradientShift 6s ease infinite;
-    }
-
-    .remove-button {
-      background: var(--danger-color);
-    }
-
-    .remove-button:hover {
-      background: linear-gradient(270deg, var(--danger-color), var(--danger-hover-color), var(--danger-extra-color));
-      background-size: 600% 600%;
-      animation: gradientShift 6s ease infinite;
-    }
-
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    }
-  </style>
-<style>
-    .erro-campo {
-      outline: 2px solid #ff4d4d !important;
-      background-color: rgba(255, 0, 0, 0.08) !important;
-      transition: background-color 0.2s ease;
-    }
-    #mensagensErros {
-  display: none;
-  margin: 20px 0;
-  padding: 20px;
-  border-radius: 10px;
-  background-color: #ffe5e5;
-  color: #600000;
-  font-family: Arial, sans-serif;
-  font-size: 15px;
-  line-height: 1.5;
-}
-
-#mensagensErros h3 {
-  margin: 0 0 10px 0;
-  font-size: 17px;
-  font-weight: bold;
-  color: #a70000;
-}
-
-#mensagensErros strong {
-  display: block;
-  margin-top: 10px;
-  color: #a70000;
-  font-size: 15px;
-}
-
-#mensagensErros ul {
-  margin: 5px 0 10px 25px;
-  padding: 0;
-  list-style-type: disc;
-}
-
-#mensagensErros li {
-  margin-bottom: 4px;
-}
-  </style>
-<style>
-  #enviarPedido {
-    display: none;
-  }
-</style>
-
-<style>
-  </style>
-
-
-<script>
-// --- Mensagens no topo (sem alert do navegador) ---
-(function(){
-  window.mostrarMensagemTopo = function(msgHTML, tipo) {
-    try {
-      var painel = document.getElementById('mensagensErros');
-      if (!painel) return;
-      painel.classList.remove('success');
-      painel.classList.remove('erro');
-      var isSuccess = (tipo === 'sucesso' || tipo === 'success');
-      painel.classList.add(isSuccess ? 'success' : 'erro');
-      if (typeof msgHTML === 'string') {
-        painel.innerHTML = msgHTML;
-      } else {
-        painel.innerHTML = String(msgHTML);
-      }
-      painel.style.display = 'block';
-      painel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    } catch(e) { /* noop */ }
-  };
-  window.limparMensagensTopo = function() {
-    var painel = document.getElementById('mensagensErros');
-    if (painel) { painel.style.display = 'none'; painel.innerHTML = ''; painel.classList.remove('success','erro'); }
-  };
-})();
-</script>
-
 <style>
     :root {
       --primary-extra-color: #1db954;
@@ -1313,6 +627,11 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
       margin-bottom: 4px;
     }
   </style>
+<style>
+  #enviarPedido {
+    display: none;
+  }
+</style>
 </head>
 <body oncontextmenu="return false;">
 
@@ -1320,8 +639,7 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
 <div class="container" id="mainContainer">
 <h2>Solicitação de Pedido Extra</h2>
 <div id="mensagensErros"></div>
-<div id="mensagensErros"></div>
-<form id="pedidoForm" novalidate>
+<form id="pedidoForm">
 <label for="solicitante">Responsável pela solicitação:</label>
 <input autocomplete="off" id="solicitante" required="" type="text"/>
 <label for="unidade">Unidade de saúde:</label>
@@ -1335,6 +653,13 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
 </div>
 <datalist id="lista-itens"></datalist>
 <script>
+function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
+    // Captura a unidade da string (ex: "unidade: Comprimido")
+    const match = itemSelecionado.match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
+    if (match) {
+        unidadeControleInput.value = match[1]; // Ex: "Comprimido"
+    }
+
 function pluralizarUnidade(unidade, quantidade) {
   const pluraisIrregulares = {
     "Ampola": "Ampolas",
@@ -1628,922 +953,1089 @@ function pluralizarUnidade(unidade, quantidade) {
   ];
 
     const PsicotópicoItems = [
-     "1 01 16 0007 0 Ácido valpróico 250mg - Cápsula unidade: Cápsula",
-     "1 01 16 0008 8 Ácido valpróico 250mg/5ml - Frasco 100ml unidade: Frasco",
-     "1 01 16 0009 6 Ácido valpróico 500mg - Comprimido revestido unidade: Comprimido",
-     "1 01 16 0001 0 Amitriptilina, cloridrato 25mg unidade: Comprimido",
-     "1 01 16 0012 6 Biperideno, cloridrato 2mg unidade: Comprimido",
-     "1 01 16 0018 5 Carbamazepina 20 mg/ml suspensão - Frasco 100 ml unidade: Frasco",
-     "1 01 16 0026 6 Carbamazepina 200 mg unidade: Comprimido",
-     "1 01 16 0013 4 Carbonato de lítio 300 mg unidade: Comprimido",
-     "1 01 16 0019 3 Clomipramina, cloridrato 25 mg unidade: Comprimido",
-     "1 01 15 0003 2 Clonazepam 2 mg unidade: Comprimido",
-     "1 01 15 0039 3 Clonazepam 2,5 mg/ml – Solução Oral - Frasco 20 ml unidade: Frasco",
-     "1 01 16 0010 0 Clorpromazina 25 mg unidade: Comprimido",
-     "1 01 16 0020 7 Clorpromazina, cloridrato 100 mg unidade: Comprimido",
-     "1 01 15 0006 7 Diazepan 10 mg unidade: Comprimido",
-     "1 01 15 0005 9 Diazepan 5 mg/ml - Ampola 2 ml unidade: Ampola",
-     "1 01 20 0398 9 Etomidato 20 Mg - Ampola 10 ml unidade: Ampola",
-     "1 01 16 0003 7 Fenitoína 100 mg unidade: Comprimido",
-     "1 01 16 0021 5 Fenitoína 50 mg/ml - Ampola 5 ml unidade: Ampola",
-     "1 01 16 0027 4 Fenobarbital 100 mg unidade: Comprimido",
-     "1 01 16 0028 2 Fenobarbital 4% gotas - Frasco 20 ml unidade: Frasco",
-     "1 01 14 0010 0 Fentanila, Citrato 0,0785 Mg/Ml - Ampola 10 ml unidade: Ampola",
-     "1 01 16 0002 9 Fluoxetina, cloridrato 20 mg - Cápsula unidade: Cápsula",
-     "1 01 16 0015 0 Haloperidol 2 mg/ml  - Frasco 20 ml unidade: Frasco",
-     "1 01 16 0022 3 Haloperidol 5 mg unidade: Comprimido",
-     "1 01 16 0017 7 Haloperidol 5 mg/ml IM - Ampola 1 ml unidade: Ampola",
-     "1 01 16 0016 9 Haloperidol, decanoato 70,52 mg/ml - Ampola 1 ml unidade: Ampola",
-     "1 01 16 0023 1 Imipramina 25 mg unidade: Comprimido",
-     "1 01 16 0024 0 Levomepromazina 4% gotas - Frasco 20 ml unidade: Frasco",
-     "1 01 15 0009 1 Midazolan 5mg/ml - Ampola 3 ml unidade: Ampola",
-     "1 01 16 0041 0 Naltrexona, cloridrato 50 mg unidade: Comprimido",
-     "1 01 15 0008 3 Nitrazepan 5 mg unidade: Comprimido",
-     "1 01 16 0005 3 Nortriptilina, cloridrato 25 mg unidade: Comprimido",
-     "1 01 16 0006 1 Sertralina, cloridrato 50 mg unidade: Comprimido",
-     "1 01 16 0025 8 Tioridazina, cloridrato 100 mg unidade: Comprimido",
+     "1 01 16 0007 0 Ácido valpróico 250mg - Cápsula",
+     "1 01 16 0008 8 Ácido valpróico 250mg/5ml - Frasco 100ml",
+     "1 01 16 0009 6 Ácido valpróico 500mg - Comprimido revestido",
+     "1 01 16 0001 0 Amitriptilina, cloridrato 25mg",
+     "1 01 16 0012 6 Biperideno, cloridrato 2mg",
+     "1 01 16 0018 5 Carbamazepina 20 mg/ml suspensão - Frasco 100 ml",
+     "1 01 16 0026 6 Carbamazepina 200 mg",
+     "1 01 16 0013 4 Carbonato de lítio 300 mg",
+     "1 01 16 0019 3 Clomipramina, cloridrato 25 mg",
+     "1 01 15 0003 2 Clonazepam 2 mg",
+     "1 01 15 0039 3 Clonazepam 2,5 mg/ml – Solução Oral - Frasco 20 ml",
+     "1 01 16 0010 0 Clorpromazina 25 mg",
+     "1 01 16 0020 7 Clorpromazina, cloridrato 100 mg",
+     "1 01 15 0006 7 Diazepan 10 mg",
+     "1 01 15 0005 9 Diazepan 5 mg/ml - Ampola 2 ml",
+     "1 01 20 0398 9 Etomidato 20 Mg - Ampola 10 ml",
+     "1 01 16 0003 7 Fenitoína 100 mg",
+     "1 01 16 0021 5 Fenitoína 50 mg/ml - Ampola 5 ml",
+     "1 01 16 0027 4 Fenobarbital 100 mg",
+     "1 01 16 0028 2 Fenobarbital 4% gotas - Frasco 20 ml",
+     "1 01 14 0010 0 Fentanila, Citrato 0,0785 Mg/Ml - Ampola 10 ml",
+     "1 01 16 0002 9 Fluoxetina, cloridrato 20 mg - Cápsula",
+     "1 01 16 0015 0 Haloperidol 2 mg/ml  - Frasco 20 ml",
+     "1 01 16 0022 3 Haloperidol 5 mg",
+     "1 01 16 0017 7 Haloperidol 5 mg/ml IM - Ampola 1 ml",
+     "1 01 16 0016 9 Haloperidol, decanoato 70,52 mg/ml - Ampola 1 ml",
+     "1 01 16 0023 1 Imipramina 25 mg",
+     "1 01 16 0024 0 Levomepromazina 4% gotas - Frasco 20 ml",
+     "1 01 15 0009 1 Midazolan 5mg/ml - Ampola 3 ml",
+     "1 01 16 0041 0 Naltrexona, cloridrato 50 mg",
+     "1 01 15 0008 3 Nitrazepan 5 mg",
+     "1 01 16 0005 3 Nortriptilina, cloridrato 25 mg",
+     "1 01 16 0006 1 Sertralina, cloridrato 50 mg",
+     "1 01 16 0025 8 Tioridazina, cloridrato 100 mg",
         ];
     
     const enfermagemItems = [
-     "1 02 12 0001 5 Abaixador de lingua de madeira (Pacote c/ 100 unidades) unidade: Pacote",
-     "1 02 03 0001 6 Ácido graxo essencial (Age ) unidade: Frasco",
-     "1 02 09 0001 3 Adaptador plástico para coleta  de sangue - padrão unidade: Unidade",
-     "1 02 12 0002 3 Adesivo para sutura de pele ( steri strip ) - envelope com 05 unidades unidade: Envelope",
-     "1 02 11 0001 0 Água deionizada ou destilada para autoclave unidade: Litro",
-     "1 02 11 0002 9 Água destilada/bidestilada para injeção unidade: Litro",
-     "1 02 11 0004 5 Água oxigenada 10 volumes - frasco  1.000 ml unidade: Litro",
-     "1 02 01 0003 3 Agulha descartável hipodérmica 13 x 4,5 mm unidade: Unidade",
-     "1 02 01 0004 1 Agulha descartável hipodérmica 25 x 7 mm unidade: Unidade",
-     "1 02 01 0005 0 Agulha descartável hipodérmica 25 x 8 mm unidade: Unidade",
-     "1 02 01 0006 8 Agulha descartável hipodérmica 30 x 7 mm unidade: Unidade",
-     "1 02 01 0007 6 Agulha descartável hipodérmica 30 x 8 mm unidade: Unidade",
-     "1 02 01 0008 4 Agulha descartável hipodérmica 40 x 12 mm unidade: Unidade",
-     "1 02 01 0002 5 Agulha para coleta á vácuo múltipla 25 x 8 - cor verde unidade: Unidade",
-     "1 02 01 0001 7 Agulha para coleta á vácuo múltipla 25 x 7 - cor preta unidade: Unidade",
-     "1 02 11 0005 3 Álcool 70º (Antisséptico e bactericida) unidade: Litro",
-     "1 02 11 0017 7 Álcool 92,8º ou 96º  para exame PCG unidade: Frasco",
-     "1 02 11 0006 1 Álcool gel 70º (Antisséptico e bactericida) unidade: Frasco",
-     "1 02 12 0003 1 Algodão hidrófilo de 500 grs unidade: Unidade",
-     "1 02 12 0004 0 Almotolia plástica reta âmbar de 250 ml unidade: Unidade",
-     "1 02 12 0005 8 Almotolia plástica reta branca de 250 ml unidade: Unidade",
-     "1 02 02 0001 1 Atadura de crepe de 10 cm unidade: Unidade",
-     "1 02 02 0002 0 Atadura de crepe de 20 cm unidade: Unidade",
-     "1 02 02 0003 8 Atadura de crepe de 6 cm unidade: Unidade",
-     "1 02 02 0005 4 Atadura de rayon unidade: Unidade",
-     "1 02 02 0009 7 Atadura elástica branca - 10 x 2,2 CM unidade: Unidade",
-     "1 02 12 0006 6 Avental descartável para  gineco unidade: Unidade",
-     "1 02 12 0102 0 Avental descartável manga longa unidade: Unidade",
-     "1 02 09 0003 0 Bandagem pós coleta - Tipo Blood Stop. (Caixa c/ 500 unidades) unidade: Unidade",
-     "1 02 09 0011 0 Bolsa coletora de urina (sistema fechado) - 2.000 ml unidade: Unidade",
-     "1 02 03 0002 4 Bota de unna - pronto uso unidade: Unidade",
-     "1 02 10 0001 6 Cadarço fixador (rolo c/ 50 metros) unidade: Unidade",
-     "1 02 10 0002 4 Campo operatório Estéril - pacote com 5 unidades unidade: Unidade",
-     "1 02 12 0007 4 Caneta para ecg - na cor preta unidade: Unidade",
-     "1 02 09 0004 8 Caneta retro para coleta - cor preta unidade: Unidade",
-     "1 02 11 0008 8 Clorhexidina 0,5% alcoólico unidade: Litro",
-     "1 02 11 0007 0 Clorhexidina 2% degermante unidade: Litro",
-     "1 02 11 0020 7 Clorhexidina aquoso a 1% unidade: Litro",
-     "1 02 03 0022 9 Cobertura de alginato de cálcio e sódio (placa de alginato) unidade: Unidade",
-     "1 02 09 0028 5 Coletor de material perfurocortante 13 litros unidade: Unidade",
-     "1 02 09 0027 7 Coletor de material perfurocortante 7 litros unidade: Unidade",
-     "1 02 09 0012 9 Coletor de urina infantil unissex unidade: Unidade",
-     "1 02 09 0005 6 Coletor para agulha de coleta - com aproximadamente 1,5 litros unidade: Unidade",
-     "1 02 02 0007 0 Compressa de gaze (Pacote c/ 500 unidades) unidade: Pacote",
-     "1 02 02 0008 9 Compressa de gaze em rolo ( tipo queijo ) unidade: Unidade",
-     "1 02 02 0006 2 Compressa de gaze estéril - envelope com 5 unidades unidade: Envelope",
-     "1 02 03 0005 9 Curativo com carvão ativado 10 x 10 cm (sem prata) - tipo sachê unidade: Unidade",
-     "1 02 03 0007 5 Curativo com carvão ativado e prata - recortável unidade: Unidade",
-     "1 02 03 0006 7 Curativo de carvão ativado c/ prata - tipo sachê unidade: Unidade",
-     "1 02 03 0008 3 Curativo de hidrocolóide em placa 20 x 20 cm unidade: Unidade",
-     "1 02 03 0010 5 Curativo de hidrofibra com prata unidade: Unidade",
-     "1 02 03 0021 0 Curativo de hidrofibra sem prata ( Aquacel) unidade: Unidade",
-     "1 02 11 0018 5 Detergente enzimatico - 3 enzimas unidade: Galão",
-     "1 02 12 0012 0 Dispositivo intra uterino - (DIU) - Liberação SMS unidade: Unidade",
-     "1 02 12 0013 9 Eletrodo descartável para Ecg pré cordial unidade: Unidade",
-     "1 02 12 0054 6 Equipo de nutriçao enteral - gastrostomia unidade: Unidade",
-     "1 02 06 0003 6 Equipo para infusão - macrogotas unidade: Unidade",
-     "1 02 12 0017 1 Escova descartável para citológico (Pacote c/ 100 unidades) unidade: Pacote",
-     "1 02 12 0018 0 Escova p/ limpeza de unhas e mãos unidade: Unidade",
-     "1 02 12 0041 4 Espátula de ayre (Pacote c/ 100 unidades) unidade: Pacote",
-     "1 02 16 0004 8 Espéculo vaginal descartável G unidade: Unidade",
-     "1 02 16 0005 6 Espéculo vaginal descartável M unidade: Unidade",
-     "1 02 16 0006 4 Espéculo vaginal descartável P unidade: Unidade",
-     "1 02 08 0001 9 Fio mononylon agulhado 3.0 unidade: Unidade",
-     "1 02 08 0002 7 Fio mononylon agulhado 4.0 unidade: Unidade",
-     "1 02 08 0003 5 Fio mononylon agulhado 5.0 unidade: Unidade",
-     "1 02 08 0004 3 Fio mononylon agulhado 6.0 unidade: Unidade",
-     "1 02 14 0001 4 Fita adesiva para autoclave ( 19 x 30 ) unidade: Unidade",
-     "1 02 14 0009 0 Fita adesiva tipo esparadrapo - 10 x 4,5 cm unidade: Unidade",
-     "1 02 14 0004 9 Fita adesiva transpore unidade: Unidade",
-     "1 02 14 0005 7 Fita microporosa 25mm x 10 mts (micropore) unidade: Unidade",
-     "1 02 14 0006 5 Fita microporosa 50 mm x 10 mts (micropore) unidade: Unidade",
-     "1 02 14 0002 2 Fita para ecg (rolo verde c/ 50 mm) unidade: Unidade",
-     "1 02 14 0008 1 Fitas para teste de gravidez unidade: Unidade",
-     "1 02 14 0003 0 Fita ph vaginal 4,0 a 7,0 (Caixa c/ 100 unidades) unidade: Caixa",
-     "1 02 12 0055 4 Folha térmica para Ecg - Ecg cardiocare (rolo 30 mts) unidade: Rolo",
-     "1 02 12 0019 8 Folhas para Ecg unidade: Unidade",
-     "1 02 09 0006 4 Frasco coleta urina unidade: Unidade",
-     "1 02 12 0020 1 Frasco nutrição enteral - 300 ml unidade: Unidade",
-     "1 02 12 0048 1 Frasco para coleta de exame citopatológico unidade: Unidade",
-     "1 02 09 0007 2 Frasco urina estéril unidade: Unidade",
-     "1 02 12 0021 0 Gel lubrificante - sachê 5 g unidade: Unidade",
-     "1 02 12 0023 6 Geléia para ecg - tubo 100 ml unidade: Unidade",
-     "1 07 01 0075 4 Gorro descartável unidade: Unidade",
-     "1 02 12 0010 4 Haste flexível - cotonete unidade: Caixa",
-     "1 02 03 0013 0 Hidrocolóide pasta tubo 30 gr (duoderm) unidade: Unidade",
-     "1 02 03 0015 6 Hidrogel com alginato unidade: Tubo",
-     "1 02 03 0014 8 Hidrogel tubo 25 gr - sem alginato. unidade: Tubo",
-     "1 02 11 0010 0 Hipoclorito de sódio 2,5% (Controlado setor 30 - Consumo) unidade: Galão",
-     "1 02 12 0069 4 Indicador biológico. unidade: Unidade",
-     "1 02 12 0024 4 Integrador químico classe 5 unidade: Unidade",
-     "1 02 07 0021 9 Kit para sondagem vesical unidade: Unidade",
-     "1 02 15 0001 9 Lâmina bisturi nº 11 unidade: Unidade",
-     "1 02 15 0002 7 Lâmina bisturi nº 15 unidade: Unidade",
-     "1 02 15 0003 5 Lâmina bisturi nº 22 unidade: Unidade",
-     "1 02 15 0004 3 Lâmina bisturi nº 24 unidade: Unidade",
-     "1 02 15 0005 1 Lâmina p/ microscopia fosca (Caixa c/ 50 unidades) unidade: Caixa",
-     "1 02 15 0006 0 Lamínula de vidro 24 x 32 mm (Caixa c/ 100 unidades) unidade: Caixa",
-     "1 02 09 0030 7 Lanceta para hgt com dispositivo de segurança. (NR 32) unidade: Unidade",
-     "1 02 09 0024 2 Lanceta para teste do pezinho unidade: Unidade",
-     "1 02 05 0001 5 Luva cirurgica estéril nº 6,5 unidade: Par",
-     "1 02 05 0003 1 Luva cirurgica estéril nº 7,5 unidade: Par",
-     "1 02 05 0002 3 Luva cirurgica estéril nº 7,0 unidade: Par",
-     "1 02 05 0004 0 Luva cirurgica estéril nº 8,0 unidade: Par",
-     "1 02 05 0005 8 Luva cirurgica estéril nº 8,5 unidade: Par",
-     "1 02 05 0008 2 Luva de procedimento G -cx 100 unidades unidade: Caixa",
-     "1 02 05 0006 6 Luva nitrílica - tamanho grande unidade: Caixa",
-     "1 02 05 0014 7 Luva nitrilica - tamanho médio unidade: Caixa",
-     "1 02 05 0015 5 Luva nitrilica - tamanho pequeno unidade: Caixa",
-     "1 02 05 0012 0 Luva procedimento em vinil - M unidade: Caixa",
-     "1 02 05 0013 9 Luva procedimento em vinil - M (sem amido/talco) (Liberação Controlada) unidade: Caixa",
-     "1 02 05 0011 2 Luva procedimento em vinil - P unidade: Caixa",
-     "1 02 05 0007 4 Luva procedimento PP unidade: Caixa",
-     "1 02 05 0017 1 Luva nitrílica - tamanho extra grande unidade: Caixa",
-     "1 07 01 0086 0 Mascara cirurgica descartável unidade: Unidade",
-     "1 02 10 0023 7 Máscara de proteção N 95 (respirador) (4.01.03 - ENFERMAGEM) unidade: Unidade",
-     "1 02 12 0026 0 Mascara p/ inalação uso adulto - conector amarelo unidade: Conjunto",
-     "1 02 12 0025 2 Mascara p/ inalação uso adulto - conector verde unidade: Conjunto",
-     "1 02 12 0027 9 Oliva para estetoscópio unidade: Unidade",
-     "1 02 12 0053 8 Papel grau cirurgico - 15 x 100 metros unidade: Unidade",
-     "1 02 12 0029 5 Papel grau cirurgico - 25 x 100 metros unidade: Unidade",
-     "1 02 12 0030 9 Papel lençol descartável 50 x 50 - pequeno unidade: Unidade",
-     "1 02 12 0031 7 Papel lençol descartável 70 x 50  - grande unidade: Unidade",
-     "1 02 12 0100 3 Papel térmico compatível com a Incubadora Minibio / Sispack unidade: Unidade",
-     "1 02 12 0032 5 Pêra p/ ecg em borracha unidade: Unidade",
-     "1 02 17 0003 4 Preservativo feminino (Controlado no Setor 14 - Farmácia Satélite) unidade: Unidade",
-     "1 02 17 0002 6 Preservativo masculino 49 mm (Controlado no Setor 14 - Farmácia Satélite) unidade: Unidade",
-     "1 02 17 0001 8 Preservativo masculino 52 mm (Controlado no Setor 14 - Farmácia Satélite) unidade: Unidade",
-     "1 02 11 0012 6 Pvpi tópico unidade: Litro",
-     "1 02 09 0010 2 Saco coletor urina (sistema aberto) unidade: Unidade",
-     "1 03 02 0151 7 Saco plastico transparente em polietileno, atóxico, inodoro e incolor, medidas aprox. 08x24 cm unidade: Unidade",
-     "1 03 02 0152 5 Saco plastico transparente em polietileno, atóxico, inodoro e incolor, medidas aprox. 15x30 cm unidade: Unidade",
-     "1 02 12 0033 3 Saco p/ lixo contaminado leitoso de 100 l (Controlado setor 30 - Consumo) unidade: Unidade",
-     "1 02 12 0034 1 Saco p/ lixo contaminado leitoso de 15 l (Controlado setor 30 - Consumo) unidade: Unidade",
-     "1 02 12 0035 0 Saco p/ lixo contaminado leitoso de 50 l (Controlado setor 30 - Consumo) unidade: Unidade",
-     "1 02 09 0013 7 Saco plástico transparente p/ sangue unidade: Unidade",
-     "1 02 09 0031 5 Scalp p/ coleta de sangue a vacuo G25 (NR 32) unidade: Unidade",
-     "1 02 09 0015 3 Scalp p/ coleta de sangue á vacuo G25 unidade: Unidade",
-     "1 02 09 0014 5 Scalp p/ coleta de sangue á vacuo G23 unidade: Unidade",
-     "1 02 06 0004 4 Scalp para soro G 19 - com NR 32 unidade: Unidade",
-     "1 02 06 0005 2 Scalp para soro G 21 - com NR 32 unidade: Unidade",
-     "1 02 06 0006 0 Scalp para soro G 23 - com NR 32 unidade: Unidade",
-     "1 02 06 0007 9 Scalp para soro G 25 - com NR 32 unidade: Unidade",
-     "1 02 06 0008 7 Scalp para soro G 27 - com NR 32 unidade: Unidade",
-     "1 02 04 0001 0 Seringa descartável s/ agulha de 01 ml (Controlado no Setor 14 - Farmácia) unidade: Unidade",
-     "1 02 04 0009 6 Seringa descartável s/ agulha de 10 ml unidade: Unidade",
-     "1 02 04 0004 5 Seringa descartável s/ agulha de 10 ml - com NR32 unidade: Unidade",
-     "1 02 04 0005 3 Seringa descartável s/ agulha de 20 ml unidade: Unidade",
-     "1 02 04 0008 8 Seringa descartavel s/ agulha de 20 ml - com NR32 unidade: Unidade",
-     "1 02 04 0002 9 Seringa descartável s/ agulha de 3 ml unidade: Unidade",
-     "1 02 04 0010 0 Seringa descartável s/ agulha de 3 ml - com NR32 unidade: Unidade",
-     "1 02 04 0003 7 Seringa descartável s/ agulha de 5 ml - com NR32 unidade: Unidade",
-     "1 02 04 0013 4 Seringa descartável s/ agulha de 60 ml unidade: Unidade",
-     "1 02 04 0011 8 Seringa insulina monobloco 100 UI - agulha 06 x 0,25 (Controlado setor 14 - Farmácia) unidade: Unidade",
-     "1 02 04 0012 6 Seringa insulina monobloco 50 UI - agulha 06 x 0,25 (Controlado setor 14 - Farmácia) unidade: Unidade",
-     "1 02 09 0026 9 Sistema para coleta e analise multipla e exame de fezes unidade: Unidade",
-     "1 02 11 0013 4 Solução de Lugol - forte - Teste de Schiller - 2% unidade: Unidade",
-     "1 02 07 0041 3 Sonda aspiração traqueal nº 04 unidade: Unidade",
-     "1 02 07 0001 4 Sonda aspiração traqueal nº 06 unidade: Unidade",
-     "1 02 07 0002 2 Sonda aspiração traqueal nº 08 unidade: Unidade",
-     "1 02 07 0003 0 Sonda aspiração traqueal nº 10 unidade: Unidade",
-     "1 02 07 0004 9 Sonda aspiração traqueal nº 12 unidade: Unidade",
-     "1 02 07 0005 7 Sonda aspiração traqueal nº 14 unidade: Unidade",
-     "1 02 07 0028 6 Sonda aspiração traqueal nº 16 unidade: Unidade",
-     "1 02 07 0040 5 Sonda aspiração traqueal nº 18 unidade: Unidade",
-     "1 02 07 0042 1 Sonda aspiração traqueal nº 20 unidade: Unidade",
-     "1 02 07 0014 6 Sonda foley nº 22 unidade: Unidade",
-     "1 02 07 0047 2 Sonda foley nº 24 unidade: Unidade",
-     "1 02 07 0015 4 Sonda uretral de alívio nº 06 unidade: Unidade",
-     "1 02 07 0016 2 Sonda uretral de alívio nº 08 unidade: Unidade",
-     "1 02 07 0017 0 Sonda uretral de alívio nº 10 unidade: Unidade",
-     "1 02 07 0018 9 Sonda uretral de alívio nº 12 unidade: Unidade",
-     "1 02 07 0019 7 Sonda uretral de alívio nº 14 unidade: Unidade",
-     "1 02 07 0020 0 Sonda uretral de alívio nº 16 unidade: Unidade",
-     "1 02 07 0043 0 Sonda uretral de alívio nº 18 unidade: Unidade",
-     "1 02 06 0015 0 Soro fisiológico 0,9 % injetável - frasco de 100 ml unidade: Frasco",
-     "1 02 06 0002 8 Soro fisiológico 0,9 % injetável - frasco de 250 ml unidade: Frasco",
-     "1 02 06 0001 0 Soro fisiológico 0,9 % curativo - frasco com 250 ml unidade: Frasco",
-     "1 02 09 0041 2 SWAB de Rayon estéril para coleta de amostras. Haste plástica de 14 cm, ponta 100% Rayon unidade: Unidade",
-     "1 02 12 0037 6 Termômetro com extensor digital unidade: Unidade",
-     "1 02 12 0036 8 Termômetro clínico digital unidade: Unidade",
-     "1 02 09 0016 1 Torniquete elástico com trava regulável unidade: Unidade",
-     "1 02 09 0040 4 Tubo cônico tipo Falcon, estéril, em polipropileno (PP), capacidade 15 ml, com tampa rosca unidade: Unidade",
-     "1 02 09 0017 0 Tubo para coleta de sangue à vácuo amarelo - 5 ml unidade: Unidade",
-     "1 02 09 0022 6 Tubo para coleta de sangue à vácuo amarelo 3,5 ml - adolescente unidade: Unidade",
-     "1 02 09 0020 0 Tubo para coleta de sangue à vácuo amarelo c/ gel (bebê) unidade: Unidade",
-     "1 02 09 0021 8 Tubo para coleta de sangue à vácuo roxo (bebê) unidade: Unidade",
-     "1 02 09 0018 8 Tubo para coleta de sangue à vácuo roxo de 3 ou 4 ml unidade: Unidade",
-     "1 02 09 0019 6 Tubo para coleta de sangue à vácuo vermelho de 10 ml - seco unidade: Unidade",
-     "1 02 11 0014 2 Vaselina líquida unidade: Litro",
-     "1 02 12 0039 2 Vaselina sólida - pote com 500 grs unidade: Pote",
-     "1 02 01 0016 5 Agulha para acupuntura 0,18 x 0,8 mm (EXCLUSIVO P/ ESPAÇO SAÚDE) unidade: Unidade",
-     "1 02 01 0015 7 Agulha para acupuntura 0,25 x 0,30 mm (EXCLUSIVO P/ ESPAÇO SAÚDE) unidade: Unidade",
-     "1 02 19 0004 1 Caneta para papel grau cirúrgico (EXCLUSIVO P/ ESPAÇO SAÚDE) unidade: Unidade",
-     "1 02 12 0050 3 Papel crepado - 50 x 50 MM (EXCLUSIVO P/ ESPAÇO SAÚDE) unidade: Unidade",
-     "1 02 19 0011 4 Teste Bowie e Dick - folha (EXCLUSIVO P/ ESPAÇO SAÚDE) unidade: Unidade",
-     "1 0120 0436 5 TESTE RÁPIDO SARS-COV2 / INFLUENZA TIPO A, INFLUENZA TIPO B unidade: Unidade",
-     "1 01 20 0428 4 TESTE RÁPIDO ANTIGÊNICO PARA COVID-19 unidade: Unidade",
+    "1 02 12 0001 5 Abaixador de língua de madeira (Pacote c/ 100 unidades)",
+    "1 02 03 0001 6 Ácido graxo essencial (Age )",
+    "1 02 09 0001 3 Adaptador plástico para coleta de sangue - padrão",
+    "1 02 12 0002 3 Adesivo para sutura de pele ( steri strip ) - envelope com 05 unidades",
+    "1 02 11 0001 0 Água deionizada ou destilada para autoclave",
+    "1 02 11 0002 9 Água destilada/bidestilada para injeção",
+    "1 02 11 0004 5 Água oxigenada 10 volumes - frasco 1.000 ml",
+    "1 02 01 0003 3 Agulha descartável hipodérmica 13 x 4,5 mm",
+    "1 02 01 0004 1 Agulha descartável hipodérmica 25 x 7 mm",
+    "1 02 01 0005 0 Agulha descartável hipodérmica 25 x 8 mm",
+    "1 02 01 0006 8 Agulha descartável hipodérmica 30 x 7 mm",
+    "1 02 01 0007 6 Agulha descartável hipodérmica 30 x 8 mm",
+    "1 02 01 0008 4 Agulha descartável hipodérmica 40 x 12 mm",
+    "1 02 01 0002 5 Agulha para coleta á vácuo múltipla 25 x 8 - cor verde",
+    "1 02 01 0001 7 Agulha para coleta á vácuo múltipla 25 x 7 - cor preta",
+    "1 02 11 0005 3 Álcool 70º (Antisséptico e bactericida)",
+    "1 02 11 0017 7 Álcool 92,8º ou 96º para exame PCG",
+    "1 02 11 0006 1 Álcool gel 70º (Antisséptico e bactericida)",
+    "1 02 12 0003 1 Algodão hidrófilo de 500 grs",
+    "1 02 12 0004 0 Almotolia plástica reta âmbar de 250 ml",
+    "1 02 12 0005 8 Almotolia plástica reta branca de 250 ml",
+    "1 02 02 0001 1 atadura de crepe de 10 cm",
+    "1 02 02 0002 0 atadura de crepe de 20 cm",
+    "1 02 02 0003 8 atadura de crepe de 6 cm",
+    "1 02 02 0005 4 atadura de rayon",
+    "1 02 02 0009 7 atadura elástica branca - 10 x 2,2 CM",
+    "1 02 12 0006 6 Avental descartável para gineco",
+    "1 02 12 0102 0 Avental descartável manga longa",
+    "1 02 09 0003 0 Bandagem pós coleta - Tipo Blood Stop. (Caixa c/ 500 unidades)",
+    "1 02 09 0011 0 Bolsa coletora de urina (sistema fechado) - 2.000 ml",
+    "1 02 03 0002 4 Bota de unna - pronto uso",
+    "1 02 10 0001 6 Cadarço fixador (rolo c/ 50 metros)",
+    "1 02 10 0002 4 Campo operatório Estéril - pacote com 5 unidades",
+    "1 02 12 0007 4 Caneta para ecg - na cor preta",
+    "1 02 09 0004 8 Caneta retro para coleta - cor preta",
+    "1 02 11 0008 8 Clorhexidina 0,5% alcoólico",
+    "1 02 11 0007 0 Clorhexidina 2% degermante",
+    "1 02 11 0020 7 Clorhexidina aquoso a 1%",
+    "1 02 03 0022 9 Cobertura de alginato de cálcio e sódio (placa de alginato)",
+    "1 02 09 0028 5 Coletor de material perfurocortante 13 litros",
+    "1 02 09 0027 7 Coletor de material perfurocortante 7 litros",
+    "1 02 09 0012 9 Coletor de urina infantil unissex",
+    "1 02 09 0005 6 Coletor para agulha de coleta - com aproximadamente 1,5 litros",
+    "1 02 02 0007 0 Compressa de gaze (Pacote c/ 500 unidades)",
+    "1 02 02 0008 9 Compressa de gaze em rolo ( tipo queijo )",
+    "1 02 02 0006 2 Compressa de gaze estéril - envelope com 5 unidades",
+    "1 02 03 0005 9 curativo com carvão ativado 10 x 10 cm (sem prata) - tipo sachê",
+    "1 02 03 0007 5 curativo com carvão ativado e prata - recortável",
+    "1 02 03 0006 7 curativo de carvão ativado c/ prata - tipo sachê",
+    "1 02 03 0008 3 curativo de hidrocolóide em placa 20 x 20 cm",
+    "1 02 03 0010 5 curativo de hidrofibra com prata",
+    "1 02 03 0021 0 curativo de hidrofibra sem prata ( Aquacel)",
+    "1 02 11 0018 5 Detergente enzimatico - 3 enzimas",
+    "1 02 12 0012 0 Dispositivo intra uterino - (DIU) - Liberação SMS",
+    "1 02 12 0013 9 Eletrodo descartável para Ecg pré cordial",
+    "1 02 12 0054 6 Equipo de nutriçao enteral - gastrostomia",
+    "1 02 06 0003 6 Equipo para infusão - macrogotas",
+    "1 02 12 0017 1 Escova descartável para citológico (Pacote c/ 100 unidades)",
+    "1 02 12 0018 0 Escova p/ limpeza de unhas e mãos",
+    "1 02 12 0041 4 Espátula de ayre (Pacote c/ 100 unidades)",
+    "1 02 16 0004 8 Espéculo vaginal descartável G",
+    "1 02 16 0005 6 Espéculo vaginal descartável M",
+    "1 02 16 0006 4 Espéculo vaginal descartável P",
+    "1 02 08 0001 9 Fio mononylon agulhado 3.0",
+    "1 02 08 0002 7 Fio mononylon agulhado 4.0",
+    "1 02 08 0003 5 Fio mononylon agulhado 5.0",
+    "1 02 08 0004 3 Fio mononylon agulhado 6.0",
+    "1 02 14 0001 4 Fita adesiva para autoclave ( 19 x 30 )",
+    "1 02 14 0009 0 Fita adesiva tipo esparadrapo - 10 x 4,5 cm",
+    "1 02 14 0004 9 Fita adesiva transpore",
+    "1 02 14 0005 7 Fita microporosa 25mm x 10 mts (micropore)",
+    "1 02 14 0006 5 Fita microporosa 50 mm x 10 mts (micropore)",
+    "1 02 14 0002 2 Fita para ecg (rolo verde c/ 50 mm)",
+    "1 02 14 0008 1 Fitas para teste de gravidez",
+    "1 02 14 0003 0 Fita ph vaginal 4,0 a 7,0 (Caixa c/ 100 unidades)",
+    "1 02 12 0055 4 Folha térmica para Ecg - Ecg cardiocare (rolo 30 mts)",
+    "1 02 12 0019 8 Folhas para Ecg",
+    "1 02 09 0006 4 Frasco coleta urina",
+    "1 02 12 0020 1 Frasco nutrição enteral - 300 ml",
+    "1 02 12 0048 1 Frasco para coleta de exame citopatológico",
+    "1 02 09 0007 2 Frasco urina estéril",
+    "1 02 12 0021 0 Gel lubrificante - sachê 5 g",
+    "1 02 12 0023 6 Geléia para ecg - tubo 100 ml",
+    "1 07 01 0075 4 Gorro descartável",
+    "1 02 12 0010 4 Haste flexível - cotonete",
+    "1 02 03 0013 0 Hidrocolóide pasta tubo 30 gr (duoderm)",
+    "1 02 03 0015 6 Hidrogel com alginato",
+    "1 02 03 0014 8 Hidrogel tubo 25 gr - sem alginato",
+    "1 02 11 0010 0 Hipoclorito de sódio 2,5% (Controlado setor 30 - Consumo)",
+    "1 02 12 0069 4 Indicador biológico",
+    "1 02 12 0024 4 Integrador químico classe 5",
+    "1 02 07 0021 9 Kit para sondagem vesical",
+    "1 02 15 0001 9 Lâmina bisturi nº 11",
+    "1 02 15 0002 7 Lâmina bisturi nº 15",
+    "1 02 15 0003 5 Lâmina bisturi nº 22",
+    "1 02 15 0004 3 Lâmina bisturi nº 24",
+    "1 02 15 0005 1 Lâmina p/ microscopia fosca (Caixa c/ 50 unidades)",
+    "1 02 15 0006 0 Lamínula de vidro 24 x 32 mm (Caixa c/ 100 unidades)",
+    "1 02 09 0030 7 Lanceta para hgt com dispositivo de segurança (NR 32)",
+    "1 02 09 0024 2 Lanceta para teste do pezinho",
+    "1 02 05 0001 5 Luva cirurgica estéril nº 6,5",
+    "1 02 05 0003 1 Luva cirurgica estéril nº 7,5",
+    "1 02 05 0002 3 Luva cirurgica estéril nº 7,0",
+    "1 02 05 0004 0 Luva cirurgica estéril nº 8,0",
+    "1 02 05 0005 8 Luva cirurgica estéril nº 8,5",
+    "1 02 05 0008 2 Luva de procedimento G -cx 100 unidades",
+    "1 02 05 0006 6 Luva nitrílica - tamanho grande",
+    "1 02 05 0014 7 Luva nitrilica - tamanho médio",
+    "1 02 05 0015 5 Luva nitrilica - tamanho pequeno",
+    "1 02 05 0012 0 Luva procedimento em vinil - M",
+    "1 02 05 0013 9 Luva procedimento em vinil - M (sem amido/talco) (Liberação Controlada)",
+    "1 02 05 0011 2 Luva procedimento em vinil - P",
+    "1 02 05 0007 4 Luva procedimento PP",
+    "1 02 05 0017 1 Luva nitrílica - tamanho extra grande",
+    "1 07 01 0086 0 Mascara cirurgica descartável",
+    "1 02 10 0023 7 Máscara de proteção N 95 (respirador) (4.01.03 - ENFERMAGEM)",
+    "1 02 12 0026 0 Mascara p/ inalação uso adulto - conector amarelo",
+    "1 02 12 0025 2 Mascara p/ inalação uso adulto - conector verde",
+    "1 02 12 0027 9 Oliva para estetoscópio",
+    "1 02 12 0053 8 Papel grau cirurgico - 15 x 100 metros",
+    "1 02 12 0029 5 Papel grau cirurgico - 25 x 100 metros",
+    "1 02 12 0030 9 Papel lençol descartável 50 x 50 - pequeno",
+    "1 02 12 0031 7 Papel lençol descartável 70 x 50 - grande",
+    "1 02 12 0100 3 Papel térmico compatível com a Incubadora Minibio / Sispack",
+    "1 02 12 0032 5 Pêra p/ ecg em borracha",
+    "1 02 17 0003 4 Preservativo feminino (Controlado no Setor 14 - Farmácia Satélite)",
+    "1 02 17 0002 6 Preservativo masculino 49 mm (Controlado no Setor 14 - Farmácia Satélite)",
+    "1 02 17 0001 8 Preservativo masculino 52 mm (Controlado no Setor 14 - Farmácia Satélite)",
+    "1 02 11 0012 6 Pvpi tópico",
+    "1 02 09 0010 2 Saco coletor urina (sistema aberto)",
+    "1 03 02 0151 7 Saco plastico transparente em polietileno, atóxico, inodoro e incolor, medidas aprox. 08x24 cm",
+    "1 03 02 0152 5 Saco plastico transparente em polietileno, atóxico, inodoro e incolor, medidas aprox. 15x30 cm",
+    "1 02 12 0033 3 Saco p/ lixo contaminado leitoso de 100 l (Controlado setor 30 - Consumo)",
+    "1 02 12 0034 1 Saco p/ lixo contaminado leitoso de 15 l (Controlado setor 30 - Consumo)",
+    "1 02 12 0035 0 Saco p/ lixo contaminado leitoso de 50 l (Controlado setor 30 - Consumo)",
+    "1 02 09 0013 7 Saco plástico transparente p/ sangue",
+    "1 02 09 0031 5 Scalp p/ coleta de sangue a vacuo G25 ( NR 32 )",
+    "1 02 09 0015 3 Scalp p/ coleta de sangue á vacuo G25",
+    "1 02 09 0014 5 Scalp p/ coleta de sangue á vacuo G23",
+    "1 02 06 0004 4 Scalp para soro G 19 - com NR 32",
+    "1 02 06 0005 2 Scalp para soro G 21 - com NR 32",
+    "1 02 06 0006 0 Scalp para soro G 23 - com NR 32",
+    "1 02 06 0007 9 Scalp para soro G 25 - com NR 32",
+    "1 02 06 0008 7 Scalp para soro G 27 - com NR 32",
+    "1 02 04 0001 0 Seringa descartável s/ agulha de 01 ml (Controlado no Setor 14 - Farmácia)",
+    "1 02 04 0009 6 Seringa descartável s/ agulha de 10 ml",
+    "1 02 04 0004 5 Seringa descartável s/ agulha de 10 ml - com NR32",
+    "1 02 04 0005 3 Seringa descartável s/ agulha de 20 ml",
+    "1 02 04 0008 8 Seringa Descartável s/ agulha de 20 ml - com NR32",
+    "1 02 04 0002 9 Seringa descartável s/ agulha de 3 ml",
+    "1 02 04 0010 0 Seringa descartável s/ agulha de 3 ml - com NR32",
+    "1 02 04 0003 7 Seringa descartável s/ agulha de 5 ml - com NR32",
+    "1 02 04 0013 4 Seringa descartável s/ agulha de 60 ml",
+    "1 02 04 0011 8 Seringa insulina monobloco 100 UI - agulha 06 x 0,25 (Controlado setor 14 - Farmácia)",
+    "1 02 04 0012 6 Seringa insulina monobloco 50 UI - agulha 06 x 0,25 (Controlado setor 14 - Farmácia)",
+    "1 02 09 0026 9 Sistema para coleta e analise multipla e exame de fezes",
+    "1 02 11 0013 4 Solução de Lugol - forte - Teste de Schiller - 2%",
+    "1 02 07 0041 3 Sonda aspiração traqueal nº 04",
+    "1 02 07 0001 4 Sonda aspiração traqueal nº 06",
+    "1 02 07 0002 2 Sonda aspiração traqueal nº 08",
+    "1 02 07 0003 0 Sonda aspiração traqueal nº 10",
+    "1 02 07 0004 9 Sonda aspiração traqueal nº 12",
+    "1 02 07 0005 7 Sonda aspiração traqueal nº 14",
+    "1 02 07 0028 6 Sonda aspiração traqueal nº 16",
+    "1 02 07 0040 5 Sonda aspiração traqueal nº 18",
+    "1 02 07 0042 1 Sonda aspiração traqueal nº 20",
+    "1 02 07 0044 8 Sonda foley nº 06",
+    "1 02 07 0006 5 Sonda foley nº 08",
+    "1 02 07 0007 3 Sonda foley nº 10",
+    "1 02 07 0008 1 Sonda foley nº 12",
+    "1 02 07 0009 0 Sonda foley nº 14",
+    "1 02 07 0010 3 Sonda foley nº 16",
+    "1 02 07 0011 1 Sonda foley nº 18",
+    "1 02 07 0046 4 Sonda foley nº 18 - 100% silicone",
+    "1 02 07 0012 0 Sonda foley nº 20",
+    "1 02 07 0013 8 Sonda foley nº 22",
+    "1 02 07 0047 2 Sonda foley nº 24",
+    "1 02 07 0015 4 Sonda uretral de alívio nº 06",
+    "1 02 07 0016 2 Sonda uretral de alívio nº 08",
+    "1 02 07 0017 0 Sonda uretral de alívio nº 10",
+    "1 02 07 0018 9 Sonda uretral de alívio nº 12",
+    "1 02 07 0019 7 Sonda uretral de alívio nº 14",
+    "1 02 07 0020 0 Sonda uretral de alívio nº 16",
+    "1 02 07 0043 0 Sonda uretral de alivio nº 18",
+    "1 02 06 0015 0 Soro fisiológico 0,9 % injetável - frasco de 100 ml",
+    "1 02 06 0002 8 Soro fisiológico 0,9 % injetável - frasco de 250 ml",
+    "1 02 06 0001 0 Soro fisiológico 0,9 % curativo - frasco com 250 ml",
+    "1 02 09 0041 2 SWAB de Rayon estéril para coleta de amostras. Haste plástica de 14 cm, ponta 100% Rayon",
+    "1 02 12 0037 6 Termômetro com extensor digital",
+    "1 02 12 0036 8 Termômetro clínico digital",
+    "1 02 09 0016 1 Torniquete elástico com trava regulável",
+    "1 02 09 0040 4 Tubo cônico tipo Falcon, estéril, em polipropileno (PP), capacidade 15 ml, com tampa rosca",
+    "1 02 09 0017 0 Tubo para coleta de sangue á vácuo amarelo - 5 ml",
+    "1 02 09 0022 6 Tubo para coleta de sangue á vacuo amarelo 3,5 ml - adolescente",
+    "1 02 09 0020 0 Tubo para coleta de sangue á vacuo amarelo c/ gel ( bebê )",
+    "1 02 09 0021 8 Tubo para coleta de sangue á vacuo roxo ( bebê)",
+    "1 02 09 0018 8 Tubo para coleta de sangue á vacuo roxo de 3 ou 4 ml",
+    "1 02 09 0019 6 Tubo para coleta de sangue á vacuo vermelho de 10 ml - seco",
+    "1 02 11 0014 2 Vaselina liquida",
+    "1 02 12 0039 2 Vaselina sólida - pote com 500 grs",
+    "1 02 01 0016 5 Agulha para acupuntura 0,18 x 0,8 mm (EXCLUSIVO P/ ESPAÇO SAÚDE)",
+    "1 02 01 0015 7 Agulha para acupuntura 0,25 x 0,30 mm (EXCLUSIVO P/ ESPAÇO SAÚDE)",
+    "1 02 19 0004 1 Caneta para papel grau cirúrgico (EXCLUSIVO P/ ESPAÇO SAÚDE)",
+    "1 02 12 0050 3 Papel crepado - 50 x 50 MM (EXCLUSIVO P/ ESPAÇO SAÚDE)",
+    "1 02 19 0011 4 Teste Bowie e Dick - folha (EXCLUSIVO P/ ESPAÇO SAÚDE)",
+    "1 0120 0436 5 TESTE RÁPIDO SARS-COV2 / INFLUENZA TIPO A, INFLUENZA TIPO B",
+    "1 01 20 0428 4 TESTE RAPIDO ANTIGENICO PARA COVID-19"
   ];
 
     const Odonto_InstrumentalItems = [
-    "1 07 02 0015 5 Afastador tipo Farabeuf unidade: Unidade",
-     "1 07 02 0086 4 Afastador tipo Minesotta unidade: Unidade",
-     "1 07 02 0129 1 Alavanca tipo Apical direita unidade: Unidade",
-     "1 07 02 0016 3 Alavanca tipo Apical reta unidade: Unidade",
-     "1 07 02 0137 2 Alavanca tipo Heidbrink esquerda unidade: Unidade",
-     "1 07 02 0017 1 Alavanca tipo Seldin direita unidade: Unidade",
-     "1 07 02 0132 1 Alavanca tipo Seldin reta unidade: Unidade",
-     "1 07 02 0134 8 Alavanca tipo Seldin infantil esquerda unidade: Unidade",
-     "1 07 02 0060 0 Alveolotomo curvo unidade: Unidade",
-     "1 07 02 0018 0 Aplicador de hidróxido de cálcio unidade: Unidade",
-     "1 07 02 0021 0 Brunidor nº 33 unidade: Unidade",
-     "1 07 02 0070 8 Cabo de bisturi nº 03 unidade: Unidade",
-     "1 07 02 0154 2 Cinzel para osso bizelado unidade: Unidade",
-     "1 07 02 0025 2 Cinzel para osso liso 1l unidade: Unidade",
-     "1 07 02 0027 9 Condensador para amálgama tipo Ward 2 unidade: Unidade",
-     "1 07 02 0125 9 Condensador tipo Hollemback nº 06 oitavado unidade: Unidade",
-     "1 07 02 0034 1 Cureta cirúrgica de Lucas 86 unidade: Unidade",
-     "1 07 02 0036 8 Cureta de dentina 14 unidade: Unidade",
-     "1 07 02 0089 9 Cureta tipo Gracey  nº 05/06 unidade: Unidade",
-     "1 07 02 0091 0 Cureta tipo Gracey  nº 11/12 unidade: Unidade",
-     "1 07 02 0039 2 Cureta tipo Mccall   nº 01/10 unidade: Unidade",
-     "1 07 02 0065 1 Cureta tipo Mccall   nº 11/12 unidade: Unidade",
-     "1 07 02 0043 0 Cureta tipo Mccall   nº 15/16 unidade: Unidade",
-     "1 07 02 0038 4 Cureta tipo Mccall   nº 19/20 unidade: Unidade",
-     "1 07 02 0155 0 Escavador duplo com pescoço longo unidade: Unidade",
-     "1 07 02 0044 9 Esculpidor Hollemback 3 s unidade: Unidade",
-     "1 07 02 0066 0 Espátula de aço inox nº 72 unidade: Unidade",
-     "1 07 02 0062 7 Espátula nº 07 unidade: Unidade",
-     "1 07 02 0123 2 Espátula nº 36 unidade: Unidade",
-     "1 07 02 0051 1 Espátula para inserção de resina (tipo Jon) unidade: Unidade",
-     "1 07 02 0158 5 Espelho bucal de primeiro plano nº 05 (tipo Front Surface) unidade: Unidade",
-     "1 07 02 0055 4 Fórceps adulto nº 01 unidade: Unidade",
-     "1 07 02 0059 7 Fórceps adulto nº 151 unidade: Unidade",
-     "1 07 02 0068 6 Fórceps adulto nº 17 unidade: Unidade",
-     "1 07 02 0058 9 Fórceps adulto nº 18 R unidade: Unidade",
-     "1 07 02 0122 4 Fórceps adulto nº 210 unidade: Unidade",
-     "1 07 02 0074 0 Fórceps adulto nº 32 unidade: Unidade",
-     "1 07 02 0082 1 Fórceps adulto nº 68 unidade: Unidade",
-     "1 07 02 0072 4 Fórceps infantil nº 01 unidade: Unidade",
-     "1 07 02 0053 8 Fórceps infantil nº 03 unidade: Unidade",
-     "1 07 02 0054 6 Fórceps infantil nº 06 unidade: Unidade",
-     "1 07 02 0140 2 Fórceps infantil nº 18 D unidade: Unidade",
-     "1 07 02 0108 9 Fórceps infantil nº 21 unidade: Unidade",
-     "1 07 02 0161 5 Lamparina de inox unidade: Unidade",
-     "1 07 02 0046 5 Lima para osso nº 12 unidade: Unidade",
-     "1 07 02 0128 3 Pinça clínica adulto unidade: Unidade",
-     "1 07 02 0113 5 Pinça hemostática curva unidade: Unidade",
-     "1 07 02 0077 5 Placa de vidro unidade: Unidade",
-     "1 07 02 0003 1 Porta agulha tipo Mathieu 17 cm unidade: Unidade",
-     "1 07 02 0005 8 Porta algodão servido unidade: Unidade",
-     "1 07 02 0007 4 Porta matriz tipo Ivory unidade: Unidade",
-     "1 07 02 0008 2 Prendedor tipo jacaré unidade: Unidade",
-     "1 07 02 0009 0 Sindesmótomo unidade: Unidade",
-     "1 07 02 0076 7 Sonda milimetrada unidade: Unidade",
-     "1 07 02 0013 9 Tesoura curva tipo Iris - 11,5 / 12cm unidade: Unidade",
-     "1 06 02 0020 9 Tesoura Iris reta - 11,5 a 12 cm unidade: Unidade",
+    "1 02 12 0001 5 Abaixador de língua de madeira (Pacote c/ 100 unidades)",
+    "1 02 03 0001 6 Ácido graxo essencial (Age )",
+    "1 02 09 0001 3 Adaptador plástico para coleta de sangue - padrão",
+    "1 02 12 0002 3 Adesivo para sutura de pele ( steri strip ) - envelope com 05 unidades",
+    "1 02 11 0001 0 Água deionizada ou destilada para autoclave",
+    "1 02 11 0002 9 Água destilada/bidestilada para injeção",
+    "1 02 11 0004 5 Água oxigenada 10 volumes - frasco 1.000 ml",
+    "1 02 01 0003 3 Agulha descartável hipodérmica 13 x 4,5 mm",
+    "1 02 01 0004 1 Agulha descartável hipodérmica 25 x 7 mm",
+    "1 02 01 0005 0 Agulha descartável hipodérmica 25 x 8 mm",
+    "1 02 01 0006 8 Agulha descartável hipodérmica 30 x 7 mm",
+    "1 02 01 0007 6 Agulha descartável hipodérmica 30 x 8 mm",
+    "1 02 01 0008 4 Agulha descartável hipodérmica 40 x 12 mm",
+    "1 02 01 0002 5 Agulha para coleta á vácuo múltipla 25 x 8 - cor verde",
+    "1 02 01 0001 7 Agulha para coleta á vácuo múltipla 25 x 7 - cor preta",
+    "1 02 11 0005 3 Álcool 70º (Antisséptico e bactericida)",
+    "1 02 11 0017 7 Álcool 92,8º ou 96º para exame PCG",
+    "1 02 11 0006 1 Álcool gel 70º (Antisséptico e bactericida)",
+    "1 02 12 0003 1 Algodão hidrófilo de 500 grs",
+    "1 02 12 0004 0 Almotolia plástica reta âmbar de 250 ml",
+    "1 02 12 0005 8 Almotolia plástica reta branca de 250 ml",
+    "1 02 02 0001 1 atadura de crepe de 10 cm",
+    "1 02 02 0002 0 atadura de crepe de 20 cm",
+    "1 02 02 0003 8 atadura de crepe de 6 cm",
+    "1 02 02 0005 4 atadura de rayon",
+    "1 02 02 0009 7 atadura elástica branca - 10 x 2,2 CM",
+    "1 02 12 0006 6 Avental descartável para gineco",
+    "1 02 12 0102 0 Avental descartável manga longa",
+    "1 02 09 0003 0 Bandagem pós coleta - Tipo Blood Stop. (Caixa c/ 500 unidades)",
+    "1 02 09 0011 0 Bolsa coletora de urina (sistema fechado) - 2.000 ml",
+    "1 02 03 0002 4 Bota de unna - pronto uso",
+    "1 02 10 0001 6 Cadarço fixador (rolo c/ 50 metros)",
+    "1 02 10 0002 4 Campo operatório Estéril - pacote com 5 unidades",
+    "1 02 12 0007 4 Caneta para ecg - na cor preta",
+    "1 02 09 0004 8 Caneta retro para coleta - cor preta",
+    "1 02 11 0008 8 Clorhexidina 0,5% alcoólico",
+    "1 02 11 0007 0 Clorhexidina 2% degermante",
+    "1 02 11 0020 7 Clorhexidina aquoso a 1%",
+    "1 02 03 0022 9 Cobertura de alginato de cálcio e sódio (placa de alginato)",
+    "1 02 09 0028 5 Coletor de material perfurocortante 13 litros",
+    "1 02 09 0027 7 Coletor de material perfurocortante 7 litros",
+    "1 02 09 0012 9 Coletor de urina infantil unissex",
+    "1 02 09 0005 6 Coletor para agulha de coleta - com aproximadamente 1,5 litros",
+    "1 02 02 0007 0 Compressa de gaze (Pacote c/ 500 unidades)",
+    "1 02 02 0008 9 Compressa de gaze em rolo ( tipo queijo )",
+    "1 02 02 0006 2 Compressa de gaze estéril - envelope com 5 unidades",
+    "1 02 03 0005 9 curativo com carvão ativado 10 x 10 cm (sem prata) - tipo sachê",
+    "1 02 03 0007 5 curativo com carvão ativado e prata - recortável",
+    "1 02 03 0006 7 curativo de carvão ativado c/ prata - tipo sachê",
+    "1 02 03 0008 3 curativo de hidrocolóide em placa 20 x 20 cm",
+    "1 02 03 0010 5 curativo de hidrofibra com prata",
+    "1 02 03 0021 0 curativo de hidrofibra sem prata ( Aquacel)",
+    "1 02 11 0018 5 Detergente enzimatico - 3 enzimas",
+    "1 02 12 0012 0 Dispositivo intra uterino - (DIU) - Liberação SMS",
+    "1 02 12 0013 9 Eletrodo descartável para Ecg pré cordial",
+    "1 02 12 0054 6 Equipo de nutriçao enteral - gastrostomia",
+    "1 02 06 0003 6 Equipo para infusão - macrogotas",
+    "1 02 12 0017 1 Escova descartável para citológico (Pacote c/ 100 unidades)",
+    "1 02 12 0018 0 Escova p/ limpeza de unhas e mãos",
+    "1 02 12 0041 4 Espátula de ayre (Pacote c/ 100 unidades)",
+    "1 02 16 0004 8 Espéculo vaginal descartável G",
+    "1 02 16 0005 6 Espéculo vaginal descartável M",
+    "1 02 16 0006 4 Espéculo vaginal descartável P",
+    "1 02 08 0001 9 Fio mononylon agulhado 3.0",
+    "1 02 08 0002 7 Fio mononylon agulhado 4.0",
+    "1 02 08 0003 5 Fio mononylon agulhado 5.0",
+    "1 02 08 0004 3 Fio mononylon agulhado 6.0",
+    "1 02 14 0001 4 Fita adesiva para autoclave ( 19 x 30 )",
+    "1 02 14 0009 0 Fita adesiva tipo esparadrapo - 10 x 4,5 cm",
+    "1 02 14 0004 9 Fita adesiva transpore",
+    "1 02 14 0005 7 Fita microporosa 25mm x 10 mts (micropore)",
+    "1 02 14 0006 5 Fita microporosa 50 mm x 10 mts (micropore)",
+    "1 02 14 0002 2 Fita para ecg (rolo verde c/ 50 mm)",
+    "1 02 14 0008 1 Fitas para teste de gravidez",
+    "1 02 14 0003 0 Fita ph vaginal 4,0 a 7,0 (Caixa c/ 100 unidades)",
+    "1 02 12 0055 4 Folha térmica para Ecg - Ecg cardiocare (rolo 30 mts)",
+    "1 02 12 0019 8 Folhas para Ecg",
+    "1 02 09 0006 4 Frasco coleta urina",
+    "1 02 12 0020 1 Frasco nutrição enteral - 300 ml",
+    "1 02 12 0048 1 Frasco para coleta de exame citopatológico",
+    "1 02 09 0007 2 Frasco urina estéril",
+    "1 02 12 0021 0 Gel lubrificante - sachê 5 g",
+    "1 02 12 0023 6 Geléia para ecg - tubo 100 ml",
+    "1 07 01 0075 4 Gorro descartável",
+    "1 02 12 0010 4 Haste flexível - cotonete",
+    "1 02 03 0013 0 Hidrocolóide pasta tubo 30 gr (duoderm)",
+    "1 02 03 0015 6 Hidrogel com alginato",
+    "1 02 03 0014 8 Hidrogel tubo 25 gr - sem alginato",
+    "1 02 11 0010 0 Hipoclorito de sódio 2,5% (Controlado setor 30 - Consumo)",
+    "1 02 12 0069 4 Indicador biológico",
+    "1 02 12 0024 4 Integrador químico classe 5",
+    "1 02 07 0021 9 Kit para sondagem vesical",
+    "1 02 15 0001 9 Lâmina bisturi nº 11",
+    "1 02 15 0002 7 Lâmina bisturi nº 15",
+    "1 02 15 0003 5 Lâmina bisturi nº 22",
+    "1 02 15 0004 3 Lâmina bisturi nº 24",
+    "1 02 15 0005 1 Lâmina p/ microscopia fosca (Caixa c/ 50 unidades)",
+    "1 02 15 0006 0 Lamínula de vidro 24 x 32 mm (Caixa c/ 100 unidades)",
+    "1 02 09 0030 7 Lanceta para hgt com dispositivo de segurança (NR 32)",
+    "1 02 09 0024 2 Lanceta para teste do pezinho",
+    "1 02 05 0001 5 Luva cirurgica estéril nº 6,5",
+    "1 02 05 0003 1 Luva cirurgica estéril nº 7,5",
+    "1 02 05 0002 3 Luva cirurgica estéril nº 7,0",
+    "1 02 05 0004 0 Luva cirurgica estéril nº 8,0",
+    "1 02 05 0005 8 Luva cirurgica estéril nº 8,5",
+    "1 02 05 0008 2 Luva de procedimento G -cx 100 unidades",
+    "1 02 05 0006 6 Luva nitrílica - tamanho grande",
+    "1 02 05 0014 7 Luva nitrilica - tamanho médio",
+    "1 02 05 0015 5 Luva nitrilica - tamanho pequeno",
+    "1 02 05 0012 0 Luva procedimento em vinil - M",
+    "1 02 05 0013 9 Luva procedimento em vinil - M (sem amido/talco) (Liberação Controlada)",
+    "1 02 05 0011 2 Luva procedimento em vinil - P",
+    "1 02 05 0007 4 Luva procedimento PP",
+    "1 02 05 0017 1 Luva nitrílica - tamanho extra grande",
+    "1 07 01 0086 0 Mascara cirurgica descartável",
+    "1 02 10 0023 7 Máscara de proteção N 95 (respirador) (4.01.03 - ENFERMAGEM)",
+    "1 02 12 0026 0 Mascara p/ inalação uso adulto - conector amarelo",
+    "1 02 12 0025 2 Mascara p/ inalação uso adulto - conector verde",
+    "1 02 12 0027 9 Oliva para estetoscópio",
+    "1 02 12 0053 8 Papel grau cirurgico - 15 x 100 metros",
+    "1 02 12 0029 5 Papel grau cirurgico - 25 x 100 metros",
+    "1 02 12 0030 9 Papel lençol descartável 50 x 50 - pequeno",
+    "1 02 12 0031 7 Papel lençol descartável 70 x 50 - grande",
+    "1 02 12 0100 3 Papel térmico compatível com a Incubadora Minibio / Sispack",
+    "1 02 12 0032 5 Pêra p/ ecg em borracha",
+    "1 02 17 0003 4 Preservativo feminino (Controlado no Setor 14 - Farmácia Satélite)",
+    "1 02 17 0002 6 Preservativo masculino 49 mm (Controlado no Setor 14 - Farmácia Satélite)",
+    "1 02 17 0001 8 Preservativo masculino 52 mm (Controlado no Setor 14 - Farmácia Satélite)",
+    "1 02 11 0012 6 Pvpi tópico",
+    "1 02 09 0010 2 Saco coletor urina (sistema aberto)",
+    "1 03 02 0151 7 Saco plastico transparente em polietileno, atóxico, inodoro e incolor, medidas aprox. 08x24 cm",
+    "1 03 02 0152 5 Saco plastico transparente em polietileno, atóxico, inodoro e incolor, medidas aprox. 15x30 cm",
+    "1 02 12 0033 3 Saco p/ lixo contaminado leitoso de 100 l (Controlado setor 30 - Consumo)",
+    "1 02 12 0034 1 Saco p/ lixo contaminado leitoso de 15 l (Controlado setor 30 - Consumo)",
+    "1 02 12 0035 0 Saco p/ lixo contaminado leitoso de 50 l (Controlado setor 30 - Consumo)",
+    "1 02 09 0013 7 Saco plástico transparente p/ sangue",
+    "1 02 09 0031 5 Scalp p/ coleta de sangue a vacuo G25 ( NR 32 )",
+    "1 02 09 0015 3 Scalp p/ coleta de sangue á vacuo G25",
+    "1 02 09 0014 5 Scalp p/ coleta de sangue á vacuo G23",
+    "1 02 06 0004 4 Scalp para soro G 19 - com NR 32",
+    "1 02 06 0005 2 Scalp para soro G 21 - com NR 32",
+    "1 02 06 0006 0 Scalp para soro G 23 - com NR 32",
+    "1 02 06 0007 9 Scalp para soro G 25 - com NR 32",
+    "1 02 06 0008 7 Scalp para soro G 27 - com NR 32",
+    "1 02 04 0001 0 Seringa descartável s/ agulha de 01 ml (Controlado no Setor 14 - Farmácia)",
+    "1 02 04 0009 6 Seringa descartável s/ agulha de 10 ml",
+    "1 02 04 0004 5 Seringa descartável s/ agulha de 10 ml - com NR32",
+    "1 02 04 0005 3 Seringa descartável s/ agulha de 20 ml",
+    "1 02 04 0008 8 Seringa Descartável s/ agulha de 20 ml - com NR32",
+    "1 02 04 0002 9 Seringa descartável s/ agulha de 3 ml",
+    "1 02 04 0010 0 Seringa descartável s/ agulha de 3 ml - com NR32",
+    "1 02 04 0003 7 Seringa descartável s/ agulha de 5 ml - com NR32",
+    "1 02 04 0013 4 Seringa descartável s/ agulha de 60 ml",
+    "1 02 04 0011 8 Seringa insulina monobloco 100 UI - agulha 06 x 0,25 (Controlado setor 14 - Farmácia)",
+    "1 02 04 0012 6 Seringa insulina monobloco 50 UI - agulha 06 x 0,25 (Controlado setor 14 - Farmácia)",
+    "1 02 09 0026 9 Sistema para coleta e analise multipla e exame de fezes",
+    "1 02 11 0013 4 Solução de Lugol - forte - Teste de Schiller - 2%",
+    "1 02 07 0041 3 Sonda aspiração traqueal nº 04",
+    "1 02 07 0001 4 Sonda aspiração traqueal nº 06",
+    "1 02 07 0002 2 Sonda aspiração traqueal nº 08",
+    "1 02 07 0003 0 Sonda aspiração traqueal nº 10",
+    "1 02 07 0004 9 Sonda aspiração traqueal nº 12",
+    "1 02 07 0005 7 Sonda aspiração traqueal nº 14",
+    "1 02 07 0028 6 Sonda aspiração traqueal nº 16",
+    "1 02 07 0040 5 Sonda aspiração traqueal nº 18",
+    "1 02 07 0042 1 Sonda aspiração traqueal nº 20",
+    "1 02 07 0044 8 Sonda foley nº 06",
+    "1 02 07 0006 5 Sonda foley nº 08",
+    "1 02 07 0007 3 Sonda foley nº 10",
+    "1 02 07 0008 1 Sonda foley nº 12",
+    "1 02 07 0009 0 Sonda foley nº 14",
+    "1 02 07 0010 3 Sonda foley nº 16",
+    "1 02 07 0011 1 Sonda foley nº 18",
+    "1 02 07 0046 4 Sonda foley nº 18 - 100% silicone",
+    "1 02 07 0012 0 Sonda foley nº 20",
+    "1 02 07 0013 8 Sonda foley nº 22",
+    "1 02 07 0047 2 Sonda foley nº 24",
+    "1 02 07 0015 4 Sonda uretral de alívio nº 06",
+    "1 02 07 0016 2 Sonda uretral de alívio nº 08",
+    "1 02 07 0017 0 Sonda uretral de alívio nº 10",
+    "1 02 07 0018 9 Sonda uretral de alívio nº 12",
+    "1 02 07 0019 7 Sonda uretral de alívio nº 14",
+    "1 02 07 0020 0 Sonda uretral de alívio nº 16",
+    "1 02 07 0043 0 Sonda uretral de alivio nº 18",
+    "1 02 06 0015 0 Soro fisiológico 0,9 % injetável - frasco de 100 ml",
+    "1 02 06 0002 8 Soro fisiológico 0,9 % injetável - frasco de 250 ml",
+    "1 02 06 0001 0 Soro fisiológico 0,9 % curativo - frasco com 250 ml",
+    "1 02 09 0041 2 SWAB de Rayon estéril para coleta de amostras. Haste plástica de 14 cm, ponta 100% Rayon",
+    "1 02 12 0037 6 Termômetro com extensor digital",
+    "1 02 12 0036 8 Termômetro clínico digital",
+    "1 02 09 0016 1 Torniquete elástico com trava regulável",
+    "1 02 09 0040 4 Tubo cônico tipo Falcon, estéril, em polipropileno (PP), capacidade 15 ml, com tampa rosca",
+    "1 02 09 0017 0 Tubo para coleta de sangue á vácuo amarelo - 5 ml",
+    "1 02 09 0022 6 Tubo para coleta de sangue á vacuo amarelo 3,5 ml - adolescente",
+    "1 02 09 0020 0 Tubo para coleta de sangue á vacuo amarelo c/ gel ( bebê )",
+    "1 02 09 0021 8 Tubo para coleta de sangue á vacuo roxo ( bebê)",
+    "1 02 09 0018 8 Tubo para coleta de sangue á vacuo roxo de 3 ou 4 ml",
+    "1 02 09 0019 6 Tubo para coleta de sangue á vacuo vermelho de 10 ml - seco",
+    "1 02 11 0014 2 Vaselina liquida",
+    "1 02 12 0039 2 Vaselina sólida - pote com 500 grs",
+    "1 02 01 0016 5 Agulha para acupuntura 0,18 x 0,8 mm (EXCLUSIVO P/ ESPAÇO SAÚDE)",
+    "1 02 01 0015 7 Agulha para acupuntura 0,25 x 0,30 mm (EXCLUSIVO P/ ESPAÇO SAÚDE)",
+    "1 02 19 0004 1 Caneta para papel grau cirúrgico (EXCLUSIVO P/ ESPAÇO SAÚDE)",
+    "1 02 12 0050 3 Papel crepado - 50 x 50 MM (EXCLUSIVO P/ ESPAÇO SAÚDE)",
+    "1 02 19 0011 4 Teste Bowie e Dick - folha (EXCLUSIVO P/ ESPAÇO SAÚDE)",
+    "1 0120 0436 5 TESTE RÁPIDO SARS-COV2 / INFLUENZA TIPO A, INFLUENZA TIPO B",
+    "1 01 20 0428 4 TESTE RAPIDO ANTIGENICO PARA COVID-19"
   ];
 
   const OdontoItems = [
-     "1 07 01 0001 0 Ácido condicionador para resina foto unidade: Frasco",
-     "1 07 01 0002 9 Agulha curta para anestesia para anestesia unidade: Caixa",
-     "1 07 01 0005 3 Agulha extra curta  para anestesia unidade: Caixa",
-     "1 07 01 0003 7 Agulha longa descartável para anestesia unidade: Caixa",
-     "1 07 01 0004 5 Agulha para sutura unidade: Pacote",
-     "1 07 01 0006 1 Alveostesin ou similar unidade: Frasco",
-     "1 07 01 0007 0 Amalgama de prata unidade: Unidade",
-     "1 07 01 0128 9 Amálgama em cápsula 1 porção unidade: Unidade",
-     "1 07 01 0129 7 Amálgama em cápsula 2 porções unidade: Unidade",
-     "1 07 01 0112 2 Anestésico de cloridrato de lidocaína 2% sem vaso unidade: Caixa",
-     "1 07 01 0113 0 Anestésico de cloridrato de lidocaína 3% com vaso unidade: Caixa",
-     "1 07 01 0114 9 Anestésico de cloridrato de mepivacaína com vaso unidade: Caixa",
-     "1 07 01 0115 7 Anestésico de cloridrato de prilocaina 3% com vaso unidade: Caixa",
-     "1 07 01 0008 8 Anestésico tópico gel unidade: Unidade",
-     "1 07 01 0121 1 Antisséptico bucal 1 litro - refil unidade: Refil",
-     "1 07 01 0158 0 Antisséptico bucal à base de gluconato de clorhexidina a 0,12% unidade: Frasco",
-     "1 02 12 0102 0 Avental descartável manga longa unidade: Unidade",
-     "1 07 01 0142 4 Bicarbonato de sódio pó - sachê com 40 g unidade: Sachê",
-     "1 07 01 0055 0 Broca BR nº 02 unidade: Unidade",
-     "1 07 01 0056 8 Broca Br nº 04 unidade: Unidade",
-     "1 07 01 0144 0 Broca Br nº 04 HL unidade: Unidade",
-     "1 07 01 0057 6 Broca BR nº 06 unidade: Unidade",
-     "1 07 01 0137 8 Broca BR pescoço longo nº 02 unidade: Unidade",
-     "1 07 01 0159 9 Broca Carbide cirúrgica  702 haste longa unidade: Unidade",
-     "1 07 01 0010 0 Broca Carbide Fgos 702 unidade: Unidade",
-     "1 07 01 0027 4 Broca carbide nº 02 unidade: Unidade",
-     "1 07 01 0028 2 Broca carbide nº 04 unidade: Unidade",
-     "1 07 01 0029 0 Broca carbide nº 06 unidade: Unidade",
-     "1 07 01 0134 3 Broca carbide nº 34 unidade: Unidade",
-     "1 07 01 0031 2 Broca carbide nº 56 unidade: Unidade",
-     "1 07 01 0152 1 Broca carbide nº 57 unidade: Unidade",
-     "1 07 01 0150 5 Broca carbide série dourada nº 04 unidade: Unidade",
-     "1 07 01 0032 0 Broca cirúrgica videa HL nº 06 unidade: Unidade",
-     "1 07 01 0052 5 Broca de acabamento amalgama, 12 lâminas unidade: Estojo",
-     "1 07 01 0025 8 Broca diamantada Endo Z nº 152 unidade: Unidade",
-     "1 07 01 0033 9 Broca diamantada nº 1011 unidade: Unidade",
-     "1 07 01 0034 7 Broca diamantada nº 1012 unidade: Unidade",
-     "1 07 01 0035 5 Broca diamantada nº 1013 unidade: Unidade",
-     "1 07 01 0036 3 Broca diamantada nº 1014 unidade: Unidade",
-     "1 07 01 0011 8 Broca diamantada nº 1014 HL unidade: Unidade",
-     "1 07 01 0037 1 Broca diamantada nº 1015 unidade: Unidade",
-     "1 07 01 0038 0 Broca diamantada nº 1016 unidade: Unidade",
-     "1 07 01 0039 8 Broca diamantada nº 1016 HL unidade: Unidade",
-     "1 07 01 0040 1 Broca diamantada nº 1024 unidade: Unidade",
-     "1 07 01 0041 0 Broca diamantada nº 1031 unidade: Unidade",
-     "1 07 01 0042 8 Broca diamantada nº 1032 unidade: Unidade",
-     "1 07 01 0043 6 Broca diamantada nº 1034 unidade: Unidade",
-     "1 07 01 0117 3 Broca diamantada nº 1042 unidade: Unidade",
-     "1 07 01 0044 4 Broca diamantada nº 1043 unidade: Unidade",
-     "1 07 01 0012 6 Broca diamantada nº 1065 unidade: Unidade",
-     "1 07 01 0045 2 Broca diamantada nº 1090 unidade: Unidade",
-     "1 07 01 0046 0 Broca diamantada nº 1092 unidade: Unidade",
-     "1 07 01 0013 4 Broca diamantada nº 1093 F unidade: Unidade",
-     "1 07 01 0014 2 Broca diamantada nº 1112 F unidade: Unidade",
-     "1 07 01 0015 0 Broca diamantada nº 1151 unidade: Unidade",
-     "1 07 01 0016 9 Broca diamantada nº 1153 unidade: Unidade",
-     "1 07 01 0017 7 Broca diamantada nº 1190 F unidade: Unidade",
-     "1 07 01 0047 9 Broca diamantada nº 1302 unidade: Unidade",
-     "1 07 01 0048 7 Broca diamantada nº 1312 unidade: Unidade",
-     "1 07 01 0049 5 Broca diamantada nº 1342 unidade: Unidade",
-     "1 07 01 0050 9 Broca diamantada nº 1343 unidade: Unidade",
-     "1 07 01 0018 5 Broca diamantada nº 2082 unidade: Unidade",
-     "1 07 01 0019 3 Broca diamantada nº 2135 F unidade: Unidade",
-     "1 07 01 0020 7 Broca diamantada nº 3082 unidade: Unidade",
-     "1 07 01 0021 5 Broca diamantada nº 3083 unidade: Unidade",
-     "1 07 01 0133 5 Broca diamantada nº 3118 unidade: Unidade",
-     "1 07 01 0022 3 Broca diamantada nº 3168 F unidade: Unidade",
-     "1 07 01 0051 7 Broca diamantada nº 3203 unidade: Unidade",
-     "1 07 01 0023 1 Broca diamantada nº 4084 unidade: Unidade",
-     "1 07 01 0024 0 Broca diamantada nº 4138 unidade: Unidade",
-     "1 07 01 0054 1 Broca para acabamento de resina coleção dourada unidade: Estojo",
-     "1 07 01 0165 3 Broca para acabamento de resina tipo enchange - forma chama unidade: Unidade",
-     "1 07 01 0053 3 Broca para acabamento de resina tipo enchange - forma taça unidade: Unidade",
-     "1 07 01 0059 2 Broca para alta rotação shofu tipo chama unidade: Unidade",
-     "1 07 01 0060 6 Broca para alta rotação shofu tipo esférica unidade: Unidade",
-     "1 07 01 0058 4 Broca para osso 151 Zikrya unidade: Unidade",
-     "1 07 02 0114 3 Broqueiro unidade: Unidade",
-     "1 07 01 0061 4 Cariostatico, frasco com 10 ml unidade: Frasco",
-     "1 07 06 0002 1 Cera rosa nº7 unidade: Caixa",
-     "1 07 01 0136 0 Cimento cirúrgico unidade: Conjunto",
-     "1 07 01 0062 2 Cimento de zinco líquido, frasco com 10 ml unidade: Frasco",
-     "1 07 01 0063 0 Cimento de zinco pó, frasco com 28 g unidade: Frasco",
-     "1 07 05 0006 0 Creme dental adulto unidade: Tubo",
-     "1 07 05 0012 4 Creme dental infantil - tubo com 50 grs unidade: Tubo",
-     "1 07 01 0064 9 Cunha de madeira unidade: Caixa",
-     "1 07 02 0041 4 Dappen plástico unidade: Unidade",
-     "1 07 02 0040 6 Dappen vidro unidade: Unidade",
-     "1 07 02 0110 0 Dedeira de borracha unidade: Unidade",
-     "1 07 01 0065 7 Escova de robson para contra ângulo unidade: Unidade",
-     "1 07 01 0067 3 Escova de unha unidade: Unidade",
-     "1 07 05 0004 3 Escova dental adulto unidade: Unidade",
-     "1 07 05 0008 6 Escova dental bebê unidade: Unidade",
-     "1 07 05 0005 1 Escova dental infantil com protetor unidade: Unidade",
-     "1 07 05 0014 0 Escova dental massageadora - tipo dedeira unidade: Unidade",
-     "1 07 01 0066 5 Esponja hemostop unidade: Unidade",
-     "1 07 01 0068 1 Eugenol para uso odontológico, frasco com 20 ml unidade: Frasco",
-     "1 07 01 0069 0 Evidenciador liquido, frasco com 10 ml unidade: Frasco",
-     "1 07 01 0119 0 Fio de seda nº 3.0 agulhado unidade: Unidade",
-     "1 07 03 0043 5 Fio de seda nº 4.0 agulhado unidade: Unidade",
-     "1 07 01 0070 3 Fio dental 100 metros unidade: Unidade",
-     "1 07 05 0001 9 Fio dental de adulto 25 mt unidade: Unidade",
-     "1 07 01 0072 0 Formocresol para uso odontológico, frasco com 10 ml unidade: Frasco",
-     "1 07 01 0073 8 Forrador cavidade/verniz, frasco com 15 ml unidade: Frasco",
-     "1 02 09 0035 8 Frasco branco leitoso com tampa de rosca, frasco de 30 ml unidade: Frasco",
-     "1 07 05 0007 8 Gel evidenciador de placa unidade: Tubo",
-     "1 07 01 0074 6 Gel p/ aplicação tópica de flúor, frasco com 200 ml unidade: Frasco",
-     "1 07 01 0120 3 Gelo seco spray unidade: Frasco",
-     "1 07 01 0075 4 Gorro descartável unidade: Unidade",
-     "1 07 01 0076 2 Hemostático tópico, frasco com 10 ml unidade: Frasco",
-     "1 07 01 0077 0 Hidroxido de calcio p.a, frasco com 10 grs unidade: Frasco",
-     "1 07 01 0078 9 Iodoformio, frasco com 10 grs unidade: Frasco",
-     "1 07 06 0011 0 Ionomero de vidro p/ cimentação de banda (pó e líquido) unidade: Conjunto",
-     "1 07 01 0079 7 Ionomero de vidro R unidade: Estojo",
-     "1 07 01 0080 0 Irm líquido unidade: Frasco",
-     "1 07 01 0081 9 Irm pó, frasco com 38 grs unidade: Frasco",
-     "1 07 01 0193 9 Kit I.R.M pó e líquido unidade: Kit",
-     "1 07 01 0083 5 Jaleco descartável tamanho G unidade: Unidade",
-     "1 07 01 0082 7 Jaleco descartável tamanho GG unidade: Unidade",
-     "1 07 01 0084 3 Jaleco descartável tamanho M unidade: Unidade",
-     "1 07 01 0085 1 Jaleco descartável tamanho P unidade: Unidade",
-     "1 07 01 0164 5 Lâmina bisturi  nº 15C unidade: Unidade",
-     "1 07 02 0081 3 Lençol de camurça unidade: Unidade",
-     "1 07 02 0208 5 Lima endodontica tipo Kerr nº 06 com 21 m.m unidade: Caixa",
-     "1 07 02 0209 3 Lima endodontica tipo Kerr nº 06 com 25 m.m. unidade: Caixa",
-     "1 07 03 0076 1 Lima endodontica tipo Kerr nº 20 com 25 m.m unidade: Caixa",
-     "1 07 03 0077 0 Lima endodontica tipo Kerr nº 40 com 21 m.m unidade: Caixa",
-     "1 07 03 0013 3 Lima Flexofile 1ª série 21 mm unidade: Estojo",
-     "1 07 03 0019 2 Lima Flexofile 1ª série 25 mm unidade: Estojo",
-     "1 07 03 0035 4 Lima Flexofile 2ª série 21 mm unidade: Estojo",
-     "1 07 03 0020 6 Lima Flexofile 2ª série 25 mm unidade: Estojo",
-     "1 07 03 0029 0 Lima Hedstroen 1ª série 21 mm unidade: Estojo",
-     "1 07 03 0021 4 Lima Hedstroen 1ª série 25 mm unidade: Estojo",
-     "1 07 03 0030 3 Lima Hedstroen 2ª série 21 mm unidade: Estojo",
-     "1 07 03 0031 1 Lima Hedstroen 2ª série 25 mm unidade: Estojo",
-     "1 07 03 0022 2 Lima Hedstroen 2ª série 31 mm unidade: Estojo",
-     "1 07 02 0149 6 Lima Kerr  nº 08 21 mm unidade: Estojo",
-     "1 07 02 0150 0 Lima Kerr  nº 08 25 mm unidade: Estojo",
-     "1 07 02 0151 8 Lima Kerr  nº 10 21 mm unidade: Estojo",
-     "1 07 02 0152 6 Lima Kerr  nº 10 25 mm unidade: Estojo",
-     "1 07 03 0025 7 Lima Kerr  nº 15 21 mm unidade: Estojo",
-     "1 07 03 0026 5 Lima Kerr  nº 15 25 mm unidade: Estojo",
-     "1 07 03 0046 0 Lima Kerr  nº 25 21 mm unidade: Estojo",
-     "1 07 03 0047 8 Lima Kerr  nº 25 25 mm unidade: Estojo",
-     "1 07 03 0027 3 Lima Kerr  nº 30 21 mm unidade: Estojo",
-     "1 07 03 0028 1 Lima Kerr  nº 30 25 mm unidade: Estojo",
-     "1 07 03 0014 1 Lima Kerr 1ª série 21 MM unidade: Estojo",
-     "1 07 03 0010 9 Lima Kerr 1ª série 25 MM unidade: Estojo",
-     "1 07 03 0017 6 Lima Kerr 1ª série 31 MM unidade: Estojo",
-     "1 07 03 0012 5 Lima Kerr 2ª série 21 MM unidade: Estojo",
-     "1 07 03 0011 7 Lima Kerr 2ª série 25 MM unidade: Estojo",
-     "1 07 03 0018 4 Lima Kerr 2ª série 31 MM unidade: Estojo",
-     "1 07 02 0049 0 Limpa broca unidade: Unidade",
-     "1 07 03 0065 6 Líquido de milton a 1% unidade: Frasco",
-     "1 07 01 0146 7 Luvas plástica unidade: Par",
-     "1 07 01 0151 3 Mandril para contra ângulo unidade: Unidade",
-     "1 07 01 0086 0 Mascara cirurgica descartável unidade: Unidade",
-     "1 07 01 0087 8 Matriz aço inoxidável 5 mm unidade: Unidade",
-     "1 07 01 0088 6 Matriz aço inoxidável 7 mm unidade: Unidade",
-     "1 07 01 0089 4 Mercurio odontológico, frasco com 100 grs unidade: Frasco",
-     "1 07 01 0160 2 Microbrush unidade: Pote",
-     "1 07 03 0006 0 Obturação provisoria pronta unidade: Unidade",
-     "1 07 01 0092 4 Óleo lubrificante baixa rotação unidade: Frasco",
-     "1 07 01 0091 6 Óleo lubrificante para alta rotação unidade: Frasco",
-     "1 07 01 0093 2 Óxido zinco pó unidade: Unidade",
-     "1 07 01 0094 0 Papel oclusal unidade: Bloco",
-     "1 07 01 0095 9 Paramonoclorofenol canforado frasco com 20 ml unidade: Unidade",
-     "1 07 01 0096 7 Pasta profilática - tubo com 90 grs unidade: Tubo",
-     "1 07 01 0097 5 Pedra pomes unidade: Unidade",
-     "1 07 01 0123 8 Pontas de profident - Perio E - Dabi unidade: Unidade",
-     "1 07 01 0125 4 Pontas de profident - Perio Sub - Dabi unidade: Unidade",
-     "1 07 01 0124 6 Pontas de profident - Perio Supra - Dabi unidade: Unidade",
-     "1 07 01 0163 7 Pontas para aparelho de Profident Sub - Gnatus unidade: Unidade",
-     "1 07 01 0162 9 Pontas para aparelho de Profident Supra - Gnatus unidade: Unidade",
-     "1 07 01 0098 3 Primer, frasco com 4 ml unidade: Frasco",
-     "1 07 01 0102 5 Resina fotopolimerizável  A 1 unidade: Unidade",
-     "1 07 01 0103 3 Resina fotopolimerizável  A 2 unidade: Unidade",
-     "1 07 01 0104 1 Resina fotopolimerizável  A 3 unidade: Unidade",
-     "1 07 01 0105 0 Resina fotopolimerizável  A 3.5 unidade: Unidade",
-     "1 07 01 0099 1 Resina fotopolimerizável  B 2 unidade: Unidade",
-     "1 07 01 0100 9 Resina fotopolimerizável  B 3 unidade: Unidade",
-     "1 07 01 0101 7 Resina fotopolimerizável  C 2 unidade: Unidade",
-     "1 07 01 0106 8 Roletes dentais de algodão unidade: Pacote",
-     "1 07 01 0154 8 Saquinho para proteger canetas odontológicas ( Ar e Br ) unidade: Unidade",
-     "1 07 01 0188 2 Selante fotopolimerizável 2 g unidade: Caixa",
-     "1 07 01 0107 6 Sugador descartável - pacote com 40 unid unidade: Pacote",
-     "1 07 01 0108 4 Taça de borracha para contra ângulo unidade: Unidade",
-     "1 07 01 0111 4 Tira de acabamento de resina 4 x 170 mm unidade: Caixa",
-     "1 07 01 0109 2 Tira de poliéster de 10 x 120 x 0,05 mm unidade: Caixa",
-     "1 07 01 0110 6 Tira para acabamento de amalgama 4 x 120 mm unidade: Caixa",
-     "1 07 01 0116 5 Verniz com fluor unidade: Conjunto",
+    "1 07 01 0001 0 Ácido condicionador para resina foto",
+    "1 07 01 0002 9 Agulha curta para anestesia para anestesia",
+    "1 07 01 0005 3 Agulha extra curta  para anestesia",
+    "1 07 01 0003 7 Agulha longa descartável para anestesia",
+    "1 07 01 0004 5 Agulha para sutura",
+    "1 07 01 0006 1 Alveostesin ou similar",
+    "1 07 01 0007 0 Amalgama de prata",
+    "1 07 01 0128 9 Amálgama em cápsula 1 porção",
+    "1 07 01 0129 7 Amálgama em cápsula 2 porções",
+    "1 07 01 0112 2 Anestésico de cloridrato de lidocaína 2% sem vaso",
+    "1 07 01 0113 0 Anestésico de cloridrato de lidocaína 3% com vaso",
+    "1 07 01 0114 9 Anestésico de cloridrato de mepivacaína com vaso",
+    "1 07 01 0115 7 Anestésico de cloridrato de prilocaina 3% com vaso",
+    "1 07 01 0008 8 Anestésico tópico gel",
+    "1 07 01 0121 1 Antisséptico bucal 1 litro - refil",
+    "1 07 01 0158 0 Antisséptico bucal à base de gluconato de clorhexidina a 0,12%",
+    "1 02 12 0102 0 Avental descartável manga longa",
+    "1 07 01 0009 6 Base de hidróxido de cálcio",
+    "1 07 01 0142 4 Bicarbonato de sódio pó - sachê com 40 g",
+    "1 07 01 0055 0 Broca BR nº 02",
+    "1 07 01 0056 8 Broca Br nº 04",
+    "1 07 01 0144 0 Broca Br nº 04 HL",
+    "1 07 01 0057 6 Broca BR nº 06",
+    "1 07 01 0137 8 Broca BR pescoço longo nº 02",
+    "1 07 01 0159 9 Broca Carbide cirúrgica  702 haste longa",
+    "1 07 01 0010 0 Broca Carbide Fgos 702",
+    "1 07 01 0027 4 Broca carbide nº 02",
+    "1 07 01 0028 2 Broca carbide nº 04",
+    "1 07 01 0029 0 Broca carbide nº 06",
+    "1 07 01 0134 3 Broca carbide nº 34",
+    "1 07 01 0031 2 Broca carbide nº 56",
+    "1 07 01 0152 1 Broca carbide nº 57",
+    "1 07 01 0150 5 Broca carbide série dourada nº 04",
+    "1 07 01 0032 0 Broca cirúrgica videa HL nº 06",
+    "1 07 01 0052 5 Broca de acabamento amalgama, 12 lâminas",
+    "1 07 01 0025 8 Broca diamantada Endo Z nº 152",
+    "1 07 01 0033 9 Broca diamantada nº 1011",
+    "1 07 01 0034 7 Broca diamantada nº 1012",
+    "1 07 01 0035 5 Broca diamantada nº 1013",
+    "1 07 01 0036 3 Broca diamantada nº 1014",
+    "1 07 01 0011 8 Broca diamantada nº 1014 HL",
+    "1 07 01 0037 1 Broca diamantada nº 1015",
+    "1 07 01 0038 0 Broca diamantada nº 1016",
+    "1 07 01 0039 8 Broca diamantada nº 1016 HL",
+    "1 07 01 0040 1 Broca diamantada nº 1024",
+    "1 07 01 0041 0 Broca diamantada nº 1031",
+    "1 07 01 0042 8 Broca diamantada nº 1032",
+    "1 07 01 0043 6 Broca diamantada nº 1034",
+    "1 07 01 0117 3 Broca diamantada nº 1042",
+    "1 07 01 0044 4 Broca diamantada nº 1043",
+    "1 07 01 0012 6 Broca diamantada nº 1065",
+    "1 07 01 0045 2 Broca diamantada nº 1090",
+    "1 07 01 0046 0 Broca diamantada nº 1092",
+    "1 07 01 0013 4 Broca diamantada nº 1093 F",
+    "1 07 01 0014 2 Broca diamantada nº 1112 F",
+    "1 07 01 0015 0 Broca diamantada nº 1151",
+    "1 07 01 0016 9 Broca diamantada nº 1153",
+    "1 07 01 0017 7 Broca diamantada nº 1190 F",
+    "1 07 01 0047 9 Broca diamantada nº 1302",
+    "1 07 01 0048 7 Broca diamantada nº 1312",
+    "1 07 01 0049 5 Broca diamantada nº 1342",
+    "1 07 01 0050 9 Broca diamantada nº 1343",
+    "1 07 01 0018 5 Broca diamantada nº 2082",
+    "1 07 01 0019 3 Broca diamantada nº 2135 F",
+    "1 07 01 0020 7 Broca diamantada nº 3082",
+    "1 07 01 0021 5 Broca diamantada nº 3083",
+    "1 07 01 0133 5 Broca diamantada nº 3118",
+    "1 07 01 0022 3 Broca diamantada nº 3168 F",
+    "1 07 01 0051 7 Broca diamantada nº 3203",
+    "1 07 01 0023 1 Broca diamantada nº 4084",
+    "1 07 01 0024 0 Broca diamantada nº 4138",
+    "1 07 01 0054 1 Broca para acabamento de resina coleção dourada",
+    "1 07 01 0165 3 Broca para acabamento de resina tipo enchange - forma chama",
+    "1 07 01 0053 3 Broca para acabamento de resina tipo enchange - forma taça",
+    "1 07 01 0059 2 Broca para alta rotação shofu tipo chama",
+    "1 07 01 0060 6 Broca para alta rotação shofu tipo esférica",
+    "1 07 01 0058 4 Broca para osso 151 Zikrya",
+    "1 07 02 0114 3 Broqueiro",
+    "1 07 01 0061 4 Cariostatico, frasco com 10 ml",
+    "1 07 06 0002 1 Cera rosa nº7",
+    "1 07 01 0136 0 Cimento cirúrgico",
+    "1 07 01 0062 2 Cimento de zinco líquido, frasco com 10 ml",
+    "1 07 01 0063 0 Cimento de zinco pó, frasco com 28 g",
+    "1 07 05 0006 0 Creme dental adulto",
+    "1 07 05 0012 4 Creme dental infantil - tubo com 50 grs",
+    "1 07 01 0064 9 Cunha de madeira",
+    "1 07 02 0041 4 Dappen plástico",
+    "1 07 02 0040 6 Dappen vidro",
+    "1 07 02 0110 0 Dedeira de borracha",
+    "1 07 01 0065 7 Escova de robson para contra ângulo",
+    "1 07 01 0067 3 Escova de unha",
+    "1 07 05 0004 3 Escova dental adulto",
+    "1 07 05 0008 6 Escova dental bebê",
+    "1 07 05 0005 1 Escova dental infantil com protetor",
+    "1 07 05 0014 0 Escova dental massageadora - tipo dedeira",
+    "1 07 01 0066 5 Esponja hemostop",
+    "1 07 01 0068 1 Eugenol para uso odontológico, frasco com 20 ml",
+    "1 07 01 0069 0 Evidenciador liquido, frasco com 10 ml",
+    "1 07 01 0119 0 Fio de seda nº 3.0 agulhado",
+    "1 07 03 0043 5 Fio de seda nº 4.0 agulhado",
+    "1 07 01 0070 3 Fio dental 100 metros",
+    "1 07 05 0001 9 Fio dental de adulto 25 mt",
+    "1 07 01 0072 0 Formocresol para uso odontológico, frasco com 10 ml",
+    "1 07 01 0073 8 Forrador cavidade/verniz, frasco com 15 ml",
+    "1 02 09 0035 8 Frasco branco leitoso com tampa de rosca, frasco de 30 ml",
+    "1 07 05 0007 8 Gel evidenciador de placa",
+    "1 07 01 0074 6 Gel p/ aplicação tópica de flúor, frasco com 200 ml",
+    "1 07 01 0120 3 Gelo seco spray",
+    "1 07 01 0075 4 Gorro descartável",
+    "1 07 01 0076 2 Hemostático tópico, frasco com 10 ml",
+    "1 07 01 0077 0 Hidroxido de calcio p.a, frasco com 10 grs",
+    "1 07 01 0078 9 Iodoformio, frasco com 10 grs",
+    "1 07 06 0011 0 Ionomero de vidro p/ cimentação de banda (pó e líquido)",
+    "1 07 01 0079 7 Ionomero de vidro R",
+    "1 07 01 0080 0 Irm líquido",
+    "1 07 01 0081 9 Irm pó, frasco com 38 grs",
+    "1 07 01 0193 9 Kit I.R.M pó e líquido",
+    "1 07 01 0083 5 Jaleco descartável tamanho G",
+    "1 07 01 0082 7 Jaleco descartável tamanho GG",
+    "1 07 01 0084 3 Jaleco descartável tamanho M",
+    "1 07 01 0085 1 Jaleco descartável tamanho P",
+    "1 07 01 0164 5 Lâmina bisturi  nº 15C",
+    "1 07 02 0081 3 Lençol de camurça",
+    "1 07 02 0208 5 Lima endodontica tipo Kerr nº 06 com 21 m.m",
+    "1 07 02 0209 3 Lima endodontica tipo Kerr nº 06 com 25 m.m.",
+    "1 07 03 0076 1 Lima endodontica tipo Kerr nº 20 com 25 m.m",
+    "1 07 03 0077 0 Lima endodontica tipo Kerr nº 40 com 21 m.m",
+    "1 07 03 0013 3 Lima Flexofile 1ª série 21 mm",
+    "1 07 03 0019 2 Lima Flexofile 1ª série 25 mm",
+    "1 07 03 0035 4 Lima Flexofile 2ª série 21 mm",
+    "1 07 03 0020 6 Lima Flexofile 2ª série 25 mm",
+    "1 07 03 0029 0 Lima Hedstroen 1ª série 21 mm",
+    "1 07 03 0021 4 Lima Hedstroen 1ª série 25 mm",
+    "1 07 03 0030 3 Lima Hedstroen 2ª série 21 mm",
+    "1 07 03 0031 1 Lima Hedstroen 2ª série 25 mm",
+    "1 07 03 0022 2 Lima Hedstroen 2ª série 31 mm",
+    "1 07 02 0149 6 Lima Kerr  nº 08 21 mm",
+    "1 07 02 0150 0 Lima Kerr  nº 08 25 mm",
+    "1 07 02 0151 8 Lima Kerr  nº 10 21 mm",
+    "1 07 02 0152 6 Lima Kerr  nº 10 25 mm",
+    "1 07 03 0025 7 Lima Kerr  nº 15 21 mm",
+    "1 07 03 0026 5 Lima Kerr  nº 15 25 mm",
+    "1 07 03 0046 0 Lima Kerr  nº 25 21 mm",
+    "1 07 03 0047 8 Lima Kerr  nº 25 25 mm",
+    "1 07 03 0027 3 Lima Kerr  nº 30 21 mm",
+    "1 07 03 0028 1 Lima Kerr  nº 30 25 mm",
+    "1 07 03 0014 1 Lima Kerr 1ª série 21 MM",
+    "1 07 03 0010 9 Lima Kerr 1ª série 25 MM",
+    "1 07 03 0017 6 Lima Kerr 1ª série 31 MM",
+    "1 07 03 0012 5 Lima Kerr 2ª série 21 MM",
+    "1 07 03 0011 7 Lima Kerr 2ª série 25 MM",
+    "1 07 03 0018 4 Lima Kerr 2ª série 31 MM",
+    "1 07 02 0049 0 Limpa broca",
+    "1 07 03 0065 6 Líquido de milton a 1%",
+    "1 07 01 0146 7 Luvas plástica",
+    "1 07 01 0151 3 Mandril para contra ângulo",
+    "1 07 01 0086 0 Mascara cirurgica descartável",
+    "1 07 01 0087 8 Matriz aço inoxidável 5 mm",
+    "1 07 01 0088 6 Matriz aço inoxidável 7 mm",
+    "1 07 01 0089 4 Mercurio odontológico, frasco com 100 grs",
+    "1 07 01 0160 2 Microbrush",
+    "1 07 03 0006 0 Obturação provisoria pronta",
+    "1 07 01 0092 4 Óleo lubrificante baixa rotação",
+    "1 07 01 0091 6 Óleo lubrificante para alta rotação",
+    "1 07 01 0093 2 Óxido zinco pó",
+    "1 07 01 0094 0 Papel oclusal",
+    "1 07 01 0095 9 Paramonoclorofenol canforado frasco com 20 ml",
+    "1 07 01 0096 7 Pasta profilática - tubo com 90 grs",
+    "1 07 01 0097 5 Pedra pomes",
+    "1 07 01 0123 8 Pontas de profident - Perio E - Dabi",
+    "1 07 01 0125 4 Pontas de profident - Perio Sub - Dabi",
+    "1 07 01 0124 6 Pontas de profident - Perio Supra - Dabi",
+    "1 07 01 0163 7 Pontas para aparelho de Profident Sub - Gnatus",
+    "1 07 01 0162 9 Pontas para aparelho de Profident Supra - Gnatus",
+    "1 07 01 0098 3 Primer, frasco com 4 ml",
+    "1 07 01 0102 5 Resina fotopolimerizável  A 1",
+    "1 07 01 0103 3 Resina fotopolimerizável  A 2",
+    "1 07 01 0104 1 Resina fotopolimerizável  A 3",
+    "1 07 01 0105 0 Resina fotopolimerizável  A 3.5",
+    "1 07 01 0099 1 Resina fotopolimerizável  B 2",
+    "1 07 01 0100 9 Resina fotopolimerizável  B 3",
+    "1 07 01 0101 7 Resina fotopolimerizável  C 2",
+    "1 07 01 0106 8 Roletes dentais de algodão",
+    "1 07 01 0154 8 Saquinho para proteger canetas odontológicas ( Ar e Br )",
+    "1 07 01 0188 2 Selante fotopolimerizável 2 g",
+    "1 07 01 0107 6 Sugador descartável - pacote com 40 unid",
+    "1 07 01 0108 4 Taça de borracha para contra ângulo",
+    "1 07 01 0111 4 Tira de acabamento de resina 4 x 170 mm",
+    "1 07 01 0109 2 Tira de poliéster de 10 x 120 x 0,05 mm",
+    "1 07 01 0110 6 Tira para acabamento de amalgama 4 x 120 mm",
+    "1 07 01 0116 5 Verniz com fluor",
     ];
 
   const ImpressosItems = [
-     "1 04 06 0001 5 Anamnese de odonto (frente e verso) unidade: Bloco",
-     "1 04 04 0001 6 Anexo 1 unidade: Bloco",
-     "1 04 04 0002 4 Atestado médico unidade: Bloco",
-     "1 04 06 0002 3 Autorização para tratamento odontológico unidade: Bloco",
-     "1 04 01 0012 8 Autorização para vacinação de escolar unidade: Bloco",
-     "1 04 01 0010 1 Avaliação audiológica unidade: Bloco",
-     "1 04 04 0003 2 Avaliação lesões de pele unidade: Bloco",
-     "1 04 06 0003 1 Aviso aos pais - atenção unidade: Bloco",
-     "1 04 06 0005 8 Aviso aos pais - urgente unidade: Bloco",
-     "1 04 07 0001 0 Capa prontuário familiar - Psf unidade: Unidade",
-     "1 04 04 0004 0 Capa prontuário Ubs e Psf unidade: Unidade",
-     "1 04 04 0008 3 Cartão de agendamento unidade: Cartão",
-     "1 04 04 0006 7 Cartão Ha e Dm unidade: Cartão",
-     "1 04 01 0001 2 Cartão menina - rosa unidade: Cartão",
-     "1 04 01 0002 0 Cartão menino - azul unidade: Cartão",
-     "1 04 04 0007 5 Cartão Peso e Pa unidade: Cartão",
-     "1 04 06 0008 2 Clap - consulta odontológica unidade: Bloco",
-     "1 04 02 0002 5 Clap - carteira gestante unidade: Cartão",
-     "1 04 02 0001 7 Clap- folha prontuário unidade: Bloco",
-     "1 04 04 0005 9 Controle de tráfego unidade: Bloco",
-     "1 04 04 0010 5 Correspondência interna (De/para) unidade: Bloco",
-     "1 04 06 0006 6 Cuidados pós cirurgia unidade: Bloco",
-     "1 04 04 0009 1 Declaração de comparecimento unidade: Bloco",
-     "1 04 05 0010 0 Encaminhamento caso novo - neurologia /Unesp unidade: Bloco",
-     "1 04 05 0015 0 Encaminhamento colonoscopia unidade: Bloco",
-     "1 04 04 0042 3 Encaminhamento endoscopia digestiva unidade: Bloco",
-     "1 04 01 0003 9 Ficha acompanhamento da criança - Esf unidade: Bloco",
-     "1 04 01 0004 7 Ficha acompanhamento e desenvolvimento unidade: Bloco",
-     "1 04 07 0005 2 Ficha B - acompanhamento diabéticos unidade: Bloco",
-     "1 04 07 0002 8 Ficha B - acompanhamento gestante unidade: Bloco",
-     "1 04 07 0004 4 Ficha B - acompanhamento hanseníase unidade: Bloco",
-     "1 04 07 0003 6 Ficha B - acompanhamento hipertensos unidade: Bloco",
-     "1 04 07 0006 0 Ficha B - acompanhamento tuberculose unidade: Bloco",
-     "1 04 07 0008 7 Ficha cadastro individual ESF - FICHA 2 unidade: Bloco",
-     "1 04 07 0009 5 Ficha D - registro de atividades, proced. e notif. Esf unidade: Bloco",
-     "1 04 07 0015 0 Ficha de cadastro domiciliar e territorial unidade: Bloco",
-     "1 04 02 0007 6 Ficha de Gram unidade: Bloco",
-     "1 04 07 0016 8 Ficha de visita domiciliar e territorial unidade: Bloco",
-     "1 04 06 0009 0 Ficha Pa anamnese odonto noturno ( frente ) unidade: Bloco",
-     "1 04 07 0010 9 Ficha SSA2 unidade: Bloco",
-     "1 04 07 0014 1 Ficha SSA4 unidade: Bloco",
-     "1 04 01 0005 5 Ficha visita domiciliar do RN risco unidade: Bloco",
-     "1 04 01 0024 1 Gráfico IMC- meninas unidade: Bloco",
-     "1 04 01 0023 3 Gráfico IMC -meninos azul unidade: Bloco",
-     "1 04 01 0022 5 Gráfico peso, comprimento e estatura por idade -meninas unidade: Bloco",
-     "1 04 01 0021 7 Gráfico peso, comprimento e estatura por idade-meninos unidade: Bloco",
-     "1 04 01 0011 0 Guia encaminhamento audiometria unidade: Bloco",
-     "1 04 04 0011 3 Guia Inter consulta unidade: Bloco",
-     "1 04 04 0012 1 Laudo Ecg unidade: Bloco",
-     "1 04 02 0003 3 Licença gestante unidade: Bloco",
-     "1 04 07 0011 7 Mapa visita mensal Acs (quadradinho) unidade: Bloco",
-     "1 04 01 0017 9 Medida da imitância acústica unidade: Bloco",
-     "1 04 03 0001 1 Programa cessação tabagismo - saúde mental unidade: Bloco",
-     "1 04 04 0015 6 Receituário azul unidade: Bloco",
-     "1 04 04 0016 4 Receituário b2 unidade: Bloco",
-     "1 04 04 0013 0 Receituário branco - comum unidade: Bloco",
-     "1 04 04 0014 8 Receituário controle especial carbonado unidade: Bloco",
-     "1 04 04 0039 3 Receituário para antimicrobianos unidade: Bloco",
-     "1 04 06 0007 4 Relação de materiais de odontologia - Cme unidade: Bloco",
-     "1 04 04 0017 2 Relação de remessa unidade: Bloco",
-     "1 04 01 0018 7 Relatório de visita de acompanhamento do RN risco unidade: Bloco",
-     "1 04 07 0013 3 Relatório de visita domiciliar do Acs unidade: Bloco",
-     "1 04 02 0004 1 Requisição de exame citopatológico - colo de útero unidade: Unidade",
-     "1 04 02 0006 8 Requisição de punção de mama unidade: Bloco",
-     "1 04 05 0013 4 Requisição ecocardiografia unidade: Bloco",
-     "1 04 04 0018 0 Requisição exames imuno hematológico unidade: Bloco",
-     "1 04 02 0005 0 Requisição para mamografia unidade: Bloco",
-     "1 04 05 0014 2 Requisição teste ergométrico unidade: Bloco",
-     "1 04 04 0020 2 Sadt (pedido de exames ) unidade: Bloco",
-     "1 04 04 0041 5 Solicitação de ultrassonografia unidade: Bloco",
-     "1 04 03 0004 6 Termo de responsabilidade sibutramina unidade: Bloco",
-     "1 04 03 0002 0 Termo declaração de aceite ou recusa do teste de HIV unidade: Bloco",
-     "1 04 04 0030 0 Teste de Snellen unidade: Bloco",
-     "1 04 03 0003 8 Triagem Psico social - saúde mental unidade: Bloco",
-     "1 05 01 0223 9 Adesivo personalizado programa Dose em Casa - grande unidade: Unidade",
-     "1 05 01 0222 0 Adesivo personalizado programa Dose em Casa - pequeno unidade: Unidade",
-     "1 05 01 0220 4 Caixa tipo Sedex em papelão pardo - grande unidade: Unidade",
-     "1 05 01 0221 2 Caixa tipo Sedex em papelão pardo - pequeno unidade: Unidade",
-     "1 04 04 0048 2 Cartão de dispensação-farmácia da SMS unidade: Cartão",
-     "1 04 04 0040 7 Ficha atendimento - Espaço Saúde Prof. Cecilia Magaldi unidade: Bloco",
-     "1 04 05 0009 6 Protocolo de atendimento do Caps 1 unidade: Bloco",
-     "1 04 04 0046 6 Relatório de atendimento ao acidentado do trabalho (R.A.A.T) unidade: Bloco",
-     "1 04 04 0029 6 Ocorrências dentro do município unidade: Bloco",
-     "1 04 04 0028 8 Ocorrências fora do município unidade: Bloco",
-     "1 04 04 0026 1 Requisição de viaturas 192 unidade: Bloco",
-     "1 04 04 0019 9 Requisição viatura unidade: Bloco",
-     "NOVO gineco e obstetrícia unidade: Bloco",
-     "1 04 04 0044 0 Usa - Ficha de atendimento pré-hospitalar do Samu unidade: Bloco",
-     "1 04 04 0045 8 Usb - Ficha de atendimento pré-hospitalar do Samu unidade: Bloco",
-     "1 04 01 0015 2 Primeira consulta do recém nascido unidade: Bloco",
-     "1 04 01 0013 6 Protocolo do RN unidade: Bloco",
-     "1 04 01 0016 0 Registro de amostra do teste do pezinhO unidade: Bloco",
-     "1 04 01 0014 4 Resumo do atendimento do recém nascido unidade: Bloco",
-     "1 04 01 0019 5 Vigilância à saúde do recém-nascido de risco (preenchimento na maternidade) unidade: Bloco",
+    "1 04 06 0001 5 Anamnese de odonto (frente e verso)",
+    "1 04 04 0001 6 Anexo 1",
+    "1 04 04 0002 4 Atestado médico",
+    "1 04 06 0002 3 Autorização para tratamento odontológico",
+    "1 04 01 0012 8 Autorização para vacinação de escolar",
+    "1 04 01 0010 1 Avaliação audiológica",
+    "1 04 04 0003 2 Avaliação lesões de pele",
+    "1 04 06 0003 1 Aviso aos pais - atenção",
+    "1 04 06 0005 8 Aviso aos pais - urgente",
+    "1 04 07 0001 0 Capa prontuário familiar - Psf",
+    "1 04 04 0004 0 Capa prontuário Ubs e Psf",
+    "1 04 04 0008 3 Cartão de agendamento",
+    "1 04 04 0006 7 Cartão Ha e Dm",
+    "1 04 01 0001 2 Cartão menina - rosa",
+    "1 04 01 0002 0 Cartão menino - azul",
+    "1 04 04 0007 5 Cartão Peso e Pa",
+    "1 04 06 0008 2 Clap - consulta odontológica",
+    "1 04 02 0002 5 Clap - carteira gestante",
+    "1 04 02 0001 7 Clap- folha prontuário",
+    "1 04 04 0005 9 Controle de tráfego",
+    "1 04 04 0010 5 Correspondência interna (De/para)",
+    "1 04 06 0006 6 Cuidados pós cirurgia",
+    "1 04 04 0009 1 Declaração de comparecimento",
+    "1 04 05 0010 0 Encaminhamento caso novo - neurologia /Unesp",
+    "1 04 05 0015 0 Encaminhamento colonoscopia",
+    "1 04 04 0042 3 Encaminhamento endoscopia digestiva",
+    "1 04 01 0003 9 Ficha acompanhamento da criança - Esf",
+    "1 04 01 0004 7 Ficha acompanhamento e desenvolvimento",
+    "1 04 07 0005 2 Ficha B - acompanhamento diabéticos",
+    "1 04 07 0002 8 Ficha B - acompanhamento gestante",
+    "1 04 07 0004 4 Ficha B - acompanhamento hanseníase",
+    "1 04 07 0003 6 Ficha B - acompanhamento hipertensos",
+    "1 04 07 0006 0 Ficha B - acompanhamento tuberculose",
+    "1 04 07 0008 7 Ficha cadastro individual ESF - FICHA 2",
+    "1 04 07 0009 5 Ficha D - registro de atividades, proced. e notif. Esf",
+    "1 04 07 0015 0 Ficha de cadastro domiciliar e territorial",
+    "1 04 02 0007 6 Ficha de Gram",
+    "1 04 07 0016 8 Ficha de visita domiciliar e territorial",
+    "1 04 06 0009 0 Ficha Pa anamnese odonto noturno ( frente )",
+    "1 04 07 0010 9 Ficha SSA2",
+    "1 04 07 0014 1 Ficha SSA4",
+    "1 04 01 0005 5 Ficha visita domiciliar do RN risco",
+    "1 04 01 0024 1 Gráfico IMC- meninas",
+    "1 04 01 0023 3 Gráfico IMC -meninos azul",
+    "1 04 01 0022 5 Gráfico peso, comprimento e estatura por idade -meninas",
+    "1 04 01 0021 7 Gráfico peso, comprimento e estatura por idade-meninos",
+    "1 04 01 0011 0 Guia encaminhamento audiometria",
+    "1 04 04 0011 3 Guia Inter consulta",
+    "1 04 04 0012 1 Laudo Ecg",
+    "1 04 02 0003 3 Licença gestante",
+    "1 04 07 0011 7 Mapa visita mensal Acs (quadradinho)",
+    "1 04 01 0017 9 Medida da imitância acústica",
+    "1 04 03 0001 1 Programa cessação tabagismo - saúde mental",
+    "1 04 04 0015 6 Receituário azul",
+    "1 04 04 0016 4 Receituário b2",
+    "1 04 04 0013 0 Receituário branco - comum",
+    "1 04 04 0014 8 Receituário controle especial carbonado",
+    "1 04 04 0039 3 Receituário para antimicrobianos",
+    "1 04 06 0007 4 Relação de materiais de odontologia - Cme",
+    "1 04 04 0017 2 Relação de remessa",
+    "1 04 01 0018 7 Relatório de visita de acompanhamento do RN risco",
+    "1 04 07 0013 3 Relatório de visita domiciliar do Acs",
+    "1 04 02 0004 1 Requisição de exame citopatológico - colo de útero",
+    "1 04 02 0006 8 Requisição de punção de mama",
+    "1 04 05 0013 4 Requisição ecocardiografia",
+    "1 04 04 0018 0 Requisição exames imuno hematológico",
+    "1 04 02 0005 0 Requisição para mamografia",
+    "1 04 05 0014 2 Requisição teste ergométrico",
+    "1 04 04 0020 2 Sadt (pedido de exames )",
+    "1 04 04 0041 5 Solicitação de ultrassonografia",
+    "NOVO Solicitação ultrassom mama",
+    "1 04 03 0004 6 Termo de responsabilidade sibutramina",
+    "1 04 03 0002 0 Termo declaração de aceite ou recusa do teste de HIV",
+    "1 04 04 0030 0 Teste de Snellen",
+    "1 04 03 0003 8 Triagem Psico social - saúde mental",
+    "1 05 01 0223 9 Adesivo personalizado programa Dose em Casa - grande (EXCLUSIVO DOSE EM CASA)",
+    "1 05 01 0222 0 Adesivo personalizado programa Dose em Casa - pequeno (EXCLUSIVO DOSE EM CASA)",
+    "1 05 01 0220 4 Caixa tipo Sedex em papelão pardo - grande (EXCLUSIVO DOSE EM CASA)",
+    "1 05 01 0221 2 Caixa tipo Sedex em papelão pardo - pequeno (EXCLUSIVO DOSE EM CASA)",
+    "1 04 04 0048 2 Cartão de dispensação-farmácia da SMS (ESCLUSIVO FARMÁCIA MUNICIPAL)",
+    "1 04 04 0040 7 Ficha atendimento - Espaço Saúde Prof. Cecilia Magaldi (EXCLUSIVO ESPAÇO SAÚDE)",
+    "1 04 05 0009 6 Protocolo de atendimento do Caps 1 (EXCLUSIVO CAPS 1)",
+    "1 04 04 0046 6 Relatório de atendimento ao acidentado do trabalho (R.A.A.T) (EXCLUSIVO CEREST)",
+    "1 04 04 0029 6 Ocorrências dentro do município (EXCLUSIVO CENTRAL DE AMBULÂNCIAS)",
+    "1 04 04 0028 8 Ocorrências fora do município (EXCLUSIVO CENTRAL DE AMBULÂNCIAS)",
+    "1 04 04 0026 1 Requisição de viaturas 192 (EXCLUSIVO CENTRAL DE AMBULÂNCIAS)",
+    "1 04 04 0019 9 Requisição viatura (EXCLUSIVO CENTRAL DE AMBULÂNCIAS)",
+    "NOVO Protocolo atendimento Pré hospitalar - gineco e obstetrícia (EXCLUSIVO SAMU)",
+    "1 04 04 0044 0 Usa - Ficha de atendimento pré-hospitalar do Samu (EXCLUSIVO SAMU)",
+    "1 04 04 0045 8 Usb - Ficha de atendimento pré-hospitalar do Samu (EXCLUSIVO SAMU)",
+    "1 04 01 0015 2 Primeira consulta do recém nascido (EXCLUSIVO CRINICA DO BEBE)",
+    "1 04 01 0013 6 Protocolo do RN (EXCLUSIVO CRINICA DO BEBE)",
+    "1 04 01 0016 0 Registro de amostra do teste do pezinhO (EXCLUSIVO CRINICA DO BEBE)",
+    "1 04 01 0014 4 Resumo do atendimento do recém nascido (EXCLUSIVO CLINICA DO BEBE)",
+    "1 04 01 0019 5 Vigilância à saúde do recém-nascido de risco (preenchimento na maternidade) (EXCLUSIVO CLINICA DO BEBE)",
   ];
 
 const EscritórioItems = [
-     "1 05 01 0003 1 Alfinete colorido unidade: Caixa",
-     "1 05 01 0153 4 Almofada para carimbo nº 2 - azul unidade: Unidade",
-     "1 05 01 0152 6 Almofada para carimbo nº 3 - azul unidade: Unidade",
-     "1 05 01 0002 3 Almofada para carimbo nº 4 - azul unidade: Unidade",
-     "1 05 01 0001 5 Almofada para carimbo nº 4 - vermelha unidade: Unidade",
-     "1 05 01 0004 0 Apagador de madeira unidade: Unidade",
-     "1 05 01 0005 8 Apagador para quadro branco unidade: Unidade",
-     "1 05 01 0006 6 Apontador com depósito unidade: Unidade",
-     "1 05 01 0148 8 Barbante cor natural com 8 fios - rolo c/ 246 metros unidade: Rolo",
-     "1 05 01 0010 4 Bloco para flip shart (50 folhas) unidade: Rolo",
-     "1 05 01 0009 0 Bobina de papel manilha unidade: Rolo",
-     "1 05 01 0011 2 Borracha branca (31mm x 21mm x 6mm) unidade: Unidade",
-     "1 05 01 0186 0 Borracha branca com capa plástica unidade: Unidade",
-     "1 05 01 0156 9 Caderno brochura pequeno - 48 folhas unidade: Unidade",
-     "1 05 01 0104 6 Caderno espiral capa dura pequeno - 48 folhas unidade: Unidade",
-     "1 05 01 0012 0 Caderno capa dura - 96 folhas unidade: Unidade",
-     "1 05 01 0014 7 Caderno espiral grande - 96 folhas unidade: Unidade",
-     "1 05 01 0016 3 Caixa para arquivo em papelão unidade: Unidade",
-     "1 05 01 0231 0 Caixa para arquivo morto polionda azul unidade: Unidade",
-     "1 05 01 0105 4 Calculadora unidade: Unidade",
-     "1 05 01 0017 1 Caneta esferográfica ponta grossa - azul unidade: Unidade",
-     "1 05 01 0018 0 Caneta esferográfica ponta grossa - preta unidade: Unidade",
-     "1 05 01 0019 8 Caneta esferográfica ponta grossa - vermelha unidade: Unidade",
-     "1 05 01 0021 0 Caneta hidrocor - ( jogo 12 cores ) unidade: Jogo",
-     "1 05 01 0022 8 Caneta marca texto luminoso - amarelo unidade: Unidade",
-     "1 05 01 0023 6 Caneta marca texto luminoso - verde unidade: Unidade",
-     "1 05 01 0024 4 Carbono folhas unidade: Folha",
-     "1 08 01 0003 0 CD - RW- regravável unidade: Unidade",
-     "1 05 01 0107 0 Clips 4/0 - caixa com 500 gr unidade: Caixa",
-     "1 05 01 0028 7 Clips 6/0 - caixa com 500 gr unidade: Caixa",
-     "1 05 01 0029 5 Clips 8/0 - caixa com 500 gr unidade: Caixa",
-     "1 05 01 0173 9 Cola bastão branca 40 gr unidade: Unidade",
-     "1 05 01 0186 0 Cola bastão branca 08 gr unidade: Unidade",
-     "1 05 01 0031 7 Cola branca - frasco 40 gr unidade: Unidade",
-     "1 05 01 0206 9 Corretivo fita  4,2mm x 12 m - Seco unidade: Unidade",
-     "1 05 01 0162 3 Corretivo fita  4mm x 45 m - Seco unidade: Unidade",
-     "1 08 01 0002 1 DVD unidade: Unidade",
-     "1 05 01 0033 3 Elástico látex japonês - pacote c/ 100 gramas unidade: Pacote",
-     "1 05 01 0034 1 Envelope carta - cor branca unidade: Unidade",
-     "1 05 01 0035 0 Envelope ofício timbrado - cor branco unidade: Unidade",
-     "1 05 01 0121 6 Envelope pardo médio sem timbre unidade: Unidade",
-     "1 05 01 0228 0 Envelope pardo pequeno sem timbre unidade: Unidade",
-     "1 05 01 0038 4 Envelope pardo timbrado grande - 40 x 34mm unidade: Unidade",
-     "1 05 01 0037 6 Envelope pardo timbrado médio - 35 x 26mm unidade: Unidade",
-     "1 05 01 0036 8 Envelope pardo timbrado pequeno - 18 x 24,8mm unidade: Unidade",
-     "1 05 01 0039 2 Espeto reto para papel unidade: Unidade",
-     "1 05 01 0040 6 Estilete profissional com lâmina de 18mm unidade: Unidade",
-     "1 05 01 0124 0 Etiqueta para pasta (25,4MM x 66,7MM) unidade: Unidade",
-     "1 05 01 0142 9 Etiqueta para pasta (25,4mm x 101,6 mm) unidade: Unidade",
-     "1 05 01 0123 2 Etiqueta para pasta (33,9 MM x 101,6MM) unidade: Unidade",
-     "1 05 01 0042 2 Extrator de grampo - tipo espátula unidade: Unidade",
-     "1 05 01 0122 4 Extrator de grampo - tipo borboleta unidade: Unidade",
-     "1 05 01 0047 3 Fita adesiva empacotamento marrom - 48mm x 45 metros unidade: Rolo",
-     "1 05 01 0048 1 Fita adesiva empacotamento transparente larga - 48mm x 45 metros unidade: Rolo",
-     "1 05 01 0043 0 Fita crepe fina (19mm x 50 metros) unidade: Rolo",
-     "1 05 01 0044 9 Fita crepe larga (50mm x 50 metros) unidade: Rolo",
-     "1 05 01 0051 1 Fita métrica unidade: Unidade",
-     "1 05 01 0045 7 Fita transparente 12mm x 30m - Tipo durex pequeno unidade: Rolo",
-     "1 05 01 0046 5 Fita transparente 12mm x 65m - tipo durex grande unidade: Rolo",
-     "1 08 01 0008 0 Formulário contínuo - 80 colunas (1ª via) unidade: Caixa",
-     "1 08 01 0006 4 Formulário contínuo carbonado - 80 colunas unidade: Caixa",
-     "1 05 01 0055 4 Furador de papel - pequeno unidade: Unidade",
-     "1 05 01 0054 6 Furador de papel - grande unidade: Unidade",
-     "1 05 01 0056 2 Giz branco unidade: Caixa",
-     "1 05 01 0146 1 Giz de cera 12 cores unidade: Caixa",
-     "1 05 01 0058 9 Grampeador grande unidade: Unidade",
-     "1 05 01 0059 7 Grampeador pequeno para grampo 26/6 unidade: Unidade",
-     "1 05 01 0061 9 Grampo latonado tipo colchete nº 10 - caixa c/ 72 unidades unidade: Caixa",
-     "1 05 01 0131 3 Grampo p/grampeador, galvanizado, 26/6 - caixa c/ 5.000 unidades unidade: Caixa",
-     "1 05 01 0062 7 Grampo trilho de 80 mm - caixa c/ 50 unidades unidade: Caixa",
-     "1 06 04 0028 3 Lacre de segurança unidade: Unidade",
-     "1 05 01 0064 3 Lápis de cor - jogo c/ 12 unidades unidade: Caixa",
-     "1 05 01 0063 5 Lápis preto nº 2 unidade: Unidade",
-     "1 05 01 0066 0 Livro ata com 50 folhas unidade: Unidade",
-     "1 05 01 0068 6 Livro protocolo unidade: Unidade",
-     "1 05 01 0072 4 Marcador para retroprojetor 2mm - azul unidade: Unidade",
-     "1 05 01 0070 8 Marcador para retroprojetor 2mm - preto unidade: Unidade",
-     "1 05 01 0069 4 Marcador para retroprojetor 2mm - verde unidade: Unidade",
-     "1 05 01 0071 6 Marcador para retroprojetor 2mm - vermelho unidade: Unidade",
-     "1 05 01 0073 2 Molhador de dedo unidade: Unidade",
-     "1 05 01 0074 0 Papel almaço com pauta unidade: Folha",
-     "1 05 01 0075 9 Papel sulfite A4 - 75mg/m2 (210 X 297) - pacote com 500 folhas unidade: Pacote",
-     "1 05 01 0077 5 Pasta az oficio - estreita com visor unidade: Unidade",
-     "1 05 01 0076 7 Pasta az ofício - larga com visor unidade: Unidade",
-     "1 05 01 0079 1 Pasta catálogo com 30 plásticos unidade: Unidade",
-     "1 05 01 0080 5 Pasta de papelão com elástico unidade: Unidade",
-     "1 05 01 0081 3 Pasta de papelão com ferragem unidade: Unidade",
-     "1 05 01 0084 8 Pasta polionda plástica com elástico 2,5 cm unidade: Unidade",
-     "1 05 01 0085 6 Pasta polionda plástica com elástico 3,5 cm unidade: Unidade",
-     "1 05 01 0086 4 Pasta polionda plástica com elástico 5,5 cm preta unidade: Unidade",
-     "1 05 01 0082 1 Pasta suspensa unidade: Unidade",
-     "1 05 01 0083 0 Percevejo unidade: Caixa",
-     "1 05 01 0087 2 Pincel atômico azul unidade: Unidade",
-     "1 05 01 0088 0 Pincel atômico preto unidade: Unidade",
-     "1 05 01 0090 2 Pincel atômico verde unidade: Unidade",
-     "1 05 01 0089 9 Pincel atômico vermelho unidade: Unidade",
-     "1 05 01 0093 7 Pincel para quadro branco azul unidade: Unidade",
-     "1 05 01 0095 3 Pincel para quadro branco verde unidade: Unidade",
-     "1 05 01 0094 5 Pincel para quadro branco vermelho unidade: Unidade",
-     "1 05 01 0096 1 Pincel para quadro branco preto unidade: Unidade",
-     "1 05 01 0097 0 Plástico para pasta catálogo 4 furos unidade: Unidade",
-     "1 05 01 0109 7 Porta carimbo com 10 lugares unidade: Unidade",
-     "1 05 01 0116 0 Porta carimbo com 8 lugares unidade: Unidade",
-     "1 05 01 0111 9 Prancheta em madeira ou acrílico unidade: Unidade",
-     "1 05 01 0149 6 Quadro branco 120x90cm moldura alumínio unidade: Unidade",
-     "1 05 01 0112 7 Quadro de aviso em cortiça 900mm x 1200 mm unidade: Unidade",
-     "1 05 01 0147 0 Quadro de lousa branca moldura alumínio 900mm x 600 mm unidade: Unidade",
-     "1 05 01 0144 5 Quadro de aviso em cortiça 900mm x 600 mm unidade: Unidade",
-     "1 05 01 0136 4 Régua plástica transparente - 30 cm unidade: Unidade",
-     "1 05 01 0098 8 Régua plástica transparente - 40 cm unidade: Unidade",
-     "1 05 01 0099 6 Suporte durex - grande unidade: Unidade",
-     "1 05 01 0155 0 Suporte durex - pequeno unidade: Unidade",
-     "1 05 01 0100 3 Tarja amarela - tipo durex unidade: Unidade",
-     "1 05 01 0103 8 Tarja azul - tipo durex unidade: Unidade",
-     "1 05 01 0101 1 Tarja verde - tipo durex unidade: Unidade",
-     "1 05 01 0102 0 Tarja vermelha - tipo durex unidade: Unidade",
-     "1 05 01 0113 5 Tesoura grande unidade: Unidade",
-     "1 05 01 0114 3 Tesoura pequena escolar unidade: Unidade",
-     "1 05 01 0115 1 Tinta para carimbo preta unidade: Unidade",
-     "1 05 01 0092 9 Tinta para carimbo vermelho unidade: Unidade",
-     "1 05 01 0178 0 Tinta para carimbo automático - cor preto - aproxima. 30ml unidade: Unidade",
-     "1 05 01 0091 0 Tinta para carimbo azul unidade: Unidade",
+    "1 05 01 0003 1 Alfinete colorido",
+    "1 05 01 0153 4 Almofada para carimbo nº 2 - azul",
+    "1 05 01 0152 6 Almofada para carimbo nº 3 - azul",
+    "1 05 01 0002 3 Almofada para carimbo nº 4 - azul",
+    "1 05 01 0001 5 Almofada para carimbo nº 4 - vermelha",
+    "1 05 01 0004 0 Apagador de madeira",
+    "1 05 01 0005 8 Apagador para quadro branco",
+    "1 05 01 0006 6 Apontador com depósito",
+    "1 05 01 0148 8 Barbante cor natural com 8 fios - rolo c/ 246 metros",
+    "1 05 01 0010 4 Bloco para flip shart (50 folhas)",
+    "1 05 01 0009 0 Bobina de papel manilha",
+    "1 05 01 0011 2 Borracha branca (31mm x 21mm x 6mm)",
+    "1 05 01 186 0 Borracha branca com capa plástica",
+    "1 05 01 0156 9 Caderno brochura pequeno - 48 folhas",
+    "1 05 01 0104 6 Caderno espiral capa dura pequeno - 48 folhas",
+    "1 05 01 0012 0 Caderno capa dura - 96 folhas",
+    "1 05 01 0014 7 Caderno espiral grande - 96 folhas",
+    "1 05 01 0016 3 Caixa para arquivo em papelão",
+    "1 05 01 0231 0 Caixa para arquivo morto polionda azul",
+    "1 05 01 0105 4 Calculadora",
+    "1 05 01 0017 1 Caneta esferográfica ponta grossa - azul",
+    "1 05 01 0018 0 Caneta esferográfica ponta grossa - preta",
+    "1 05 01 0019 8 Caneta esferográfica ponta grossa - vermelha",
+    "1 05 01 0021 0 Caneta hidrocor - ( jogo 12 cores )",
+    "1 05 01 0022 8 Caneta marca texto luminoso - amarelo",
+    "1 05 01 0023 6 Caneta marca texto luminoso - verde",
+    "1 05 01 0024 4 Carbono folhas",
+    "1 08 01 0003 0 CD - RW- regravável",
+    "1 05 01 0107 0 Clips 4/0 - caixa com 500 gr",
+    "1 05 01 0028 7 Clips 6/0 - caixa com 500 gr",
+    "1 05 01 0029 5 Clips 8/0 - caixa com 500 gr",
+    "1 05 01 0173 9 Cola bastão branca 40 gr",
+    "1 05 01 0186 0 Cola bastão branca 08 gr",
+    "1 05 01 0031 7 Cola branca - frasco 40 gr",
+    "1 05 01 0206 9 Corretivo fita  4,2mm x 12 m - Seco",
+    "1 05 01 0162 3 Corretivo fita  4mm x 45 m - Seco",
+    "1 08 01 0002 1 DVD",
+    "1 05 01 0033 3 Elástico látex japonês - pacote c/ 100 gramas",
+    "1 05 01 0034 1 Envelope carta - cor branca",
+    "1 05 01 0035 0 Envelope ofício timbrado - cor branco",
+    "1 05 01 0121 6 Envelope pardo médio sem timbre",
+    "1 05 01 0228 0 Envelope pardo pequeno sem timbre",
+    "1 05 01 0038 4 Envelope pardo timbrado grande - 40 x 34mm",
+    "1 05 01 0037 6 Envelope pardo timbrado médio - 35 x 26mm",
+    "1 05 01 0036 8 Envelope pardo timbrado pequeno - 18 x 24,8mm",
+    "1 05 01 0039 2 Espeto reto para papel",
+    "1 05 01 0040 6 Estilete profissional com lâmina de 18mm",
+    "1 05 01 0124 0 Etiqueta para pasta (25,4MM x 66,7MM)",
+    "1 05 01 0142 9 Etiqueta para pasta (25,4mm x 101,6 mm)",
+    "1 05 01 0123 2 Etiqueta para pasta (33,9 MM x 101,6MM)",
+    "1 05 01 0042 2 Extrator de grampo - tipo espátula",
+    "1 05 01 0122 4 Extrator de grampo - tipo borboleta",
+    "1 05 01 0047 3 Fita adesiva empacotamento marrom - 48mm x 45 metros",
+    "1 05 01 0048 1 Fita adesiva empacotamento transparente larga - 48mm x 45 metros",
+    "1 05 01 0043 0 Fita crepe fina (19mm x 50 metros)",
+    "1 05 01 0044 9 Fita crepe larga (50mm x 50 metros)",
+    "1 05 01 0051 1 Fita métrica",
+    "1 05 01 0045 7 Fita transparente 12mm x 30m - Tipo durex pequeno",
+    "1 05 01 0046 5 Fita transparente 12mm x 65m - tipo durex grande",
+    "1 08 01 0008 0 Formulário contínuo - 80 colunas (1ª via)",
+    "1 08 01 0006 4 Formulário contínuo carbonado - 80 colunas",
+    "1 05 01 0055 4 Furador de papel - pequeno",
+    "1 05 01 0054 6 Furador de papel - grande",
+    "1 05 01 0056 2 Giz branco",
+    "1 05 01 0146 1 Giz de cera 12 cores",
+    "1 05 01 0058 9 Grampeador grande",
+    "1 05 01 0059 7 Grampeador pequeno para grampo 26/6",
+    "1 05 01 0061 9 Grampo latonado tipo colchete nº 10 - caixa c/ 72 unidades",
+    "1 05 01 0131 3 Grampo p/grampeador, galvanizado, 26/6 - caixa c/ 5.000 unidades",
+    "1 05 01 0062 7 Grampo trilho de 80 mm - caixa c/ 50 unidades",
+    "1 06 04 0028 3 Lacre de segurança",
+    "1 05 01 0064 3 Lápis de cor - jogo c/ 12 unidades",
+    "1 05 01 0063 5 Lápis preto nº 2",
+    "1 05 01 0066 0 Livro ata com 50 folhas",
+    "1 05 01 0068 6 Livro protocolo",
+    "1 05 01 0072 4 Marcador para retroprojetor 2mm - azul",
+    "1 05 01 0070 8 Marcador para retroprojetor 2mm - preto",
+    "1 05 01 0069 4 Marcador para retroprojetor 2mm - verde",
+    "1 05 01 0071 6 Marcador para retroprojetor 2mm - vermelho",
+    "1 05 01 0073 2 Molhador de dedo",
+    "1 05 01 0074 0 Papel almaço com pauta",
+    "1 05 01 0075 9 Papel sulfite A4 - 75mg/m2 (210 X 297) - pacote com 500 folhas",
+    "1 05 01 0077 5 Pasta az oficio - estreita com visor",
+    "1 05 01 0076 7 Pasta az ofício - larga com visor",
+    "1 05 01 0079 1 Pasta catálogo com 30 plásticos",
+    "1 05 01 0080 5 Pasta de papelão com elástico",
+    "1 05 01 0081 3 Pasta de papelão com ferragem",
+    "1 05 01 0084 8 Pasta polionda plástica com elástico 2,5 cm",
+    "1 05 01 0085 6 Pasta polionda plástica com elástico 3,5 cm",
+    "1 05 01 0086 4 Pasta polionda plástica com elástico 5,5 cm preta",
+    "1 05 01 0082 1 Pasta suspensa",
+    "1 05 01 0083 0 Percevejo",
+    "1 05 01 0087 2 Pincel atômico azul",
+    "1 05 01 0088 0 Pincel atômico preto",
+    "1 05 01 0090 2 Pincel atômico verde",
+    "1 05 01 0089 9 Pincel atômico vermelho",
+    "1 05 01 0093 7 Pincel para quadro branco azul",
+    "1 05 01 0095 3 Pincel para quadro branco verde",
+    "1 05 01 0094 5 Pincel para quadro branco vermelho",
+    "1 05 01 0096 1 Pincel para quadro branco preto",
+    "1 05 01 0097 0 Plástico para pasta catálogo 4 furos",
+    "1 05 01 0109 7 Porta carimbo com 10 lugares",
+    "1 05 01 0116 0 Porta carimbo com 8 lugares",
+    "1 05 01 0111 9 Prancheta em madeira ou acrílico",
+    "1 05 01 0149 6 Quadro branco 120x90cm moldura alumínio",
+    "1 05 01 0112 7 Quadro de aviso em cortiça 900mm x 1200 mm",
+    "1 05 01 0147 0 Quadro de lousa branca moldura alumínio 900mm x 600 mm",
+    "1 05 01 0144 5 Quadro de aviso em cortiça 900mm x 600 mm",
+    "1 05 01 0136 4 Régua plástica transparente - 30 cm",
+    "1 05 01 0098 8 Régua plástica transparente - 40 cm",
+    "1 05 01 0099 6 Suporte durex - grande",
+    "1 05 01 0155 0 Suporte durex - pequeno",
+    "1 05 01 0100 3 Tarja amarela - tipo durex",
+    "1 05 01 0103 8 Tarja azul - tipo durex",
+    "1 05 01 0101 1 Tarja verde - tipo durex",
+    "1 05 01 0102 0 Tarja vermelha - tipo durex",
+    "1 05 01 0113 5 Tesoura grande",
+    "1 05 01 0114 3 Tesoura pequena escolar",
+    "1 05 01 0115 1 Tinta para carimbo preta",
+    "1 05 01 0092 9 Tinta para carimbo vermelho",
+    "1 05 01 0178 0 Tinta para carimbo automático - cor preto - aproxima. 30ml",
+    "1 05 01 0091 0 Tinta para carimbo azul",
   ];
 
     const Consumo_e_Limpeza_EsporádicosItems = [
-     "1 03 02 0036 7 Assento sanitário unidade: Unidade",
-     "1 03 01 0099 0 Balde plástico com alça de metal - 12 litros unidade: Unidade",
-     "1 03 01 0003 6 Balde plástico com alça de metal - 20 litros unidade: Unidade",
-     "1 03 02 0077 4 Bateria 9 volts unidade: Unidade",
-     "1 03 02 0088 0 Bateria de lítio 1.5/1.55 v - tipo botão unidade: Unidade",
-     "1 03 02 0087 1 Bateria lithium 3 volts CR2032 -  para glicômetros unidade: Unidade",
-     "1 03 01 0004 4 Cabeleira p/ mop unidade: Unidade",
-     "1 03 02 0062 6 Caixa Organizadora Plástica Transparente c/ tampa e trava - Capacidade 34 Litros unidade: Unidade",
-     "1 03 02 0061 8 Caixa Organizadora Plástica Transparente c/ tampa e trava - Capacidade 54 Litros unidade: Unidade",
-     "1 03 02 0063 4 Caixa Organizadora Plástica Transparente c/ tampa e trava - Capacidade 12 Litros unidade: Unidade",
-     "1 03 02 0044 8 Canecão de alumínio com 2 litros unidade: Unidade",
-     "1 03 02 0005 7 Canecão de alumínio com 4 litros unidade: Unidade",
-     "1 03 02 0148 7 Cesto de lixo 10 litros - telado unidade: Unidade",
-     "1 03 02 0146 0 Cobertor de casal (Carrinho de Emergência) unidade: Unidade",
-     "1 03 02 0058 8 Cobertor de solteiro (Carrinho de Emergência) unidade: Unidade",
-     "1 03 01 0009 5 Corda de nylon para varal unidade: Unidade",
-     "1 03 01 0012 5 Desentupidor de vaso sanitário unidade: Unidade",
-     "1 03 01 0011 7 Desentupidor de pia unidade: Unidade",
-     "1 03 01 0067 2 Dispenser - saboneteira unidade: Unidade",
-     "1 03 01 0065 6 Dispenser álcool gel unidade: Unidade",
-     "1 03 01 0066 4 Dispenser papel toalha unidade: Unidade",
-     "1 03 01 0014 1 Escova de cerdas plástica unidade: Unidade",
-     "1 03 01 0015 0 Escova de nylon para limpeza sanitária unidade: Unidade",
-     "1 03 01 0070 2 Extensor para vassoura e rodo de alumínio unidade: Unidade",
-     "1 03 02 0014 6 Garrafa térmica - 1 litro unidade: Unidade",
-     "1 03 02 0015 4 Garrafa térmica - 1,8 litros unidade: Unidade",
-     "1 03 02 0055 3 Guardanapo de tecido para cozinha 60 x 40 unidade: Unidade",
-     "1 03 02 0016 2 Jarra de 1 litro com medidor unidade: Unidade",
-     "1 03 02 0017 0 Jarra de 3 litros unidade: Unidade",
-     "1 03 02 0046 4 Lâmpada comum 60 watts unidade: Unidade",
-     "1 03 02 0086 3 Lixeira plástica com pedal - 100 litros unidade: Unidade",
-     "1 03 01 0023 0 Lixeira plástica com pedal - 35 litros unidade: Unidade",
-     "1 03 02 0053 7 Lixeira plástica com pedal - 60 litros unidade: Unidade",
-     "1 03 01 0069 9 Lixeira plástica com tampa sem pedal (basculante) unidade: Unidade",
-     "1 03 02 0078 2 Lixeira plástica sem pedal com tampa - 100 litros unidade: Unidade",
-     "1 03 01 0031 1 Mangueira de borracha com gatilho e bico com 20 metros unidade: Unidade",
-     "1 03 01 0033 8 Pá para lixo unidade: Unidade",
-     "1 03 02 0021 9 Pilha grande D - pacote com 2 unidades unidade: Unidade",
-     "1 03 02 0022 7 Pilha média C - pacote com 2 unidades unidade: Unidade",
-     "1 03 02 0083 9 Pilhas de dióxido de manganês de lítio tipo 123A unidade: Unidade",
-     "1 03 01 0039 7 Rodinho para pia unidade: Unidade",
-     "1 03 01 0041 9 Rodo de madeira c/ cabo, borracha dupla - 40 cm unidade: Unidade",
-     "1 03 01 0040 0 Rodo de madeira c/ cabo, borracha dupla - 60 cm unidade: Unidade",
-     "1 03 02 0027 8 Suporte para coador plástico nº 103 unidade: Unidade",
-     "1 03 02 0042 1 Suporte para copo água unidade: Unidade",
-     "1 03 01 0060 5 Suporte para cabeleira em alumínio (cabo para mop) unidade: Unidade",
-     "1 03 02 0048 0 Suporte para copo de café unidade: Unidade",
-     "1 03 02 0060 0 Toalha de tecido de mesa quadrada 1,40 x 1,40 mt unidade: Unidade",
-     "1 03 02 0057 0 Toalha de tecido de mesa redonda 1,20 mt unidade: Unidade",
-     "1 03 02 0031 6 Toalha de tecido para rosto unidade: Unidade",
-     "1 03 02 0033 2 Torneira para filtro unidade: Unidade",
-     "1 03 02 0034 0 Vela para filtro unidade: Unidade",
-     "1 03 01 0091 5 Vassoura de nylon c/ cabo unidade: Unidade",
-     "1 03 01 0054 0 Vassoura de pêlo c/ cabo de madeira unidade: Unidade",
-     "1 03 02 0050 2 Vassoura para limpar teto unidade: Unidade",
+    "1 03 02 0036 7 Assento sanitário",
+    "1 03 01 0099 0 Balde plástico com alça de metal - 12 litros",
+    "1 03 01 0003 6 Balde plástico com alça de metal - 20 litros",
+    "1 03 02 0077 4 Bateria 9 volts",
+    "1 03 02 0088 0 Bateria de lítio 1.5/1.55 v - tipo botão",
+    "1 03 02 0087 1 Bateria lithium 3 volts CR2032 - para glicômetros",
+    "1 03 01 0004 4 Cabeleira p/ mop",
+    "1 03 02 0062 6 Caixa Organizadora Plástica Transparente c/ tampa e trava - Capacidade 34 Litros",
+    "1 03 02 0061 8 Caixa Organizadora Plástica Transparente c/ tampa e trava - Capacidade 54 Litros",
+    "1 03 02 0063 4 Caixa Organizadora Plástica Transparente c/ tampa e trava - Capacidade 12 Litros",
+    "1 03 02 0044 8 Canecão de alumínio com 2 litros",
+    "1 03 02 0005 7 Canecão de alumínio com 4 litros",
+    "1 03 02 0148 7 Cesto de lixo 10 litros - telado",
+    "1 03 02 0146 0 Cobertor de casal (Carrinho de Emergência)",
+    "1 03 02 0058 8 Cobertor de solteiro (Carrinho de Emergência)",
+    "1 03 01 0009 5 Corda de nylon para varal",
+    "1 03 01 0012 5 Desentupidor de vaso sanitário",
+    "1 03 01 0011 7 Desentupidor de pia",
+    "1 03 01 0067 2 Dispenser - saboneteira",
+    "1 03 01 0065 6 Dispenser álcool gel",
+    "1 03 01 0066 4 Dispenser papel toalha",
+    "1 03 01 0014 1 Escova de cerdas plástica",
+    "1 03 01 0015 0 Escova de nylon para limpeza sanitária",
+    "1 03 01 0070 2 Extensor para vassoura e rodo de alumínio",
+    "1 03 02 0014 6 Garrafa térmica - 1 litro",
+    "1 03 02 0015 4 Garrafa térmica - 1,8 litros",
+    "1 03 02 0055 3 Guardanapo de tecido para cozinha 60 x 40",
+    "1 03 02 0016 2 Jarra de 1 litro com medidor",
+    "1 03 02 0017 0 Jarra de 3 litros",
+    "1 03 02 0046 4 Lâmpada comum 60 watts",
+    "1 03 02 0086 3 Lixeira plástica com pedal - 100 litros",
+    "1 03 01 0023 0 Lixeira plástica com pedal - 35 litros",
+    "1 03 02 0053 7 Lixeira plástica com pedal - 60 litros",
+    "1 03 01 0069 9 Lixeira plástica com tampa sem pedal (basculante)",
+    "1 03 02 0078 2 Lixeira plástica sem pedal com tampa - 100 litros",
+    "1 03 01 0031 1 Mangueira de borracha com gatilho e bico com 20 metros",
+    "1 03 01 0033 8 Pá para lixo",
+    "1 03 02 0040 5 Pés para geladeira - jogo 04 unidades",
+    "1 03 02 0021 9 Pilha grande D - pacote com 2 unidades",
+    "1 03 02 0022 7 Pilha média C - pacote com 2 unidades",
+    "1 03 02 0083 9 Pilhas de dióxido de manganês de lítio tipo 123A",
+    "1 03 01 0037 0 Prendedor p/ Roupas - pacote com 12 unidades",
+    "1 03 01 0039 7 Rodinho para pia",
+    "1 03 01 0041 9 Rodo de madeira c/ cabo, borracha dupla - 40 cm",
+    "1 03 01 0040 0 Rodo de madeira c/ cabo, borracha dupla - 60 cm",
+    "1 03 01 0042 7 Sabão de côco em barra - 200 grs",
+    "1 03 02 0027 8 Suporte para coador plástico nº 103",
+    "1 03 02 0042 1 Suporte para copo água",
+    "1 03 01 0060 5 Suporte para cabeleira em alumínio (cabo para mop)",
+    "1 03 02 0048 0 Suporte para copo de café",
+    "1 03 02 0060 0 Toalha de tecido de mesa quadrada 1,40 x 1,40 mt",
+    "1 03 02 0057 0 Toalha de tecido de mesa redonda 1,20 mt",
+    "1 03 02 0031 6 Toalha de tecido para rosto",
+    "1 03 02 0033 2 Torneira para filtro",
+    "1 03 02 0034 0 Vela para filtro",
+    "1 03 01 0091 5 Vassoura de nylon c/ cabo",
+    "1 03 01 0054 0 Vassoura de pêlo c/ cabo de madeira",
+    "1 03 02 0050 2 Vassoura para limpar teto",
   ];
 
     const Consumo_e_Limpeza_PeriódicoItems = [
-     "1 03 02 0001 4 Açúcar cristal - pacote c/ 5 kg unidade: Pacote",
-     "1 03 01 0001 0 Álcool 70º - limpeza superfície - c/ 1 litro unidade: Litro",
-     "1 03 02 0002 2 Aparelho de barbear descartável unidade: Unidade",
-     "1 03 02 0038 3 Cadeado de 30 mm (Fornecido pelo Almoxarifado da SMS) unidade: Unidade",
-     "1 03 02 0037 5 Cadeado de 40 mm (Fornecido pelo Almoxarifado da SMS) unidade: Unidade",
-     "1 03 01 0073 7 Cera liquida amarela - galão c/ 750 ml unidade: Galão",
-     "1 03 01 0006 0 Cera liquida incolor - galão c/ 5 litros unidade: Galão",
-     "1 03 01 0092 3 Cera liquida incolor - galão c/ 750 ml unidade: Galão",
-     "1 03 02 0006 5 Chá mate - caixa c/ 500 g unidade: Caixa",
-     "1 03 02 0008 1 Copo plástico descartável para água - 180 ml - pacote c/ 100 unidades unidade: Pacote",
-     "1 03 02 0009 0 Copo plástico descartável para café - 50 ml - pacote c/ 100 unidades unidade: Pacote",
-     "1 03 01 0010 9 Desinfetante liquido - galão c/ 5 litros unidade: Galão",
-     "1 03 01 0013 3 Detergente líquido - galão c/ 5 litros unidade: Galão",
-     "1 03 01 0016 8 Esponja de limpeza dupla face unidade: Unidade",
-     "1 03 02 0012 0 Filme pvc transparente - rolo c/ 15 metros unidade: Rolo",
-     "1 03 02 0011 1 Filtro de papel nº 103 - caixa c/ 30 un unidade: Caixa",
-     "1 03 01 0071 0 Flanela p/ limpeza 30 cm x 40 cm unidade: Unidade",
-     "1 03 02 0013 8 Fósforo - maço c/ 10 caixas unidade: Unidade",
-     "1 03 01 0018 4 Inseticida spray - frasco c/ 300 ml unidade: Unidade",
-     "1 03 01 0019 2 Lã de aço - tipo bom bril - pacote c/ 8 unid unidade: Pacote",
-     "1 03 01 0020 6 Limpa inox - frasco c/ 500 ml unidade: Frasco",
-     "1 03 01 0024 9 Lustra-móveis - frasco c/ 200 ml unidade: Frasco",
-     "1 03 01 0086 9 Multilimpador - frasco c/ 500 ml unidade: Unidade",
-     "1 03 01 0035 4 Pano de chão (saco alvejado) unidade: Unidade",
-     "1 03 02 0051 0 Pano desengordurante multiuso - pacote c/ 05 unidades unidade: Pacote",
-     "1 03 02 0020 0 Papel alumínio - rolo pequeno de 30cm x 7,5 metros unidade: Rolo",
-     "1 03 01 0036 2 Papel higiênico branco - rolo c/ 40 metros unidade: Rolo",
-     "1 03 02 0019 7 Papel toalha absorvente -  pacote c/ 2 rolos unidade: Pacote",
-     "1 03 02 0024 3 Pilha alcalina palito AAA - pacote com 4 unidades unidade: Unidade",
-     "1 03 02 0023 5 Pilha pequena AA - pacote com 2 unidades unidade: Unidade",
-     "1 03 02 0025 1 Pó de café - pacote c/ 500 gramas unidade: Pacote",
-     "1 03 01 0038 9 Removedor de cera - frasco 1 litro unidade: Frasco",
-     "1 03 01 0043 5 Sabão em barra - pacote c/ 5 un de 200 gramas cada unidade: Pacote",
-     "1 03 01 0044 3 Sabão em pó - caixa c/ 1 kg unidade: Caixa",
-     "1 03 01 0045 1 Sabonete líquido - galão c/ 5 litros unidade: Galão",
-     "1 03 01 0046 0 Sabonete perfumado - 90 gramas unidade: Unidade",
-     "1 03 01 0050 8 Saco plástico p/ lixo preto - 100 litros unidade: Unidade",
-     "1 03 01 0075 3 Saco plastico p/ lixo preto - 30 litros unidade: Unidade",
-     "1 03 01 0068 0 Saco plástico p/ lixo preto - 50 litros unidade: Unidade",
-     "1 03 01 0051 6 Sapólio em pó - frasco c/ 300 gramas unidade: Frasco",
-     "1 03 02 0032 4 Toalha de papel interfolhas branca - Pacote c/ 1000 Folhas unidade: Pacote",
+    "1 03 02 0001 4 Açúcar cristal - pacote c/ 5 kg",
+    "1 03 01 0001 0 Álcool 70º - limpeza superfície - c/ 1 litro",
+    "1 03 02 0002 2 Aparelho de barbear descartável",
+    "1 03 02 0038 3 Cadeado de 30 mm (Fornecido pelo Almoxarifado da SMS)",
+    "1 03 02 0037 5 Cadeado de 40 mm (Fornecido pelo Almoxarifado da SMS)",
+    "1 03 01 0073 7 Cera liquida amarela - galão c/ 750 ml",
+    "1 03 01 0006 0 Cera liquida incolor - galão c/ 5 litros",
+    "1 03 01 0092 3 Cera liquida incolor - galão c/ 750 ml",
+    "1 03 02 0006 5 Chá mate - caixa c/ 500 g",
+    "1 03 02 0008 1 Copo plástico descartável para água - 180 ml - pacote c/ 100 unidades",
+    "1 03 02 0009 0 Copo plástico descartável para café - 50 ml - pacote c/ 100 unidades",
+    "1 03 01 0010 9 Desinfetante liquido - galão c/ 5 litros",
+    "1 03 01 0013 3 Detergente líquido - galão c/ 5 litros",
+    "1 03 01 0016 8 Esponja de limpeza dupla face",
+    "1 03 02 0012 0 Filme pvc transparente - rolo c/ 15 metros",
+    "1 03 02 0011 1 Filtro de papel nº 103 - caixa c/ 30 un",
+    "1 03 01 0071 0 Flanela p/ limpeza 30 cm x 40 cm",
+    "1 03 02 0013 8 Fósforo - maço c/ 10 caixas",
+    "1 03 01 0018 4 Inseticida spray - frasco c/ 300 ml",
+    "1 03 01 0019 2 Lã de aço - tipo bom bril - pacote c/ 8 unid",
+    "1 03 01 0020 6 Limpa inox - frasco c/ 500 ml",
+    "1 03 01 0024 9 Lustra-móveis - frasco c/ 200 ml",
+    "1 03 01 0086 9 Multilimpador - frasco c/ 500 ml",
+    "1 03 01 0035 4 Pano de chão (saco alvejado)",
+    "1 03 02 0051 0 Pano desengordurante multiuso - pacote c/ 05 unidades",
+    "1 03 02 0020 0 Papel alumínio - rolo pequeno de 30cm x 7,5 metros",
+    "1 03 01 0036 2 Papel higiênico branco - rolo c/ 40 metros",
+    "1 03 02 0019 7 Papel toalha absorvente - pacote c/ 2 rolos",
+    "1 03 02 0024 3 Pilha alcalina palito AAA - pacote com 4 unidades",
+    "1 03 02 0023 5 Pilha pequena AA - pacote com 2 unidades",
+    "1 03 02 0025 1 Pó de café - pacote c/ 500 gramas",
+    "1 03 01 0038 9 Removedor de cera - frasco 1 litro",
+    "1 03 01 0043 5 Sabão em barra - pacote c/ 5 un de 200 gramas cada",
+    "1 03 01 0044 3 Sabão em pó - caixa c/ 1 kg",
+    "1 03 01 0045 1 Sabonete líquido - galão c/ 5 litros",
+    "1 03 01 0046 0 Sabonete perfumado - 90 gramas",
+    "1 03 01 0050 8 Saco plástico p/ lixo preto - 100 litros",
+    "1 03 01 0075 3 Saco plástico p/ lixo preto - 30 litros",
+    "1 03 01 0068 0 Saco plástico p/ lixo preto - 50 litros",
+    "1 03 01 0051 6 Sapólio em pó - frasco c/ 300 gramas",
+    "1 03 02 0030 8 Tee p/ tomada (Fornecido pelo Almoxarifado da SMS)",
+    "1 03 02 0032 4 Toalha de papel interfolhas branca - Pacote c/ 1000 Folhas",
   ];
 
     const Enfermagem_Urgência_e_EmergênciaItems = [
-     "1 02 10 0001 6 Cadarço fixador (Rolo c/ 50 metros) unidade: Unidade",
-     "1 02 10 0002 4 Campo operatório estéril - pacote com 5 unidades unidade: Pacote",
-     "1 02 18 0019 5 Cânula de entubação c/ cuff nº 3,0 unidade: Unidade",
-     "1 02 18 0020 9 Cânula de entubação c/ cuff nº 3,5 Unidade 0 Aguardar Aquisição Cânula de entubação c/ cuff nº 4,0 unidade: Unidade",
-     "1 02 18 0023 3 Cânula de entubação c/ cuff nº 4,5 unidade: Unidade",
-     "1 02 18 0018 7 Cânula de entubação c/ cuff nº 5,0 unidade: Unidade",
-     "1 02 18 0031 4 Cânula de entubação c/ cuff nº 5,5 unidade: Unidade",
-     "1 02 18 0006 3 Cânula de entubação c/ cuff nº 6,0 unidade: Unidade",
-     "1 02 18 0007 1 Cânula de entubação c/ cuff nº 6,5 unidade: Unidade",
-     "1 02 18 0008 0 Cânula de entubação c/ cuff nº 7,0 unidade: Unidade",
-     "1 02 18 0003 9 Cânula de entubação c/ cuff nº 7,5 unidade: Unidade",
-     "1 02 18 0004 7 Cânula de entubação c/ cuff nº 8,0 unidade: Unidade",
-     "1 02 18 0001 2 Cânula de guedel - conjunto unidade: Conjunto",
-     "1 02 10 0003 2 Cateter de O2 - tipo óculos unidade: Unidade",
-     "1 02 13 0004 4 Cateter intravenoso periférico nº 14 - com NR32. unidade: Unidade",
-     "1 02 01 0012 2 Cateter intravenoso periférico nº 16 - com NR32. unidade: Unidade",
-     "1 02 13 0001 0 Cateter intravenoso periférico nº 18 - com NR32. unidade: Unidade",
-     "1 02 01 0013 0 Cateter intravenoso periférico nº 20 - com NR32. unidade: Unidade",
-     "1 02 13 0002 8 Cateter intravenoso periférico nº 22 - com NR32. Unidade 0ALMOXARIFADO OSS PIRANGI - PEDIDO MENSAL Enfermagem (Urgência e Emergência) *MÊS do Consumo JULHO (2025) Revisão A unidade: 01/10/2019",
-     "1 02 13 0003 6 Cateter intravenoso periférico nº 24 - com NR32. unidade: Unidade",
-     "1 02 10 0006 7 Colar cervical G unidade: Unidade",
-     "1 02 10 0005 9 Colar cervical M unidade: Unidade",
-     "1 02 10 0004 0 Colar cervical P unidade: Unidade",
-     "1 02 10 0033 4 Eletrodo descartavel adulto - Cmos Drake unidade: Envelope",
-     "1 02 10 0007 5 Eletrodo descartável adulto p/ desfibrilador - Dea (Schiller) unidade: Envelope",
-     "1 02 10 0039 3 Eletrodo descartavel adulto/infantil - Philips unidade: Envelope",
-     "1 02 10 0034 2 Eletrodo descartavel infantil - Cmos Drake unidade: Envelope",
-     "1 02 10 0016 4 Eletrodo descartavel infantil para desfibrilador - Dea (Schiller) unidade: Envelope",
-     "1 02 12 0014 7 Eletrodo p/ ecg pré-cordial em metal (ventosa) unidade: Unidade",
-     "1 02 06 0013 3 Extensor intermediario duas vias (polifix) unidade: Unidade",
-     "1 02 10 0009 1 Mandril p/ entubação - adulto unidade: Unidade",
-     "1 02 10 0010 5 Mandril p/ entubação infantil unidade: Unidade",
-     "1 02 06 0020 6 Solução cristaloide de ringer com lactato - bolsa 1.000 ml unidade: Bolsa",
-     "1 02 06 0017 6 Solução cristalóide de ringer com lactato - bolsa 500 ml unidade: Bolsa",
-     "1 02 06 0012 5 Solução de glicose 5% bolsa/frasco de 250ml unidade: Unidade",
-     "1 02 07 0022 7 Sonda aspiração traqueal nº 06 - c/ valvula unidade: Unidade",
-     "1 02 07 0024 3 Sonda aspiração traqueal nº 10 - c/ valvula unidade: Unidade",
-     "1 02 07 0023 5 Sonda aspiração traqueal nº 8 - c/ valvula unidade: Unidade",
-     "1 02 06 0016 8 Soro fisiologico 0,9% injetável - frasco 1.000 ml unidade: Frasco",
-     "1 02 03 0020 2 Soro fisiológico 0,9% injetável - frasco 500ml unidade: Frasco",
-     "1 02 06 0010 9 Soro glicofisiológico a 5% - frasco de 500 ml unidade: Unidade",
-     "1 02 06 0018 4 Soro glicosado a 5% bolsa /frasco 100 ml unidade: Unidade",
-     "1 02 10 0013 0 Tala p/ imobilização grande 86x10x2,5 cm unidade: Unidade",
-     "1 02 10 0012 1 Tala p/ imobilização média 63x9x0,2 cm unidade: Unidade",
-     "1 02 10 0011 3 Tala p/ imobilização pequena ( dedo ) 16x180 mm unidade: Unidade",
-     "1 02 10 0057 1 Tala p/ imobilização pequena (SAMU) unidade: Unidade",
-     "1 02 06 0014 1 Torneirinha 3 vias Unidade 0 Revisão A - 01/10/2019 2 Revisão A unidade: 01/10/2019",
+    "1 02 10 0001 6 Cadarço fixador (Rolo c/ 50 metros)",
+    "1 02 10 0002 4 Campo operatório estéril - pacote com 5 unidades",
+    "1 02 18 0019 5 Cânula de entubação c/ cuff nº 3,0",
+    "1 02 18 0020 9 Cânula de entubação c/ cuff nº 3,5",
+    "Aguardar Aquisição Cânula de entubação c/ cuff nº 4,0",
+    "1 02 18 0023 3 Cânula de entubação c/ cuff nº 4,5",
+    "1 02 18 0018 7 Cânula de entubação c/ cuff nº 5,0",
+    "1 02 18 0031 4 Cânula de entubação c/ cuff nº 5,5",
+    "1 02 18 0006 3 Cânula de entubação c/ cuff nº 6,0",
+    "1 02 18 0007 1 Cânula de entubação c/ cuff nº 6,5",
+    "1 02 18 0008 0 Cânula de entubação c/ cuff nº 7,0",
+    "1 02 18 0003 9 Cânula de entubação c/ cuff nº 7,5",
+    "1 02 18 0004 7 Cânula de entubação c/ cuff nº 8,0",
+    "1 02 18 0001 2 Cânula de guedel - conjunto",
+    "1 02 10 0003 2 Cateter de O2 - tipo óculos",
+    "1 02 13 0004 4 Cateter intravenoso periférico nº 14 - com NR32",
+    "1 02 01 0012 2 Cateter intravenoso periférico nº 16 - com NR32",
+    "1 02 13 0001 0 Cateter intravenoso periférico nº 18 - com NR32",
+    "1 02 01 0013 0 Cateter intravenoso periférico nº 20 - com NR32",
+    "1 02 13 0002 8 Cateter intravenoso periférico nº 22 - com NR32",
+    "1 02 13 0003 6 Cateter intravenoso periférico nº 24 - com NR32",
+    "1 02 10 0006 7 Colar cervical G",
+    "1 02 10 0005 9 Colar cervical M",
+    "1 02 10 0004 0 Colar cervical P",
+    "1 02 10 0033 4 Eletrodo descartavel adulto - Cmos Drake",
+    "1 02 10 0007 5 Eletrodo descartável adulto p/ desfibrilador - Dea (Schiller)",
+    "1 02 10 0039 3 Eletrodo descartavel adulto/infantil - Philips",
+    "1 02 10 0034 2 Eletrodo descartavel infantil - Cmos Drake",
+    "1 02 10 0016 4 Eletrodo descartavel infantil para desfibrilador - Dea (Schiller)",
+    "1 02 12 0014 7 Eletrodo p/ ecg pré-cordial em metal (ventosa)",
+    "1 02 06 0013 3 Extensor intermediario duas vias (polifix)",
+    "1 02 10 0009 1 Mandril p/ entubação - adulto",
+    "1 02 10 0010 5 Mandril p/ entubação infantil",
+    "1 02 06 0020 6 Solução cristaloide de ringer com lactato - bolsa 1.000 ml",
+    "1 02 06 0017 6 Solução cristalóide de ringer com lactato - bolsa 500 ml",
+    "1 02 06 0012 5 Solução de glicose 5% bolsa/frasco de 250ml",
+    "1 02 07 0022 7 Sonda aspiração traqueal nº 06 - c/ valvula",
+    "1 02 07 0024 3 Sonda aspiração traqueal nº 10 - c/ valvula",
+    "1 02 07 0023 5 Sonda aspiração traqueal nº 8 - c/ valvula",
+    "1 02 06 0016 8 Soro Fisiológico 0,9% injetável - frasco 1.000 ml",
+    "1 02 03 0020 2 Soro fisiológico 0,9% injetável - frasco 500ml",
+    "1 02 06 0010 9 Soro glicofisiológico a 5% - frasco de 500 ml",
+    "1 02 06 0018 4 Soro glicosado a 5% bolsa /frasco 100 ml",
+    "1 02 10 0013 0 Tala p/ imobilização grande 86x10x2,5 cm",
+    "1 02 10 0012 1 Tala p/ imobilização média 63x9x0,2 cm",
+    "1 02 10 0011 3 Tala p/ imobilização pequena ( dedo ) 16x180 mm",
+    "1 02 10 0057 1 Tala p/ imobilização pequena (SAMU)",
+    "1 02 06 0014 1 Torneirinha 3 vias",
   ];
 
     const Enfermagem_Teste_DSTItems = [
-     "1 01 20 0335 0 Teste rápido (Anti Hcv) Alere unidade: Caixa",
-     "1 01 20 0336 9 Teste rápido (Anti Hep B) unidade: Caixa",
-     "1 01 20 0334 2 Teste rápido (Anti Hiv ) Alere unidade: Caixa",
-     "1 01 20 0340 7 Teste rápido Hiv - Abon unidade: Caixa",
-     "1 01 20 0370 9 Teste rápido Hiv - Bioclin unidade: Caixa",
-     "1 01 20 0332 6 Teste rápido Hiv - Biomanguinhos unidade: Caixa",
-     "1 01 20 0409 8 Teste rápido Hiv - Med Levensohn unidade: Caixa",
-     "1 01 20 0333 4 Teste rápido Hiv - Rapid Check unidade: Caixa",
-     "1 01 20 0330 0 Teste rápido Hiv F.O (frasco oral) unidade: Caixa",
-     "1 01 20 0344 0 Teste rápido sífilis - Alere unidade: Caixa",
-     "1 01 20 0415 2 Teste rápido sífilis - Bioclin unidade: Caixa",
-     "1 01 20 0331 8 Teste rápido sífilis - Biomanguinhos unidade: Caixa",
-     "1 01 20 0405 5 Teste rápido sífilis - Wama unidade: Caixa",
-     "1 01 20 0434 9 Teste rápido Sífilis - Abon unidade: Caixa",
+    "1 01 20 0335 0 Teste rápido (Anti Hcv) Alere",
+    "1 01 20 0336 9 Teste rápido (Anti Hep B)",
+    "1 01 20 0334 2 Teste rápido (Anti Hiv ) Alere",
+    "1 01 20 0340 7 Teste rápido Hiv - Abon",
+    "1 01 20 0370 9 Teste rápido Hiv - Bioclin",
+    "1 01 20 0332 6 Teste rápido Hiv - Biomanguinhos",
+    "1 01 20 0409 8 Teste rápido Hiv - Med Levensohn",
+    "1 01 20 0333 4 Teste rápido Hiv - Rapid Check",
+    "1 01 20 0330 0 Teste rápido Hiv F.O (frasco oral)",
+    "1 01 20 0344 0 Teste rápido sífilis - Alere",
+    "1 01 20 0415 2 Teste rápido sífilis - Bioclin",
+    "1 01 20 0331 8 Teste rápido sífilis - Biomanguinhos",
+    "1 01 20 0405 5 Teste rápido sífilis - Wama",
+    "1 01 20 0434 9 Teste rápido Sífilis - Abon",
   ];
 
     const Epi_ConsumoItems = [
-     "1 06 04 0023 2 Avental de proteção em vinil unidade: Unidade",
-     "1 06 04 0014 3 Bota borracha branca cano curto - nº 34 unidade: Par",
-     "1 06 04 0015 1 Bota borracha branca cano curto - nº 35 unidade: Par",
-     "1 06 04 0016 0 Bota borracha branca cano curto - nº 36 unidade: Par",
-     "1 06 04 0017 8 Bota borracha branca cano curto - nº 37 unidade: Par",
-     "1 06 04 0018 6 Bota borracha branca cano curto - nº 38 unidade: Par",
-     "1 06 04 0008 9 Bota borracha branca cano curto - nº 39 unidade: Par",
-     "1 06 04 0009 7 Bota borracha branca cano curto - nº 40 unidade: Par",
-     "1 06 04 0010 0 Bota borracha branca cano curto - nº 41 unidade: Par",
-     "1 06 04 0019 4 Bota borracha branca cano curto - nº 42 unidade: Par",
-     "1 06 04 0021 6 Bota borracha branca cano curto - nº 43 unidade: Par",
-     "1 06 04 0022 4 Bota borracha branca cano curto - nº 44 unidade: Par",
-     "1 06 04 0020 8 Bota borracha branca cano curto - nº 45 unidade: Par",
-     "1 06 04 0024 0 Luva de segurança em borracha cano longo PP unidade: Par",
-     "1 06 04 0025 9 Luva de segurança em borracha cano longo M unidade: Par",
-     "1 06 04 0026 7 Luva de segurança em borracha cano longo G unidade: Par",
-     "1 06 04 0027 5 Luva de segurança em borracha cano longo EG unidade: Par",
-     "1 03 01 0025 7 Luva de borracha com forro cano curto pequena unidade: Par",
-     "1 03 01 0026 5 Luva de borracha com forro cano curto média unidade: Par",
-     "1 03 01 0027 3 Luva de borracha com forro cano curto grande unidade: Par",
-     "1 03 01 0029 0 Luva de borracha com forro cano curto extra grande unidade: Par",
-     "1 06 04 0004 6 Jaleco profissional em tecido - PP unidade: Unidade",
-     "1 06 04 0003 8 Jaleco profissional em tecido - P unidade: Unidade",
-     "1 06 04 0002 0 Jaleco profissional em tecido - M unidade: Unidade",
-     "1 06 04 0005 4 Jaleco profissional em tecido - G unidade: Unidade",
-     "1 06 04 0006 2 Jaleco profissional em tecido - GG unidade: Unidade",
-     "1 06 04 0007 0 Jaleco profissional em tecido - EG unidade: Unidade",
-     "1 06 04 0067 4 Jaleco profissional em tecido - EXG unidade: Unidade",
-     "1 06 04 0074 7 Protetor auditivo tipo inserção unidade: Unidade",
-     "1 02 10 0024 5 Respirador descartável semi facial pff2 com carvão ativado (gases ácidos) unidade: Unidade",
-     "1 02 10 0035 0 Respirador descartável semi facial pff2 com carvão ativado (vapores orgânicos) unidade: Unidade",
-     "1 02 10 0023 7 Máscara de proteção N 95 (respirador) (4.01.03 - ENFERMAGEM) unidade: Unidade",
-     "1 07 01 0090 8 Óculos de proteção translucido (4.01.02 - ODONTO) unidade: Unidade",
-     "1 06 04 0029 1 Óculos de proteção laranja (4.01.02 - ODONTO) unidade: Unidade",
-     "1 06 04 0001 1 Protetor facial (viseira) (4.01.02 - ODONTO) unidade: Unidade",
+    "1 06 04 0023 2 Avental de proteção em vinil",
+    "1 06 04 0014 3 Bota borracha branca cano curto - nº 34",
+    "1 06 04 0015 1 Bota borracha branca cano curto - nº 35",
+    "1 06 04 0016 0 Bota borracha branca cano curto - nº 36",
+    "1 06 04 0017 8 Bota borracha branca cano curto - nº 37",
+    "1 06 04 0018 6 Bota borracha branca cano curto - nº 38",
+    "1 06 04 0008 9 Bota borracha branca cano curto - nº 39",
+    "1 06 04 0009 7 Bota borracha branca cano curto - nº 40",
+    "1 06 04 0010 0 Bota borracha branca cano curto - nº 41",
+    "1 06 04 0019 4 Bota borracha branca cano curto - nº 42",
+    "1 06 04 0021 6 Bota borracha branca cano curto - nº 43",
+    "1 06 04 0022 4 Bota borracha branca cano curto - nº 44",
+    "1 06 04 0020 8 Bota borracha branca cano curto - nº 45",
+    "1 06 04 0024 0 Luva de segurança em borracha cano longo PP",
+    "1 06 04 0025 9 Luva de segurança em borracha cano longo M",
+    "1 06 04 0026 7 Luva de segurança em borracha cano longo G",
+    "1 06 04 0027 5 Luva de segurança em borracha cano longo EG",
+    "1 03 01 0025 7 Luva de borracha com forro cano curto pequena",
+    "1 03 01 0026 5 Luva de borracha com forro cano curto média",
+    "1 03 01 0027 3 Luva de borracha com forro cano curto grande",
+    "1 03 01 7 Luva de borracha com forro cano curto extra grande",
+    "1 06 04 0004 6 Jaleco profissional em tecido - PP",
+    "1 06 04 0003 8 Jaleco profissional em tecido - P",
+    "1 06 04 0002 0 Jaleco profissional em tecido - M",
+    "1 06 04 0005 4 Jaleco profissional em tecido - G",
+    "1 06 04 0006 2 Jaleco profissional em tecido - GG",
+    "1 06 04 0007 0 Jaleco profissional em tecido - EG",
+    "1 06 04 0067 4 Jaleco profissional em tecido - EXG",
+    "1 06 04 0074 7 Protetor auditivo tipo inserção",
+    "1 02 10 0024 5 Respirador descartável semi facial pff2 com carvão ativado (gases ácidos)",
+    "1 02 10 0035 0 Respirador descartável semi facial pff2 com carvão ativado (vapores orgânicos)",
+    "1 02 10 0023 7 Máscara de proteção N 95 (respirador) (4.01.03 - ENFERMAGEM)",
+    "1 07 01 0090 8 Óculos de proteção translucido (4.01.02 - ODONTO)",
+    "1 06 04 0029 1 Óculos de proteção laranja (4.01.02 - ODONTO)",
+    "1 06 04 0001 1 Protetor facial (viseira) (4.01.02 - ODONTO)",
   ];
 
     function updateDatalist(setorId, sectorValue) {
@@ -2579,10 +2071,7 @@ const EscritórioItems = [
       }
       items.forEach(item => {
         const option = document.createElement('option');
-        // Texto exibido sem "unidade: ..."
-        const display = item.replace(/\s*unidade:\s*[^,\n]+/i, '').trim();
-        option.value = display;                   // o usuário vê o texto limpo
-        option.dataset.original = item;           // guardamos o original para usar no formulário
+        option.value = item;
         datalist.appendChild(option);
       });
     }
@@ -2659,7 +2148,7 @@ const EscritórioItems = [
       const setores = document.querySelectorAll('.setor input[name="setor"]');
       const setoresSelecionados = Array.from(setores).map(input => input.value.trim());
       if (setoresSelecionados.includes(value)) {
-        mostrarMensagemTopo('Este setor já foi adicionado.');
+        alert('Este setor já foi adicionado.');
         return;
       }
       const selected = document.querySelector(`#${setorId} .selected`);
@@ -2715,12 +2204,11 @@ const EscritórioItems = [
           <label>Quantidade:</label>
           <input type="number" class="item-qtd" min="1" required>
         </div>
-        
-<div class="item-input-group item-unidade-group">
-  <label>Unidade de Controle</label>
-  <input type="text" class="unidade-controle" readonly />
-</div>
-    <input type="hidden" class="item-unidade" name="unidade" value="">
+        <div class="item-input-group item-unidade-group">
+  <label>Unidade de Controle:</label>
+  <div class="custom-select" id="${unidadeId}">
+    <div class="selected" onclick="toggleOptions('${unidadeId}')">Selecione</div>
+    <input type="hidden" class="item-unidade" name="unidade" value="" required>
     <div class="options">
       <div class="option" data-value="Comprimido" onclick="selectOptionUnidade(\'${unidadeId}\', 'Comprimido')">Comprimido</div>
       <div class="option" data-value="Cápsula" onclick="selectOptionUnidade(\'${unidadeId}\', 'Cápsula')">Cápsula</div>
@@ -2749,22 +2237,9 @@ const EscritórioItems = [
       const valorAtual = input.value.trim();
       const duplicatas = itensExistentes.filter((item, idx) => item === valorAtual && itensExistentes.indexOf(item) !== idx);
       if (duplicatas.length > 0) {
-        mostrarMensagemTopo('Este item já foi adicionado.');
+        alert('Este item já foi adicionado.');
         input.value = '';
       }
-      // Auto-preenche a unidade de controle a partir do texto do item
-      try {
-        const itemDiv = input.closest('.item');
-        if (itemDiv) {
-          const hiddenUnidade = itemDiv.querySelector('.item-unidade');
-          const selectedDiv = itemDiv.querySelector('.custom-select .selected');
-          const m = (input.value || '').match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
-          const unidadeEncontrada = m ? m[1] : '';
-          if (hiddenUnidade) hiddenUnidade.value = unidadeEncontrada;
-          if (selectedDiv) selectedDiv.textContent = unidadeEncontrada || 'Selecione';
-        }
-      } catch (e) { /* noop */ }
-    
     }
 
     function removerItem(button) {
@@ -2776,7 +2251,7 @@ const EscritórioItems = [
       const solicitante = document.getElementById('solicitante').value.trim();
       const unidade = document.getElementById('unidade').value.trim();
       if (!solicitante || !unidade) {
-        mostrarMensagemTopo('Por favor, preencha os campos: Responsável pela solicitação e Unidade de sáude.');
+        alert('Por favor, preencha os campos: Responsável pela solicitação e Unidade de sáude.');
         return;
       }
       const setores = document.querySelectorAll('.setor');
@@ -2787,12 +2262,12 @@ const EscritórioItems = [
         const itensQtds = setor.querySelectorAll('.item-qtd');
         if (!nomeSetor) {
           todosSetoresValidos = false;
-          mostrarMensagemTopo('Por favor, selecione um setor.');
+          alert('Por favor, selecione um setor.');
           return;
         }
         if (itensNomes.length === 0) {
           todosSetoresValidos = false;
-          mostrarMensagemTopo('Por favor, adicione pelo menos um item em cada setor.');
+          alert('Por favor, adicione pelo menos um item em cada setor.');
           return;
         }
         itensNomes.forEach((input, index) => {
@@ -2800,7 +2275,7 @@ const EscritórioItems = [
           const qtd = itensQtds[index].value.trim();
           if (!nome || !qtd) {
             todosSetoresValidos = false;
-            mostrarMensagemTopo('Por favor, preencha todos os campos de item e quantidade.');
+            alert('Por favor, preencha todos os campos de item e quantidade.');
             return;
           }
           let validItems;
@@ -2831,7 +2306,7 @@ const EscritórioItems = [
           }
           if (!validItems.includes(nome)) {
             todosSetoresValidos = false;
-            mostrarMensagemTopo(`O item "${nome}" não é válido para o setor ${nomeSetor}.`);
+            alert(`O item "${nome}" não é válido para o setor ${nomeSetor}.`);
             return;
           }
         });
@@ -2852,13 +2327,11 @@ const EscritórioItems = [
           const nome = input.value;
           const qtd = itensQtds[index].value;
           const unidades = setor.querySelectorAll('.item-unidade');
-const unidade = (unidades[index] && unidades[index].value) ? unidades[index].value : '';
+const unidade = unidades[index] ? unidades[index].value : '';
 let m = nome.trim().match(/^((?:\d+\s+){4}\d+)\s+(.*)$/);
 let codigo = '';
 let descricao = nome;
 if (m) { codigo = m[1]; descricao = m[2]; }
-
-descricao = descricao.replace(/\s*unidade:\s*[^,\n]+/gi, '').trim();
 corpoEmail += `${codigo ? codigo + ' - ' : ''}${descricao} - ${qtd} ${pluralizarUnidade(unidade, qtd)}
 `;
         });
@@ -2887,7 +2360,7 @@ if (win) {
   document.addEventListener('keydown', function(e) {
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
       e.preventDefault();
-      mostrarMensagemTopo("Salvar página está desativado.");
+      alert("Salvar página está desativado.");
     }
   });
 </script>
@@ -3014,7 +2487,7 @@ function selectOptionUnidade(unidadeId, value) {
           qtdItem.classList.add('erro-campo');
         }
         if (unidadeItem && !unidadeItem.value.trim()) {
-          errosPorSetor[setorNomeSelecionado].push(`
+          errosPorSetor[setorNomeSelecionado].push(`Unidade de controle do item ${iIndex + 1} não preenchida`);
           unidadeItem.classList.add('erro-campo');
         }
       });
@@ -3186,12 +2659,16 @@ document.addEventListener("DOMContentLoaded", function() {
       const nome = itemDiv.querySelector(".item-nome")?.value;
       const quantidade = itemDiv.querySelector(".item-qtd")?.value;
       const unidadeControle = itemDiv.querySelector(".item-unidade")?.value;
-      );
+      // Captura o setor a partir do container .setor mais próximo
+      const setorContainer = itemDiv.closest(".setor");
+      const setor = setorContainer ? (setorContainer.querySelector('input[name="setor"]')?.value || "") : "";
+      if (nome && quantidade && unidadeControle) {
+        itens.push({ nome, quantidade, unidadeControle, setor });
       }
     });
 
     if (!solicitante || !unidade || itens.length === 0) {
-      mostrarMensagemTopo("⚠️ Preencha todos os campos e adicione pelo menos um item.");
+      alert("⚠️ Preencha todos os campos e adicione pelo menos um item.");
       return;
     }
 
@@ -3204,12 +2681,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
     try {
       await addDoc(collection(db, "pedidos"), dados);
-      mostrarMensagemTopo("<h3>✅ Pedido enviado com sucesso!</h3>", "success");
+      alert("✅ Pedido enviado com sucesso!");
       document.getElementById("pedidoForm").reset();
       document.getElementById("setoresContainer").innerHTML = "";
     } catch (erro) {
       console.error("Erro ao salvar no Firebase:", erro);
-      mostrarMensagemTopo("❌ Erro ao enviar o pedido. Tente novamente.");
+      alert("❌ Erro ao enviar o pedido. Tente novamente.");
     }
   }
 
@@ -3224,137 +2701,6 @@ document.addEventListener("DOMContentLoaded", function() {
       setTimeout(() => { btn.disabled = false; }, 2000);
     });
   }
-</script>
-
-
-<script>
-function atualizarUnidade() {
-  const select = document.getElementById("medicamento");
-  const valor = select.value;
-  if (!valor) return;
-  const match = valor.match(/unidade:\s*([^"]+)/i);
-  if (match) {
-    document.getElementById("unidadeControle").value = match[1].trim();
-  }
-}
-</script>
-
-
-<script>
-function atualizarUnidade(selectElement) {
-  const valor = selectElement.value;
-  if (!valor) return;
-  const match = valor.match(/unidade:\\s*([^"]+)/i);
-  if (match) {
-    const unidadeInput = selectElement.closest(".item-row").querySelector(".unidadeControle");
-    if (unidadeInput) {
-      unidadeInput.value = match[1].trim();
-    }
-  }
-}
-</script>
-
-
-<script>
-function atualizarUnidade(selectElement) {
-  const valor = selectElement.value;
-  if (!valor) return;
-
-  const match = valor.match(/unidade:\s*([^"]+)/i);
-  if (match) {
-    const unidadeInput = selectElement.closest(".item-row").querySelector(".unidadeControle");
-    if (unidadeInput) {
-      unidadeInput.value = match[1].trim();
-    }
-  }
-}
-</script>
-
-
-<script>
-document.addEventListener("input", function(e) {
-  if (e.target && e.target.classList.contains("item-nome")) {
-    const itemDiv = e.target.closest(".item");
-    if (itemDiv) {
-      const unidadeControleInput = itemDiv.querySelector(".unidade-controle");
-      preencherUnidadeControle(e.target.value, unidadeControleInput);
-    }
-  }
-});
-</script>
-
-
-
-
-
-<script>
-// --- Ocultar "unidade:" na lista, restaurar valor original e preencher Unidade de Controle ---
-(function() {
-  function handleInput(e) {
-    if (!e.target.classList || !e.target.classList.contains('item-nome')) return;
-    var listId = e.target.getAttribute('list');
-    var dl = listId ? document.getElementById(listId) : null;
-    if (!dl) return;
-    var match = Array.from(dl.options).find(function(o){ 
-      return o.value === e.target.value && o.dataset && o.dataset.original; 
-    });
-    if (match) {
-      // Valor original (com unidade:)
-      var original = match.dataset.original;
-      e.target.value = original;
-
-      // Preenche automaticamente a "Unidade de Controle"
-      var m = original.match(/unidade:\s*([^,\n]+)/i);
-      if (m) {
-        // tenta encontrar pelo id ou classe
-        var unidadeCtrl = document.getElementById('unidade-controle') || document.querySelector('.unidade-controle'); 
-        if (unidadeCtrl) unidadeCtrl.value = m[1].trim();
-      }
-
-      // dispara change para manter as lógicas já existentes
-      var evt = new Event('change', { bubbles: true });
-      e.target.dispatchEvent(evt);
-    }
-  }
-  document.addEventListener('input', handleInput, true);
-})();
-</script>
-
-
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-  const form = document.getElementById("pedidoForm");
-  const btnEnviar = document.getElementById("enviarPedido");
-
-  btnEnviar.addEventListener("click", function() {
-    const camposObrigatorios = form.querySelectorAll("[required]");
-    let erros = [];
-    let primeiroErro = null;
-
-    // Limpa erros anteriores
-    document.querySelectorAll(".erro-campo").forEach(el => el.classList.remove("erro-campo"));
-    limparMensagensTopo();
-
-    camposObrigatorios.forEach(campo => {
-      if (!campo.value.trim()) {
-        erros.push("O campo " + (campo.previousElementSibling?.innerText || campo.name || campo.id) + " é obrigatório.");
-        campo.classList.add("erro-campo");
-        if (!primeiroErro) primeiroErro = campo;
-      }
-    });
-
-    if (erros.length > 0) {
-      let msg = "<h3>⚠️ Preencha os seguintes campos obrigatórios:</h3><ul>";
-      erros.forEach(e => msg += "<li>" + e + "</li>");
-      msg += "</ul>";
-      mostrarMensagemTopo(msg, "erro");
-      if (primeiroErro) primeiroErro.focus();
-    } else {
-      mostrarMensagemTopo("<h3>✅ Pedido válido! Enviando...</h3>", "sucesso");
-      // Aqui você pode colocar a função de envio original
-    }
-  });
-});
 </script>
 
 </body>
@@ -3413,7 +2759,7 @@ document.addEventListener("DOMContentLoaded", function() {
   .item .item-input-group.item-unidade-group { flex: 1 1 100%; }
 }
 
-/* 
+/* Unidade de Controle com mesmo estilo do campo Setor */
 .item .item-input-group.item-unidade-group select {
   width: 100%;
   padding: 14px 18px;
@@ -3433,18 +2779,18 @@ document.addEventListener("DOMContentLoaded", function() {
 }
 
 
-/* 
+/* Unidade de Controle reutiliza o mesmo visual do Setor */
 .item .item-input-group.item-unidade-group .custom-select {
   width: 100%;
 }
 
-/* === Correção mínima: altura da 
+/* === Correção mínima: altura da Unidade de Controle igual aos outros campos === */
 .item .item-input-group.item-unidade-group .custom-select .selected {
   height: 48px;       /* mesma altura do input */
   line-height: 48px;  /* centraliza verticalmente */
 }
 
-/* === Ajuste final: 
+/* === Ajuste final: Unidade de Controle com a mesma altura da Quantidade === */
 .item .item-input-group.item-unidade-group .custom-select .selected {
   height: 40px;       /* mesma altura da Quantidade */
   line-height: 40px;  /* centraliza verticalmente */
@@ -3455,35 +2801,7 @@ document.addEventListener("DOMContentLoaded", function() {
     display: none;
   }
 </style>
-</meta>
-<script>
-// --- Mensagens no topo (sem alert do navegador) ---
-(function(){
-  window.mostrarMensagemTopo = function(msgHTML, tipo) {
-    try {
-      var painel = document.getElementById('mensagensErros');
-      if (!painel) return;
-      painel.classList.remove('success');
-      painel.classList.remove('erro');
-      var isSuccess = (tipo === 'sucesso' || tipo === 'success');
-      painel.classList.add(isSuccess ? 'success' : 'erro');
-      if (typeof msgHTML === 'string') {
-        painel.innerHTML = msgHTML;
-      } else {
-        painel.innerHTML = String(msgHTML);
-      }
-      painel.style.display = 'block';
-      painel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    } catch(e) { /* noop */ }
-  };
-  window.limparMensagensTopo = function() {
-    var painel = document.getElementById('mensagensErros');
-    if (painel) { painel.style.display = 'none'; painel.innerHTML = ''; painel.classList.remove('success','erro'); }
-  };
-})();
-</script>
-
-</head>
+</meta></head>
   
 <body>
 <script src="/protege-pagina.js"></script>
@@ -3542,12 +2860,13 @@ document.addEventListener("DOMContentLoaded", function() {
       const nome = itemDiv.querySelector(".item-nome")?.value;
       const quantidade = itemDiv.querySelector(".item-qtd")?.value;
       const unidadeControle = itemDiv.querySelector(".item-unidade")?.value;
-      );
+      if (nome && quantidade && unidadeControle) {
+        itens.push({ nome, quantidade, unidadeControle });
       }
     });
 
     if (!solicitante || !unidade || itens.length === 0) {
-      mostrarMensagemTopo("⚠️ Preencha todos os campos e adicione pelo menos um item.");
+      alert("⚠️ Preencha todos os campos e adicione pelo menos um item.");
       return;
     }
 
@@ -3560,12 +2879,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
     try {
       await addDoc(collection(db, "pedidos"), dados);
-      mostrarMensagemTopo("<h3>✅ Pedido enviado com sucesso!</h3>", "success");
+      alert("✅ Pedido enviado com sucesso!");
       document.getElementById("pedidoForm").reset();
       document.getElementById("setoresContainer").innerHTML = "";
     } catch (erro) {
       console.error("Erro ao salvar no Firebase:", erro);
-      mostrarMensagemTopo("❌ Erro ao enviar o pedido. Tente novamente.");
+      alert("❌ Erro ao enviar o pedido. Tente novamente.");
     }
   }
 
@@ -3582,171 +2901,4 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 </script>
 
-
-<script>
-function atualizarUnidade() {
-  const select = document.getElementById("medicamento");
-  const valor = select.value;
-  if (!valor) return;
-  const match = valor.match(/unidade:\s*([^"]+)/i);
-  if (match) {
-    document.getElementById("unidadeControle").value = match[1].trim();
-  }
-}
-</script>
-
-
-<script>
-function atualizarUnidade(selectElement) {
-  const valor = selectElement.value;
-  if (!valor) return;
-  const match = valor.match(/unidade:\\s*([^"]+)/i);
-  if (match) {
-    const unidadeInput = selectElement.closest(".item-row").querySelector(".unidadeControle");
-    if (unidadeInput) {
-      unidadeInput.value = match[1].trim();
-    }
-  }
-}
-</script>
-
-
-<script>
-function atualizarUnidade(selectElement) {
-  const valor = selectElement.value;
-  if (!valor) return;
-
-  const match = valor.match(/unidade:\s*([^"]+)/i);
-  if (match) {
-    const unidadeInput = selectElement.closest(".item-row").querySelector(".unidadeControle");
-    if (unidadeInput) {
-      unidadeInput.value = match[1].trim();
-    }
-  }
-}
-</script>
-
-
-<script>
-document.addEventListener("input", function(e) {
-  if (e.target && e.target.classList.contains("item-nome")) {
-    const itemDiv = e.target.closest(".item");
-    if (itemDiv) {
-      const unidadeControleInput = itemDiv.querySelector(".unidade-controle");
-      preencherUnidadeControle(e.target.value, unidadeControleInput);
-    }
-  }
-});
-</script>
-
-
-
-
-
-<script>
-// --- Ocultar "unidade:" na lista, restaurar valor original e preencher Unidade de Controle ---
-(function() {
-  function handleInput(e) {
-    if (!e.target.classList || !e.target.classList.contains('item-nome')) return;
-    var listId = e.target.getAttribute('list');
-    var dl = listId ? document.getElementById(listId) : null;
-    if (!dl) return;
-    var match = Array.from(dl.options).find(function(o){ 
-      return o.value === e.target.value && o.dataset && o.dataset.original; 
-    });
-    if (match) {
-      // Valor original (com unidade:)
-      var original = match.dataset.original;
-      e.target.value = original;
-
-      // Preenche automaticamente a "Unidade de Controle"
-      var m = original.match(/unidade:\s*([^,\n]+)/i);
-      if (m) {
-        // tenta encontrar pelo id ou classe
-        var unidadeCtrl = document.getElementById('unidade-controle') || document.querySelector('.unidade-controle'); 
-        if (unidadeCtrl) unidadeCtrl.value = m[1].trim();
-      }
-
-      // dispara change para manter as lógicas já existentes
-      var evt = new Event('change', { bubbles: true });
-      e.target.dispatchEvent(evt);
-    }
-  }
-  document.addEventListener('input', handleInput, true);
-})();
-</script>
-
-
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-  const form = document.getElementById("pedidoForm");
-  const btnEnviar = document.getElementById("enviarPedido");
-
-  btnEnviar.addEventListener("click", function() {
-    const camposObrigatorios = form.querySelectorAll("[required]");
-    let erros = [];
-    let primeiroErro = null;
-
-    // Limpa erros anteriores
-    document.querySelectorAll(".erro-campo").forEach(el => el.classList.remove("erro-campo"));
-    limparMensagensTopo();
-
-    camposObrigatorios.forEach(campo => {
-      if (!campo.value.trim()) {
-        erros.push("O campo " + (campo.previousElementSibling?.innerText || campo.name || campo.id) + " é obrigatório.");
-        campo.classList.add("erro-campo");
-        if (!primeiroErro) primeiroErro = campo;
-      }
-    });
-
-    if (erros.length > 0) {
-      let msg = "<h3>⚠️ Preencha os seguintes campos obrigatórios:</h3><ul>";
-      erros.forEach(e => msg += "<li>" + e + "</li>");
-      msg += "</ul>";
-      mostrarMensagemTopo(msg, "erro");
-      if (primeiroErro) primeiroErro.focus();
-    } else {
-      mostrarMensagemTopo("<h3>✅ Pedido enviado com sucesso! </h3>", "");
-      // Aqui você pode colocar a função de envio original
-    }
-  });
-});
-</script>
-
-</body></html>
-<script>
-// --- Mensagens no topo (sem alert do navegador) ---
-(function(){
-  window.mostrarMensagemTopo = function(msgHTML, tipo) {
-    try {
-      var painel = document.getElementById('mensagensErros');
-      if (!painel) return;
-      painel.classList.remove('success');
-      painel.classList.remove('erro');
-      var isSuccess = (tipo === 'sucesso' || tipo === 'success');
-      painel.classList.add(isSuccess ? 'success' : 'erro');
-      if (typeof msgHTML === 'string') {
-        painel.innerHTML = msgHTML;
-      } else {
-        painel.innerHTML = String(msgHTML);
-      }
-      painel.style.display = 'block';
-      painel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    } catch(e) { /* noop */ }
-  };
-  window.limparMensagensTopo = function() {
-    var painel = document.getElementById('mensagensErros');
-    if (painel) { painel.style.display = 'none'; painel.innerHTML = ''; painel.classList.remove('success','erro'); }
-  };
-})();
-</script>
-
-</head></html>
-
-<style>
-  #mensagensErros.success {
-    border-color: #2e7d32;
-    background-color: #e8f5e9;
-    color: #1b5e20;
-  }
-</style>
+</body></html></head></html>
