@@ -2142,6 +2142,8 @@ const EscritórioItems = [
           const unidadeEncontrada = m ? m[1] : '';
           if (hiddenUnidade) hiddenUnidade.value = unidadeEncontrada;
           if (selectedDiv) selectedDiv.textContent = unidadeEncontrada || 'Selecione';
+          var unidadeCtrl = itemDiv.querySelector('.unidade-controle');
+          if (unidadeCtrl) unidadeCtrl.value = unidadeEncontrada;
         }
       } catch (e) { /* noop */ }
     
@@ -2671,6 +2673,7 @@ document.addEventListener("input", function(e) {
 // --- Ocultar "unidade:" na lista, restaurar valor original e preencher Unidade de Controle ---
 (function() {
   
+
 function handleInput(e) {
     if (!e.target.classList || !e.target.classList.contains('item-nome')) return;
     var listId = e.target.getAttribute('list');
@@ -2679,6 +2682,33 @@ function handleInput(e) {
     var match = Array.from(dl.options).find(function(o){ 
       return o.value === e.target.value && o.dataset && o.dataset.original; 
     });
+    if (match) {
+      // Mantém o texto LIMPO no campo (sem "unidade: ...")
+      var original = match.dataset.original;
+      var display = original.replace(/\s*unidade:\s*[^,\n]+/i, '').trim();
+      e.target.value = display;
+
+      // Descobre a unidade a partir do original
+      var m = original.match(/unidade:\s*([^,\n]+)/i);
+      var unidade = m ? m[1].trim() : '';
+
+      // Preenche campos de unidade no mesmo bloco .item
+      var itemDiv = e.target.closest('.item');
+      if (itemDiv) {
+        var hiddenUnidade = itemDiv.querySelector('.item-unidade');
+        if (hiddenUnidade) hiddenUnidade.value = unidade;
+        var unidadeCtrl = itemDiv.querySelector('.unidade-controle');
+        if (unidadeCtrl) unidadeCtrl.value = unidade;
+        var selectedDiv = itemDiv.querySelector('.custom-select .selected');
+        if (selectedDiv) selectedDiv.textContent = unidade || 'Selecione';
+      }
+
+      // Dispara change para manter lógicas existentes
+      var evt = new Event('change', { bubbles: true });
+      e.target.dispatchEvent(evt);
+    }
+}
+);
     if (match) {
       // Mantém o texto LIMPO no campo (sem "unidade: ...")
       var original = match.dataset.original;
