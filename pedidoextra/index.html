@@ -8,12 +8,23 @@
       window.location.replace("https://almoxarifadobotucatu.netlify.app/");
     }
   
+
 function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
-    // Captura a unidade da string (ex: "unidade: Comprimido")
+    // Primeiro tenta capturar padrão "unidade: ..."
     const match = itemSelecionado.match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
     if (match) {
-        unidadeControleInput.value = match[1]; // Ex: "Comprimido"
+        unidadeControleInput.value = match[1];
     } else {
+        // Se não encontrou, pega tudo após o último "-"
+        const partes = itemSelecionado.split("-");
+        if (partes.length > 1) {
+            unidadeControleInput.value = partes[partes.length - 1].trim();
+        } else {
+            unidadeControleInput.value = "";
+        }
+    }
+}
+ else {
         unidadeControleInput.value = "";
     }
 }
