@@ -684,41 +684,6 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
 
 
 <style>
-  #mensagensErros {
-    display: none;
-    margin: 20px 0;
-    padding: 18px 22px;
-    border-left: 6px solid;
-    border-radius: 10px;
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 15px;
-    line-height: 1.6;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
-    animation: fadeIn 0.4s ease-in-out;
-    position: relative;
-  }
-  #mensagensErros.erro {
-    background: #fff5f5;
-    border-color: #e53e3e;
-    color: #742a2a;
-  }
-  #mensagensErros.success {
-    background: #f0fff4;
-    border-color: #38a169;
-    color: #22543d;
-  }
-  #mensagensErros h3 {
-    margin: 0 0 8px 0;
-    font-size: 16px;
-    font-weight: 600;
-  }
-  #mensagensErros ul {
-    margin: 0;
-    padding-left: 20px;
-  }
-  #mensagensErros li {
-    margin-bottom: 6px;
-  }
   #mensagensErros .fechar-alerta {
     position: absolute;
     top: 8px;
@@ -729,10 +694,6 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
     font-weight: bold;
     color: inherit;
     cursor: pointer;
-  }
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-10px); }
-    to { opacity: 1; transform: translateY(0); }
   }
 </style>
 
@@ -2744,45 +2705,93 @@ document.addEventListener("input", function(e) {
 
 
 <script>
-document.addEventListener("click", function(e) {
-  if (e.target.classList.contains("fechar-alerta")) {
-    const painel = document.getElementById("mensagensErros");
-    painel.style.display = "none";
-  }
-});
-</script>
-
-<script>
 document.addEventListener("DOMContentLoaded", function() {
   const form = document.getElementById("pedidoForm");
   const btnEnviar = document.getElementById("enviarPedido");
 
   btnEnviar.addEventListener("click", function() {
-    const camposObrigatorios = form.querySelectorAll("[required]");
-    let erros = [];
+    let errosGeral = [];
+    let errosSetores = [];
     let primeiroErro = null;
 
+    // limpar erros anteriores
     document.querySelectorAll(".erro-campo").forEach(el => el.classList.remove("erro-campo"));
     limparMensagensTopo();
 
-    camposObrigatorios.forEach(campo => {
-      if (!campo.value.trim()) {
-        erros.push("O campo '" + (campo.previousElementSibling?.innerText || campo.name || campo.id) + "' é obrigatório.");
-        campo.classList.add("erro-campo");
-        if (!primeiroErro) primeiroErro = campo;
-      }
-    });
+    // --- Geral ---
+    const solicitante = document.getElementById("solicitante");
+    const unidade = document.getElementById("unidade");
 
-    if (erros.length > 0) {
+    if (!solicitante.value.trim()) {
+      errosGeral.push("Responsável pela solicitação");
+      solicitante.classList.add("erro-campo");
+      if (!primeiroErro) primeiroErro = solicitante;
+    }
+    if (!unidade.value.trim()) {
+      errosGeral.push("Unidade de saúde");
+      unidade.classList.add("erro-campo");
+      if (!primeiroErro) primeiroErro = unidade;
+    }
+
+    // --- Setores e Itens ---
+    const setores = document.querySelectorAll(".setor");
+    if (setores.length === 0) {
+      errosSetores.push("Setor não selecionado");
+    } else {
+      setores.forEach((setor, idx) => {
+        const nomeSetor = setor.querySelector(".custom-select .selected");
+        if (!nomeSetor || nomeSetor.innerText.includes("Selecione")) {
+          errosSetores.push("Setor não selecionado");
+          if (!primeiroErro) primeiroErro = setor;
+        }
+
+        const itens = setor.querySelectorAll(".item");
+        itens.forEach((item, i) => {
+          const nomeItem = item.querySelector("input[type=text]");
+          const qtdItem = item.querySelector("input[type=number]");
+          const unidadeItem = item.querySelector("select");
+
+          if (!nomeItem || !nomeItem.value.trim()) {
+            errosSetores.push("Nome do item " + (i+1) + " não preenchido");
+            nomeItem.classList.add("erro-campo");
+            if (!primeiroErro) primeiroErro = nomeItem;
+          }
+          if (!qtdItem || !qtdItem.value.trim() || isNaN(qtdItem.value) || Number(qtdItem.value) <= 0) {
+            errosSetores.push("Quantidade do item " + (i+1) + " inválida");
+            qtdItem.classList.add("erro-campo");
+            if (!primeiroErro) primeiroErro = qtdItem;
+          }
+          if (!unidadeItem || !unidadeItem.value.trim()) {
+            errosSetores.push("Unidade de controle do item " + (i+1) + " não preenchida");
+            unidadeItem.classList.add("erro-campo");
+            if (!primeiroErro) primeiroErro = unidadeItem;
+          }
+        });
+      });
+    }
+
+    // --- Monta alerta ---
+    if (errosGeral.length > 0 || errosSetores.length > 0) {
       let msg = "<button class='fechar-alerta'>&times;</button>";
-      msg += "<h3>⚠️ Erros encontrados:</h3><ul>";
-      erros.forEach(e => msg += "<li>" + e + "</li>");
-      msg += "</ul>";
+      msg += "<h3>⚠️ Preencha os seguintes campos obrigatórios:</h3>";
+
+      if (errosGeral.length > 0) {
+        msg += "<p><strong>Geral</strong></p><ul>";
+        errosGeral.forEach(e => { msg += "<li>• " + e + "</li>"; });
+        msg += "</ul>";
+      }
+
+      if (errosSetores.length > 0) {
+        msg += "<p><strong>Setor não selecionado</strong></p><ul>";
+        errosSetores.forEach(e => { msg += "<li>• " + e + "</li>"; });
+        msg += "</ul>";
+      }
+
       mostrarMensagemTopo(msg, "erro");
       if (primeiroErro) primeiroErro.focus();
     } else {
       let msg = "<button class='fechar-alerta'>&times;</button>";
-      msg += "<h3>✅ Pedido válido!</h3><p>O pedido está pronto para envio.</p>";
+      msg += "<h3>✅ Verificação concluída</h3><p>Todos os campos obrigatórios foram preenchidos corretamente. O pedido está apto para prosseguir.</p>";
       mostrarMensagemTopo(msg, "success");
     }
   });
