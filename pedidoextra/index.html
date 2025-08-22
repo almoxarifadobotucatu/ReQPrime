@@ -2706,35 +2706,291 @@ document.addEventListener("DOMContentLoaded", function() {
   const form = document.getElementById("pedidoForm");
   const btnEnviar = document.getElementById("enviarPedido");
 
-  btnEnviar.addEventListener("click", function() {
-    const camposObrigatorios = form.querySelectorAll("[required]");
-    let erros = [];
-    let primeiroErro = null;
+</script>
+<script>
+// === VALIDADOR_AUTOMATICO ===
+(function() {
+  function limparErros(root) {
+    (root || document).querySelectorAll('.erro-campo').forEach(el => el.classList.remove('erro-campo'));
+    const painel = document.getElementById('mensagensErros');
+    if (painel) painel.style.display = 'none';
+  }
 
-    // Limpa erros anteriores
-    document.querySelectorAll(".erro-campo").forEach(el => el.classList.remove("erro-campo"));
-    limparMensagensTopo();
+  function getCampo(refs) {
+    for (const sel of refs) {
+      const el = document.querySelector(sel);
+      if (el) return el;
+    }
+    return null;
+  }
 
-    camposObrigatorios.forEach(campo => {
-      if (!campo.value.trim()) {
-        erros.push("O campo " + (campo.previousElementSibling?.innerText || campo.name || campo.id) + " é obrigatório.");
-        campo.classList.add("erro-campo");
-        if (!primeiroErro) primeiroErro = campo;
+  function validarFormulario() {
+    limparErros(document);
+    let errosPorSetor = {};
+
+    // Campos principais
+    const solicitanteEl = getCampo(['#solicitante','input[name="solicitante" i]']);
+    const unidadeSaudeEl = getCampo(['#unidade','input[name="unidade" i]:not(.item-unidade)']);
+
+    if (solicitanteEl && !solicitanteEl.value.trim()) {
+      errosPorSetor["Geral"] = errosPorSetor["Geral"] || [];
+      errosPorSetor["Geral"].push("Responsável pela solicitação");
+      solicitanteEl.classList.add('erro-campo');
+    }
+    if (unidadeSaudeEl && !unidadeSaudeEl.value.trim()) {
+      errosPorSetor["Geral"] = errosPorSetor["Geral"] || [];
+      errosPorSetor["Geral"].push("Unidade de saúde");
+      unidadeSaudeEl.classList.add('erro-campo');
+    }
+
+    // Setores
+    const setores = Array.from(document.querySelectorAll('.setor'));
+    setores.forEach((setor, sIndex) => {
+      const setorInput = setor.querySelector('input[name="setor"]');
+      const setorNomeSelecionado = (setorInput && setorInput.value.trim()) ? setorInput.value.trim() : "Setor não selecionado";
+
+      if (!errosPorSetor[setorNomeSelecionado]) {
+        errosPorSetor[setorNomeSelecionado] = [];
+      }
+
+      if (!setorInput || !setorInput.value.trim()) {
+        errosPorSetor[setorNomeSelecionado].push("Setor não selecionado");
+        if (setorInput) setorInput.classList.add('erro-campo');
+      }
+
+      const itens = Array.from(setor.querySelectorAll('.item'));
+      if (itens.length === 0) {
+        errosPorSetor[setorNomeSelecionado].push("Nenhum item adicionado");
+      }
+
+      itens.forEach((item, iIndex) => {
+        const nomeItem = item.querySelector('.item-nome');
+        const qtdItem = item.querySelector('.item-qtd');
+        const unidadeItem = item.querySelector('.item-unidade');
+
+        if (nomeItem && !nomeItem.value.trim()) {
+          errosPorSetor[setorNomeSelecionado].push(`Nome do item ${iIndex + 1} não preenchido`);
+          nomeItem.classList.add('erro-campo');
+        }
+        if (qtdItem && (!qtdItem.value || Number(qtdItem.value) <= 0)) {
+          errosPorSetor[setorNomeSelecionado].push(`Quantidade do item ${iIndex + 1} inválida`);
+          qtdItem.classList.add('erro-campo');
+        }
+        if (unidadeItem && !unidadeItem.value.trim()) {
+          errosPorSetor[setorNomeSelecionado].push(`Unidade de controle do item ${iIndex + 1} não preenchida`);
+          unidadeItem.classList.add('erro-campo');
+        }
+      });
+    });
+    // Remover setores sem erros para evitar listar "Setor" sem itens de erro
+    for (const key of Object.keys(errosPorSetor)) {
+      if (!Array.isArray(errosPorSetor[key]) || errosPorSetor[key].length === 0) {
+        delete errosPorSetor[key];
+      }
+    }
+
+
+
+    if (Object.keys(errosPorSetor).length) {
+      let msgHTML = "<h3>⚠️ Preencha os seguintes campos obrigatórios:</h3>";
+      for (const setor in errosPorSetor) {
+        msgHTML += `<strong>${setor}</strong><ul>`;
+        errosPorSetor[setor].forEach(err => {
+          msgHTML += `<li>${err}</li>`;
+        });
+        msgHTML += "</ul>";
+      }
+      const painel = document.getElementById('mensagensErros');
+      if (painel) {
+        painel.innerHTML = msgHTML;
+        painel.style.display = 'block';
+        painel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      const primeiroErro = document.querySelector('.erro-campo');
+      if (primeiroErro) {
+        try { primeiroErro.focus(); } catch (_e) {}
+      }
+      return false;
+    }
+    return true;
+  }
+
+  function armarListeners() {
+    const form = document.getElementById('pedidoForm') || document.querySelector('form');
+    const enviarBtn = document.getElementById('enviarPedido') || document.querySelector('button[id*="enviar" i]') || document.querySelector('button[type="submit"]');
+
+    if (form) {
+      form.addEventListener('submit', function(e) {
+        if (!validarFormulario()) {
+          e.preventDefault();
+          e.stopPropagation();
+          e.stopImmediatePropagation();
+        }
+      }, true);
+    }
+
+    if (enviarBtn) {
+      enviarBtn.addEventListener('click', function(e) {
+        if (!validarFormulario()) {
+          e.preventDefault();
+          e.stopPropagation();
+          e.stopImmediatePropagation();
+        }
+      }, true);
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', armarListeners);
+  } else {
+    armarListeners();
+  }
+})();
+</script>
+<script>
+function isSetorValido(selectElement) {
+  if (!selectElement) return false;
+  const value = (selectElement.value || "").trim();
+  return value !== "" && value !== "Selecione";
+}
+</script>
+<script>
+document.addEventListener("input", function(e) {
+  if (e.target.classList.contains("erro-campo")) {
+    e.target.classList.remove("erro-campo");
+    e.target.style.backgroundColor = "";
+    e.target.style.outline = "";
+  }
+});
+document.addEventListener("change", function(e) {
+  if (e.target.classList.contains("erro-campo")) {
+    e.target.classList.remove("erro-campo");
+    e.target.style.backgroundColor = "";
+    e.target.style.outline = "";
+  }
+});
+</script>
+
+<script>
+(function() {
+  var container = document.getElementById('setoresContainer');
+  var enviar = document.getElementById('enviarPedido');
+  if (!container || !enviar) return;
+
+  function toggleEnviar() {
+    try {
+      enviar.style.display = (container.children && container.children.length > 0) ? 'inline-block' : 'none';
+    } catch(e) {}
+  }
+
+  // Verificação inicial (caso a página carregue sem setores)
+  toggleEnviar();
+
+  // Observa adições/remoções diretas de setores
+  var observer = new MutationObserver(function() {
+    toggleEnviar();
+  });
+  observer.observe(container, { childList: true });
+
+  // (Opcional) expõe função global segura para uso em outros pontos do código
+  window.__toggleEnviarPedido__ = toggleEnviar;
+})();
+</script>
+
+<!-- Firebase integração -->
+
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const btnEnviar = document.getElementById("enviarPedido");
+  if (btnEnviar) {
+    btnEnviar.addEventListener("click", function(e) {
+      e.preventDefault();
+      if (btnEnviar.disabled) return;
+      btnEnviar.disabled = true;
+
+      // Chama a função original de envio, se existir
+      if (typeof enviarPedido === "function") {
+        enviarPedido();
+      }
+
+      // Reativa depois de alguns segundos para permitir novo envio
+      setTimeout(() => { btnEnviar.disabled = false; }, 5000);
+    }, { once: false });
+  }
+});
+</script>
+
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
+  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
+    authDomain: "almoxarifadobotucatu-5e03d.firebaseapp.com",
+    projectId: "almoxarifadobotucatu-5e03d",
+    storageBucket: "almoxarifadobotucatu-5e03d.firebasestorage.app",
+    messagingSenderId: "828951000388",
+    appId: "1:828951000388:web:06dbe3cb5764872e7b1311"
+  };
+
+  // Inicializa Firebase e Firestore
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+
+  async function enviarPedido() {
+    const solicitante = document.getElementById("solicitante").value.trim();
+    const unidade = document.getElementById("unidade").value.trim();
+    const itens = [];
+
+    document.querySelectorAll(".item").forEach(itemDiv => {
+      const nome = itemDiv.querySelector(".item-nome")?.value;
+      const quantidade = itemDiv.querySelector(".item-qtd")?.value;
+      const unidadeControle = itemDiv.querySelector(".item-unidade")?.value;
+      // Captura o setor a partir do container .setor mais próximo
+      const setorContainer = itemDiv.closest(".setor");
+      const setor = setorContainer ? (setorContainer.querySelector('input[name="setor"]')?.value || "") : "";
+      if (nome && quantidade && unidadeControle) {
+        itens.push({ nome, quantidade, unidadeControle, setor });
       }
     });
 
-    if (erros.length > 0) {
-      let msg = "<h3>⚠️ Preencha os seguintes campos obrigatórios:</h3><ul>";
-      erros.forEach(e => msg += "<li>" + e + "</li>");
-      msg += "</ul>";
-      mostrarMensagemTopo(msg, "erro");
-      if (primeiroErro) primeiroErro.focus();
-    } else {
-      mostrarMensagemTopo("<h3>✅ Pedido válido! Enviando...</h3>", "sucesso");
-      // Aqui você pode colocar a função de envio original
+    if (!solicitante || !unidade || itens.length === 0) {
+      alert("⚠️ Preencha todos os campos e adicione pelo menos um item.");
+      return;
     }
-  });
-});
+
+    const dados = {
+      solicitante,
+      unidade,
+      itens,
+      data: new Date().toISOString()
+    };
+
+    try {
+      await addDoc(collection(db, "pedidos"), dados);
+      alert("✅ Pedido enviado com sucesso!");
+      document.getElementById("pedidoForm").reset();
+      document.getElementById("setoresContainer").innerHTML = "";
+    } catch (erro) {
+      console.error("Erro ao salvar no Firebase:", erro);
+      alert("❌ Erro ao enviar o pedido. Tente novamente.");
+    }
+  }
+
+  // Listener único para o botão
+  const btn = document.getElementById("enviarPedido");
+  if (btn) {
+    btn.addEventListener("click", async (e) => {
+      e.preventDefault();
+      if (btn.disabled) return;
+      btn.disabled = true;
+      await enviarPedido();
+      setTimeout(() => { btn.disabled = false; }, 2000);
+    });
+  }
 </script>
 
 </body>
@@ -2793,7 +3049,7 @@ document.addEventListener("DOMContentLoaded", function() {
   .item .item-input-group.item-unidade-group { flex: 1 1 100%; }
 }
 
-/* 
+/* Unidade de Controle com mesmo estilo do campo Setor */
 .item .item-input-group.item-unidade-group select {
   width: 100%;
   padding: 14px 18px;
@@ -2813,18 +3069,18 @@ document.addEventListener("DOMContentLoaded", function() {
 }
 
 
-/* 
+/* Unidade de Controle reutiliza o mesmo visual do Setor */
 .item .item-input-group.item-unidade-group .custom-select {
   width: 100%;
 }
 
-/* === Correção mínima: altura da 
+/* === Correção mínima: altura da Unidade de Controle igual aos outros campos === */
 .item .item-input-group.item-unidade-group .custom-select .selected {
   height: 48px;       /* mesma altura do input */
   line-height: 48px;  /* centraliza verticalmente */
 }
 
-/* === Ajuste final: 
+/* === Ajuste final: Unidade de Controle com a mesma altura da Quantidade === */
 .item .item-input-group.item-unidade-group .custom-select .selected {
   height: 40px;       /* mesma altura da Quantidade */
   line-height: 40px;  /* centraliza verticalmente */
@@ -2835,35 +3091,7 @@ document.addEventListener("DOMContentLoaded", function() {
     display: none;
   }
 </style>
-</meta>
-<script>
-// --- Mensagens no topo (sem alert do navegador) ---
-(function(){
-  window.mostrarMensagemTopo = function(msgHTML, tipo) {
-    try {
-      var painel = document.getElementById('mensagensErros');
-      if (!painel) return;
-      painel.classList.remove('success');
-      painel.classList.remove('erro');
-      var isSuccess = (tipo === 'sucesso' || tipo === 'success');
-      painel.classList.add(isSuccess ? 'success' : 'erro');
-      if (typeof msgHTML === 'string') {
-        painel.innerHTML = msgHTML;
-      } else {
-        painel.innerHTML = String(msgHTML);
-      }
-      painel.style.display = 'block';
-      painel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    } catch(e) { /* noop */ }
-  };
-  window.limparMensagensTopo = function() {
-    var painel = document.getElementById('mensagensErros');
-    if (painel) { painel.style.display = 'none'; painel.innerHTML = ''; painel.classList.remove('success','erro'); }
-  };
-})();
-</script>
-
-</head>
+</meta></head>
   
 <body>
 <script src="/protege-pagina.js"></script>
@@ -2922,12 +3150,13 @@ document.addEventListener("DOMContentLoaded", function() {
       const nome = itemDiv.querySelector(".item-nome")?.value;
       const quantidade = itemDiv.querySelector(".item-qtd")?.value;
       const unidadeControle = itemDiv.querySelector(".item-unidade")?.value;
-      );
+      if (nome && quantidade && unidadeControle) {
+        itens.push({ nome, quantidade, unidadeControle });
       }
     });
 
     if (!solicitante || !unidade || itens.length === 0) {
-      mostrarMensagemTopo("⚠️ Preencha todos os campos e adicione pelo menos um item.");
+      alert("⚠️ Preencha todos os campos e adicione pelo menos um item.");
       return;
     }
 
@@ -2940,12 +3169,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
     try {
       await addDoc(collection(db, "pedidos"), dados);
-      mostrarMensagemTopo("<h3>✅ Pedido enviado com sucesso!</h3>", "success");
+      alert("✅ Pedido enviado com sucesso!");
       document.getElementById("pedidoForm").reset();
       document.getElementById("setoresContainer").innerHTML = "";
     } catch (erro) {
       console.error("Erro ao salvar no Firebase:", erro);
-      mostrarMensagemTopo("❌ Erro ao enviar o pedido. Tente novamente.");
+      alert("❌ Erro ao enviar o pedido. Tente novamente.");
     }
   }
 
@@ -2962,171 +3191,4 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 </script>
 
-
-<script>
-function atualizarUnidade() {
-  const select = document.getElementById("medicamento");
-  const valor = select.value;
-  if (!valor) return;
-  const match = valor.match(/unidade:\s*([^"]+)/i);
-  if (match) {
-    document.getElementById("unidadeControle").value = match[1].trim();
-  }
-}
-</script>
-
-
-<script>
-function atualizarUnidade(selectElement) {
-  const valor = selectElement.value;
-  if (!valor) return;
-  const match = valor.match(/unidade:\\s*([^"]+)/i);
-  if (match) {
-    const unidadeInput = selectElement.closest(".item-row").querySelector(".unidadeControle");
-    if (unidadeInput) {
-      unidadeInput.value = match[1].trim();
-    }
-  }
-}
-</script>
-
-
-<script>
-function atualizarUnidade(selectElement) {
-  const valor = selectElement.value;
-  if (!valor) return;
-
-  const match = valor.match(/unidade:\s*([^"]+)/i);
-  if (match) {
-    const unidadeInput = selectElement.closest(".item-row").querySelector(".unidadeControle");
-    if (unidadeInput) {
-      unidadeInput.value = match[1].trim();
-    }
-  }
-}
-</script>
-
-
-<script>
-document.addEventListener("input", function(e) {
-  if (e.target && e.target.classList.contains("item-nome")) {
-    const itemDiv = e.target.closest(".item");
-    if (itemDiv) {
-      const unidadeControleInput = itemDiv.querySelector(".unidade-controle");
-      preencherUnidadeControle(e.target.value, unidadeControleInput);
-    }
-  }
-});
-</script>
-
-
-
-
-
-<script>
-// --- Ocultar "unidade:" na lista, restaurar valor original e preencher Unidade de Controle ---
-(function() {
-  function handleInput(e) {
-    if (!e.target.classList || !e.target.classList.contains('item-nome')) return;
-    var listId = e.target.getAttribute('list');
-    var dl = listId ? document.getElementById(listId) : null;
-    if (!dl) return;
-    var match = Array.from(dl.options).find(function(o){ 
-      return o.value === e.target.value && o.dataset && o.dataset.original; 
-    });
-    if (match) {
-      // Valor original (com unidade:)
-      var original = match.dataset.original;
-      e.target.value = original;
-
-      // Preenche automaticamente a "Unidade de Controle"
-      var m = original.match(/unidade:\s*([^,\n]+)/i);
-      if (m) {
-        // tenta encontrar pelo id ou classe
-        var unidadeCtrl = document.getElementById('unidade-controle') || document.querySelector('.unidade-controle'); 
-        if (unidadeCtrl) unidadeCtrl.value = m[1].trim();
-      }
-
-      // dispara change para manter as lógicas já existentes
-      var evt = new Event('change', { bubbles: true });
-      e.target.dispatchEvent(evt);
-    }
-  }
-  document.addEventListener('input', handleInput, true);
-})();
-</script>
-
-
-<script>
-document.addEventListener("DOMContentLoaded", function() {
-  const form = document.getElementById("pedidoForm");
-  const btnEnviar = document.getElementById("enviarPedido");
-
-  btnEnviar.addEventListener("click", function() {
-    const camposObrigatorios = form.querySelectorAll("[required]");
-    let erros = [];
-    let primeiroErro = null;
-
-    // Limpa erros anteriores
-    document.querySelectorAll(".erro-campo").forEach(el => el.classList.remove("erro-campo"));
-    limparMensagensTopo();
-
-    camposObrigatorios.forEach(campo => {
-      if (!campo.value.trim()) {
-        erros.push("O campo " + (campo.previousElementSibling?.innerText || campo.name || campo.id) + " é obrigatório.");
-        campo.classList.add("erro-campo");
-        if (!primeiroErro) primeiroErro = campo;
-      }
-    });
-
-    if (erros.length > 0) {
-      let msg = "<h3>⚠️ Preencha os seguintes campos obrigatórios:</h3><ul>";
-      erros.forEach(e => msg += "<li>" + e + "</li>");
-      msg += "</ul>";
-      mostrarMensagemTopo(msg, "erro");
-      if (primeiroErro) primeiroErro.focus();
-    } else {
-      mostrarMensagemTopo("<h3>✅ Pedido enviado com sucesso! </h3>", "");
-      // Aqui você pode colocar a função de envio original
-    }
-  });
-});
-</script>
-
-</body></html>
-<script>
-// --- Mensagens no topo (sem alert do navegador) ---
-(function(){
-  window.mostrarMensagemTopo = function(msgHTML, tipo) {
-    try {
-      var painel = document.getElementById('mensagensErros');
-      if (!painel) return;
-      painel.classList.remove('success');
-      painel.classList.remove('erro');
-      var isSuccess = (tipo === 'sucesso' || tipo === 'success');
-      painel.classList.add(isSuccess ? 'success' : 'erro');
-      if (typeof msgHTML === 'string') {
-        painel.innerHTML = msgHTML;
-      } else {
-        painel.innerHTML = String(msgHTML);
-      }
-      painel.style.display = 'block';
-      painel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    } catch(e) { /* noop */ }
-  };
-  window.limparMensagensTopo = function() {
-    var painel = document.getElementById('mensagensErros');
-    if (painel) { painel.style.display = 'none'; painel.innerHTML = ''; painel.classList.remove('success','erro'); }
-  };
-})();
-</script>
-
-</head></html>
-
-<style>
-  #mensagensErros.success {
-    border-color: #2e7d32;
-    background-color: #e8f5e9;
-    color: #1b5e20;
-  }
-</style>
+</body></html></head></html>
