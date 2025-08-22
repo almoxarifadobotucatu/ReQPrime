@@ -2296,12 +2296,10 @@ const EscritórioItems = [
           return;
         }
         itensNomes.forEach((input, index) => {
-  const itemDiv = input.closest('.item') || input.closest('.item-row') || input.parentElement;
-  const nome = input.value || '';
-  const qtdInput = itemDiv ? itemDiv.querySelector('.item-qtd, .quantidade') : null;
-  const qtd = parseInt((qtdInput && qtdInput.value) ? qtdInput.value : (itensQtds[index] ? itensQtds[index].value : "0"), 10);
-  const unidadeEl = itemDiv ? itemDiv.querySelector('.unidade-controle') : null;
-  const unidade = (unidadeEl && unidadeEl.value) ? unidadeEl.value : '';
+  const nome = input.value;
+  const qtd = parseInt(itensQtds[index].value || "0", 10);
+  const unidadeInput = setor.querySelectorAll('.unidade-controle');
+  const unidade = (unidadeInput[index] && unidadeInput[index].value) ? unidadeInput[index].value : '';
 
   let m = nome.trim().match(/^((?:\d+\s+){4}\d+)\s+(.*)$/);
   let codigo = '';
@@ -2311,6 +2309,9 @@ const EscritórioItems = [
   descricao = descricao.replace(/\s*unidade:\s*[^,\n]+/gi, '').trim();
 
   if (descricao && qtd > 0) {
+    const unidadeCorreta = pluralizarUnidade(unidade, qtd);
+    const unidadeEl = setor.querySelectorAll('.unidade-controle')[index];
+    const unidade = (unidadeEl && unidadeEl.value) ? unidadeEl.value : '';
     const unidadeCorreta = typeof pluralizarUnidade === 'function' ? pluralizarUnidade(unidade, qtd) : (qtd === 1 ? unidade : (unidade ? unidade + 's' : ''));
     corpoEmail += `${codigo ? codigo + ' - ' : ''}${descricao} — ${qtd} ${unidadeCorreta}\n`;
   }
