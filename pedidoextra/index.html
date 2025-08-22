@@ -2076,10 +2076,11 @@ const EscritórioItems = [
         items = defaultItems;
       }
       items.forEach(item => {
-        const option = document.createElement('option');
-        option.value = item;
-        datalist.appendChild(option);
-      });
+      const option = document.createElement('option');
+      option.value = item; // mantém o texto completo (com "unidade: ...")
+      option.label = item.replace(/\s+unidade:\s*[^,\n]+/i, '').trim(); // rótulo exibido sem "unidade:"
+      datalist.appendChild(option);
+    });
     }
 
     document.addEventListener('contextmenu', function(e) {
@@ -2781,19 +2782,6 @@ document.addEventListener("input", function(e) {
 
 
 
-
-<script>
-  // Remove a palavra "unidade:" apenas visualmente, mantendo os dados originais intactos
-  document.addEventListener("DOMContentLoaded", () => {
-    const lista = document.getElementById("lista-itens");
-    if (lista) {
-      [...lista.options].forEach(opt => {
-        opt.textContent = opt.textContent.replace(/unidade:\s*/gi, "");
-      });
-    }
-  });
-</script>
-
 </body>
 </html>
 <html lang="pt-BR">
@@ -3050,18 +3038,5 @@ document.addEventListener("input", function(e) {
 
 
 
-
-
-<script>
-  // Remove a palavra "unidade:" apenas visualmente, mantendo os dados originais intactos
-  document.addEventListener("DOMContentLoaded", () => {
-    const lista = document.getElementById("lista-itens");
-    if (lista) {
-      [...lista.options].forEach(opt => {
-        opt.textContent = opt.textContent.replace(/unidade:\s*/gi, "");
-      });
-    }
-  });
-</script>
 
 </body></html></head></html>
