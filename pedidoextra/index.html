@@ -2712,7 +2712,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     if (erros.length > 0) {
-      let msg = "<h3>⚠️ Erros encontrados:</h3><ul>";
+      let msg = "<h3>⚠️ Preencha os seguintes campos obrigatórios:</h3><ul>";
       erros.forEach(e => msg += "<li>" + e + "</li>");
       msg += "</ul>";
       mostrarMensagemTopo(msg, "erro");
@@ -3061,7 +3061,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     camposObrigatorios.forEach(campo => {
       if (!campo.value.trim()) {
-        erros.push("O campo '" + (campo.previousElementSibling?.innerText || campo.name || campo.id) + "' é obrigatório.");
+        erros.push("'" + (campo.previousElementSibling?.innerText || campo.name || campo.id) + ".");
         campo.classList.add("erro-campo");
         if (!primeiroErro) primeiroErro = campo;
       }
