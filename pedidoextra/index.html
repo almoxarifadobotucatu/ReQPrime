@@ -622,28 +622,40 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
       transition: background-color 0.2s ease;
     }
     #mensagensErros {
-      display: none;
-      margin: 15px 0;
-      padding: 15px;
-      border: 1px solid #ff4d4d;
-      border-radius: 8px;
-      background-color: #ffe5e5;
-      color: #a70000;
-      font-family: Arial, sans-serif;
-      font-size: 14px;
-    }
-    #mensagensErros h3 {
-      margin-top: 0;
-      font-size: 16px;
-      font-weight: bold;
-    }
-    #mensagensErros ul {
-      margin: 5px 0 0 20px;
-      padding: 0;
-    }
-    #mensagensErros li {
-      margin-bottom: 4px;
-    }
+  display: none;
+  margin: 20px 0;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #ffe5e5;
+  color: #600000;
+  font-family: Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+#mensagensErros h3 {
+  margin: 0 0 10px 0;
+  font-size: 17px;
+  font-weight: bold;
+  color: #a70000;
+}
+
+#mensagensErros strong {
+  display: block;
+  margin-top: 10px;
+  color: #a70000;
+  font-size: 15px;
+}
+
+#mensagensErros ul {
+  margin: 5px 0 10px 25px;
+  padding: 0;
+  list-style-type: disc;
+}
+
+#mensagensErros li {
+  margin-bottom: 4px;
+}
   </style>
 <style>
   #enviarPedido {
