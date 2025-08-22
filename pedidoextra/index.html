@@ -2250,13 +2250,22 @@ corpoEmail += `${codigo ? codigo + ' - ' : ''}${descricao} - ${qtd} ${pluralizar
         corpoEmail += `----------------------------------------\n\n`;
       });
       const bodyEncoded = encodeURIComponent(corpoEmail);
-const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=leitaoochefe@gmail.com&su=Pedido Extra - ${encodeURIComponent(unidade)}&body=${bodyEncoded}`;
-let win = window.open('about:blank', '_blank');
-if (win) {
-  win.location.href = gmailUrl;
-} else {
-  window.location.href = gmailUrl;
-}
+const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=...ido Extra - ${encodeURIComponent(unidade)}&body=${bodyEncoded}`;
+
+// Abre o Gmail em nova aba de forma confiável
+var a = document.createElement('a');
+a.href = gmailUrl;
+a.target = '_blank';
+a.rel = 'noopener';
+a.style.display = 'none';
+document.body.appendChild(a);
+a.click();
+document.body.removeChild(a);
+
+// Redireciona esta aba para a tela inicial do Pedido Extra
+setTimeout(function() {
+  window.location.href = "https://almoxarifadobotucatu.netlify.app/pedidoextra/";
+}, 800);
     });
 
     window.onload = function() {
