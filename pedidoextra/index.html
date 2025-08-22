@@ -2,15 +2,26 @@
 
 <html lang="pt-BR">
 <head>
-    <script>
+  <script>
     // Redireciona imediatamente se tentar acessar direto
     if (document.referrer === "" || document.referrer === window.location.href) {
       window.location.replace("https://almoxarifadobotucatu.netlify.app/");
     }
+  
+function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
+    // Captura a unidade da string (ex: "unidade: Comprimido")
+    const match = itemSelecionado.match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
+    if (match) {
+        unidadeControleInput.value = match[1]; // Ex: "Comprimido"
+    } else {
+        unidadeControleInput.value = "";
+    }
+}
+
 
     // Função para preparar a exibição sem "unidade: ..."
     function formatarItemParaExibicao(item) {
-      return item.replace("unidade:", "").trim();
+      return item.replace(/unidade:\s*[A-Za-zÀ-ú]+/i, "").trim();
     }
 
     // Preencher datalist ocultando "unidade: ..."
@@ -20,7 +31,7 @@
       dataList.innerHTML = "";
       lista.forEach(item => {
         const option = document.createElement("option");
-        option.value = formatarItemParaExibicao(item); // exibe sem "unidade:"
+        option.value = formatarItemParaExibicao(item); // exibe sem unidade
         option.dataset.itemCompleto = item; // guarda o original com unidade
         dataList.appendChild(option);
       });
@@ -36,14 +47,7 @@
       if (unidadeInput) unidadeInput.value = match ? match[1] : "";
     }
 
-    // OBS: Mantidas todas as funções do botão Enviar Pedido e envio de Email
-    // Carregar listas automaticamente ao abrir a página
-    window.addEventListener("DOMContentLoaded", () => {
-      if (typeof farmaciaItems !== 'undefined' && typeof psicotropicoItems !== 'undefined') {
-        carregarListaItens(farmaciaItems.concat(psicotropicoItems));
-      }
-    });
-  </script>
+</script>
 
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
@@ -1989,6 +1993,7 @@ const EscritórioItems = [
         option.value = display;                   // o usuário vê o texto limpo
         option.dataset.original = item;           // guardamos o original para usar no formulário
         datalist.appendChild(option);
+      })
       });
     }
 
@@ -2163,7 +2168,13 @@ const EscritórioItems = [
         if (itemDiv) {
           const hiddenUnidade = itemDiv.querySelector('.item-unidade');
           const selectedDiv = itemDiv.querySelector('.custom-select .selected');
-          const m = (input.value || '').match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
+          const datalist = document.getElementById('lista-itens');
+          const opt = Array.from(datalist ? datalist.options : []).find(o => o.value === input.value);
+          const original = opt && opt.dataset && opt.dataset.original ? opt.dataset.original : input.value;
+          // força o campo "Item" a ficar visualmente limpo (sem "unidade: ...")
+          const display = (original || '').replace(/\s*unidade:\s*[^,\n]+/i, '').trim();
+          if (display) input.value = display;
+          const m = (original || '').match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
           const unidadeEncontrada = m ? m[1] : '';
           if (hiddenUnidade) hiddenUnidade.value = unidadeEncontrada;
           if (selectedDiv) selectedDiv.textContent = unidadeEncontrada || 'Selecione';
@@ -2234,7 +2245,10 @@ const EscritórioItems = [
           } else if (nomeSetor === 'Epi_Consumo') {
             validItems = Epi_ConsumoItems;
           }
-          if (!validItems.includes(nome)) {
+          const __dl = document.getElementById('lista-itens');
+          const __opt = Array.from(__dl ? __dl.options : []).find(o => o.value === nome);
+          const __originalNome = __opt && __opt.dataset && __opt.dataset.original ? __opt.dataset.original : nome;
+          if (!validItems.includes(__originalNome)) {
             todosSetoresValidos = false;
             mostrarMensagemTopo(`O item "${nome}" não é válido para o setor ${nomeSetor}.`);
             return;
