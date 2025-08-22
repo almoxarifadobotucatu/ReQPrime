@@ -2078,7 +2078,6 @@ const EscritórioItems = [
       items.forEach(item => {
       const option = document.createElement('option');
       option.value = item; // mantém o texto completo (com "unidade: ...")
-      option.label = item.replace(/\s+unidade:\s*[^,\n]+/i, '').trim(); // rótulo exibido sem "unidade:"
       datalist.appendChild(option);
     });
     }
@@ -2782,6 +2781,24 @@ document.addEventListener("input", function(e) {
 
 
 
+
+<script>
+  // Aplica rótulo visual sem "unidade:" em todas as opções do datalist
+  document.addEventListener("DOMContentLoaded", () => {
+    const lista = document.getElementById("lista-itens");
+    if (lista) {
+      lista.querySelectorAll("option").forEach(opt => {
+        if (opt.value) {
+          const lbl = opt.value.replace(/\s+unidade:\s*[^,\n]+/i, "").trim();
+          if (lbl && lbl !== opt.value) {
+            opt.textContent = lbl; // mostra sem "unidade:"
+          }
+        }
+      });
+    }
+  });
+</script>
+
 </body>
 </html>
 <html lang="pt-BR">
@@ -3038,5 +3055,23 @@ document.addEventListener("input", function(e) {
 
 
 
+
+
+<script>
+  // Aplica rótulo visual sem "unidade:" em todas as opções do datalist
+  document.addEventListener("DOMContentLoaded", () => {
+    const lista = document.getElementById("lista-itens");
+    if (lista) {
+      lista.querySelectorAll("option").forEach(opt => {
+        if (opt.value) {
+          const lbl = opt.value.replace(/\s+unidade:\s*[^,\n]+/i, "").trim();
+          if (lbl && lbl !== opt.value) {
+            opt.textContent = lbl; // mostra sem "unidade:"
+          }
+        }
+      });
+    }
+  });
+</script>
 
 </body></html></head></html>
