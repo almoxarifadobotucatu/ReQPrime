@@ -615,40 +615,43 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
 
     }
   
+
+
+
 #mensagensErros {
   display: none;
   margin: 20px 0;
   padding: 20px;
   border-radius: 10px;
-  background-color: #ffe5e5;
-  color: #600000;
+  background-color: #ffe5e5; /* fundo rosa claro */
+  color: #5a0000;            /* texto marrom-avermelhado */
   font-family: Arial, sans-serif;
   font-size: 15px;
   line-height: 1.5;
 }
 
 #mensagensErros h3 {
-  margin: 0 0 10px 0;
-  font-size: 17px;
-  font-weight: bold;
-  color: #a70000;
+  margin: 0 0 12px 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #a70000;            /* título vermelho */
 }
 
 #mensagensErros strong {
   display: block;
-  margin-top: 10px;
-  color: #a70000;
-  font-size: 15px;
+  margin: 10px 0 4px 0;
+  color: #a70000;            /* subtítulo vermelho */
+  font-size: 16px;
 }
 
 #mensagensErros ul {
-  margin: 5px 0 10px 25px;
+  margin: 4px 0 10px 24px;
   padding: 0;
   list-style-type: disc;
 }
 
 #mensagensErros li {
-  margin-bottom: 4px;
+  margin: 4px 0;
 }
 
 </style>
@@ -676,33 +679,62 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
 <script>
 // --- Mensagens no topo (sem alert do navegador) ---
 (function(){
-  window.mostrarMensagemTopo = function(erros) {
+  window.mostrarMensagemTopo = function(erros, tipo) {
   var painel = document.getElementById('mensagensErros');
   if (!painel) return;
 
-  let html = `<h3>⚠️ Preencha os seguintes campos obrigatórios:</h3>`;
+  var html = '<h3>⚠️ Preencha os seguintes campos obrigatórios:</h3>';
 
-  if (typeof erros === "string") {
-    // Caso antigo (string simples)
-    html += `<ul><li>${erros}</li></ul>`;
-  } else {
-    // Caso novo (objeto com listas)
-    if (erros.geral && erros.geral.length > 0) {
-      html += `<strong>Geral</strong><ul>`;
-      erros.geral.forEach(e => { html += `<li>${e}</li>`; });
-      html += `</ul>`;
+  function sec(titulo, arr) {
+    if (!arr || !arr.length) return;
+    html += '<strong>' + titulo + '</strong><ul>';
+    arr.forEach(function(e){ html += '<li>' + e + '</li>'; });
+    html += '</ul>';
+  }
+
+  if (erros == null) {
+    // nada a listar, só o cabeçalho
+  } else if (typeof erros === 'string') {
+    var trimmed = erros.trim();
+    if (trimmed.startsWith('<')) {
+      // Já veio HTML pronto (compatibilidade com versões antigas)
+      html += trimmed;
+    } else {
+      html += '<ul><li>' + erros + '</li></ul>';
     }
-
-    if (erros.setor && erros.setor.length > 0) {
-      html += `<strong>Setor não selecionado</strong><ul>`;
-      erros.setor.forEach(e => { html += `<li>${e}</li>`; });
-      html += `</ul>`;
+  } else if (Array.isArray(erros)) {
+    // Agrupa automaticamente pelos termos para ficar como na foto
+    var geral = [], setor = [];
+    erros.forEach(function(e){
+      var t = (e || '').toLowerCase();
+      if (t.includes('respons') || t.includes('unidade de saúde') || t.includes('unidade de saude')) {
+        geral.push(e);
+      } else {
+        setor.push(e);
+      }
+    });
+    sec('Geral', geral);
+    sec('Setor não selecionado', setor);
+  } else if (typeof erros === 'object') {
+    // Objeto com listas
+    var g = erros.geral || [];
+    var s = erros.setor || erros.setores || erros.itens || [];
+    var htmlLivre = erros.html || '';
+    sec('Geral', g);
+    sec('Setor não selecionado', s);
+    if (!g.length && !s.length && htmlLivre) {
+      html += htmlLivre;
     }
   }
 
   painel.innerHTML = html;
   painel.style.display = 'block';
-  painel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  try { painel.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch(e){}
+};
+
+window.limparMensagensTopo = function() {
+  var painel = document.getElementById('mensagensErros');
+  if (painel) { painel.style.display = 'none'; painel.innerHTML = ''; }
 };
 
 window.limparMensagensTopo = function() {
@@ -2866,33 +2898,62 @@ document.addEventListener("DOMContentLoaded", function() {
 <script>
 // --- Mensagens no topo (sem alert do navegador) ---
 (function(){
-  window.mostrarMensagemTopo = function(erros) {
+  window.mostrarMensagemTopo = function(erros, tipo) {
   var painel = document.getElementById('mensagensErros');
   if (!painel) return;
 
-  let html = `<h3>⚠️ Preencha os seguintes campos obrigatórios:</h3>`;
+  var html = '<h3>⚠️ Preencha os seguintes campos obrigatórios:</h3>';
 
-  if (typeof erros === "string") {
-    // Caso antigo (string simples)
-    html += `<ul><li>${erros}</li></ul>`;
-  } else {
-    // Caso novo (objeto com listas)
-    if (erros.geral && erros.geral.length > 0) {
-      html += `<strong>Geral</strong><ul>`;
-      erros.geral.forEach(e => { html += `<li>${e}</li>`; });
-      html += `</ul>`;
+  function sec(titulo, arr) {
+    if (!arr || !arr.length) return;
+    html += '<strong>' + titulo + '</strong><ul>';
+    arr.forEach(function(e){ html += '<li>' + e + '</li>'; });
+    html += '</ul>';
+  }
+
+  if (erros == null) {
+    // nada a listar, só o cabeçalho
+  } else if (typeof erros === 'string') {
+    var trimmed = erros.trim();
+    if (trimmed.startsWith('<')) {
+      // Já veio HTML pronto (compatibilidade com versões antigas)
+      html += trimmed;
+    } else {
+      html += '<ul><li>' + erros + '</li></ul>';
     }
-
-    if (erros.setor && erros.setor.length > 0) {
-      html += `<strong>Setor não selecionado</strong><ul>`;
-      erros.setor.forEach(e => { html += `<li>${e}</li>`; });
-      html += `</ul>`;
+  } else if (Array.isArray(erros)) {
+    // Agrupa automaticamente pelos termos para ficar como na foto
+    var geral = [], setor = [];
+    erros.forEach(function(e){
+      var t = (e || '').toLowerCase();
+      if (t.includes('respons') || t.includes('unidade de saúde') || t.includes('unidade de saude')) {
+        geral.push(e);
+      } else {
+        setor.push(e);
+      }
+    });
+    sec('Geral', geral);
+    sec('Setor não selecionado', setor);
+  } else if (typeof erros === 'object') {
+    // Objeto com listas
+    var g = erros.geral || [];
+    var s = erros.setor || erros.setores || erros.itens || [];
+    var htmlLivre = erros.html || '';
+    sec('Geral', g);
+    sec('Setor não selecionado', s);
+    if (!g.length && !s.length && htmlLivre) {
+      html += htmlLivre;
     }
   }
 
   painel.innerHTML = html;
   painel.style.display = 'block';
-  painel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  try { painel.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch(e){}
+};
+
+window.limparMensagensTopo = function() {
+  var painel = document.getElementById('mensagensErros');
+  if (painel) { painel.style.display = 'none'; painel.innerHTML = ''; }
 };
 
 window.limparMensagensTopo = function() {
@@ -3145,33 +3206,62 @@ document.addEventListener("DOMContentLoaded", function() {
 <script>
 // --- Mensagens no topo (sem alert do navegador) ---
 (function(){
-  window.mostrarMensagemTopo = function(erros) {
+  window.mostrarMensagemTopo = function(erros, tipo) {
   var painel = document.getElementById('mensagensErros');
   if (!painel) return;
 
-  let html = `<h3>⚠️ Preencha os seguintes campos obrigatórios:</h3>`;
+  var html = '<h3>⚠️ Preencha os seguintes campos obrigatórios:</h3>';
 
-  if (typeof erros === "string") {
-    // Caso antigo (string simples)
-    html += `<ul><li>${erros}</li></ul>`;
-  } else {
-    // Caso novo (objeto com listas)
-    if (erros.geral && erros.geral.length > 0) {
-      html += `<strong>Geral</strong><ul>`;
-      erros.geral.forEach(e => { html += `<li>${e}</li>`; });
-      html += `</ul>`;
+  function sec(titulo, arr) {
+    if (!arr || !arr.length) return;
+    html += '<strong>' + titulo + '</strong><ul>';
+    arr.forEach(function(e){ html += '<li>' + e + '</li>'; });
+    html += '</ul>';
+  }
+
+  if (erros == null) {
+    // nada a listar, só o cabeçalho
+  } else if (typeof erros === 'string') {
+    var trimmed = erros.trim();
+    if (trimmed.startsWith('<')) {
+      // Já veio HTML pronto (compatibilidade com versões antigas)
+      html += trimmed;
+    } else {
+      html += '<ul><li>' + erros + '</li></ul>';
     }
-
-    if (erros.setor && erros.setor.length > 0) {
-      html += `<strong>Setor não selecionado</strong><ul>`;
-      erros.setor.forEach(e => { html += `<li>${e}</li>`; });
-      html += `</ul>`;
+  } else if (Array.isArray(erros)) {
+    // Agrupa automaticamente pelos termos para ficar como na foto
+    var geral = [], setor = [];
+    erros.forEach(function(e){
+      var t = (e || '').toLowerCase();
+      if (t.includes('respons') || t.includes('unidade de saúde') || t.includes('unidade de saude')) {
+        geral.push(e);
+      } else {
+        setor.push(e);
+      }
+    });
+    sec('Geral', geral);
+    sec('Setor não selecionado', setor);
+  } else if (typeof erros === 'object') {
+    // Objeto com listas
+    var g = erros.geral || [];
+    var s = erros.setor || erros.setores || erros.itens || [];
+    var htmlLivre = erros.html || '';
+    sec('Geral', g);
+    sec('Setor não selecionado', s);
+    if (!g.length && !s.length && htmlLivre) {
+      html += htmlLivre;
     }
   }
 
   painel.innerHTML = html;
   painel.style.display = 'block';
-  painel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  try { painel.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch(e){}
+};
+
+window.limparMensagensTopo = function() {
+  var painel = document.getElementById('mensagensErros');
+  if (painel) { painel.style.display = 'none'; painel.innerHTML = ''; }
 };
 
 window.limparMensagensTopo = function() {
