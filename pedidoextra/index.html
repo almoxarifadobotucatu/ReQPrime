@@ -3032,6 +3032,69 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 </script>
 
+
+<!-- HOTFIX: manter 'Adicionar novo setor' funcional e ocultar 'unidade:' visualmente -->
+<script>
+(function() {
+  // Garante que o botão dispare a função mesmo se o atributo inline falhar
+  window.addEventListener('DOMContentLoaded', function() {
+    var btn = document.querySelector('button[onclick*="adicionarSetor"]');
+    if (btn && typeof window.adicionarSetor === 'function') {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        try { window.adicionarSetor(); } catch (err) { console.error(err); }
+      });
+    }
+  });
+
+  // Envolve updateDatalist para exibir opções SEM "unidade:" e guardar o original
+  var __update = window.updateDatalist;
+  window.updateDatalist = function(setorId, sectorValue) {
+    if (typeof __update === 'function') __update(setorId, sectorValue);
+    try {
+      var datalist = document.getElementById('lista-itens');
+      if (!datalist) return;
+      Array.from(datalist.options).forEach(function(opt) {
+        if (!opt.dataset.original) opt.dataset.original = opt.value;
+        var display = (opt.dataset.original || '').replace(/\s*unidade:\s*[^,\n]+/i, '').trim();
+        opt.value = display;
+      });
+    } catch (e) {}
+  };
+
+  // PÓS-seleção do item: deixa campo limpo e preenche unidade de controle
+  var __verificar = window.verificarDuplicata;
+  window.verificarDuplicata = function(input, index) {
+    if (typeof __verificar === 'function') __verificar(input, index);
+    try {
+      var datalist = document.getElementById('lista-itens');
+      var opt = Array.from(datalist ? datalist.options : []).find(function(o){
+        return o.value === input.value || (o.dataset && o.dataset.original === input.value);
+      });
+      var original = (opt && opt.dataset && opt.dataset.original) ? opt.dataset.original : input.value;
+      var display = (original || '').replace(/\s*unidade:\s*[^,\n]+/i, '').trim();
+      if (display) input.value = display;
+
+      var m = (original || '').match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
+      var unidadeEncontrada = m ? m[1] : '';
+      var itemDiv = input.closest('.item');
+      var hiddenUnidade = itemDiv ? itemDiv.querySelector('.item-unidade') : null;
+      var selectedDiv = itemDiv ? itemDiv.querySelector('.custom-select .selected') : null;
+      if (hiddenUnidade) hiddenUnidade.value = unidadeEncontrada;
+      if (selectedDiv && unidadeEncontrada) selectedDiv.textContent = unidadeEncontrada;
+    } catch (e) {}
+  };
+
+  // Validação: compara com a lista ORIGINAL (com "unidade:")
+  window.__validarNomeItemOriginal = function(nome, validItems) {
+    var datalist = document.getElementById('lista-itens');
+    var opt = Array.from(datalist ? datalist.options : []).find(function(o){ return o.value === nome; });
+    var originalNome = (opt && opt.dataset && opt.dataset.original) ? opt.dataset.original : nome;
+    return validItems.includes(originalNome);
+  };
+})();
+</script>
+
 </body>
 </html>
 <html lang="pt-BR">
@@ -3228,6 +3291,69 @@ document.addEventListener("DOMContentLoaded", function() {
       setTimeout(() => { btn.disabled = false; }, 2000);
     });
   }
+</script>
+
+
+<!-- HOTFIX: manter 'Adicionar novo setor' funcional e ocultar 'unidade:' visualmente -->
+<script>
+(function() {
+  // Garante que o botão dispare a função mesmo se o atributo inline falhar
+  window.addEventListener('DOMContentLoaded', function() {
+    var btn = document.querySelector('button[onclick*="adicionarSetor"]');
+    if (btn && typeof window.adicionarSetor === 'function') {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        try { window.adicionarSetor(); } catch (err) { console.error(err); }
+      });
+    }
+  });
+
+  // Envolve updateDatalist para exibir opções SEM "unidade:" e guardar o original
+  var __update = window.updateDatalist;
+  window.updateDatalist = function(setorId, sectorValue) {
+    if (typeof __update === 'function') __update(setorId, sectorValue);
+    try {
+      var datalist = document.getElementById('lista-itens');
+      if (!datalist) return;
+      Array.from(datalist.options).forEach(function(opt) {
+        if (!opt.dataset.original) opt.dataset.original = opt.value;
+        var display = (opt.dataset.original || '').replace(/\s*unidade:\s*[^,\n]+/i, '').trim();
+        opt.value = display;
+      });
+    } catch (e) {}
+  };
+
+  // PÓS-seleção do item: deixa campo limpo e preenche unidade de controle
+  var __verificar = window.verificarDuplicata;
+  window.verificarDuplicata = function(input, index) {
+    if (typeof __verificar === 'function') __verificar(input, index);
+    try {
+      var datalist = document.getElementById('lista-itens');
+      var opt = Array.from(datalist ? datalist.options : []).find(function(o){
+        return o.value === input.value || (o.dataset && o.dataset.original === input.value);
+      });
+      var original = (opt && opt.dataset && opt.dataset.original) ? opt.dataset.original : input.value;
+      var display = (original || '').replace(/\s*unidade:\s*[^,\n]+/i, '').trim();
+      if (display) input.value = display;
+
+      var m = (original || '').match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
+      var unidadeEncontrada = m ? m[1] : '';
+      var itemDiv = input.closest('.item');
+      var hiddenUnidade = itemDiv ? itemDiv.querySelector('.item-unidade') : null;
+      var selectedDiv = itemDiv ? itemDiv.querySelector('.custom-select .selected') : null;
+      if (hiddenUnidade) hiddenUnidade.value = unidadeEncontrada;
+      if (selectedDiv && unidadeEncontrada) selectedDiv.textContent = unidadeEncontrada;
+    } catch (e) {}
+  };
+
+  // Validação: compara com a lista ORIGINAL (com "unidade:")
+  window.__validarNomeItemOriginal = function(nome, validItems) {
+    var datalist = document.getElementById('lista-itens');
+    var opt = Array.from(datalist ? datalist.options : []).find(function(o){ return o.value === nome; });
+    var originalNome = (opt && opt.dataset && opt.dataset.original) ? opt.dataset.original : nome;
+    return validItems.includes(originalNome);
+  };
+})();
 </script>
 
 </body></html></head></html>
