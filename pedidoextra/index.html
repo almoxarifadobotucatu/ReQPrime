@@ -18,35 +18,6 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
     }
 }
 
-
-    // Função para preparar a exibição sem "unidade: ..."
-    function formatarItemParaExibicao(item) {
-      return item.replace(/unidade:\s*[A-Za-zÀ-ú]+/i, "").trim();
-    }
-
-    // Preencher datalist ocultando "unidade: ..."
-    function carregarListaItens(lista, datalistId = "lista-itens") {
-      const dataList = document.getElementById(datalistId);
-      if (!dataList) return;
-      dataList.innerHTML = "";
-      lista.forEach(item => {
-        const option = document.createElement("option");
-        option.value = formatarItemParaExibicao(item); // exibe sem unidade
-        option.dataset.itemCompleto = item; // guarda o original com unidade
-        dataList.appendChild(option);
-      });
-    }
-
-    // Quando selecionar, ainda captura a unidade corretamente
-    function preencherUnidadeControle(itemSelecionado, unidadeControleInputId = "unidadeControle") {
-      const options = [...document.querySelectorAll("#lista-itens option")];
-      const option = options.find(opt => opt.value === itemSelecionado);
-      const itemOriginal = option ? option.dataset.itemCompleto : itemSelecionado;
-      const match = itemOriginal.match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
-      const unidadeInput = document.getElementById(unidadeControleInputId);
-      if (unidadeInput) unidadeInput.value = match ? match[1] : "";
-    }
-
 </script>
 
 <meta charset="utf-8"/>
@@ -733,7 +704,7 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
 <form id="pedidoForm" novalidate>
 <label for="solicitante">Responsável pela solicitação:</label>
 <input autocomplete="off" id="solicitante" required="" type="text"/>
-<label for="unidade">Unidade de saúde:</label>
+<label for="unidade" style="display:none;">Unidade de saúde:</label>
 <input autocomplete="off" id="unidade" required="" type="text"/>
 <div id="setoresContainer"></div>
 <div class="buttons">
