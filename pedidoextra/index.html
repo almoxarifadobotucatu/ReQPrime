@@ -1993,7 +1993,6 @@ const EscritórioItems = [
         option.value = display;                   // o usuário vê o texto limpo
         option.dataset.original = item;           // guardamos o original para usar no formulário
         datalist.appendChild(option);
-      })
       });
     }
 
@@ -2168,13 +2167,7 @@ const EscritórioItems = [
         if (itemDiv) {
           const hiddenUnidade = itemDiv.querySelector('.item-unidade');
           const selectedDiv = itemDiv.querySelector('.custom-select .selected');
-          const datalist = document.getElementById('lista-itens');
-          const opt = Array.from(datalist ? datalist.options : []).find(o => o.value === input.value);
-          const original = opt && opt.dataset && opt.dataset.original ? opt.dataset.original : input.value;
-          // força o campo "Item" a ficar visualmente limpo (sem "unidade: ...")
-          const display = (original || '').replace(/\s*unidade:\s*[^,\n]+/i, '').trim();
-          if (display) input.value = display;
-          const m = (original || '').match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
+          const m = (input.value || '').match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
           const unidadeEncontrada = m ? m[1] : '';
           if (hiddenUnidade) hiddenUnidade.value = unidadeEncontrada;
           if (selectedDiv) selectedDiv.textContent = unidadeEncontrada || 'Selecione';
@@ -2245,10 +2238,7 @@ const EscritórioItems = [
           } else if (nomeSetor === 'Epi_Consumo') {
             validItems = Epi_ConsumoItems;
           }
-          const __dl = document.getElementById('lista-itens');
-          const __opt = Array.from(__dl ? __dl.options : []).find(o => o.value === nome);
-          const __originalNome = __opt && __opt.dataset && __opt.dataset.original ? __opt.dataset.original : nome;
-          if (!validItems.includes(__originalNome)) {
+          if (!validItems.includes(nome)) {
             todosSetoresValidos = false;
             mostrarMensagemTopo(`O item "${nome}" não é válido para o setor ${nomeSetor}.`);
             return;
@@ -3033,36 +3023,44 @@ document.addEventListener("DOMContentLoaded", function() {
 </script>
 
 
-<!-- HOTFIX: manter 'Adicionar novo setor' funcional e ocultar 'unidade:' visualmente -->
+<!-- HOTFIX: garantir que 'Adicionar novo setor' reaja e manter limpeza de 'unidade:' -->
 <script>
-(function() {
-  // Garante que o botão dispare a função mesmo se o atributo inline falhar
-  window.addEventListener('DOMContentLoaded', function() {
-    var btn = document.querySelector('button[onclick*="adicionarSetor"]');
-    if (btn && typeof window.adicionarSetor === 'function') {
-      btn.addEventListener('click', function(e) {
-        e.preventDefault();
-        try { window.adicionarSetor(); } catch (err) { console.error(err); }
-      });
-    }
-  });
+document.addEventListener('DOMContentLoaded', function() {
+  // Se o inline onclick não funcionar, forçamos a ação
+  var addBtn = document.querySelector('button[onclick="adicionarSetor()"], button[onclick*="adicionarSetor"]');
+  if (addBtn) {
+    addBtn.addEventListener('click', function() {
+      try {
+        // aguarda efeito do onclick; se nada for adicionado, chamamos explicitamente
+        var antes = document.querySelectorAll('#setoresContainer .setor').length;
+        setTimeout(function(){
+          var depois = document.querySelectorAll('#setoresContainer .setor').length;
+          if (depois === antes && typeof window.adicionarSetor === 'function') {
+            try { window.adicionarSetor(); } catch(e){ console.error(e); }
+          }
+        }, 60);
+      } catch(e) { console.error(e); }
+    });
+  }
 
-  // Envolve updateDatalist para exibir opções SEM "unidade:" e guardar o original
+  // Refina updateDatalist para garantir exibição sem "unidade:" e preservar original
   var __update = window.updateDatalist;
-  window.updateDatalist = function(setorId, sectorValue) {
-    if (typeof __update === 'function') __update(setorId, sectorValue);
-    try {
-      var datalist = document.getElementById('lista-itens');
-      if (!datalist) return;
-      Array.from(datalist.options).forEach(function(opt) {
-        if (!opt.dataset.original) opt.dataset.original = opt.value;
-        var display = (opt.dataset.original || '').replace(/\s*unidade:\s*[^,\n]+/i, '').trim();
-        opt.value = display;
-      });
-    } catch (e) {}
-  };
+  if (typeof __update === 'function') {
+    window.updateDatalist = function(setorId, sectorValue) {
+      __update(setorId, sectorValue);
+      try {
+        var dl = document.getElementById('lista-itens');
+        if (!dl) return;
+        Array.from(dl.options).forEach(function(opt){
+          if (!opt.dataset.original) opt.dataset.original = opt.value;
+          var display = (opt.dataset.original || '').replace(/\s*unidade:\s*[^,\n]+/i, '').trim();
+          opt.value = display;
+        });
+      } catch(e) { console.error(e); }
+    }
+  }
 
-  // PÓS-seleção do item: deixa campo limpo e preenche unidade de controle
+  // Patch: ao selecionar item, limpar visualmente e preencher unidade
   var __verificar = window.verificarDuplicata;
   window.verificarDuplicata = function(input, index) {
     if (typeof __verificar === 'function') __verificar(input, index);
@@ -3076,23 +3074,19 @@ document.addEventListener("DOMContentLoaded", function() {
       if (display) input.value = display;
 
       var m = (original || '').match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
-      var unidadeEncontrada = m ? m[1] : '';
+      var unidade = m ? m[1] : '';
       var itemDiv = input.closest('.item');
-      var hiddenUnidade = itemDiv ? itemDiv.querySelector('.item-unidade') : null;
-      var selectedDiv = itemDiv ? itemDiv.querySelector('.custom-select .selected') : null;
-      if (hiddenUnidade) hiddenUnidade.value = unidadeEncontrada;
-      if (selectedDiv && unidadeEncontrada) selectedDiv.textContent = unidadeEncontrada;
-    } catch (e) {}
+      if (itemDiv) {
+        var hidden = itemDiv.querySelector('.item-unidade');
+        var unidadeCtrl = itemDiv.querySelector('.unidade-controle');
+        var selectedDiv = itemDiv.querySelector('.custom-select .selected');
+        if (hidden) hidden.value = unidade;
+        if (unidadeCtrl) unidadeCtrl.value = unidade;
+        if (selectedDiv && unidade) selectedDiv.textContent = unidade;
+      }
+    } catch(e) { console.error(e); }
   };
-
-  // Validação: compara com a lista ORIGINAL (com "unidade:")
-  window.__validarNomeItemOriginal = function(nome, validItems) {
-    var datalist = document.getElementById('lista-itens');
-    var opt = Array.from(datalist ? datalist.options : []).find(function(o){ return o.value === nome; });
-    var originalNome = (opt && opt.dataset && opt.dataset.original) ? opt.dataset.original : nome;
-    return validItems.includes(originalNome);
-  };
-})();
+});
 </script>
 
 </body>
@@ -3294,36 +3288,44 @@ document.addEventListener("DOMContentLoaded", function() {
 </script>
 
 
-<!-- HOTFIX: manter 'Adicionar novo setor' funcional e ocultar 'unidade:' visualmente -->
+<!-- HOTFIX: garantir que 'Adicionar novo setor' reaja e manter limpeza de 'unidade:' -->
 <script>
-(function() {
-  // Garante que o botão dispare a função mesmo se o atributo inline falhar
-  window.addEventListener('DOMContentLoaded', function() {
-    var btn = document.querySelector('button[onclick*="adicionarSetor"]');
-    if (btn && typeof window.adicionarSetor === 'function') {
-      btn.addEventListener('click', function(e) {
-        e.preventDefault();
-        try { window.adicionarSetor(); } catch (err) { console.error(err); }
-      });
-    }
-  });
+document.addEventListener('DOMContentLoaded', function() {
+  // Se o inline onclick não funcionar, forçamos a ação
+  var addBtn = document.querySelector('button[onclick="adicionarSetor()"], button[onclick*="adicionarSetor"]');
+  if (addBtn) {
+    addBtn.addEventListener('click', function() {
+      try {
+        // aguarda efeito do onclick; se nada for adicionado, chamamos explicitamente
+        var antes = document.querySelectorAll('#setoresContainer .setor').length;
+        setTimeout(function(){
+          var depois = document.querySelectorAll('#setoresContainer .setor').length;
+          if (depois === antes && typeof window.adicionarSetor === 'function') {
+            try { window.adicionarSetor(); } catch(e){ console.error(e); }
+          }
+        }, 60);
+      } catch(e) { console.error(e); }
+    });
+  }
 
-  // Envolve updateDatalist para exibir opções SEM "unidade:" e guardar o original
+  // Refina updateDatalist para garantir exibição sem "unidade:" e preservar original
   var __update = window.updateDatalist;
-  window.updateDatalist = function(setorId, sectorValue) {
-    if (typeof __update === 'function') __update(setorId, sectorValue);
-    try {
-      var datalist = document.getElementById('lista-itens');
-      if (!datalist) return;
-      Array.from(datalist.options).forEach(function(opt) {
-        if (!opt.dataset.original) opt.dataset.original = opt.value;
-        var display = (opt.dataset.original || '').replace(/\s*unidade:\s*[^,\n]+/i, '').trim();
-        opt.value = display;
-      });
-    } catch (e) {}
-  };
+  if (typeof __update === 'function') {
+    window.updateDatalist = function(setorId, sectorValue) {
+      __update(setorId, sectorValue);
+      try {
+        var dl = document.getElementById('lista-itens');
+        if (!dl) return;
+        Array.from(dl.options).forEach(function(opt){
+          if (!opt.dataset.original) opt.dataset.original = opt.value;
+          var display = (opt.dataset.original || '').replace(/\s*unidade:\s*[^,\n]+/i, '').trim();
+          opt.value = display;
+        });
+      } catch(e) { console.error(e); }
+    }
+  }
 
-  // PÓS-seleção do item: deixa campo limpo e preenche unidade de controle
+  // Patch: ao selecionar item, limpar visualmente e preencher unidade
   var __verificar = window.verificarDuplicata;
   window.verificarDuplicata = function(input, index) {
     if (typeof __verificar === 'function') __verificar(input, index);
@@ -3337,23 +3339,19 @@ document.addEventListener("DOMContentLoaded", function() {
       if (display) input.value = display;
 
       var m = (original || '').match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
-      var unidadeEncontrada = m ? m[1] : '';
+      var unidade = m ? m[1] : '';
       var itemDiv = input.closest('.item');
-      var hiddenUnidade = itemDiv ? itemDiv.querySelector('.item-unidade') : null;
-      var selectedDiv = itemDiv ? itemDiv.querySelector('.custom-select .selected') : null;
-      if (hiddenUnidade) hiddenUnidade.value = unidadeEncontrada;
-      if (selectedDiv && unidadeEncontrada) selectedDiv.textContent = unidadeEncontrada;
-    } catch (e) {}
+      if (itemDiv) {
+        var hidden = itemDiv.querySelector('.item-unidade');
+        var unidadeCtrl = itemDiv.querySelector('.unidade-controle');
+        var selectedDiv = itemDiv.querySelector('.custom-select .selected');
+        if (hidden) hidden.value = unidade;
+        if (unidadeCtrl) unidadeCtrl.value = unidade;
+        if (selectedDiv && unidade) selectedDiv.textContent = unidade;
+      }
+    } catch(e) { console.error(e); }
   };
-
-  // Validação: compara com a lista ORIGINAL (com "unidade:")
-  window.__validarNomeItemOriginal = function(nome, validItems) {
-    var datalist = document.getElementById('lista-itens');
-    var opt = Array.from(datalist ? datalist.options : []).find(function(o){ return o.value === nome; });
-    var originalNome = (opt && opt.dataset && opt.dataset.original) ? opt.dataset.original : nome;
-    return validItems.includes(originalNome);
-  };
-})();
+});
 </script>
 
 </body></html></head></html>
