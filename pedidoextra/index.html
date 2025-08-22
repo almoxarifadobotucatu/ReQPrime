@@ -654,6 +654,34 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
 <style>
   </style>
 
+
+<script>
+// --- Mensagens no topo (sem alert do navegador) ---
+(function(){
+  window.mostrarMensagemTopo = function(msgHTML, tipo) {
+    try {
+      var painel = document.getElementById('mensagensErros');
+      if (!painel) return;
+      painel.classList.remove('success');
+      painel.classList.remove('erro');
+      var isSuccess = (tipo === 'sucesso' || tipo === 'success');
+      painel.classList.add(isSuccess ? 'success' : 'erro');
+      if (typeof msgHTML === 'string') {
+        painel.innerHTML = msgHTML;
+      } else {
+        painel.innerHTML = String(msgHTML);
+      }
+      painel.style.display = 'block';
+      painel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } catch(e) { /* noop */ }
+  };
+  window.limparMensagensTopo = function() {
+    var painel = document.getElementById('mensagensErros');
+    if (painel) { painel.style.display = 'none'; painel.innerHTML = ''; painel.classList.remove('success','erro'); }
+  };
+})();
+</script>
+
 </head>
 <body oncontextmenu="return false;">
 
@@ -661,7 +689,7 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
 <div class="container" id="mainContainer">
 <h2>Solicitação de Pedido Extra</h2>
 <div id="mensagensErros"></div>
-<form id="pedidoForm">
+<form id="pedidoForm" novalidate>
 <label for="solicitante">Responsável pela solicitação:</label>
 <input autocomplete="off" id="solicitante" required="" type="text"/>
 <label for="unidade">Unidade de saúde:</label>
@@ -1999,7 +2027,7 @@ const EscritórioItems = [
       const setores = document.querySelectorAll('.setor input[name="setor"]');
       const setoresSelecionados = Array.from(setores).map(input => input.value.trim());
       if (setoresSelecionados.includes(value)) {
-        alert('Este setor já foi adicionado.');
+        mostrarMensagemTopo('Este setor já foi adicionado.');
         return;
       }
       const selected = document.querySelector(`#${setorId} .selected`);
@@ -2089,7 +2117,7 @@ const EscritórioItems = [
       const valorAtual = input.value.trim();
       const duplicatas = itensExistentes.filter((item, idx) => item === valorAtual && itensExistentes.indexOf(item) !== idx);
       if (duplicatas.length > 0) {
-        alert('Este item já foi adicionado.');
+        mostrarMensagemTopo('Este item já foi adicionado.');
         input.value = '';
       }
       // Auto-preenche a unidade de controle a partir do texto do item
@@ -2116,7 +2144,7 @@ const EscritórioItems = [
       const solicitante = document.getElementById('solicitante').value.trim();
       const unidade = document.getElementById('unidade').value.trim();
       if (!solicitante || !unidade) {
-        alert('Por favor, preencha os campos: Responsável pela solicitação e Unidade de sáude.');
+        mostrarMensagemTopo('Por favor, preencha os campos: Responsável pela solicitação e Unidade de sáude.');
         return;
       }
       const setores = document.querySelectorAll('.setor');
@@ -2127,12 +2155,12 @@ const EscritórioItems = [
         const itensQtds = setor.querySelectorAll('.item-qtd');
         if (!nomeSetor) {
           todosSetoresValidos = false;
-          alert('Por favor, selecione um setor.');
+          mostrarMensagemTopo('Por favor, selecione um setor.');
           return;
         }
         if (itensNomes.length === 0) {
           todosSetoresValidos = false;
-          alert('Por favor, adicione pelo menos um item em cada setor.');
+          mostrarMensagemTopo('Por favor, adicione pelo menos um item em cada setor.');
           return;
         }
         itensNomes.forEach((input, index) => {
@@ -2140,7 +2168,7 @@ const EscritórioItems = [
           const qtd = itensQtds[index].value.trim();
           if (!nome || !qtd) {
             todosSetoresValidos = false;
-            alert('Por favor, preencha todos os campos de item e quantidade.');
+            mostrarMensagemTopo('Por favor, preencha todos os campos de item e quantidade.');
             return;
           }
           let validItems;
@@ -2171,7 +2199,7 @@ const EscritórioItems = [
           }
           if (!validItems.includes(nome)) {
             todosSetoresValidos = false;
-            alert(`O item "${nome}" não é válido para o setor ${nomeSetor}.`);
+            mostrarMensagemTopo(`O item "${nome}" não é válido para o setor ${nomeSetor}.`);
             return;
           }
         });
@@ -2227,7 +2255,7 @@ if (win) {
   document.addEventListener('keydown', function(e) {
     if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 's') {
       e.preventDefault();
-      alert("Salvar página está desativado.");
+      mostrarMensagemTopo("Salvar página está desativado.");
     }
   });
 </script>
@@ -2531,7 +2559,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     if (!solicitante || !unidade || itens.length === 0) {
-      alert("⚠️ Preencha todos os campos e adicione pelo menos um item.");
+      mostrarMensagemTopo("⚠️ Preencha todos os campos e adicione pelo menos um item.");
       return;
     }
 
@@ -2544,12 +2572,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
     try {
       await addDoc(collection(db, "pedidos"), dados);
-      alert("✅ Pedido enviado com sucesso!");
+      mostrarMensagemTopo("<h3>✅ Pedido enviado com sucesso!</h3>", "success");
       document.getElementById("pedidoForm").reset();
       document.getElementById("setoresContainer").innerHTML = "";
     } catch (erro) {
       console.error("Erro ao salvar no Firebase:", erro);
-      alert("❌ Erro ao enviar o pedido. Tente novamente.");
+      mostrarMensagemTopo("❌ Erro ao enviar o pedido. Tente novamente.");
     }
   }
 
@@ -2658,80 +2686,6 @@ document.addEventListener("input", function(e) {
   }
   document.addEventListener('input', handleInput, true);
 })();
-</script>
-
-
-<script>
-document.getElementById("enviarPedido").addEventListener("click", function () {
-  const erros = [];
-  const solicitante = document.getElementById("solicitante");
-  const unidade = document.getElementById("unidade");
-  const setores = document.querySelectorAll(".setor");
-
-  // Resetando estilos
-  document.querySelectorAll(".erro-campo").forEach(el => el.classList.remove("erro-campo"));
-
-  // Validação Geral
-  if (!solicitante.value.trim()) {
-    erros.push("Responsável pela solicitação");
-    solicitante.classList.add("erro-campo");
-  }
-  if (!unidade.value.trim()) {
-    erros.push("Unidade de saúde");
-    unidade.classList.add("erro-campo");
-  }
-
-  // Validação de setores
-  setores.forEach((setor, i) => {
-    const idx = i + 1;
-    const selectSetor = setor.querySelector("select");
-    const itens = setor.querySelectorAll(".item");
-
-    if (!selectSetor || !selectSetor.value) {
-      erros.push("Setor não selecionado");
-      selectSetor?.classList.add("erro-campo");
-    }
-
-    itens.forEach((item, j) => {
-      const nomeItem = item.querySelector("input.item-nome");
-      const qtdItem = item.querySelector("input.item-qtd");
-      const unidadeItem = item.querySelector("select.item-unidade");
-
-      if (!nomeItem || !nomeItem.value.trim()) {
-        erros.push(`Nome do item ${j + 1} não preenchido`);
-        nomeItem?.classList.add("erro-campo");
-      }
-      if (!qtdItem || !qtdItem.value || qtdItem.value <= 0) {
-        erros.push(`Quantidade do item ${j + 1} inválida`);
-        qtdItem?.classList.add("erro-campo");
-      }
-      if (!unidadeItem || !unidadeItem.value.trim()) {
-        erros.push(`Unidade de controle do item ${j + 1} não preenchida`);
-        unidadeItem?.classList.add("erro-campo");
-      }
-    });
-  });
-
-  // Exibe os erros
-  const boxErros = document.getElementById("mensagensErros");
-  if (erros.length > 0) {
-    boxErros.style.display = "block";
-    boxErros.innerHTML = `
-      <div style="background:#ffe5e5;padding:15px;border-radius:12px;">
-        <p style="font-weight:bold;font-size:1rem; color:#a70000; margin:0 0 8px;">
-          ⚠️ Preencha os seguintes campos obrigatórios:
-        </p>
-        <ul style="margin:0;padding-left:20px;color:#a70000;font-size:0.95rem;">
-          ${erros.map(e => `<li>${e}</li>`).join("")}
-        </ul>
-      </div>`;
-    return; // bloqueia envio
-  }
-
-  // Se não houver erros, pode enviar
-  boxErros.style.display = "none";
-  alert("Pedido enviado com sucesso!");
-});
 </script>
 
 </body>
@@ -2832,7 +2786,35 @@ document.getElementById("enviarPedido").addEventListener("click", function () {
     display: none;
   }
 </style>
-</meta></head>
+</meta>
+<script>
+// --- Mensagens no topo (sem alert do navegador) ---
+(function(){
+  window.mostrarMensagemTopo = function(msgHTML, tipo) {
+    try {
+      var painel = document.getElementById('mensagensErros');
+      if (!painel) return;
+      painel.classList.remove('success');
+      painel.classList.remove('erro');
+      var isSuccess = (tipo === 'sucesso' || tipo === 'success');
+      painel.classList.add(isSuccess ? 'success' : 'erro');
+      if (typeof msgHTML === 'string') {
+        painel.innerHTML = msgHTML;
+      } else {
+        painel.innerHTML = String(msgHTML);
+      }
+      painel.style.display = 'block';
+      painel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } catch(e) { /* noop */ }
+  };
+  window.limparMensagensTopo = function() {
+    var painel = document.getElementById('mensagensErros');
+    if (painel) { painel.style.display = 'none'; painel.innerHTML = ''; painel.classList.remove('success','erro'); }
+  };
+})();
+</script>
+
+</head>
   
 <body>
 <script src="/protege-pagina.js"></script>
@@ -2896,7 +2878,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     if (!solicitante || !unidade || itens.length === 0) {
-      alert("⚠️ Preencha todos os campos e adicione pelo menos um item.");
+      mostrarMensagemTopo("⚠️ Preencha todos os campos e adicione pelo menos um item.");
       return;
     }
 
@@ -2909,12 +2891,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
     try {
       await addDoc(collection(db, "pedidos"), dados);
-      alert("✅ Pedido enviado com sucesso!");
+      mostrarMensagemTopo("<h3>✅ Pedido enviado com sucesso!</h3>", "success");
       document.getElementById("pedidoForm").reset();
       document.getElementById("setoresContainer").innerHTML = "";
     } catch (erro) {
       console.error("Erro ao salvar no Firebase:", erro);
-      alert("❌ Erro ao enviar o pedido. Tente novamente.");
+      mostrarMensagemTopo("❌ Erro ao enviar o pedido. Tente novamente.");
     }
   }
 
@@ -3025,78 +3007,40 @@ document.addEventListener("input", function(e) {
 })();
 </script>
 
-
+</body></html>
 <script>
-document.getElementById("enviarPedido").addEventListener("click", function () {
-  const erros = [];
-  const solicitante = document.getElementById("solicitante");
-  const unidade = document.getElementById("unidade");
-  const setores = document.querySelectorAll(".setor");
-
-  // Resetando estilos
-  document.querySelectorAll(".erro-campo").forEach(el => el.classList.remove("erro-campo"));
-
-  // Validação Geral
-  if (!solicitante.value.trim()) {
-    erros.push("Responsável pela solicitação");
-    solicitante.classList.add("erro-campo");
-  }
-  if (!unidade.value.trim()) {
-    erros.push("Unidade de saúde");
-    unidade.classList.add("erro-campo");
-  }
-
-  // Validação de setores
-  setores.forEach((setor, i) => {
-    const idx = i + 1;
-    const selectSetor = setor.querySelector("select");
-    const itens = setor.querySelectorAll(".item");
-
-    if (!selectSetor || !selectSetor.value) {
-      erros.push("Setor não selecionado");
-      selectSetor?.classList.add("erro-campo");
-    }
-
-    itens.forEach((item, j) => {
-      const nomeItem = item.querySelector("input.item-nome");
-      const qtdItem = item.querySelector("input.item-qtd");
-      const unidadeItem = item.querySelector("select.item-unidade");
-
-      if (!nomeItem || !nomeItem.value.trim()) {
-        erros.push(`Nome do item ${j + 1} não preenchido`);
-        nomeItem?.classList.add("erro-campo");
+// --- Mensagens no topo (sem alert do navegador) ---
+(function(){
+  window.mostrarMensagemTopo = function(msgHTML, tipo) {
+    try {
+      var painel = document.getElementById('mensagensErros');
+      if (!painel) return;
+      painel.classList.remove('success');
+      painel.classList.remove('erro');
+      var isSuccess = (tipo === 'sucesso' || tipo === 'success');
+      painel.classList.add(isSuccess ? 'success' : 'erro');
+      if (typeof msgHTML === 'string') {
+        painel.innerHTML = msgHTML;
+      } else {
+        painel.innerHTML = String(msgHTML);
       }
-      if (!qtdItem || !qtdItem.value || qtdItem.value <= 0) {
-        erros.push(`Quantidade do item ${j + 1} inválida`);
-        qtdItem?.classList.add("erro-campo");
-      }
-      if (!unidadeItem || !unidadeItem.value.trim()) {
-        erros.push(`Unidade de controle do item ${j + 1} não preenchida`);
-        unidadeItem?.classList.add("erro-campo");
-      }
-    });
-  });
-
-  // Exibe os erros
-  const boxErros = document.getElementById("mensagensErros");
-  if (erros.length > 0) {
-    boxErros.style.display = "block";
-    boxErros.innerHTML = `
-      <div style="background:#ffe5e5;padding:15px;border-radius:12px;">
-        <p style="font-weight:bold;font-size:1rem; color:#a70000; margin:0 0 8px;">
-          ⚠️ Preencha os seguintes campos obrigatórios:
-        </p>
-        <ul style="margin:0;padding-left:20px;color:#a70000;font-size:0.95rem;">
-          ${erros.map(e => `<li>${e}</li>`).join("")}
-        </ul>
-      </div>`;
-    return; // bloqueia envio
-  }
-
-  // Se não houver erros, pode enviar
-  boxErros.style.display = "none";
-  alert("Pedido enviado com sucesso!");
-});
+      painel.style.display = 'block';
+      painel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } catch(e) { /* noop */ }
+  };
+  window.limparMensagensTopo = function() {
+    var painel = document.getElementById('mensagensErros');
+    if (painel) { painel.style.display = 'none'; painel.innerHTML = ''; painel.classList.remove('success','erro'); }
+  };
+})();
 </script>
 
-</body></html></head></html>
+</head></html>
+
+<style>
+  #mensagensErros.success {
+    border-color: #2e7d32;
+    background-color: #e8f5e9;
+    color: #1b5e20;
+  }
+</style>
