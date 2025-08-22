@@ -9,11 +9,23 @@
     }
   
 function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
-    // Captura a unidade da string (ex: "unidade: Comprimido")
+    // Remove a palavra "unidade: ..." do texto
+    const itemSemUnidade = itemSelecionado.replace(/unidade:\s*[A-Za-zÀ-ú]+/i, "").trim();
+    
+    // Atualiza o campo de nome do item sem a palavra "unidade"
+    const campoItem = document.querySelector(".item-nome"); 
+    if (campoItem) {
+        campoItem.value = itemSemUnidade;
+    }
+
+    // Captura apenas a unidade
     const match = itemSelecionado.match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
     if (match) {
         unidadeControleInput.value = match[1]; // Ex: "Comprimido"
     } else {
+        unidadeControleInput.value = "";
+    }
+} else {
         unidadeControleInput.value = "";
     }
 }
@@ -704,7 +716,7 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
 <form id="pedidoForm" novalidate>
 <label for="solicitante">Responsável pela solicitação:</label>
 <input autocomplete="off" id="solicitante" required="" type="text"/>
-<label for="unidade" style="display:none;">Unidade de saúde:</label>
+<label for="unidade">Unidade de saúde:</label>
 <input autocomplete="off" id="unidade" required="" type="text"/>
 <div id="setoresContainer"></div>
 <div class="buttons">
