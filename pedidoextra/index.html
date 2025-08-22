@@ -682,21 +682,32 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
 
   let html = `<h3>⚠️ Preencha os seguintes campos obrigatórios:</h3>`;
 
-  if (erros.geral && erros.geral.length > 0) {
-    html += `<strong>Geral</strong><ul>`;
-    erros.geral.forEach(e => { html += `<li>${e}</li>`; });
-    html += `</ul>`;
-  }
+  if (typeof erros === "string") {
+    // Caso antigo (string simples)
+    html += `<ul><li>${erros}</li></ul>`;
+  } else {
+    // Caso novo (objeto com listas)
+    if (erros.geral && erros.geral.length > 0) {
+      html += `<strong>Geral</strong><ul>`;
+      erros.geral.forEach(e => { html += `<li>${e}</li>`; });
+      html += `</ul>`;
+    }
 
-  if (erros.setor && erros.setor.length > 0) {
-    html += `<strong>Setor não selecionado</strong><ul>`;
-    erros.setor.forEach(e => { html += `<li>${e}</li>`; });
-    html += `</ul>`;
+    if (erros.setor && erros.setor.length > 0) {
+      html += `<strong>Setor não selecionado</strong><ul>`;
+      erros.setor.forEach(e => { html += `<li>${e}</li>`; });
+      html += `</ul>`;
+    }
   }
 
   painel.innerHTML = html;
   painel.style.display = 'block';
   painel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+};
+
+window.limparMensagensTopo = function() {
+  var painel = document.getElementById('mensagensErros');
+  if (painel) { painel.style.display = 'none'; painel.innerHTML = ''; }
 };
 
 window.limparMensagensTopo = function() {
@@ -2861,21 +2872,32 @@ document.addEventListener("DOMContentLoaded", function() {
 
   let html = `<h3>⚠️ Preencha os seguintes campos obrigatórios:</h3>`;
 
-  if (erros.geral && erros.geral.length > 0) {
-    html += `<strong>Geral</strong><ul>`;
-    erros.geral.forEach(e => { html += `<li>${e}</li>`; });
-    html += `</ul>`;
-  }
+  if (typeof erros === "string") {
+    // Caso antigo (string simples)
+    html += `<ul><li>${erros}</li></ul>`;
+  } else {
+    // Caso novo (objeto com listas)
+    if (erros.geral && erros.geral.length > 0) {
+      html += `<strong>Geral</strong><ul>`;
+      erros.geral.forEach(e => { html += `<li>${e}</li>`; });
+      html += `</ul>`;
+    }
 
-  if (erros.setor && erros.setor.length > 0) {
-    html += `<strong>Setor não selecionado</strong><ul>`;
-    erros.setor.forEach(e => { html += `<li>${e}</li>`; });
-    html += `</ul>`;
+    if (erros.setor && erros.setor.length > 0) {
+      html += `<strong>Setor não selecionado</strong><ul>`;
+      erros.setor.forEach(e => { html += `<li>${e}</li>`; });
+      html += `</ul>`;
+    }
   }
 
   painel.innerHTML = html;
   painel.style.display = 'block';
   painel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+};
+
+window.limparMensagensTopo = function() {
+  var painel = document.getElementById('mensagensErros');
+  if (painel) { painel.style.display = 'none'; painel.innerHTML = ''; }
 };
 
 window.limparMensagensTopo = function() {
@@ -3129,21 +3151,32 @@ document.addEventListener("DOMContentLoaded", function() {
 
   let html = `<h3>⚠️ Preencha os seguintes campos obrigatórios:</h3>`;
 
-  if (erros.geral && erros.geral.length > 0) {
-    html += `<strong>Geral</strong><ul>`;
-    erros.geral.forEach(e => { html += `<li>${e}</li>`; });
-    html += `</ul>`;
-  }
+  if (typeof erros === "string") {
+    // Caso antigo (string simples)
+    html += `<ul><li>${erros}</li></ul>`;
+  } else {
+    // Caso novo (objeto com listas)
+    if (erros.geral && erros.geral.length > 0) {
+      html += `<strong>Geral</strong><ul>`;
+      erros.geral.forEach(e => { html += `<li>${e}</li>`; });
+      html += `</ul>`;
+    }
 
-  if (erros.setor && erros.setor.length > 0) {
-    html += `<strong>Setor não selecionado</strong><ul>`;
-    erros.setor.forEach(e => { html += `<li>${e}</li>`; });
-    html += `</ul>`;
+    if (erros.setor && erros.setor.length > 0) {
+      html += `<strong>Setor não selecionado</strong><ul>`;
+      erros.setor.forEach(e => { html += `<li>${e}</li>`; });
+      html += `</ul>`;
+    }
   }
 
   painel.innerHTML = html;
   painel.style.display = 'block';
   painel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+};
+
+window.limparMensagensTopo = function() {
+  var painel = document.getElementById('mensagensErros');
+  if (painel) { painel.style.display = 'none'; painel.innerHTML = ''; }
 };
 
 window.limparMensagensTopo = function() {
