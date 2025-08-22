@@ -18,6 +18,35 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
     }
 }
 
+
+    // Função para preparar a exibição sem "unidade: ..."
+    function formatarItemParaExibicao(item) {
+      return item.replace(/unidade:\s*[A-Za-zÀ-ú]+/i, "").trim();
+    }
+
+    // Preencher datalist ocultando "unidade: ..."
+    function carregarListaItens(lista, datalistId = "lista-itens") {
+      const dataList = document.getElementById(datalistId);
+      if (!dataList) return;
+      dataList.innerHTML = "";
+      lista.forEach(item => {
+        const option = document.createElement("option");
+        option.value = formatarItemParaExibicao(item); // exibe sem unidade
+        option.dataset.itemCompleto = item; // guarda o original com unidade
+        dataList.appendChild(option);
+      });
+    }
+
+    // Quando selecionar, ainda captura a unidade corretamente
+    function preencherUnidadeControle(itemSelecionado, unidadeControleInputId = "unidadeControle") {
+      const options = [...document.querySelectorAll("#lista-itens option")];
+      const option = options.find(opt => opt.value === itemSelecionado);
+      const itemOriginal = option ? option.dataset.itemCompleto : itemSelecionado;
+      const match = itemOriginal.match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
+      const unidadeInput = document.getElementById(unidadeControleInputId);
+      if (unidadeInput) unidadeInput.value = match ? match[1] : "";
+    }
+
 </script>
 
 <meta charset="utf-8"/>
@@ -3191,139 +3220,4 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 </script>
 
-
-<!-- ===== Recuperei o bloco de "Enviar pedido" por e-mail (Gmail) ===== -->
-<script>
-(function() {
-  // Extrai a unidade do texto do item, ex.: "... unidade: Frasco"
-  function extrairUnidadeDoTexto(txt) {
-    var m = (txt || '').match(/\bunidade:\s*([^,\n]+)\s*$/i);
-    return m ? m[1].trim() : '';
-  }
-  // Remove "unidade: X" do texto exibido
-  function limparUnidadeDoTexto(txt) {
-    return (txt || '').replace(/\s*unidade:\s*[^,\n]+/gi, '').trim();
-  }
-  // Pluraliza a unidade, reutilizando pluralizarUnidade quando existir
-  function pluralizar(un, qtd) {
-    try {
-      if (typeof pluralizarUnidade === 'function') return pluralizarUnidade(un, Number(qtd) || 1);
-    } catch(e) {}
-    return (Number(qtd) > 1 && un) ? (un + 's') : (un || '');
-  }
-  // Monta o corpo do e-mail com todas as informações
-  function montarCorpoEmail() {
-    var solicitanteEl = document.getElementById('solicitante');
-    var unidadeEl = document.getElementById('unidade');
-    var solicitante = solicitanteEl ? (solicitanteEl.value || '').trim() : '';
-    var unidadeSaude = unidadeEl ? (unidadeEl.value || '').trim() : '';
-    var agora = new Date();
-    var linhas = [];
-    linhas.push('Solicitação de Pedido Extra');
-    linhas.push('Data/Hora: ' + agora.toLocaleString());
-    linhas.push('Responsável: ' + solicitante);
-    linhas.push('Unidade de Saúde: ' + unidadeSaude);
-    linhas.push('');
-    var setores = document.querySelectorAll('#setoresContainer .setor');
-    setores.forEach(function(setorDiv) {
-      var nomeSetor = (setorDiv.querySelector('input[name="setor"]') || {}).value || '';
-      if (nomeSetor) linhas.push('Setor: ' + nomeSetor);
-      var itens = setorDiv.querySelectorAll('.item');
-      itens.forEach(function(itemDiv) {
-        var nomeInput = itemDiv.querySelector('.item-nome');
-        var qtdInput = itemDiv.querySelector('.item-qtd');
-        var hiddenUnidade = itemDiv.querySelector('.item-unidade');
-        var unidadeControle = itemDiv.querySelector('.unidade-controle');
-        var descricao = nomeInput ? (nomeInput.value || '') : '';
-        // limpar "unidade:" no texto
-        descricao = limparUnidadeDoTexto(descricao);
-        // tenta extrair um "código" inicial (até primeira sequência de letras)
-        var codigo = '';
-        var m = descricao.match(/^([\d\s\.\-\/]+)\s+(.*)$/);
-        if (m) { codigo = m[1].trim(); descricao = m[2].trim(); }
-        var qtd = qtdInput ? (qtdInput.value || '').trim() : '';
-        var uni = (hiddenUnidade && hiddenUnidade.value) ? hiddenUnidade.value :
-                  (unidadeControle && unidadeControle.value) ? unidadeControle.value : '';
-        var linha = (codigo ? (codigo + ' - ') : '') + descricao;
-        if (qtd) {
-          linha += ' - ' + qtd + ' ' + pluralizar(uni, qtd);
-        } else if (uni) {
-          linha += ' - ' + uni;
-        }
-        linhas.push(linha);
-      });
-      var just = (setorDiv.querySelector('.Justificativa') || {}).value || '';
-      if (just) {
-        linhas.push('Justificativa: ' + just);
-      }
-      linhas.push('');
-      linhas.push('----------------------------------------');
-      linhas.push('');
-    });
-    return linhas.join('\n');
-  }
-  // Abre o Gmail com o corpo e o assunto já preenchidos
-  function abrirGmailComPedido() {
-    var unidadeEl = document.getElementById('unidade');
-    var unidadeSaude = unidadeEl ? (unidadeEl.value || '').trim() : '';
-    var corpo = montarCorpoEmail();
-    var to = 'leitaoochefe@gmail.com'; // e-mail recuperado
-    var subject = 'Pedido Extra - ' + unidadeSaude;
-    var url = 'https://mail.google.com/mail/?view=cm&fs=1' +
-      '&to=' + encodeURIComponent(to) +
-      '&su=' + encodeURIComponent(subject) +
-      '&body=' + encodeURIComponent(corpo);
-    var win = window.open('about:blank', '_blank');
-    if (win) { win.location.href = url; } else { window.location.href = url; }
-  }
-  // Executa ANTES dos outros listeners: monta e abre o Gmail,
-  // sem impedir que o fluxo atual (ex.: salvar no Firebase) continue.
-  document.addEventListener('DOMContentLoaded', function() {
-    var btn = document.getElementById('enviarPedido');
-    if (!btn) return;
-    btn.addEventListener('click', function(e) {
-      try {
-        if (typeof validarFormulario === 'function') {
-          // se existir o validador, respeita-o
-          if (!validarFormulario()) return;
-        }
-      } catch (_) {}
-      abrirGmailComPedido();
-    }, true); // CAPTURING: roda antes dos outros handlers
-  });
-  // Atualiza unidade-controle ao escolher item que contém "unidade:" e limpa o texto exibido
-  document.addEventListener('input', function(e) {
-    if (!e.target || !e.target.classList || !e.target.classList.contains('item-nome')) return;
-    var itemDiv = e.target.closest('.item');
-    if (!itemDiv) return;
-
-    // Se o texto digitado contém "unidade:", extrai e limpa
-    if (/\bunidade:\s*/i.test(e.target.value || '')) {
-      var uni = extrairUnidadeDoTexto(e.target.value);
-      var hiddenUnidade = itemDiv.querySelector('.item-unidade');
-      var unidadeCtrl = itemDiv.querySelector('.unidade-controle');
-      if (hiddenUnidade) hiddenUnidade.value = uni;
-      if (unidadeCtrl) unidadeCtrl.value = uni;
-      e.target.value = limparUnidadeDoTexto(e.target.value);
-    }
-
-    // Se veio de um datalist com dataset.original
-    var listId = e.target.getAttribute('list');
-    var dl = listId ? document.getElementById(listId) : null;
-    if (dl) {
-      var opt = Array.from(dl.options).find(function(o){
-        return o.value === e.target.value && o.dataset && o.dataset.original;
-      });
-      if (opt) {
-        var mm = opt.dataset.original.match(/unidade:\s*([^,\n]+)/i);
-        var unidade = mm ? mm[1].trim() : '';
-        var hiddenUnidade = itemDiv.querySelector('.item-unidade');
-        var unidadeCtrl = itemDiv.querySelector('.unidade-controle');
-        if (hiddenUnidade) hiddenUnidade.value = unidade;
-        if (unidadeCtrl) unidadeCtrl.value = unidade;
-      }
-    }
-  }, true);
-})();
-</script>
 </body></html></head></html>
