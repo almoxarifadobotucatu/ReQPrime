@@ -614,14 +614,8 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
     }
 
     }
-  </style>
-<style>
-    .erro-campo {
-      outline: 2px solid #ff4d4d !important;
-      background-color: rgba(255, 0, 0, 0.08) !important;
-      transition: background-color 0.2s ease;
-    }
-    #mensagensErros {
+  
+#mensagensErros {
   display: none;
   margin: 20px 0;
   padding: 20px;
@@ -656,6 +650,18 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
 #mensagensErros li {
   margin-bottom: 4px;
 }
+
+</style>
+<style>
+    .erro-campo {
+      outline: 2px solid #ff4d4d !important;
+      background-color: rgba(255, 0, 0, 0.08) !important;
+      transition: background-color 0.2s ease;
+    }
+    
+    
+    
+    
   </style>
 <style>
   #enviarPedido {
@@ -679,7 +685,7 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
       var isSuccess = (tipo === 'sucesso' || tipo === 'success');
       painel.classList.add(isSuccess ? 'success' : 'erro');
       if (typeof msgHTML === 'string') {
-        painel.innerHTML = msgHTML;
+        painel.innerHTML = `<h3>⚠️ Preencha os seguintes campos obrigatórios:</h3>` + msgHTML;
       } else {
         painel.innerHTML = String(msgHTML);
       }
@@ -2419,7 +2425,7 @@ function selectOptionUnidade(unidadeId, value) {
       }
       const painel = document.getElementById('mensagensErros');
       if (painel) {
-        painel.innerHTML = msgHTML;
+        painel.innerHTML = `<h3>⚠️ Preencha os seguintes campos obrigatórios:</h3>` + msgHTML;
         painel.style.display = 'block';
         painel.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
@@ -2848,7 +2854,7 @@ document.addEventListener("DOMContentLoaded", function() {
       var isSuccess = (tipo === 'sucesso' || tipo === 'success');
       painel.classList.add(isSuccess ? 'success' : 'erro');
       if (typeof msgHTML === 'string') {
-        painel.innerHTML = msgHTML;
+        painel.innerHTML = `<h3>⚠️ Preencha os seguintes campos obrigatórios:</h3>` + msgHTML;
       } else {
         painel.innerHTML = String(msgHTML);
       }
@@ -3106,7 +3112,7 @@ document.addEventListener("DOMContentLoaded", function() {
       var isSuccess = (tipo === 'sucesso' || tipo === 'success');
       painel.classList.add(isSuccess ? 'success' : 'erro');
       if (typeof msgHTML === 'string') {
-        painel.innerHTML = msgHTML;
+        painel.innerHTML = `<h3>⚠️ Preencha os seguintes campos obrigatórios:</h3>` + msgHTML;
       } else {
         painel.innerHTML = String(msgHTML);
       }
@@ -3124,9 +3130,5 @@ document.addEventListener("DOMContentLoaded", function() {
 </head></html>
 
 <style>
-  #mensagensErros.success {
-    border-color: #2e7d32;
-    background-color: #e8f5e9;
-    color: #1b5e20;
-  }
+  
 </style>
