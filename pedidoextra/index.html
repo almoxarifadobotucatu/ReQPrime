@@ -2132,16 +2132,29 @@ const EscritórioItems = [
         mostrarMensagemTopo('Este item já foi adicionado.');
         input.value = '';
       }
-     // Auto-preenche a unidade de controle a partir do texto do item
+      // Auto-preenche a unidade de controle a partir do texto do item
       try {
         const itemDiv = input.closest('.item');
         if (itemDiv) {
           const hiddenUnidade = itemDiv.querySelector('.item-unidade');
           const selectedDiv = itemDiv.querySelector('.custom-select .selected');
-          const m = (input.value || '').match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
-          const unidadeEncontrada = m ? m[1] : '';
+          // Obtém a unidade a partir do datalist (mantendo input sem "unidade:")
+          var listId = input.getAttribute('list');
+          var dl = listId ? document.getElementById(listId) : null;
+          var unidadeEncontrada = '';
+          if (dl) {
+            var opt = Array.from(dl.options).find(function(o){ 
+              return o.value === input.value && o.dataset && o.dataset.original; 
+            });
+            if (opt) {
+              var mm = opt.dataset.original.match(/unidade:\s*([^,\n]+)/i);
+              if (mm) unidadeEncontrada = mm[1].trim();
+            }
+          }
           if (hiddenUnidade) hiddenUnidade.value = unidadeEncontrada;
           if (selectedDiv) selectedDiv.textContent = unidadeEncontrada || 'Selecione';
+          var unidadeCtrl = itemDiv.querySelector('.unidade-controle');
+          if (unidadeCtrl) unidadeCtrl.value = unidadeEncontrada;
         }
       } catch (e) { /* noop */ }
     
@@ -2670,7 +2683,9 @@ document.addEventListener("input", function(e) {
 <script>
 // --- Ocultar "unidade:" na lista, restaurar valor original e preencher Unidade de Controle ---
 (function() {
-  function handleInput(e) {
+  
+
+function handleInput(e) {
     if (!e.target.classList || !e.target.classList.contains('item-nome')) return;
     var listId = e.target.getAttribute('list');
     var dl = listId ? document.getElementById(listId) : null;
@@ -2678,6 +2693,60 @@ document.addEventListener("input", function(e) {
     var match = Array.from(dl.options).find(function(o){ 
       return o.value === e.target.value && o.dataset && o.dataset.original; 
     });
+    if (match) {
+      // Mantém o texto LIMPO no campo (sem "unidade: ...")
+      var original = match.dataset.original;
+      var display = original.replace(/\s*unidade:\s*[^,\n]+/i, '').trim();
+      e.target.value = display;
+
+      // Descobre a unidade a partir do original
+      var m = original.match(/unidade:\s*([^,\n]+)/i);
+      var unidade = m ? m[1].trim() : '';
+
+      // Preenche campos de unidade no mesmo bloco .item
+      var itemDiv = e.target.closest('.item');
+      if (itemDiv) {
+        var hiddenUnidade = itemDiv.querySelector('.item-unidade');
+        if (hiddenUnidade) hiddenUnidade.value = unidade;
+        var unidadeCtrl = itemDiv.querySelector('.unidade-controle');
+        if (unidadeCtrl) unidadeCtrl.value = unidade;
+        var selectedDiv = itemDiv.querySelector('.custom-select .selected');
+        if (selectedDiv) selectedDiv.textContent = unidade || 'Selecione';
+      }
+
+      // Dispara change para manter lógicas existentes
+      var evt = new Event('change', { bubbles: true });
+      e.target.dispatchEvent(evt);
+    }
+}
+);
+    if (match) {
+      // Mantém o texto LIMPO no campo (sem "unidade: ...")
+      var original = match.dataset.original;
+      var display = original.replace(/\s*unidade:\s*[^,\n]+/i, '').trim();
+      e.target.value = display;
+
+      // Descobre a unidade a partir do original
+      var m = original.match(/unidade:\s*([^,\n]+)/i);
+      var unidade = m ? m[1].trim() : '';
+
+      // Preenche campos de unidade no mesmo bloco .item
+      var itemDiv = e.target.closest('.item');
+      if (itemDiv) {
+        var hiddenUnidade = itemDiv.querySelector('.item-unidade');
+        if (hiddenUnidade) hiddenUnidade.value = unidade;
+        var unidadeCtrl = itemDiv.querySelector('.unidade-controle');
+        if (unidadeCtrl) unidadeCtrl.value = unidade;
+        var selectedDiv = itemDiv.querySelector('.custom-select .selected');
+        if (selectedDiv) selectedDiv.textContent = unidade || 'Selecione';
+      }
+
+      // Dispara change para manter lógicas existentes (duplicata, validações, etc.)
+      var evt = new Event('change', { bubbles: true });
+      e.target.dispatchEvent(evt);
+    }
+}
+);
     if (match) {
       // Valor original (com unidade:)
       var original = match.dataset.original;
