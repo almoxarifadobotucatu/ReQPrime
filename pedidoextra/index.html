@@ -2296,10 +2296,12 @@ const EscritórioItems = [
           return;
         }
         itensNomes.forEach((input, index) => {
-  const nome = input.value;
-  const qtd = parseInt(itensQtds[index].value || "0", 10);
-  const unidadeInput = setor.querySelectorAll('.unidade-controle');
-  const unidade = (unidadeInput[index] && unidadeInput[index].value) ? unidadeInput[index].value : '';
+  const itemDiv = input.closest('.item') || input.closest('.item-row') || input.parentElement;
+  const nome = input.value || '';
+  const qtdInput = itemDiv ? itemDiv.querySelector('.item-qtd, .quantidade') : null;
+  const qtd = parseInt((qtdInput && qtdInput.value) ? qtdInput.value : (itensQtds[index] ? itensQtds[index].value : "0"), 10);
+  const unidadeEl = itemDiv ? itemDiv.querySelector('.unidade-controle') : null;
+  const unidade = (unidadeEl && unidadeEl.value) ? unidadeEl.value : '';
 
   let m = nome.trim().match(/^((?:\d+\s+){4}\d+)\s+(.*)$/);
   let codigo = '';
@@ -2309,7 +2311,7 @@ const EscritórioItems = [
   descricao = descricao.replace(/\s*unidade:\s*[^,\n]+/gi, '').trim();
 
   if (descricao && qtd > 0) {
-    const unidadeCorreta = pluralizarUnidade(unidade, qtd);
+    const unidadeCorreta = typeof pluralizarUnidade === 'function' ? pluralizarUnidade(unidade, qtd) : (qtd === 1 ? unidade : (unidade ? unidade + 's' : ''));
     corpoEmail += `${codigo ? codigo + ' - ' : ''}${descricao} — ${qtd} ${unidadeCorreta}\n`;
   }
 });
@@ -2327,19 +2329,25 @@ const EscritórioItems = [
         const itensNomes = setor.querySelectorAll('.item-nome');
         const itensQtds = setor.querySelectorAll('.item-qtd');
         itensNomes.forEach((input, index) => {
-          const nome = input.value;
-          const qtd = itensQtds[index].value;
-          const unidades = setor.querySelectorAll('.item-unidade');
-const unidade = (unidades[index] && unidades[index].value) ? unidades[index].value : '';
-let m = nome.trim().match(/^((?:\d+\s+){4}\d+)\s+(.*)$/);
-let codigo = '';
-let descricao = nome;
-if (m) { codigo = m[1]; descricao = m[2]; }
+  const itemDiv = input.closest('.item') || input.closest('.item-row') || input.parentElement;
+  const nome = input.value || '';
+  const qtdInput = itemDiv ? itemDiv.querySelector('.item-qtd, .quantidade') : null;
+  const qtd = parseInt((qtdInput && qtdInput.value) ? qtdInput.value : (itensQtds[index] ? itensQtds[index].value : "0"), 10);
+  const unidadeEl = itemDiv ? itemDiv.querySelector('.unidade-controle') : null;
+  const unidade = (unidadeEl && unidadeEl.value) ? unidadeEl.value : '';
 
-descricao = descricao.replace(/\s*unidade:\s*[^,\n]+/gi, '').trim();
-corpoEmail += `${codigo ? codigo + ' - ' : ''}${descricao} - ${qtd} ${pluralizarUnidade(unidade, qtd)}
-`;
-        });
+  let m = nome.trim().match(/^((?:\d+\s+){4}\d+)\s+(.*)$/);
+  let codigo = '';
+  let descricao = nome;
+  if (m) { codigo = m[1]; descricao = m[2]; }
+
+  descricao = descricao.replace(/\s*unidade:\s*[^,\n]+/gi, '').trim();
+
+  if (descricao && qtd > 0) {
+    const unidadeCorreta = typeof pluralizarUnidade === 'function' ? pluralizarUnidade(unidade, qtd) : (qtd === 1 ? unidade : (unidade ? unidade + 's' : ''));
+    corpoEmail += `${codigo ? codigo + ' - ' : ''}${descricao} — ${qtd} ${unidadeCorreta}\n`;
+  }
+});
         corpoEmail += `\n`;
         const Justificativa = setor.querySelector('.Justificativa').value;
         if (Justificativa) {
