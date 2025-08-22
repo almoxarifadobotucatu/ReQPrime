@@ -2076,10 +2076,13 @@ const EscritórioItems = [
         items = defaultItems;
       }
       items.forEach(item => {
-      const option = document.createElement('option');
-      option.value = item; // mantém o texto completo (com "unidade: ...")
-      datalist.appendChild(option);
-    });
+        const option = document.createElement('option');
+        // Texto exibido sem "unidade: ..."
+        const display = item.replace(/\s*unidade:\s*[^,\n]+/i, '').trim();
+        option.value = display;                   // o usuário vê o texto limpo
+        option.dataset.original = item;           // guardamos o original para usar no formulário
+        datalist.appendChild(option);
+      });
     }
 
     document.addEventListener('contextmenu', function(e) {
@@ -2781,24 +2784,6 @@ document.addEventListener("input", function(e) {
 
 
 
-
-<script>
-  // Aplica rótulo visual sem "unidade:" em todas as opções do datalist
-  document.addEventListener("DOMContentLoaded", () => {
-    const lista = document.getElementById("lista-itens");
-    if (lista) {
-      lista.querySelectorAll("option").forEach(opt => {
-        if (opt.value) {
-          const lbl = opt.value.replace(/\s+unidade:\s*[^,\n]+/i, "").trim();
-          if (lbl && lbl !== opt.value) {
-            opt.textContent = lbl; // mostra sem "unidade:"
-          }
-        }
-      });
-    }
-  });
-</script>
-
 </body>
 </html>
 <html lang="pt-BR">
@@ -3055,23 +3040,5 @@ document.addEventListener("input", function(e) {
 
 
 
-
-
-<script>
-  // Aplica rótulo visual sem "unidade:" em todas as opções do datalist
-  document.addEventListener("DOMContentLoaded", () => {
-    const lista = document.getElementById("lista-itens");
-    if (lista) {
-      lista.querySelectorAll("option").forEach(opt => {
-        if (opt.value) {
-          const lbl = opt.value.replace(/\s+unidade:\s*[^,\n]+/i, "").trim();
-          if (lbl && lbl !== opt.value) {
-            opt.textContent = lbl; // mostra sem "unidade:"
-          }
-        }
-      });
-    }
-  });
-</script>
 
 </body></html></head></html>
