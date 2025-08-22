@@ -2138,8 +2138,19 @@ const EscritórioItems = [
         if (itemDiv) {
           const hiddenUnidade = itemDiv.querySelector('.item-unidade');
           const selectedDiv = itemDiv.querySelector('.custom-select .selected');
-          const m = (input.value || '').match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
-          const unidadeEncontrada = m ? m[1] : '';
+          // Obtém a unidade a partir do datalist (mantendo input sem "unidade:")
+          var listId = input.getAttribute('list');
+          var dl = listId ? document.getElementById(listId) : null;
+          var unidadeEncontrada = '';
+          if (dl) {
+            var opt = Array.from(dl.options).find(function(o){ 
+              return o.value === input.value && o.dataset && o.dataset.original; 
+            });
+            if (opt) {
+              var mm = opt.dataset.original.match(/unidade:\s*([^,\n]+)/i);
+              if (mm) unidadeEncontrada = mm[1].trim();
+            }
+          }
           if (hiddenUnidade) hiddenUnidade.value = unidadeEncontrada;
           if (selectedDiv) selectedDiv.textContent = unidadeEncontrada || 'Selecione';
           var unidadeCtrl = itemDiv.querySelector('.unidade-controle');
