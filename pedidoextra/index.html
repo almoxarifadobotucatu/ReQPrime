@@ -646,7 +646,7 @@
 <input autocomplete="off" id="unidade" required="" type="text"/>
 <div id="setoresContainer"></div>
 <div class="buttons">
-<button onclick="adicionarSetor()" type="button">Adicionar novo setor</button>
+<button id="btnAddSetor" onclick="adicionarSetor()" type="button">Adicionar novo setor</button>
 <button id="enviarPedido" type="button">Enviar pedido</button>
 </div>
 </form>
@@ -2701,6 +2701,19 @@ document.addEventListener("DOMContentLoaded", function() {
       setTimeout(() => { btn.disabled = false; }, 2000);
     });
   }
+</script>
+
+
+<script>
+  // Garantia de funcionamento do botão "Adicionar novo setor" (fallback sem depender de inline onclick)
+  document.addEventListener('DOMContentLoaded', function() {
+    var btn = document.getElementById('btnAddSetor');
+    if (btn && typeof adicionarSetor === 'function') {
+      btn.addEventListener('click', function(ev){
+        try { adicionarSetor(); } catch(e) { console.error(e); }
+      });
+    }
+  });
 </script>
 
 </body>
