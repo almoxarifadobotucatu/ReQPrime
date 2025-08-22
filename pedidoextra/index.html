@@ -2161,18 +2161,31 @@ const EscritórioItems = [
         mostrarMensagemTopo('Este item já foi adicionado.');
         input.value = '';
       }
-      // Auto-preenche a unidade de controle a partir do texto do item
-      try {
-        const itemDiv = input.closest('.item');
-        if (itemDiv) {
-          const hiddenUnidade = itemDiv.querySelector('.item-unidade');
-          const selectedDiv = itemDiv.querySelector('.custom-select .selected');
-          const m = (input.value || '').match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
-          const unidadeEncontrada = m ? m[1] : '';
-          if (hiddenUnidade) hiddenUnidade.value = unidadeEncontrada;
-          if (selectedDiv) selectedDiv.textContent = unidadeEncontrada || 'Selecione';
-        }
-      } catch (e) { /* noop */ }
+// Auto-preenche a unidade de controle a partir do datalist (sem apagar se não achar)
+try {
+  const itemDiv = input.closest('.item');
+  if (itemDiv) {
+    const hiddenUnidade = itemDiv.querySelector('.item-unidade');
+    const selectedDiv   = itemDiv.querySelector('.custom-select .selected');
+
+    let unidadeEncontrada = '';
+    const listId = input.getAttribute('list');
+    const dl = listId ? document.getElementById(listId) : null;
+    if (dl) {
+      const match = Array.from(dl.options).find(o => o.value === input.value && o.dataset && o.dataset.original);
+      if (match) {
+        const mu = match.dataset.original.match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
+        if (mu) unidadeEncontrada = mu[1];
+      }
+    }
+
+    if (unidadeEncontrada) {
+      if (hiddenUnidade) hiddenUnidade.value = unidadeEncontrada;
+      if (selectedDiv)   selectedDiv.textContent = unidadeEncontrada;
+    }
+  }
+} catch (e) { /* noop */ }
+
     
     }
 
@@ -2238,7 +2251,10 @@ const EscritórioItems = [
           } else if (nomeSetor === 'Epi_Consumo') {
             validItems = Epi_ConsumoItems;
           }
-          if (!validItems.includes(nome)) {
+const nomeLimpo = (nome || '').replace(/\s*unidade:\s*[^,\n]+/gi, '').trim();
+const listaLimpa = validItems.map(v => v.replace(/\s*unidade:\s*[^,\n]+/gi, '').trim());
+if (!listaLimpa.includes(nomeLimpo)) {
+
             todosSetoresValidos = false;
             mostrarMensagemTopo(`O item "${nome}" não é válido para o setor ${nomeSetor}.`);
             return;
@@ -2697,36 +2713,41 @@ document.addEventListener("input", function(e) {
 
 
 <script>
-// --- Ocultar "unidade:" na lista, restaurar valor original e preencher Unidade de Controle ---
+// --- Ao selecionar no datalist: manter o input sem "unidade:" e preencher a Unidade de Controle ---
 (function() {
-  function handleInput(e) {
+  document.addEventListener('input', function(e) {
     if (!e.target.classList || !e.target.classList.contains('item-nome')) return;
+
     var listId = e.target.getAttribute('list');
     var dl = listId ? document.getElementById(listId) : null;
     if (!dl) return;
-    var match = Array.from(dl.options).find(function(o){ 
-      return o.value === e.target.value && o.dataset && o.dataset.original; 
+
+    var opt = Array.from(dl.options).find(function(o){
+      return o.value === e.target.value && o.dataset && o.dataset.original;
     });
-    if (match) {
-      // Valor original (com unidade:)
-      var original = match.dataset.original;
-      e.target.value = original;
+    if (!opt) return;
 
-      // Preenche automaticamente a "Unidade de Controle"
-      var m = original.match(/unidade:\s*([^,\n]+)/i);
-      if (m) {
-        // tenta encontrar pelo id ou classe
-        var unidadeCtrl = document.getElementById('unidade-controle') || document.querySelector('.unidade-controle'); 
-        if (unidadeCtrl) unidadeCtrl.value = m[1].trim();
-      }
+    var original = opt.dataset.original;
+    var m = original.match(/unidade:\s*([^,\n]+)/i);
+    var unidade = m ? m[1].trim() : '';
 
-      // dispara change para manter as lógicas já existentes
-      var evt = new Event('change', { bubbles: true });
-      e.target.dispatchEvent(evt);
+    var itemDiv = e.target.closest('.item');
+    if (itemDiv) {
+      var hiddenUnid  = itemDiv.querySelector('.item-unidade');
+      var unidCtrl    = itemDiv.querySelector('.unidade-controle');
+      var selDisplay  = itemDiv.querySelector('.custom-select .selected');
+
+      if (hiddenUnid) hiddenUnid.value = unidade;
+      if (unidCtrl)   unidCtrl.value   = unidade;
+      if (selDisplay) selDisplay.textContent = unidade || 'Selecione';
     }
-  }
-  document.addEventListener('input', handleInput, true);
+
+    e.target.dataset.original = original;
+    e.target.dispatchEvent(new Event('change', { bubbles: true }));
+  }, true);
 })();
+</script>
+
 </script>
 
 
@@ -3022,73 +3043,6 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 </script>
 
-
-<!-- HOTFIX: garantir que 'Adicionar novo setor' reaja e manter limpeza de 'unidade:' -->
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  // Se o inline onclick não funcionar, forçamos a ação
-  var addBtn = document.querySelector('button[onclick="adicionarSetor()"], button[onclick*="adicionarSetor"]');
-  if (addBtn) {
-    addBtn.addEventListener('click', function() {
-      try {
-        // aguarda efeito do onclick; se nada for adicionado, chamamos explicitamente
-        var antes = document.querySelectorAll('#setoresContainer .setor').length;
-        setTimeout(function(){
-          var depois = document.querySelectorAll('#setoresContainer .setor').length;
-          if (depois === antes && typeof window.adicionarSetor === 'function') {
-            try { window.adicionarSetor(); } catch(e){ console.error(e); }
-          }
-        }, 60);
-      } catch(e) { console.error(e); }
-    });
-  }
-
-  // Refina updateDatalist para garantir exibição sem "unidade:" e preservar original
-  var __update = window.updateDatalist;
-  if (typeof __update === 'function') {
-    window.updateDatalist = function(setorId, sectorValue) {
-      __update(setorId, sectorValue);
-      try {
-        var dl = document.getElementById('lista-itens');
-        if (!dl) return;
-        Array.from(dl.options).forEach(function(opt){
-          if (!opt.dataset.original) opt.dataset.original = opt.value;
-          var display = (opt.dataset.original || '').replace(/\s*unidade:\s*[^,\n]+/i, '').trim();
-          opt.value = display;
-        });
-      } catch(e) { console.error(e); }
-    }
-  }
-
-  // Patch: ao selecionar item, limpar visualmente e preencher unidade
-  var __verificar = window.verificarDuplicata;
-  window.verificarDuplicata = function(input, index) {
-    if (typeof __verificar === 'function') __verificar(input, index);
-    try {
-      var datalist = document.getElementById('lista-itens');
-      var opt = Array.from(datalist ? datalist.options : []).find(function(o){
-        return o.value === input.value || (o.dataset && o.dataset.original === input.value);
-      });
-      var original = (opt && opt.dataset && opt.dataset.original) ? opt.dataset.original : input.value;
-      var display = (original || '').replace(/\s*unidade:\s*[^,\n]+/i, '').trim();
-      if (display) input.value = display;
-
-      var m = (original || '').match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
-      var unidade = m ? m[1] : '';
-      var itemDiv = input.closest('.item');
-      if (itemDiv) {
-        var hidden = itemDiv.querySelector('.item-unidade');
-        var unidadeCtrl = itemDiv.querySelector('.unidade-controle');
-        var selectedDiv = itemDiv.querySelector('.custom-select .selected');
-        if (hidden) hidden.value = unidade;
-        if (unidadeCtrl) unidadeCtrl.value = unidade;
-        if (selectedDiv && unidade) selectedDiv.textContent = unidade;
-      }
-    } catch(e) { console.error(e); }
-  };
-});
-</script>
-
 </body>
 </html>
 <html lang="pt-BR">
@@ -3285,73 +3239,6 @@ document.addEventListener("DOMContentLoaded", function() {
       setTimeout(() => { btn.disabled = false; }, 2000);
     });
   }
-</script>
-
-
-<!-- HOTFIX: garantir que 'Adicionar novo setor' reaja e manter limpeza de 'unidade:' -->
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-  // Se o inline onclick não funcionar, forçamos a ação
-  var addBtn = document.querySelector('button[onclick="adicionarSetor()"], button[onclick*="adicionarSetor"]');
-  if (addBtn) {
-    addBtn.addEventListener('click', function() {
-      try {
-        // aguarda efeito do onclick; se nada for adicionado, chamamos explicitamente
-        var antes = document.querySelectorAll('#setoresContainer .setor').length;
-        setTimeout(function(){
-          var depois = document.querySelectorAll('#setoresContainer .setor').length;
-          if (depois === antes && typeof window.adicionarSetor === 'function') {
-            try { window.adicionarSetor(); } catch(e){ console.error(e); }
-          }
-        }, 60);
-      } catch(e) { console.error(e); }
-    });
-  }
-
-  // Refina updateDatalist para garantir exibição sem "unidade:" e preservar original
-  var __update = window.updateDatalist;
-  if (typeof __update === 'function') {
-    window.updateDatalist = function(setorId, sectorValue) {
-      __update(setorId, sectorValue);
-      try {
-        var dl = document.getElementById('lista-itens');
-        if (!dl) return;
-        Array.from(dl.options).forEach(function(opt){
-          if (!opt.dataset.original) opt.dataset.original = opt.value;
-          var display = (opt.dataset.original || '').replace(/\s*unidade:\s*[^,\n]+/i, '').trim();
-          opt.value = display;
-        });
-      } catch(e) { console.error(e); }
-    }
-  }
-
-  // Patch: ao selecionar item, limpar visualmente e preencher unidade
-  var __verificar = window.verificarDuplicata;
-  window.verificarDuplicata = function(input, index) {
-    if (typeof __verificar === 'function') __verificar(input, index);
-    try {
-      var datalist = document.getElementById('lista-itens');
-      var opt = Array.from(datalist ? datalist.options : []).find(function(o){
-        return o.value === input.value || (o.dataset && o.dataset.original === input.value);
-      });
-      var original = (opt && opt.dataset && opt.dataset.original) ? opt.dataset.original : input.value;
-      var display = (original || '').replace(/\s*unidade:\s*[^,\n]+/i, '').trim();
-      if (display) input.value = display;
-
-      var m = (original || '').match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
-      var unidade = m ? m[1] : '';
-      var itemDiv = input.closest('.item');
-      if (itemDiv) {
-        var hidden = itemDiv.querySelector('.item-unidade');
-        var unidadeCtrl = itemDiv.querySelector('.unidade-controle');
-        var selectedDiv = itemDiv.querySelector('.custom-select .selected');
-        if (hidden) hidden.value = unidade;
-        if (unidadeCtrl) unidadeCtrl.value = unidade;
-        if (selectedDiv && unidade) selectedDiv.textContent = unidade;
-      }
-    } catch(e) { console.error(e); }
-  };
-});
 </script>
 
 </body></html></head></html>
