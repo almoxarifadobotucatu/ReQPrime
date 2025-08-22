@@ -2784,6 +2784,40 @@ document.addEventListener("input", function(e) {
 
 
 
+
+<script>
+// --- Ocultar "unidade:" na lista, restaurar valor original e preencher Unidade de Controle ---
+(function() {
+  function handleInput(e) {
+    if (!e.target.classList || !e.target.classList.contains('item-nome')) return;
+    var listId = e.target.getAttribute('list');
+    var dl = listId ? document.getElementById(listId) : null;
+    if (!dl) return;
+    var match = Array.from(dl.options).find(function(o){ 
+      return o.value === e.target.value && o.dataset && o.dataset.original; 
+    });
+    if (match) {
+      // Valor original (com unidade:)
+      var original = match.dataset.original;
+      e.target.value = original;
+
+      // Preenche automaticamente a "Unidade de Controle"
+      var m = original.match(/unidade:\s*([^,\n]+)/i);
+      if (m) {
+        // tenta encontrar pelo id ou classe
+        var unidadeCtrl = document.getElementById('unidade-controle') || document.querySelector('.unidade-controle'); 
+        if (unidadeCtrl) unidadeCtrl.value = m[1].trim();
+      }
+
+      // dispara change para manter as lógicas já existentes
+      var evt = new Event('change', { bubbles: true });
+      e.target.dispatchEvent(evt);
+    }
+  }
+  document.addEventListener('input', handleInput, true);
+})();
+</script>
+
 </body>
 </html>
 <html lang="pt-BR">
@@ -3040,5 +3074,39 @@ document.addEventListener("input", function(e) {
 
 
 
+
+
+<script>
+// --- Ocultar "unidade:" na lista, restaurar valor original e preencher Unidade de Controle ---
+(function() {
+  function handleInput(e) {
+    if (!e.target.classList || !e.target.classList.contains('item-nome')) return;
+    var listId = e.target.getAttribute('list');
+    var dl = listId ? document.getElementById(listId) : null;
+    if (!dl) return;
+    var match = Array.from(dl.options).find(function(o){ 
+      return o.value === e.target.value && o.dataset && o.dataset.original; 
+    });
+    if (match) {
+      // Valor original (com unidade:)
+      var original = match.dataset.original;
+      e.target.value = original;
+
+      // Preenche automaticamente a "Unidade de Controle"
+      var m = original.match(/unidade:\s*([^,\n]+)/i);
+      if (m) {
+        // tenta encontrar pelo id ou classe
+        var unidadeCtrl = document.getElementById('unidade-controle') || document.querySelector('.unidade-controle'); 
+        if (unidadeCtrl) unidadeCtrl.value = m[1].trim();
+      }
+
+      // dispara change para manter as lógicas já existentes
+      var evt = new Event('change', { bubbles: true });
+      e.target.dispatchEvent(evt);
+    }
+  }
+  document.addEventListener('input', handleInput, true);
+})();
+</script>
 
 </body></html></head></html>
