@@ -9,23 +9,11 @@
     }
   
 function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
-    // Remove a palavra "unidade: ..." do texto
-    const itemSemUnidade = itemSelecionado.replace(/unidade:\s*[A-Za-zÀ-ú]+/i, "").trim();
-    
-    // Atualiza o campo de nome do item sem a palavra "unidade"
-    const campoItem = document.querySelector(".item-nome"); 
-    if (campoItem) {
-        campoItem.value = itemSemUnidade;
-    }
-
-    // Captura apenas a unidade
+    // Captura a unidade da string (ex: "unidade: Comprimido")
     const match = itemSelecionado.match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
     if (match) {
         unidadeControleInput.value = match[1]; // Ex: "Comprimido"
     } else {
-        unidadeControleInput.value = "";
-    }
-} else {
         unidadeControleInput.value = "";
     }
 }
@@ -2682,7 +2670,8 @@ document.addEventListener("input", function(e) {
 <script>
 // --- Ocultar "unidade:" na lista, restaurar valor original e preencher Unidade de Controle ---
 (function() {
-  function handleInput(e) {
+  
+function handleInput(e) {
     if (!e.target.classList || !e.target.classList.contains('item-nome')) return;
     var listId = e.target.getAttribute('list');
     var dl = listId ? document.getElementById(listId) : null;
@@ -2690,6 +2679,33 @@ document.addEventListener("input", function(e) {
     var match = Array.from(dl.options).find(function(o){ 
       return o.value === e.target.value && o.dataset && o.dataset.original; 
     });
+    if (match) {
+      // Mantém o texto LIMPO no campo (sem "unidade: ...")
+      var original = match.dataset.original;
+      var display = original.replace(/\s*unidade:\s*[^,\n]+/i, '').trim();
+      e.target.value = display;
+
+      // Descobre a unidade a partir do original
+      var m = original.match(/unidade:\s*([^,\n]+)/i);
+      var unidade = m ? m[1].trim() : '';
+
+      // Preenche campos de unidade no mesmo bloco .item
+      var itemDiv = e.target.closest('.item');
+      if (itemDiv) {
+        var hiddenUnidade = itemDiv.querySelector('.item-unidade');
+        if (hiddenUnidade) hiddenUnidade.value = unidade;
+        var unidadeCtrl = itemDiv.querySelector('.unidade-controle');
+        if (unidadeCtrl) unidadeCtrl.value = unidade;
+        var selectedDiv = itemDiv.querySelector('.custom-select .selected');
+        if (selectedDiv) selectedDiv.textContent = unidade || 'Selecione';
+      }
+
+      // Dispara change para manter lógicas existentes (duplicata, validações, etc.)
+      var evt = new Event('change', { bubbles: true });
+      e.target.dispatchEvent(evt);
+    }
+}
+);
     if (match) {
       // Valor original (com unidade:)
       var original = match.dataset.original;
