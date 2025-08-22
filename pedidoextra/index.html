@@ -3296,6 +3296,8 @@ document.addEventListener("DOMContentLoaded", function() {
     if (!e.target || !e.target.classList || !e.target.classList.contains('item-nome')) return;
     var itemDiv = e.target.closest('.item');
     if (!itemDiv) return;
+
+    // Se o texto digitado contém "unidade:", extrai e limpa
     if (/\bunidade:\s*/i.test(e.target.value || '')) {
       var uni = extrairUnidadeDoTexto(e.target.value);
       var hiddenUnidade = itemDiv.querySelector('.item-unidade');
@@ -3303,6 +3305,23 @@ document.addEventListener("DOMContentLoaded", function() {
       if (hiddenUnidade) hiddenUnidade.value = uni;
       if (unidadeCtrl) unidadeCtrl.value = uni;
       e.target.value = limparUnidadeDoTexto(e.target.value);
+    }
+
+    // Se veio de um datalist com dataset.original
+    var listId = e.target.getAttribute('list');
+    var dl = listId ? document.getElementById(listId) : null;
+    if (dl) {
+      var opt = Array.from(dl.options).find(function(o){
+        return o.value === e.target.value && o.dataset && o.dataset.original;
+      });
+      if (opt) {
+        var mm = opt.dataset.original.match(/unidade:\s*([^,\n]+)/i);
+        var unidade = mm ? mm[1].trim() : '';
+        var hiddenUnidade = itemDiv.querySelector('.item-unidade');
+        var unidadeCtrl = itemDiv.querySelector('.unidade-controle');
+        if (hiddenUnidade) hiddenUnidade.value = unidade;
+        if (unidadeCtrl) unidadeCtrl.value = unidade;
+      }
     }
   }, true);
 })();
