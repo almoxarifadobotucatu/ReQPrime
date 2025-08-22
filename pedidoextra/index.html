@@ -3073,7 +3073,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     camposObrigatorios.forEach(campo => {
       if (!campo.value.trim()) {
-        erros.push("O campo '" + (campo.previousElementSibling?.innerText || campo.name || campo.id) + "' é obrigatório.");
+        erros.push("O campo " + (campo.previousElementSibling?.innerText || campo.name || campo.id) + " é obrigatório.");
         campo.classList.add("erro-campo");
         if (!primeiroErro) primeiroErro = campo;
       }
@@ -3086,7 +3086,7 @@ document.addEventListener("DOMContentLoaded", function() {
       mostrarMensagemTopo(msg, "erro");
       if (primeiroErro) primeiroErro.focus();
     } else {
-      mostrarMensagemTopo("<h3>✅ Pedido enviado com </h3>", "sucesso!");
+      mostrarMensagemTopo("<h3>✅ Pedido enviado com sucesso! </h3>", "");
       // Aqui você pode colocar a função de envio original
     }
   });
