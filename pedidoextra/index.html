@@ -2660,6 +2660,80 @@ document.addEventListener("input", function(e) {
 })();
 </script>
 
+
+<script>
+document.getElementById("enviarPedido").addEventListener("click", function () {
+  const erros = [];
+  const solicitante = document.getElementById("solicitante");
+  const unidade = document.getElementById("unidade");
+  const setores = document.querySelectorAll(".setor");
+
+  // Resetando estilos
+  document.querySelectorAll(".erro-campo").forEach(el => el.classList.remove("erro-campo"));
+
+  // Validação Geral
+  if (!solicitante.value.trim()) {
+    erros.push("Responsável pela solicitação");
+    solicitante.classList.add("erro-campo");
+  }
+  if (!unidade.value.trim()) {
+    erros.push("Unidade de saúde");
+    unidade.classList.add("erro-campo");
+  }
+
+  // Validação de setores
+  setores.forEach((setor, i) => {
+    const idx = i + 1;
+    const selectSetor = setor.querySelector("select");
+    const itens = setor.querySelectorAll(".item");
+
+    if (!selectSetor || !selectSetor.value) {
+      erros.push("Setor não selecionado");
+      selectSetor?.classList.add("erro-campo");
+    }
+
+    itens.forEach((item, j) => {
+      const nomeItem = item.querySelector("input.item-nome");
+      const qtdItem = item.querySelector("input.item-qtd");
+      const unidadeItem = item.querySelector("select.item-unidade");
+
+      if (!nomeItem || !nomeItem.value.trim()) {
+        erros.push(`Nome do item ${j + 1} não preenchido`);
+        nomeItem?.classList.add("erro-campo");
+      }
+      if (!qtdItem || !qtdItem.value || qtdItem.value <= 0) {
+        erros.push(`Quantidade do item ${j + 1} inválida`);
+        qtdItem?.classList.add("erro-campo");
+      }
+      if (!unidadeItem || !unidadeItem.value.trim()) {
+        erros.push(`Unidade de controle do item ${j + 1} não preenchida`);
+        unidadeItem?.classList.add("erro-campo");
+      }
+    });
+  });
+
+  // Exibe os erros
+  const boxErros = document.getElementById("mensagensErros");
+  if (erros.length > 0) {
+    boxErros.style.display = "block";
+    boxErros.innerHTML = `
+      <div style="background:#ffe5e5;padding:15px;border-radius:12px;">
+        <p style="font-weight:bold;font-size:1rem; color:#a70000; margin:0 0 8px;">
+          ⚠️ Preencha os seguintes campos obrigatórios:
+        </p>
+        <ul style="margin:0;padding-left:20px;color:#a70000;font-size:0.95rem;">
+          ${erros.map(e => `<li>${e}</li>`).join("")}
+        </ul>
+      </div>`;
+    return; // bloqueia envio
+  }
+
+  // Se não houver erros, pode enviar
+  boxErros.style.display = "none";
+  alert("Pedido enviado com sucesso!");
+});
+</script>
+
 </body>
 </html>
 <html lang="pt-BR">
@@ -2949,6 +3023,80 @@ document.addEventListener("input", function(e) {
   }
   document.addEventListener('input', handleInput, true);
 })();
+</script>
+
+
+<script>
+document.getElementById("enviarPedido").addEventListener("click", function () {
+  const erros = [];
+  const solicitante = document.getElementById("solicitante");
+  const unidade = document.getElementById("unidade");
+  const setores = document.querySelectorAll(".setor");
+
+  // Resetando estilos
+  document.querySelectorAll(".erro-campo").forEach(el => el.classList.remove("erro-campo"));
+
+  // Validação Geral
+  if (!solicitante.value.trim()) {
+    erros.push("Responsável pela solicitação");
+    solicitante.classList.add("erro-campo");
+  }
+  if (!unidade.value.trim()) {
+    erros.push("Unidade de saúde");
+    unidade.classList.add("erro-campo");
+  }
+
+  // Validação de setores
+  setores.forEach((setor, i) => {
+    const idx = i + 1;
+    const selectSetor = setor.querySelector("select");
+    const itens = setor.querySelectorAll(".item");
+
+    if (!selectSetor || !selectSetor.value) {
+      erros.push("Setor não selecionado");
+      selectSetor?.classList.add("erro-campo");
+    }
+
+    itens.forEach((item, j) => {
+      const nomeItem = item.querySelector("input.item-nome");
+      const qtdItem = item.querySelector("input.item-qtd");
+      const unidadeItem = item.querySelector("select.item-unidade");
+
+      if (!nomeItem || !nomeItem.value.trim()) {
+        erros.push(`Nome do item ${j + 1} não preenchido`);
+        nomeItem?.classList.add("erro-campo");
+      }
+      if (!qtdItem || !qtdItem.value || qtdItem.value <= 0) {
+        erros.push(`Quantidade do item ${j + 1} inválida`);
+        qtdItem?.classList.add("erro-campo");
+      }
+      if (!unidadeItem || !unidadeItem.value.trim()) {
+        erros.push(`Unidade de controle do item ${j + 1} não preenchida`);
+        unidadeItem?.classList.add("erro-campo");
+      }
+    });
+  });
+
+  // Exibe os erros
+  const boxErros = document.getElementById("mensagensErros");
+  if (erros.length > 0) {
+    boxErros.style.display = "block";
+    boxErros.innerHTML = `
+      <div style="background:#ffe5e5;padding:15px;border-radius:12px;">
+        <p style="font-weight:bold;font-size:1rem; color:#a70000; margin:0 0 8px;">
+          ⚠️ Preencha os seguintes campos obrigatórios:
+        </p>
+        <ul style="margin:0;padding-left:20px;color:#a70000;font-size:0.95rem;">
+          ${erros.map(e => `<li>${e}</li>`).join("")}
+        </ul>
+      </div>`;
+    return; // bloqueia envio
+  }
+
+  // Se não houver erros, pode enviar
+  boxErros.style.display = "none";
+  alert("Pedido enviado com sucesso!");
+});
 </script>
 
 </body></html></head></html>
