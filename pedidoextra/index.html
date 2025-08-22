@@ -9,20 +9,15 @@
     }
   
 function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
-    // Primeiro tenta capturar padrão "unidade: ..."
+    // Captura a unidade da string (ex: "unidade: Comprimido")
     const match = itemSelecionado.match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
     if (match) {
-        unidadeControleInput.value = match[1].trim();
-        return;
-    }
-    // Caso contrário, extrai o trecho após o último "-"
-    const lastDashIndex = itemSelecionado.lastIndexOf("-");
-    if (lastDashIndex !== -1) {
-        unidadeControleInput.value = itemSelecionado.slice(lastDashIndex + 1).trim();
+        unidadeControleInput.value = match[1]; // Ex: "Comprimido"
     } else {
         unidadeControleInput.value = "";
     }
 }
+
 </script>
 
 <meta charset="utf-8"/>
@@ -722,254 +717,254 @@ function pluralizarUnidade(unidade, quantidade) {
 
     // Item lists
     const farmaciaItems = [
-     "1 01 06 0001 7 Aciclovir 200mg - Comprimido",
-     "1 01 06 0002 5 Aciclovir 50MG/G – Creme Bisnaga c/ 10G – Uso Tópico - Bisnaga",
-     "1 01 20 0417 9 Ácido Acético 15% - Frasco 50 ML - Frasco",
-     "1 01 20 0030 0 Ácido Acético 3% - Frasco 10ML – Manipulado - Frasco",
-     "1 01 20 0047 5 Ácido Acético 5% - Frasco 10ML – Manipulado - Frasco",
-     "1 01 03 0001 3 Ácido acetilsalicílico 100mg - Comprimido",
-     "1 01 03 0006 4 Ácido acetilsalicílico 500mg - Comprimido",
-     "1 01 09 0001 0 Ácido fólico 5mg - Comprimido",
-     "1 01 20 0031 9 Ácido Tricloroacético 80% – Frasco 10ML - Manipulado - Frasco",
-     "1 01 20 0013 0 Adrenalina 1mg/ml - Ampola",
-     "1 01 20 0163 3 Água destilada estéril - Ampola 10ml - Ampola",
-     "1 02 01 0018 1 Agulha para aplicação de insulina caneta 0,23 x 04 mm - Unidade",
-     "1 01 07 0005 4 Albendazol 400mg - Comprimido mastigável - Comprimido",
-     "1 01 07 0006 2 Albendazol 400mg solução oral - Frasco 10ml - Frasco",
-     "1 01 05 0014 4 Alcatrão Mineral (Fn) 10MG/G (1%) - Tubo 50G – Uso Dermatológico – Manipulado - Tubo",
-     "1 01 20 0379 2 Alendronato de sódio tri-hidratado 91,37mg (equivalente 70mg de Ácido Alendrônico) - Comprimido",
-     "1 01 08 0005 9 Algestona acetofenida 150mg/ml + estradiol, enantato 10mg/ml - Ampola 1ml - Ampola",
-     "1 01 01 0001 4 Alopurinol 100mg - Comprimido",
-     "1 01 11 0011 5 Aminofilina 100mg - Comprimido",
-     "1 01 11 0005 0 Aminofilina 24mg/ml - Ampola 10ml - Ampola",
-     "1 01 20 0045 9 Amiodarona 50mg/ml - Ampola 3ml - Ampola",
-     "1 01 20 0009 2 Amiodarona, cloridrato 200mg - Comprimido",
-     "1 01 17 0061 9 Amoxicilina 250Mg/5Ml + Clavulanato De Potássio 62,5Mg/5Ml - Frasco",
-     "1 01 17 0009 0 Amoxicilina 250mg/5ml suspensão - Frasco 150ml - Frasco",
-     "1 01 17 0010 4 Amoxicilina 500mg - Comprimido",
-     "1 01 17 0034 1 Amoxicilina 500mg + clavulanato de potássio 125mg - Comprimido",
-     "1 01 17 0025 2 Ampicilina 250mg/5ml suspensão - Frasco 60ml - Frasco",
-     "1 01 17 0024 4 Ampicilina 500mg - Comprimido",
-     "1 01 02 0001 9 Anlodipino, besilato 5mg - Comprimido",
-     "1 02 12 0043 0 Aparelho de HGT (teste de Glicemia) - Unidade",
-     "1 01 02 0076 0 Atenolol 25mg - Comprimido",
-     "1 01 20 0044 0 Atropina, sulfato 0,50 mg/ml - Ampola 1ml - Ampola",
-     "1 01 17 0029 5 Azitromicina di-hidratada 500mg - Comprimido",
-     "1 01 17 0051 1 Azitromicina suspensão 200mg - Frasco",
-     "1 01 11 0025 5 Beclometasona, dipropionato 200mcg spray oral - Frasco 200 doses - Frasco",
-     "1 01 11 0003 4 Beclometasona, dipropionato 250mcg spray oral - Frasco 200 doses - Frasco",
-     "1 01 11 0001 8 Beclometasona, dipropionato 50mcg spray nasal - Frasco 200 doses - Frasco",
-     "1 01 17 0016 3 Benzilpenicilina benzatina 1.200.000 UI - Frasco-Ampola - IM - Frasco-amp",
-     "1 01 17 0017 1 Benzilpenicilina benzatina 600.000 Ui - Frasco-Ampola - IM - Frasco-amp",
-     "1 01 17 0018 0 Benzilpenicilina procaína 300.000 UI + benzilpenicilina potássica 100.000 UI - IM - Frasco-amp",
-     "1 01 07 0014 3 Benzoato de benzila 250mg/ml solução - Frasco 100ml - Frasco",
-     "1 01 17 0075 9 Benzoíla, Peróxido 25MG (2,5%) Base Aquosa - Bisnaga",
-     "1 01 13 0050 5 Betametasona, acetato de 3mg/ml + betametasona , fosfato dissódico 3,945mg/ml (equivalente a 3mg/ml de betametasona) suspensão injetavel - Ampola 1ml - Ampola",
-     "1 01 20 0061 0 Bicarbonato de sódio 8,4% - Ampola 10 ml - Ampola",
-     "1 01 18 0007 9 Bromoprida 10mg - Comprimido",
-     "1 01 13 0015 7 Budesonida 32 MCG/Dose Suspensão Spray Estéril - Frasco",
-     "1 01 13 0035 1 Budesonida 50 MCG/Dose Suspensão Spray Estéril - Frasco",
-     "1 01 20 0024 6 Bultilbrometo de escopolamina 10 mg + dipirona 250 mg - Comprimido revestido - Comprimido",
-     "1 01 20 0020 3 Butilbrometo de escopolamina + dipirona sódica - Uso Im/Iv - Ampola 5 ml - Ampola",
-     "1 01 20 0007 6 Butilbrometo de escopolamina 10 mg - Comprimido",
-     "1 01 20 0042 4 Butilbrometo de escopolamina 10 mg/ml gotas - Frasco 20 ml - Frasco",
-     "1 01 20 0019 0 Butilbrometo de escopolamina 20 mg/ml - Ampola 1 ml - Ampola",
-     "1 01 20 0010 6 Butilbrometo de escopolamina 6,67 mg/ml + dipirona 333,4 ml gotas - Frasco 20ml - Frasco",
-     "1 02 06 0025 7 Caneta para Injeção de Insulina refil - Modelo Hfzsqi. - Caneta",
-     "1 01 02 0004 3 Captopril 25mg - Comprimido",
-     "1 01 20 0108 0 Carbonato de cálcio 1.250mg (equivalente a 500mg de cálcio elementar) + 200ui colecalciferol (vitamina d) - Comprimidos revestidos - uso adulto - Comprimido",
-     "1 01 20 0103 0 Carbonato de cálcio 1.250mg (equivalente a 500mg de cálcio elementar) + 400ui colecalciferol (vitamina d) - Comprimidos revestidos - uso adulto e pediátrico - Comprimido",
-     "1 01 20 0383 0 Carbonato de Calcio 1250 mg (Equivalente à 500 mg De Cálcio) - Comprimido",
-     "1 01 20 0238 9 Carbonato de Cálcio 1500 mg (Equivalente a 600 mg de Cálcio) + Colecalciferol (Vit. D3) 400 Ui Comprimido Mastigável - Comprimido",
-     "1 01 20 0439 0 Carvão Vegetal Ativado 250mg - Comprimido",
-     "1 01 02 0067 1 Carvedilol 12,5mg - uso adulto - Comprimido",
-     "1 01 02 0041 8 Carvedilol 6,25mg - uso adulto - Comprimido",
-     "1 01 17 0007 4 Cefalexina 250 mg/5 ml suspensão - Frasco 60 ml - Frasco",
-     "1 01 17 0019 8 Cefalexina 500 mg - Comprimido",
-     "1 01 17 0056 2 Ceftriaxona Sodica 1G - EV - Frasco- Ampola - Ampola",
-     "1 01 17 0053 8 Ceftriaxona Sodica 1G - IM - Frasco- Ampola - Ampola",
-     "1 01 17 0059 7 Ceftriaxona Sódica 500 MG - IM - Frasco-Ampola - Ampola",
-     "1 01 05 0006 3 Cetoconazol 200 mg - Comprimido",
-     "1 01 05 0004 7 Cetoconazol creme 20 mg/g - Tubo 30 g - Tubo",
-     "1 01 05 0003 9 Cetoconazol shampoo 20 mg/g - Frasco 100 ml - Frasco",
-     "1 01 01 0015 4 Cetoprofeno 100mg - Frasco-Ampola - IV - Ampola",
-     "1 01 01 0014 6 Cetoprofeno 100mg Ampola 2ml - IM - Ampola",
-     "1 01 20 0014 9 Cetotifeno, fumarato xarope - Frasco120 ml - uso adulto e pediátrico - Frasco",
-     "1 01 10 0004 8 Cimetidina 200mg - Comprimido",
-     "1 01 20 0011 4 Cinarizina 25mg - Comprimido",
-     "1 01 17 0037 6 Ciprofloxacino, cloridrato 500mg - Comprimido",
-     "1 01 17 0049 0 Claritromicina 500mg –  Comprimido revestido – Uso Adulto - Comprimido",
-     "1 01 17 0031 7 Clindamicina, Cloridrato 338,457mg - Cápsula - Cápsula",
-     "1 01 02 0005 1 Clonidina, cloridrato 0,150mg - Comprimido",
-     "1 01 20 0129 3 Clopidogrel, Bissulfato de 75 MG (Requisitado na SMS) - Comprimido",
-     "1 01 20 0032 7 Cloreto de potássio 19,1% Ampola 10ml - Ampola",
-     "1 01 20 0033 5 Cloreto de Sódio 20% Amp 10 ml - Ampola",
-     "1 01 02 0007 8 Clortalidona 25 MG - Comprimido",
-     "1 01 20 0159 5 Colagenase 0,6 Ui + Cloranfenicol 0,01 G – Tubo 30 G - Tubo",
-     "1 01 20 0402 0 Colagenase 0,6 Ui/G – Tubo 30 G (Requer autorização Comissão Curativo) - Tubo",
-     "1 01 20 0003 3 Cold cream - Tubo 50G (manipulado) - Tubo",
-     "1 01 09 0009 6 Complexo B - Comprimido",
-     "1 01 09 0010 0 Complexo B - Ampola 2ML - Ampola",
-     "1 01 07 0009 7 Deltametrina loção 0,02% - Frasco 100 ml - Frasco",
-     "1 01 20 0035 1 Deltametrina shampoo - Frasco 100 ml - Frasco",
-     "1 01 20 0036 0 Deslanosídeo 0,2mg/ml - Ampola 2ml - Ampola",
-     "1 01 13 0051 3 Dexametasona 1MG/ML – Suspensão Oftálmica Estéril - Frasco 5 ml - Frasco",
-     "1 01 13 0052 1 Dexametasona 4mg comprimido - uso adulto e pediátrico - Comprimido",
-     "1 01 20 0016 5 Dexametasona, acetato (amp i) + cianocobalamina + tiamina, cloridrato + piridoxina, cloridrato (amp ii) - Ampola 1 ml - IM (Dexa-Citoneurim) - Ampola",
-     "1 01 13 0011 4 Dexametasona, acetato creme dermatológico 1 mg/g - Tubo 10 g - Tubo",
-     "1 01 13 0007 6 Dexametasona, Fosfáto Dissódico 4MG/ML - Frasco 2,5 ML - Ampola",
-     "1 01 13 0001 7 Dexclorfeniramina, maleato 2 mg - Comprimido",
-     "1 01 13 0004 1 Dexclorfeniramina, maleato 2 mg/5 ml suspensão - Frasco 100 ml - Frasco",
-     "1 01 20 0200 1 Dextrano 70 1 mg/ml + Hipromelose 3 mg/ml - Frasco 15 ml - Frasco",
-     "1 01 01 0005 7 Diclofenaco de sódio 75mg - Ampola 3ml - Ampola",
-     "1 01 01 0008 1 Diclofenaco sódico 50mg - Comprimido",
-     "1 01 20 0022 0 Digoxina 0,25mg - Comprimido",
-     "1 01 18 0006 0 Dimenidrinato + piridoxina, 50/10mg cloridrato - Comprimido",
-     "1 01 18 0003 6 Dimenidrinato + piridoxina, cloridrato - Frasco 20 ml - Frasco",
-     "1 01 18 0009 5 Dimenidrinato + piridoxina, cloridrato + glicose + frutose Ampola 10 ml - EV - Ampola",
-     "1 01 20 0028 9 Dimenidrinato + piridoxina, cloridrato Ampola 1 ml - IM - Ampola",
-     "1 01 03 0005 6 Dipirona sódica 500 mg/ml - Ampola 2 ml - Ampola",
-     "1 01 03 0004 8 Dipirona sódica 500 mg/ml gotas - Frasco 10 ml - Frasco",
-     "1 01 03 0009 9 Dipirona Sódica 500mg - Comprimido",
-     "1 01 20 0037 8 Dobutamina, cloridrato 12,5 mg/ml - Ampola 20 ml - Ampola",
-     "1 01 18 0002 8 Domperidona suspensão 1 mg/ml - Frasco 100 ml - Frasco",
-     "1 01 20 0038 6 Dopamina, cloridrato 5 mg/ml - Ampola 10 ml - Ampola",
-     "1 01 20 0170 6 Doxazosina, Mesilato 2mg - Comprimido",
-     "1 01 17 0027 9 Doxiciclina, Cloridrato 100mg - Comprimido",
-     "1 01 02 0009 4 Enalapril, maleato 10mg - Comprimido",
-     "1 01 02 0010 8 Enalapril, maleato 20mg - Comprimido",
-     "1 01 02 0008 6 Enalapril, maleato 5mg - Comprimido",
-     "1 01 17 0073 2 Eritromicina, estolato 250 mg/ 5 ml - Frasco 60 ml - Frasco",
-     "1 01 02 0011 6 Espironolactona 25mg - Comprimido",
-     "1 01 08 0022 9 Estriol 1Mg/G Creme Vaginal Bisnaga 20G ou Mais - Frasco",
-     "1 01 08 0019 9 Estrogênios Conjugados 0,3mg - Drágeas",
-     "1 01 08 0007 5 Estrogênios Conjugados 0,625 MG/G Creme - Bisnaga 26G - Tubo",
-     "1 01 20 0076 9 Finasterida 5mg - Comprimido",
-     "1 02 14 0007 3 Fitas para hemoglicoteste - (HGT) - Unidade",
-     "1 01 05 0001 2 Fluconazol 150mg - Cápsula",
-     "1 01 02 0018 3 Furosemida 10 mg/ml - Ampola 2ml - Ampola",
-     "1 01 02 0014 0 Furosemida 40mg - Comprimido",
-     "1 01 12 0001 2 Glibenclamida 5mg - Comprimido",
-     "1 01 20 0440 3 Glicerol 1,44G - supositório – uso retal Pediátrico - Unidade",
-     "1 01 20 0441 1 Glicerol 120Mg/Ml Solução - Frasco 250Ml + Sonda Uso Retal - Frasco",
-     "1 01 20 0442 0 Glicerol 2,68G - supositório – uso retal Adulto - Unidade",
-     "1 01 12 0052 7 Gliclazida 60mg - Comprimido",
-     "1 01 20 0017 3 Glicose 25% - Ampola 10 ml - Ampola",
-     "1 01 20 0018 1 Glicose 50% - Ampola 10 ml - Ampola",
-     "1 01 20 0039 4 Heparina Sódica 5.000 Ui/0,25 Ml - Ampola 0,25 Ml - Ampola",
-     "1 01 02 0064 7 Hidralazina Cloridrato 20 MG – Ampola 1 ML - Ampola",
-     "1 01 02 0050 7 Hidralazina, Cloridrato 25Mg - Drágea - Drágea",
-     "1 01 02 0006 0 Hidroclorotiazida 25mg - Comprimido",
-     "1 01 20 0029 7 Hidrocortisona + neomicina, sulfato + polimixina b, sulfato gotas - Frasco 10 ml - Frasco",
-     "1 01 20 0260 5 Hidrocortisona, Acetato 10mg - Tubo 20mg - Tubo",
-     "1 01 13 0009 2 Hidrocortisona, succinato 500 mg - Ampola 4ml - Ampola",
-     "1 01 10 0003 0 Hidróxido de alumínio 60 mg/ml suspensão - Frasco 150 ml - Frasco",
-     "1 01 20 0006 8 Hidróxido de magnésio 80 mg/ml suspensão - Frasco 120 ml - Frasco",
-     "1 01 20 0040 8 Hidróxido de potássio 10% - Frasco 10 ML - Manupulado - Frasco",
-     "1 01 01 0012 0 Ibuprofeno 300mg - Comprimido",
-     "1 01 01 0006 5 Ibuprofeno 50mg/ml gotas - Frasco 30ml - Frasco",
-     "1 01 20 0248 6 Imiquimode 50Mg/G - Sache 250Mg - Sachê",
-     "1 01 12 0035 7 Insulina Humana - NPH 100 ui/ml - Refil 3 ml - Uso SC - Uso Adulto e Pediátrico - REFIL",
-     "1 01 12 0034 9 Insulina Humana - Regular 100 ui/ml - Refil 3 ml - Uso SC - Uso Adulto e Pediátrico - REFIL",
-     "1 01 12 0057 8 Insulina humana NPH 100 UI/ML - Caneta descartável 3ml - Caneta",
-     "1 01 12 0005 5 Insulina humana NPH 100 UI/ML - Frasco 10 ml - uso adulto e pediátrico - Frasco",
-     "1 01 12 0056 0 Insulina humana regular 100 UI/ML - Caneta descartável 3ml - Caneta",
-     "1 01 12 0006 3 Insulina humana regular 100 UI/ML - Frasco 10 ml - uso adulto e pediátrico - Frasco",
-     "1 01 11 0007 7 Ipratrópio, brometo gotas - Frasco 20ml - Frasco",
-     "1 01 02 0020 5 Isossorbida 10 mg/ml - Ampola 1ml - Ampola",
-     "1 01 02 0016 7 Isossorbida, dinitrato 10mg - Comprimido",
-     "1 01 02 0015 9 Isossorbida, dinitrato 5mg - Comprimido",
-     "1 01 20 0107 2 Isossorbida, Mononitrato 20 mg - Comprimido",
-     "1 01 07 0007 0 Ivermectina 6mg - Comprimido",
-     "1 01 20 0145 5 Lactulose 667 Mg/Ml - Frasco 120ml - Frasco",
-     "1 02 09 0025 0 Lanceta para hgt - Unidade",
-     "1 01 20 0384 9 Levodopa (l-dopa) 100 mg + benserazida, cloridrato 28,5 mg (equivalente à 25 mg de benserazida) -  birranhurado - Uso adulto acima de 25 anos). - Comprimido",
-     "1 01 20 0421 7 Levodopa (l-dopa) 100mg + benserazida, cloridrato 28,5 mg (equivalente à 25 mg de benserazida) - cápsula HBS - Uso adulto acima de 25 anos). - Cápsula",
-     "1 01 20 0385 7 Levodopa (l-dopa) 200 mg + benserazida, cloridrato 57 mg (equivalente à 50 mg de benserazida) - Uso adulto acima de 25 anos. - Comprimido",
-     "1 01 20 0435 7 Levodopa 250 mg + carbidopa 27 mg (equivalente à 25mg de cardidopa) - Uso adulto - Comprimido",
-     "1 01 08 0006 7 Levonorgestrel 0,75 mg cartela 2 comprimidos - Cartela",
-     "1 01 08 0002 4 Levonorgestrel+ etinilestradiol cartela 21 comprimidos - Cartela",
-     "1 01 19 0011 1 Levotiroxina sódica 100mcg - Comprimido",
-     "1 01 19 0016 2 Levotiroxina Sódica 12,5mcg - Comprimido",
-     "1 01 19 0007 3 Levotiroxina sódica 25mcg - Comprimido",
-     "1 01 19 0015 4 Levotiroxina Sódica 37,5mcg - Comprimido",
-     "1 01 19 0008 1 Levotiroxina sódica 50mcg - Comprimido",
-     "1 01 20 0005 0 Lidocaína gel 100 mg/5g - Tubo 30g - Tubo",
-     "1 01 20 0430 6 Lidocaína, cloridrato 2% com vasoconstritor - carpule ou tubete 1,8ml. - Unidade",
-     "1 01 20 0429 2 Lidocaína, cloridrato 2% sem vasoconstritor - carpule ou tubete 1,8ml. - Unidade",
-     "1 01 13 0014 9 Loratadina 1 mg/ml suspensão oral - Frasco 100 ml - Frasco",
-     "1 01 13 0008 4 Loratadina 10mg - Comprimido",
-     "1 01 02 0003 5 Losartana potássica 50mg - Comprimido",
-     "1 01 07 0002 0 Mebendazol 100mg - Comprimido",
-     "1 01 07 0003 8 Mebendazol suspensão 100 mg/5 ml - Frasco 30 ml - Frasco",
-     "1 01 08 0001 6 Medroxiprogesterona, acetato 150mg/ml - Ampola",
-     "1 01 08 0024 5 Medroxiprogesterona, acetato 25mg/ml - Ampola",
-     "1 01 12 0002 0 Metformina, cloridrato 500mg - Comprimido",
-     "1 01 12 0003 9 Metformina, cloridrato 850mg - Comprimido",
-     "1 01 02 0017 5 Metildopa 250mg - Comprimido",
-     "1 01 18 0010 9 Metoclopramida, cloridrato 10mg - Comprimido",
-     "1 01 18 0005 2 Metoclopramida, cloridrato 5 mg/ml - Ampola 2 ml - Ampola",
-     "1 01 18 0011 7 Metoclopramida, cloridrato gotas - Frasco 10 ml - Frasco",
-     "1 01 20 0408 0 Metoprolol Tartarato 1mg/ml – Ampola 5ml - Ampola",
-     "1 01 20 0175 7 Metoprolol, succinato 50mg - Comprimido",
-     "1 01 17 0003 1 Metronidazol 250mg - Comprimido",
-     "1 01 17 0005 8 Metronidazol 40 mg/ml suspensão oral - Frasco 100 ml - Frasco",
-     "1 01 17 0008 2 Metronidazol 500 mg/5g - Tubo 50g - c/ 10 aplicadores - Tubo",
-     "1 01 17 0006 6 Neomicina, sulfato + bacitracina zínica - Tubo 10g - Tubo",
-     "1 01 02 0019 1 Nifedipina 20mg - Comprimido",
-     "1 01 01 0003 0 Nimesulida 100mg - Comprimido",
-     "1 01 01 0004 9 Nimesulida 50mg/ml - Frasco 15ml - Frasco",
-     "1 01 05 0002 0 Nistatina 100.000 Ui/4 g creme vaginal - Tubo 60g - Tubo",
-     "1 01 07 0004 6 Nistatina 100.000 Ui/ml suspensão oral - Frasco 50 ml - Frasco",
-     "1 01 17 0040 6 Nitrofurantoína 100 mg – Cápsulas - Cápsulas",
-     "1 01 08 0003 2 Noretisterona 0,35 mg - Cartela 35 comprimidos - Cartela",
-     "1 01 08 0004 0 Noretisterona, enantato + estradiol, valerato (50 + 5 mg/ml) - Ampola",
-     "1 01 17 0011 2 Norfloxacina 400mg - Comprimido",
-     "1 01 20 0004 1 Óleo mineral 100% - Frasco 100 ml - Frasco",
-     "1 01 10 0002 1 Omeprazol 20mg - Cápsula - Cápsula",
-     "1 01 03 0003 0 Paracetamol 200 mg/ml gotas - Frasco15 ml - Frasco",
-     "1 01 03 0013 7 Paracetamol 500mg - Comprimido",
-     "1 01 20 0443 8 Pasta D’água óxido de zinco 25% (250mg/g) - Bisnaga 80g - Bisnaga",
-     "1 01 20 0012 2 Permanganato de potássio 100mg - Comprimido",
-     "1 01 07 0015 1 Permetrina 50mg/ml - Loção Cremosa - Frasco Plástico Opaco 60ml - Frasco",
-     "1 01 09 0044 4 Polivitamínico Gotas - Frasco 20 ml - Frasco",
-     "1 01 13 0006 8 Prednisolona, fosfato sódico 3 mg/ml suspensão - Frasco 100 ml - Frasco",
-     "1 01 13 0003 3 Prednisona 20mg - Comprimido",
-     "1 01 13 0002 5 Prednisona 5mg - Comprimido",
-     "1 02 17 0003 4 Preservativo feminino (RME emitida na Enfermagem) - Unidade",
-     "1 02 17 0002 6 Preservativo masculino 49 mm (RME emitida na enfermagem) - Unidade",
-     "1 02 17 0001 8 Preservativo masculino 52 mm (RME emitida na enfermagem) - Unidade",
-     "1 01 13 0013 0 Prometazina, cloridrato 25 mg/ml - Ampola 2ml - Ampola",
-     "1 01 13 0005 0 Prometazina, cloridrato 25mg - Comprimido",
-     "1 01 20 0119 6 Propafenona, cloridrato 300mg - Comprimido revestido - Comprimido",
-     "1 01 02 0013 2 Propranolol, cloridrato 40 mg - Comprimido",
-     "1 01 20 0025 4 Sais para rehidratação oral envelope 27,9 g - Envelope",
-     "1 01 11 0026 3 Salbutamol Sulfato 6MG – Solução para nebulização (Inalatório) - Frasco",
-     "1 01 11 0009 3 Salbutamol, sulfato 2 mg/5 ml xarope - Frasco 120 ml - Frasco",
-     "1 01 11 0010 7 Salbutamol, sulfato spray oral 100 mcg/dose 200 doses - Frasco",
-     "1 01 07 0011 9 Secnidazol 1000mg - Comprimido",
-     "1 02 04 0011 8 Seringa insulina monobloco 100 UI - agulha 06 x 0,25 (RME emitida na enfermagem) - Unidade",
-     "1 02 04 0012 6 Seringa insulina monobloco 50 UI - agulha 06 x 0,25 (RME emitida na enfermagem) - Unidade",
-     "1 01 18 0001 0 Simeticona 75 mg/ml gotas - Frasco 15 ml - Frasco",
-     "1 01 20 0371 7 Sinvastatina 20mg - Comprimido",
-     "1 01 17 0077 5 Sulfadiazina de Prata 1% (10MG/G) Creme Dermatológico - Bisnaga 30g - Bisnaga",
-     "1 01 17 0004 0 Sulfametoxazol - trimetoprim 200/40 mg/5 ml suspensão - Frasco 100 ml - Frasco",
-     "1 01 17 0020 1 Sulfametoxazol - trimetoprim 400/80mg - Comprimido",
-     "1 01 20 0206 0 Sulfato de magnésio 10% - Ampola 10 ml - Ampola",
-     "1 01 09 0008 8 Sulfato ferroso 25 mg/ml gotas - Frasco 30 ml - Frasco",
-     "1 01 09 0006 1 Sulfato ferroso 300mg - Comprimido",
-     "1 01 09 0007 0 Sulfato ferroso 40mg - Comprimido",
-     "1 01 19 0002 2 Tiamazol 10mg - Comprimido",
-     "1 01 09 0011 8 Tiamina, cloridrato 300 mg - Comprimido",
-     "1 01 20 0281 8 Tiamina, cloridrato+piridoxina, cloridrato=amp I, cianocobalamina 5000 mcg=amp.II (Citoneurin) - Ampola",
-     "1 01 20 0015 7 Tiocolchicosídeo 2 mg/ml Ampola 2 ml - Uso Im - Ampola",
-     "1 01 17 0022 8 Tobramicina 0,3% colírio - Frasco 5 ml - Frasco",
-     "1 01 20 0001 7 Varfarina sódica 5mg - Comprimido",
-     "1 01 02 0029 9 Verapamil, Cloridrato 80mg - Comprimido",
-     "1 01 12 0004 7 Vildagliptina 50mg - Comprimido",
-     "1 01 09 0045 2 Vitamina A+D - Gotas - Frasco 20 ml - Frasco",
-     "1 01 09 0004 5 Vitamina A+D - Pomada - Tubo 45 g - Tubo",
-     "1 01 09 0005 3 Vitamina C 200mg/ml gotas - Frasco 20 ml - Frasco",
+     "1 01 06 0001 7 Aciclovir 200mg unidade: Comprimido",
+     "1 01 06 0002 5 Aciclovir 50MG/G – Creme Bisnaga c/ 10G – Uso Tópico unidade: Bisnaga",
+     "1 01 20 0417 9 Ácido Acético 15% - Frasco 50 ML unidade: Frasco",
+     "1 01 20 0030 0 Ácido Acético 3% - Frasco 10ML – Manipulado unidade: Frasco",
+     "1 01 20 0047 5 Ácido Acético 5% - Frasco 10ML – Manipulado unidade: Frasco",
+     "1 01 03 0001 3 Ácido acetilsalicílico 100mg unidade: Comprimido",
+     "1 01 03 0006 4 Ácido acetilsalicílico 500mg unidade: Comprimido",
+     "1 01 09 0001 0 Ácido fólico 5mg unidade: Comprimido",
+     "1 01 20 0031 9 Ácido Tricloroacético 80% – Frasco 10ML - Manipulado unidade: Frasco",
+     "1 01 20 0013 0 Adrenalina 1mg/ml unidade: Ampola",
+     "1 01 20 0163 3 Água destilada estéril - Ampola 10ml unidade: Ampola",
+     "1 02 01 0018 1 Agulha para aplicação de insulina caneta 0,23 x 04 mm unidade: Unidade",
+     "1 01 07 0005 4 Albendazol 400mg - Comprimido mastigável unidade: Comprimido",
+     "1 01 07 0006 2 Albendazol 400mg solução oral - Frasco 10ml unidade: Frasco",
+     "1 01 05 0014 4 Alcatrão Mineral (Fn) 10MG/G (1%) - Tubo 50G – Uso Dermatológico – Manipulado unidade: Tubo",
+     "1 01 20 0379 2 Alendronato de sódio tri-hidratado 91,37mg (equivalente 70mg de Ácido Alendrônico) unidade: Comprimido",
+     "1 01 08 0005 9 Algestona acetofenida 150mg/ml + estradiol, enantato 10mg/ml - Ampola 1ml unidade: Ampola",
+     "1 01 01 0001 4 Alopurinol 100mg unidade: Comprimido",
+     "1 01 11 0011 5 Aminofilina 100mg unidade: Comprimido",
+     "1 01 11 0005 0 Aminofilina 24mg/ml - Ampola 10ml unidade: Ampola",
+     "1 01 20 0045 9 Amiodarona 50mg/ml - Ampola 3ml unidade: Ampola",
+     "1 01 20 0009 2 Amiodarona, cloridrato 200mg unidade: Comprimido",
+     "1 01 17 0061 9 Amoxicilina 250Mg/5Ml + Clavulanato De Potássio 62,5Mg/5Ml unidade: Frasco",
+     "1 01 17 0009 0 Amoxicilina 250mg/5ml suspensão - Frasco 150ml unidade: Frasco",
+     "1 01 17 0010 4 Amoxicilina 500mg unidade: Comprimido",
+     "1 01 17 0034 1 Amoxicilina 500mg + clavulanato de potássio 125mg unidade: Comprimido",
+     "1 01 17 0025 2 Ampicilina 250mg/5ml suspensão - Frasco 60ml unidade: Frasco",
+     "1 01 17 0024 4 Ampicilina 500mg unidade: Comprimido",
+     "1 01 02 0001 9 Anlodipino, besilato 5mg unidade: Comprimido",
+     "1 02 12 0043 0 Aparelho de HGT (teste de Glicemia) unidade: Unidade",
+     "1 01 02 0076 0 Atenolol 25mg unidade: Comprimido",
+     "1 01 20 0044 0 Atropina, sulfato 0,50 mg/ml - Ampola 1ml unidade: Ampola",
+     "1 01 17 0029 5 Azitromicina di-hidratada 500mg unidade: Comprimido",
+     "1 01 17 0051 1 Azitromicina suspensão 200mg unidade: Frasco",
+     "1 01 11 0025 5 Beclometasona, dipropionato 200mcg spray oral - Frasco 200 doses unidade: Frasco",
+     "1 01 11 0003 4 Beclometasona, dipropionato 250mcg spray oral - Frasco 200 doses unidade: Frasco",
+     "1 01 11 0001 8 Beclometasona, dipropionato 50mcg spray nasal - Frasco 200 doses unidade: Frasco",
+     "1 01 17 0016 3 Benzilpenicilina benzatina 1.200.000 UI - Frasco-Ampola - IM unidade: Frasco-amp",
+     "1 01 17 0017 1 Benzilpenicilina benzatina 600.000 Ui - Frasco-Ampola - IM unidade: Frasco-amp",
+     "1 01 17 0018 0 Benzilpenicilina procaína 300.000 UI + benzilpenicilina potássica 100.000 UI - IM unidade: Frasco-amp",
+     "1 01 07 0014 3 Benzoato de benzila 250mg/ml solução - Frasco 100ml unidade: Frasco",
+     "1 01 17 0075 9 Benzoíla, Peróxido 25MG (2,5%) Base Aquosa unidade: Bisnaga",
+     "1 01 13 0050 5 Betametasona, acetato de 3mg/ml + betametasona , fosfato dissódico 3,945mg/ml (equivalente a 3mg/ml de betametasona) suspensão injetavel - Ampola 1ml unidade: Ampola",
+     "1 01 20 0061 0 Bicarbonato de sódio 8,4% - Ampola 10 ml unidade: Ampola",
+     "1 01 18 0007 9 Bromoprida 10mg unidade: Comprimido",
+     "1 01 13 0015 7 Budesonida 32 MCG/Dose Suspensão Spray Estéril unidade: Frasco",
+     "1 01 13 0035 1 Budesonida 50 MCG/Dose Suspensão Spray Estéril unidade: Frasco",
+     "1 01 20 0024 6 Bultilbrometo de escopolamina 10 mg + dipirona 250 mg - Comprimido revestido unidade: Comprimido",
+     "1 01 20 0020 3 Butilbrometo de escopolamina + dipirona sódica - Uso Im/Iv - Ampola 5 ml unidade: Ampola",
+     "1 01 20 0007 6 Butilbrometo de escopolamina 10 mg unidade: Comprimido",
+     "1 01 20 0042 4 Butilbrometo de escopolamina 10 mg/ml gotas - Frasco 20 ml unidade: Frasco",
+     "1 01 20 0019 0 Butilbrometo de escopolamina 20 mg/ml - Ampola 1 ml unidade: Ampola",
+     "1 01 20 0010 6 Butilbrometo de escopolamina 6,67 mg/ml + dipirona 333,4 ml gotas - Frasco 20ml unidade: Frasco",
+     "1 02 06 0025 7 Caneta para Injeção de Insulina refil - Modelo Hfzsqi. unidade: Caneta",
+     "1 01 02 0004 3 Captopril 25mg unidade: Comprimido",
+     "1 01 20 0108 0 Carbonato de cálcio 1.250mg (equivalente a 500mg de cálcio elementar) + 200ui colecalciferol (vitamina d) - Comprimidos revestidos - uso adulto unidade: Comprimido",
+     "1 01 20 0103 0 Carbonato de cálcio 1.250mg (equivalente a 500mg de cálcio elementar) + 400ui colecalciferol (vitamina d) - Comprimidos revestidos - uso adulto e pediátrico unidade: Comprimido",
+     "1 01 20 0383 0 Carbonato de Calcio 1250 mg (Equivalente à 500 mg De Cálcio) unidade: Comprimido",
+     "1 01 20 0238 9 Carbonato de Cálcio 1500 mg (Equivalente a 600 mg de Cálcio) + Colecalciferol (Vit. D3) 400 Ui Comprimido Mastigável unidade: Comprimido",
+     "1 01 20 0439 0 Carvão Vegetal Ativado 250mg unidade: Comprimido",
+     "1 01 02 0067 1 Carvedilol 12,5mg - uso adulto unidade: Comprimido",
+     "1 01 02 0041 8 Carvedilol 6,25mg - uso adulto unidade: Comprimido",
+     "1 01 17 0007 4 Cefalexina 250 mg/5 ml suspensão - Frasco 60 ml unidade: Frasco",
+     "1 01 17 0019 8 Cefalexina 500 mg unidade: Comprimido",
+     "1 01 17 0056 2 Ceftriaxona Sodica 1G - EV - Frasco- Ampola unidade: Ampola",
+     "1 01 17 0053 8 Ceftriaxona Sodica 1G - IM - Frasco- Ampola unidade: Ampola",
+     "1 01 17 0059 7 Ceftriaxona Sódica 500 MG - IM - Frasco-Ampola unidade: Ampola",
+     "1 01 05 0006 3 Cetoconazol 200 mg unidade: Comprimido",
+     "1 01 05 0004 7 Cetoconazol creme 20 mg/g - Tubo 30 g unidade: Tubo",
+     "1 01 05 0003 9 Cetoconazol shampoo 20 mg/g - Frasco 100 ml unidade: Frasco",
+     "1 01 01 0015 4 Cetoprofeno 100mg - Frasco-Ampola - IV unidade: Ampola",
+     "1 01 01 0014 6 Cetoprofeno 100mg Ampola 2ml - IM unidade: Ampola",
+     "1 01 20 0014 9 Cetotifeno, fumarato xarope - Frasco120 ml - uso adulto e pediátrico unidade: Frasco",
+     "1 01 10 0004 8 Cimetidina 200mg unidade: Comprimido",
+     "1 01 20 0011 4 Cinarizina 25mg unidade: Comprimido",
+     "1 01 17 0037 6 Ciprofloxacino, cloridrato 500mg unidade: Comprimido",
+     "1 01 17 0049 0 Claritromicina 500mg –  Comprimido revestido – Uso Adulto unidade: Comprimido",
+     "1 01 17 0031 7 Clindamicina, Cloridrato 338,457mg - Cápsula unidade: Cápsula",
+     "1 01 02 0005 1 Clonidina, cloridrato 0,150mg unidade: Comprimido",
+     "1 01 20 0129 3 Clopidogrel, Bissulfato de 75 MG (Requisitado na SMS) unidade: Comprimido",
+     "1 01 20 0032 7 Cloreto de potássio 19,1% Ampola 10ml unidade: Ampola",
+     "1 01 20 0033 5 Cloreto de Sódio 20% Amp 10 ml unidade: Ampola",
+     "1 01 02 0007 8 Clortalidona 25 MG unidade: Comprimido",
+     "1 01 20 0159 5 Colagenase 0,6 Ui + Cloranfenicol 0,01 G – Tubo 30 G unidade: Tubo",
+     "1 01 20 0402 0 Colagenase 0,6 Ui/G – Tubo 30 G (Requer autorização Comissão Curativo) unidade: Tubo",
+     "1 01 20 0003 3 Cold cream - Tubo 50G (manipulado) unidade: Tubo",
+     "1 01 09 0009 6 Complexo B unidade: Comprimido",
+     "1 01 09 0010 0 Complexo B - Ampola 2ML unidade: Ampola",
+     "1 01 07 0009 7 Deltametrina loção 0,02% - Frasco 100 ml unidade: Frasco",
+     "1 01 20 0035 1 Deltametrina shampoo - Frasco 100 ml unidade: Frasco",
+     "1 01 20 0036 0 Deslanosídeo 0,2mg/ml - Ampola 2ml unidade: Ampola",
+     "1 01 13 0051 3 Dexametasona 1MG/ML – Suspensão Oftálmica Estéril - Frasco 5 ml unidade: Frasco",
+     "1 01 13 0052 1 Dexametasona 4mg comprimido - uso adulto e pediátrico unidade: Comprimido",
+     "1 01 20 0016 5 Dexametasona, acetato (amp i) + cianocobalamina + tiamina, cloridrato + piridoxina, cloridrato (amp ii) - Ampola 1 ml - IM (Dexa-Citoneurim) unidade: Ampola",
+     "1 01 13 0011 4 Dexametasona, acetato creme dermatológico 1 mg/g - Tubo 10 g unidade: Tubo",
+     "1 01 13 0007 6 Dexametasona, Fosfáto Dissódico 4MG/ML - Frasco 2,5 ML unidade: Ampola",
+     "1 01 13 0001 7 Dexclorfeniramina, maleato 2 mg unidade: Comprimido",
+     "1 01 13 0004 1 Dexclorfeniramina, maleato 2 mg/5 ml suspensão - Frasco 100 ml unidade: Frasco",
+     "1 01 20 0200 1 Dextrano 70 1 mg/ml + Hipromelose 3 mg/ml - Frasco 15 ml unidade: Frasco",
+     "1 01 01 0005 7 Diclofenaco de sódio 75mg - Ampola 3ml unidade: Ampola",
+     "1 01 01 0008 1 Diclofenaco sódico 50mg unidade: Comprimido",
+     "1 01 20 0022 0 Digoxina 0,25mg unidade: Comprimido",
+     "1 01 18 0006 0 Dimenidrinato + piridoxina, 50/10mg cloridrato unidade: Comprimido",
+     "1 01 18 0003 6 Dimenidrinato + piridoxina, cloridrato - Frasco 20 ml unidade: Frasco",
+     "1 01 18 0009 5 Dimenidrinato + piridoxina, cloridrato + glicose + frutose Ampola 10 ml - EV unidade: Ampola",
+     "1 01 20 0028 9 Dimenidrinato + piridoxina, cloridrato Ampola 1 ml - IM unidade: Ampola",
+     "1 01 03 0005 6 Dipirona sódica 500 mg/ml - Ampola 2 ml unidade: Ampola",
+     "1 01 03 0004 8 Dipirona sódica 500 mg/ml gotas - Frasco 10 ml unidade: Frasco",
+     "1 01 03 0009 9 Dipirona Sódica 500mg unidade: Comprimido",
+     "1 01 20 0037 8 Dobutamina, cloridrato 12,5 mg/ml - Ampola 20 ml unidade: Ampola",
+     "1 01 18 0002 8 Domperidona suspensão 1 mg/ml - Frasco 100 ml unidade: Frasco",
+     "1 01 20 0038 6 Dopamina, cloridrato 5 mg/ml - Ampola 10 ml unidade: Ampola",
+     "1 01 20 0170 6 Doxazosina, Mesilato 2mg unidade: Comprimido",
+     "1 01 17 0027 9 Doxiciclina, Cloridrato 100mg unidade: Comprimido",
+     "1 01 02 0009 4 Enalapril, maleato 10mg unidade: Comprimido",
+     "1 01 02 0010 8 Enalapril, maleato 20mg unidade: Comprimido",
+     "1 01 02 0008 6 Enalapril, maleato 5mg unidade: Comprimido",
+     "1 01 17 0073 2 Eritromicina, estolato 250 mg/ 5 ml - Frasco 60 ml unidade: Frasco",
+     "1 01 02 0011 6 Espironolactona 25mg unidade: Comprimido",
+     "1 01 08 0022 9 Estriol 1Mg/G Creme Vaginal Bisnaga 20G ou Mais unidade: Frasco",
+     "1 01 08 0019 9 Estrogênios Conjugados 0,3mg unidade: Drágeas",
+     "1 01 08 0007 5 Estrogênios Conjugados 0,625 MG/G Creme - Bisnaga 26G unidade: Tubo",
+     "1 01 20 0076 9 Finasterida 5mg unidade: Comprimido",
+     "1 02 14 0007 3 Fitas para hemoglicoteste - (HGT) unidade: Unidade",
+     "1 01 05 0001 2 Fluconazol 150mg unidade: Cápsula",
+     "1 01 02 0018 3 Furosemida 10 mg/ml - Ampola 2ml unidade: Ampola",
+     "1 01 02 0014 0 Furosemida 40mg unidade: Comprimido",
+     "1 01 12 0001 2 Glibenclamida 5mg unidade: Comprimido",
+     "1 01 20 0440 3 Glicerol 1,44G - supositório – uso retal Pediátrico unidade: Unidade",
+     "1 01 20 0441 1 Glicerol 120Mg/Ml Solução - Frasco 250Ml + Sonda Uso Retal unidade: Frasco",
+     "1 01 20 0442 0 Glicerol 2,68G - supositório – uso retal Adulto unidade: Unidade",
+     "1 01 12 0052 7 Gliclazida 60mg unidade: Comprimido",
+     "1 01 20 0017 3 Glicose 25% - Ampola 10 ml unidade: Ampola",
+     "1 01 20 0018 1 Glicose 50% - Ampola 10 ml unidade: Ampola",
+     "1 01 20 0039 4 Heparina Sódica 5.000 Ui/0,25 Ml - Ampola 0,25 Ml unidade: Ampola",
+     "1 01 02 0064 7 Hidralazina Cloridrato 20 MG – Ampola 1 ML unidade: Ampola",
+     "1 01 02 0050 7 Hidralazina, Cloridrato 25Mg - Drágea unidade: Drágea",
+     "1 01 02 0006 0 Hidroclorotiazida 25mg unidade: Comprimido",
+     "1 01 20 0029 7 Hidrocortisona + neomicina, sulfato + polimixina b, sulfato gotas - Frasco 10 ml unidade: Frasco",
+     "1 01 20 0260 5 Hidrocortisona, Acetato 10mg - Tubo 20mg unidade: Tubo",
+     "1 01 13 0009 2 Hidrocortisona, succinato 500 mg - Ampola 4ml unidade: Ampola",
+     "1 01 10 0003 0 Hidróxido de alumínio 60 mg/ml suspensão - Frasco 150 ml unidade: Frasco",
+     "1 01 20 0006 8 Hidróxido de magnésio 80 mg/ml suspensão - Frasco 120 ml unidade: Frasco",
+     "1 01 20 0040 8 Hidróxido de potássio 10% - Frasco 10 ML - Manupulado unidade: Frasco",
+     "1 01 01 0012 0 Ibuprofeno 300mg unidade: Comprimido",
+     "1 01 01 0006 5 Ibuprofeno 50mg/ml gotas - Frasco 30ml unidade: Frasco",
+     "1 01 20 0248 6 Imiquimode 50Mg/G - Sache 250Mg unidade: Sachê",
+     "1 01 12 0035 7 Insulina Humana - NPH 100 ui/ml - Refil 3 ml - Uso SC - Uso Adulto e Pediátrico unidade: REFIL",
+     "1 01 12 0034 9 Insulina Humana - Regular 100 ui/ml - Refil 3 ml - Uso SC - Uso Adulto e Pediátrico unidade: REFIL",
+     "1 01 12 0057 8 Insulina humana NPH 100 UI/ML - Caneta descartável 3ml unidade: Caneta",
+     "1 01 12 0005 5 Insulina humana NPH 100 UI/ML - Frasco 10 ml - uso adulto e pediátrico unidade: Frasco",
+     "1 01 12 0056 0 Insulina humana regular 100 UI/ML - Caneta descartável 3ml unidade: Caneta",
+     "1 01 12 0006 3 Insulina humana regular 100 UI/ML - Frasco 10 ml - uso adulto e pediátrico unidade: Frasco",
+     "1 01 11 0007 7 Ipratrópio, brometo gotas - Frasco 20ml unidade: Frasco",
+     "1 01 02 0020 5 Isossorbida 10 mg/ml - Ampola 1ml unidade: Ampola",
+     "1 01 02 0016 7 Isossorbida, dinitrato 10mg unidade: Comprimido",
+     "1 01 02 0015 9 Isossorbida, dinitrato 5mg unidade: Comprimido",
+     "1 01 20 0107 2 Isossorbida, Mononitrato 20 mg unidade: Comprimido",
+     "1 01 07 0007 0 Ivermectina 6mg unidade: Comprimido",
+     "1 01 20 0145 5 Lactulose 667 Mg/Ml - Frasco 120ml unidade: Frasco",
+     "1 02 09 0025 0 Lanceta para hgt unidade: Unidade",
+     "1 01 20 0384 9 Levodopa (l-dopa) 100 mg + benserazida, cloridrato 28,5 mg (equivalente à 25 mg de benserazida) -  birranhurado - Uso adulto acima de 25 anos). unidade: Comprimido",
+     "1 01 20 0421 7 Levodopa (l-dopa) 100mg + benserazida, cloridrato 28,5 mg (equivalente à 25 mg de benserazida) - cápsula HBS - Uso adulto acima de 25 anos). unidade: Cápsula",
+     "1 01 20 0385 7 Levodopa (l-dopa) 200 mg + benserazida, cloridrato 57 mg (equivalente à 50 mg de benserazida) - Uso adulto acima de 25 anos. unidade: Comprimido",
+     "1 01 20 0435 7 Levodopa 250 mg + carbidopa 27 mg (equivalente à 25mg de cardidopa) - Uso adulto unidade: Comprimido",
+     "1 01 08 0006 7 Levonorgestrel 0,75 mg cartela 2 comprimidos unidade: Cartela",
+     "1 01 08 0002 4 Levonorgestrel+ etinilestradiol cartela 21 comprimidos unidade: Cartela",
+     "1 01 19 0011 1 Levotiroxina sódica 100mcg unidade: Comprimido",
+     "1 01 19 0016 2 Levotiroxina Sódica 12,5mcg unidade: Comprimido",
+     "1 01 19 0007 3 Levotiroxina sódica 25mcg unidade: Comprimido",
+     "1 01 19 0015 4 Levotiroxina Sódica 37,5mcg unidade: Comprimido",
+     "1 01 19 0008 1 Levotiroxina sódica 50mcg unidade: Comprimido",
+     "1 01 20 0005 0 Lidocaína gel 100 mg/5g - Tubo 30g unidade: Tubo",
+     "1 01 20 0430 6 Lidocaína, cloridrato 2% com vasoconstritor - carpule ou tubete 1,8ml. unidade: Unidade",
+     "1 01 20 0429 2 Lidocaína, cloridrato 2% sem vasoconstritor - carpule ou tubete 1,8ml. unidade: Unidade",
+     "1 01 13 0014 9 Loratadina 1 mg/ml suspensão oral - Frasco 100 ml unidade: Frasco",
+     "1 01 13 0008 4 Loratadina 10mg unidade: Comprimido",
+     "1 01 02 0003 5 Losartana potássica 50mg unidade: Comprimido",
+     "1 01 07 0002 0 Mebendazol 100mg unidade: Comprimido",
+     "1 01 07 0003 8 Mebendazol suspensão 100 mg/5 ml - Frasco 30 ml unidade: Frasco",
+     "1 01 08 0001 6 Medroxiprogesterona, acetato 150mg/ml unidade: Ampola",
+     "1 01 08 0024 5 Medroxiprogesterona, acetato 25mg/ml unidade: Ampola",
+     "1 01 12 0002 0 Metformina, cloridrato 500mg unidade: Comprimido",
+     "1 01 12 0003 9 Metformina, cloridrato 850mg unidade: Comprimido",
+     "1 01 02 0017 5 Metildopa 250mg unidade: Comprimido",
+     "1 01 18 0010 9 Metoclopramida, cloridrato 10mg unidade: Comprimido",
+     "1 01 18 0005 2 Metoclopramida, cloridrato 5 mg/ml - Ampola 2 ml unidade: Ampola",
+     "1 01 18 0011 7 Metoclopramida, cloridrato gotas - Frasco 10 ml unidade: Frasco",
+     "1 01 20 0408 0 Metoprolol Tartarato 1mg/ml – Ampola 5ml unidade: Ampola",
+     "1 01 20 0175 7 Metoprolol, succinato 50mg unidade: Comprimido",
+     "1 01 17 0003 1 Metronidazol 250mg unidade: Comprimido",
+     "1 01 17 0005 8 Metronidazol 40 mg/ml suspensão oral - Frasco 100 ml unidade: Frasco",
+     "1 01 17 0008 2 Metronidazol 500 mg/5g - Tubo 50g - c/ 10 aplicadores unidade: Tubo",
+     "1 01 17 0006 6 Neomicina, sulfato + bacitracina zínica - Tubo 10g unidade: Tubo",
+     "1 01 02 0019 1 Nifedipina 20mg unidade: Comprimido",
+     "1 01 01 0003 0 Nimesulida 100mg unidade: Comprimido",
+     "1 01 01 0004 9 Nimesulida 50mg/ml - Frasco 15ml unidade: Frasco",
+     "1 01 05 0002 0 Nistatina 100.000 Ui/4 g creme vaginal - Tubo 60g unidade: Tubo",
+     "1 01 07 0004 6 Nistatina 100.000 Ui/ml suspensão oral - Frasco 50 ml unidade: Frasco",
+     "1 01 17 0040 6 Nitrofurantoína 100 mg – Cápsulas unidade: Cápsulas",
+     "1 01 08 0003 2 Noretisterona 0,35 mg - Cartela 35 comprimidos unidade: Cartela",
+     "1 01 08 0004 0 Noretisterona, enantato + estradiol, valerato (50 + 5 mg/ml) unidade: Ampola",
+     "1 01 17 0011 2 Norfloxacina 400mg unidade: Comprimido",
+     "1 01 20 0004 1 Óleo mineral 100% - Frasco 100 ml unidade: Frasco",
+     "1 01 10 0002 1 Omeprazol 20mg - Cápsula unidade: Cápsula",
+     "1 01 03 0003 0 Paracetamol 200 mg/ml gotas - Frasco15 ml unidade: Frasco",
+     "1 01 03 0013 7 Paracetamol 500mg unidade: Comprimido",
+     "1 01 20 0443 8 Pasta D’água óxido de zinco 25% (250mg/g) - Bisnaga 80g unidade: Bisnaga",
+     "1 01 20 0012 2 Permanganato de potássio 100mg unidade: Comprimido",
+     "1 01 07 0015 1 Permetrina 50mg/ml - Loção Cremosa - Frasco Plástico Opaco 60ml unidade: Frasco",
+     "1 01 09 0044 4 Polivitamínico Gotas - Frasco 20 ml unidade: Frasco",
+     "1 01 13 0006 8 Prednisolona, fosfato sódico 3 mg/ml suspensão - Frasco 100 ml unidade: Frasco",
+     "1 01 13 0003 3 Prednisona 20mg unidade: Comprimido",
+     "1 01 13 0002 5 Prednisona 5mg unidade: Comprimido",
+     "1 02 17 0003 4 Preservativo feminino (RME emitida na Enfermagem) unidade: Unidade",
+     "1 02 17 0002 6 Preservativo masculino 49 mm (RME emitida na enfermagem) unidade: Unidade",
+     "1 02 17 0001 8 Preservativo masculino 52 mm (RME emitida na enfermagem) unidade: Unidade",
+     "1 01 13 0013 0 Prometazina, cloridrato 25 mg/ml - Ampola 2ml unidade: Ampola",
+     "1 01 13 0005 0 Prometazina, cloridrato 25mg unidade: Comprimido",
+     "1 01 20 0119 6 Propafenona, cloridrato 300mg - Comprimido revestido unidade: Comprimido",
+     "1 01 02 0013 2 Propranolol, cloridrato 40 mg unidade: Comprimido",
+     "1 01 20 0025 4 Sais para rehidratação oral envelope 27,9 g unidade: Envelope",
+     "1 01 11 0026 3 Salbutamol Sulfato 6MG – Solução para nebulização (Inalatório) unidade: Frasco",
+     "1 01 11 0009 3 Salbutamol, sulfato 2 mg/5 ml xarope - Frasco 120 ml unidade: Frasco",
+     "1 01 11 0010 7 Salbutamol, sulfato spray oral 100 mcg/dose 200 doses unidade: Frasco",
+     "1 01 07 0011 9 Secnidazol 1000mg unidade: Comprimido",
+     "1 02 04 0011 8 Seringa insulina monobloco 100 UI - agulha 06 x 0,25 (RME emitida na enfermagem) unidade: Unidade",
+     "1 02 04 0012 6 Seringa insulina monobloco 50 UI - agulha 06 x 0,25 (RME emitida na enfermagem) unidade: Unidade",
+     "1 01 18 0001 0 Simeticona 75 mg/ml gotas - Frasco 15 ml unidade: Frasco",
+     "1 01 20 0371 7 Sinvastatina 20mg unidade: Comprimido",
+     "1 01 17 0077 5 Sulfadiazina de Prata 1% (10MG/G) Creme Dermatológico - Bisnaga 30g unidade: Bisnaga",
+     "1 01 17 0004 0 Sulfametoxazol - trimetoprim 200/40 mg/5 ml suspensão - Frasco 100 ml unidade: Frasco",
+     "1 01 17 0020 1 Sulfametoxazol - trimetoprim 400/80mg unidade: Comprimido",
+     "1 01 20 0206 0 Sulfato de magnésio 10% - Ampola 10 ml unidade: Ampola",
+     "1 01 09 0008 8 Sulfato ferroso 25 mg/ml gotas - Frasco 30 ml unidade: Frasco",
+     "1 01 09 0006 1 Sulfato ferroso 300mg unidade: Comprimido",
+     "1 01 09 0007 0 Sulfato ferroso 40mg unidade: Comprimido",
+     "1 01 19 0002 2 Tiamazol 10mg unidade: Comprimido",
+     "1 01 09 0011 8 Tiamina, cloridrato 300 mg unidade: Comprimido",
+     "1 01 20 0281 8 Tiamina, cloridrato+piridoxina, cloridrato=amp I, cianocobalamina 5000 mcg=amp.II (Citoneurin) unidade: Ampola",
+     "1 01 20 0015 7 Tiocolchicosídeo 2 mg/ml Ampola 2 ml - Uso Im unidade: Ampola",
+     "1 01 17 0022 8 Tobramicina 0,3% colírio - Frasco 5 ml unidade: Frasco",
+     "1 01 20 0001 7 Varfarina sódica 5mg unidade: Comprimido",
+     "1 01 02 0029 9 Verapamil, Cloridrato 80mg unidade: Comprimido",
+     "1 01 12 0004 7 Vildagliptina 50mg unidade: Comprimido",
+     "1 01 09 0045 2 Vitamina A+D - Gotas - Frasco 20 ml unidade: Frasco",
+     "1 01 09 0004 5 Vitamina A+D - Pomada - Tubo 45 g unidade: Tubo",
+     "1 01 09 0005 3 Vitamina C 200mg/ml gotas - Frasco 20 ml unidade: Frasco",
   ];
 
     const PsicotópicoItems = [
@@ -2296,28 +2291,45 @@ const EscritórioItems = [
           return;
         }
         itensNomes.forEach((input, index) => {
-  const itemDiv = input.closest('.item') || input.closest('.item-row') || input.parentElement;
-  const nome = input.value || '';
-  const qtdInput = itemDiv ? itemDiv.querySelector('.item-qtd, .quantidade') : null;
-  const qtd = parseInt((qtdInput && qtdInput.value) ? qtdInput.value : (itensQtds[index] ? itensQtds[index].value : "0"), 10);
-  const unidadeEl = itemDiv ? itemDiv.querySelector('.unidade-controle') : null;
-  const unidade = (unidadeEl && unidadeEl.value) ? unidadeEl.value : '';
-
-  let m = nome.trim().match(/^((?:\d+\s+){4}\d+)\s+(.*)$/);
-  let codigo = '';
-  let descricao = nome;
-  if (m) { codigo = m[1]; descricao = m[2]; }
-
-  descricao = descricao.replace(/\s*unidade:\s*[^,\n]+/gi, '').trim();
-
-  if (descricao && qtd > 0) {
-    const unidadeCorreta = typeof pluralizarUnidade === 'function' ? pluralizarUnidade(unidade, qtd) : (qtd === 1 ? unidade : (unidade ? unidade + 's' : ''));
-    const unidadeEl = setor.querySelectorAll('.unidade-controle')[index];
-    const unidade = (unidadeEl && unidadeEl.value) ? unidadeEl.value : '';
-    const unidadeCorreta = typeof pluralizarUnidade === 'function' ? pluralizarUnidade(unidade, qtd) : (qtd === 1 ? unidade : (unidade ? unidade + 's' : ''));
-    corpoEmail += `${codigo ? codigo + ' - ' : ''}${descricao} — ${qtd} ${unidadeCorreta}\n`;
-  }
-});
+          const nome = input.value.trim();
+          const qtd = itensQtds[index].value.trim();
+          if (!nome || !qtd) {
+            todosSetoresValidos = false;
+            alert('Por favor, preencha todos os campos de item e quantidade.');
+            return;
+          }
+          let validItems;
+          if (nomeSetor === 'Farmácia') {
+            validItems = farmaciaItems;
+          } else if (nomeSetor === 'Psicotrópico') {
+            validItems = PsicotópicoItems;
+          } else if (nomeSetor === 'Enfermagem') {
+            validItems = enfermagemItems;
+          } else if (nomeSetor === 'Enfermagem_Urgência_e_Emergência') {
+            validItems = Enfermagem_Urgência_e_EmergênciaItems;
+          } else if (nomeSetor === 'Enfermagem_Teste_DST') {
+            validItems = Enfermagem_Teste_DSTItems;
+          } else if (nomeSetor === 'Odonto') {
+            validItems = OdontoItems;
+          } else if (nomeSetor === 'Odonto_Instrumental') {
+            validItems = Odonto_InstrumentalItems;
+          } else if (nomeSetor === 'Impressos') {
+            validItems = ImpressosItems;
+          } else if (nomeSetor === 'Escritório') {
+            validItems = EscritórioItems;
+          } else if (nomeSetor === 'Consumo_e_Limpeza_Esporádicos') {
+            validItems = Consumo_e_Limpeza_EsporádicosItems;
+          } else if (nomeSetor === 'Consumo_e_Limpeza_Periódico') {
+            validItems = Consumo_e_Limpeza_PeriódicoItems;
+          } else if (nomeSetor === 'Epi_Consumo') {
+            validItems = Epi_ConsumoItems;
+          }
+          if (!validItems.includes(nome)) {
+            todosSetoresValidos = false;
+            alert(`O item "${nome}" não é válido para o setor ${nomeSetor}.`);
+            return;
+          }
+        });
       });
       if (!todosSetoresValidos) {
         return;
@@ -2332,28 +2344,19 @@ const EscritórioItems = [
         const itensNomes = setor.querySelectorAll('.item-nome');
         const itensQtds = setor.querySelectorAll('.item-qtd');
         itensNomes.forEach((input, index) => {
-  const itemDiv = input.closest('.item') || input.closest('.item-row') || input.parentElement;
-  const nome = input.value || '';
-  const qtdInput = itemDiv ? itemDiv.querySelector('.item-qtd, .quantidade') : null;
-  const qtd = parseInt((qtdInput && qtdInput.value) ? qtdInput.value : (itensQtds[index] ? itensQtds[index].value : "0"), 10);
-  const unidadeEl = itemDiv ? itemDiv.querySelector('.unidade-controle') : null;
-  const unidade = (unidadeEl && unidadeEl.value) ? unidadeEl.value : '';
+          const nome = input.value;
+          const qtd = itensQtds[index].value;
+          const unidades = setor.querySelectorAll('.item-unidade');
+const unidade = (unidades[index] && unidades[index].value) ? unidades[index].value : '';
+let m = nome.trim().match(/^((?:\d+\s+){4}\d+)\s+(.*)$/);
+let codigo = '';
+let descricao = nome;
+if (m) { codigo = m[1]; descricao = m[2]; }
 
-  let m = nome.trim().match(/^((?:\d+\s+){4}\d+)\s+(.*)$/);
-  let codigo = '';
-  let descricao = nome;
-  if (m) { codigo = m[1]; descricao = m[2]; }
-
-  descricao = descricao.replace(/\s*unidade:\s*[^,\n]+/gi, '').trim();
-
-  if (descricao && qtd > 0) {
-    const unidadeCorreta = typeof pluralizarUnidade === 'function' ? pluralizarUnidade(unidade, qtd) : (qtd === 1 ? unidade : (unidade ? unidade + 's' : ''));
-    const unidadeEl = setor.querySelectorAll('.unidade-controle')[index];
-    const unidade = (unidadeEl && unidadeEl.value) ? unidadeEl.value : '';
-    const unidadeCorreta = typeof pluralizarUnidade === 'function' ? pluralizarUnidade(unidade, qtd) : (qtd === 1 ? unidade : (unidade ? unidade + 's' : ''));
-    corpoEmail += `${codigo ? codigo + ' - ' : ''}${descricao} — ${qtd} ${unidadeCorreta}\n`;
-  }
-});
+descricao = descricao.replace(/\s*unidade:\s*[^,\n]+/gi, '').trim();
+corpoEmail += `${codigo ? codigo + ' - ' : ''}${descricao} - ${qtd} ${pluralizarUnidade(unidade, qtd)}
+`;
+        });
         corpoEmail += `\n`;
         const Justificativa = setor.querySelector('.Justificativa').value;
         if (Justificativa) {
