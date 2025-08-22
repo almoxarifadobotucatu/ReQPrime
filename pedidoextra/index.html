@@ -18,6 +18,16 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
     }
 }
 
+
+// Exibir mensagem salva ao carregar a tela inicial
+window.addEventListener("DOMContentLoaded", function(){
+  const msg = localStorage.getItem("mensagemSucesso");
+  if (msg) {
+    mostrarMensagemTopo("<h3>" + msg + "</h3>", "sucesso");
+    localStorage.removeItem("mensagemSucesso");
+  }
+});
+
 </script>
 
 <meta charset="utf-8"/>
@@ -2250,22 +2260,13 @@ corpoEmail += `${codigo ? codigo + ' - ' : ''}${descricao} - ${qtd} ${pluralizar
         corpoEmail += `----------------------------------------\n\n`;
       });
       const bodyEncoded = encodeURIComponent(corpoEmail);
-const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=...ido Extra - ${encodeURIComponent(unidade)}&body=${bodyEncoded}`;
-
-// Abre o Gmail em nova aba de forma confiável
-var a = document.createElement('a');
-a.href = gmailUrl;
-a.target = '_blank';
-a.rel = 'noopener';
-a.style.display = 'none';
-document.body.appendChild(a);
-a.click();
-document.body.removeChild(a);
-
-// Redireciona esta aba para a tela inicial do Pedido Extra
-setTimeout(function() {
-  window.location.href = "https://almoxarifadobotucatu.netlify.app/pedidoextra/";
-}, 800);
+const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=leitaoochefe@gmail.com&su=Pedido Extra - ${encodeURIComponent(unidade)}&body=${bodyEncoded}`;
+let win = window.open('about:blank', '_blank');
+if (win) {
+  win.location.href = gmailUrl;
+} else {
+  window.location.href = gmailUrl;
+}
     });
 
     window.onload = function() {
