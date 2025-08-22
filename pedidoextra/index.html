@@ -654,27 +654,6 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
 <style>
   </style>
 
-
-  <style>
-    /* --- AJUSTE SOLICITADO --- */
-    /* Remove apenas a palavra "unidade:" visualmente da lista */
-    #lista-itens option {
-      unicode-bidi: isolate;
-    }
-  </style>
-
-  <script>
-    // Remove a palavra "unidade:" apenas visualmente, mantendo os dados originais intactos
-    document.addEventListener("DOMContentLoaded", () => {
-      const lista = document.getElementById("lista-itens");
-      if (lista) {
-        [...lista.options].forEach(opt => {
-          opt.textContent = opt.textContent.replace(/unidade:\s*/gi, "");
-        });
-      }
-    });
-  </script>
-
 </head>
 <body oncontextmenu="return false;">
 
@@ -2802,6 +2781,19 @@ document.addEventListener("input", function(e) {
 
 
 
+
+<script>
+  // Remove a palavra "unidade:" apenas visualmente, mantendo os dados originais intactos
+  document.addEventListener("DOMContentLoaded", () => {
+    const lista = document.getElementById("lista-itens");
+    if (lista) {
+      [...lista.options].forEach(opt => {
+        opt.textContent = opt.textContent.replace(/unidade:\s*/gi, "");
+      });
+    }
+  });
+</script>
+
 </body>
 </html>
 <html lang="pt-BR">
@@ -2900,28 +2892,7 @@ document.addEventListener("input", function(e) {
     display: none;
   }
 </style>
-</meta>
-  <style>
-    /* --- AJUSTE SOLICITADO --- */
-    /* Remove apenas a palavra "unidade:" visualmente da lista */
-    #lista-itens option {
-      unicode-bidi: isolate;
-    }
-  </style>
-
-  <script>
-    // Remove a palavra "unidade:" apenas visualmente, mantendo os dados originais intactos
-    document.addEventListener("DOMContentLoaded", () => {
-      const lista = document.getElementById("lista-itens");
-      if (lista) {
-        [...lista.options].forEach(opt => {
-          opt.textContent = opt.textContent.replace(/unidade:\s*/gi, "");
-        });
-      }
-    });
-  </script>
-
-</head>
+</meta></head>
   
 <body>
 <script src="/protege-pagina.js"></script>
@@ -3080,25 +3051,17 @@ document.addEventListener("input", function(e) {
 
 
 
-</body></html>
-  <style>
-    /* --- AJUSTE SOLICITADO --- */
-    /* Remove apenas a palavra "unidade:" visualmente da lista */
-    #lista-itens option {
-      unicode-bidi: isolate;
+
+<script>
+  // Remove a palavra "unidade:" apenas visualmente, mantendo os dados originais intactos
+  document.addEventListener("DOMContentLoaded", () => {
+    const lista = document.getElementById("lista-itens");
+    if (lista) {
+      [...lista.options].forEach(opt => {
+        opt.textContent = opt.textContent.replace(/unidade:\s*/gi, "");
+      });
     }
-  </style>
+  });
+</script>
 
-  <script>
-    // Remove a palavra "unidade:" apenas visualmente, mantendo os dados originais intactos
-    document.addEventListener("DOMContentLoaded", () => {
-      const lista = document.getElementById("lista-itens");
-      if (lista) {
-        [...lista.options].forEach(opt => {
-          opt.textContent = opt.textContent.replace(/unidade:\s*/gi, "");
-        });
-      }
-    });
-  </script>
-
-</head></html>
+</body></html></head></html>
