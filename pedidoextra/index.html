@@ -2296,45 +2296,23 @@ const EscritórioItems = [
           return;
         }
         itensNomes.forEach((input, index) => {
-          const nome = input.value.trim();
-          const qtd = itensQtds[index].value.trim();
-          if (!nome || !qtd) {
-            todosSetoresValidos = false;
-            alert('Por favor, preencha todos os campos de item e quantidade.');
-            return;
-          }
-          let validItems;
-          if (nomeSetor === 'Farmácia') {
-            validItems = farmaciaItems;
-          } else if (nomeSetor === 'Psicotrópico') {
-            validItems = PsicotópicoItems;
-          } else if (nomeSetor === 'Enfermagem') {
-            validItems = enfermagemItems;
-          } else if (nomeSetor === 'Enfermagem_Urgência_e_Emergência') {
-            validItems = Enfermagem_Urgência_e_EmergênciaItems;
-          } else if (nomeSetor === 'Enfermagem_Teste_DST') {
-            validItems = Enfermagem_Teste_DSTItems;
-          } else if (nomeSetor === 'Odonto') {
-            validItems = OdontoItems;
-          } else if (nomeSetor === 'Odonto_Instrumental') {
-            validItems = Odonto_InstrumentalItems;
-          } else if (nomeSetor === 'Impressos') {
-            validItems = ImpressosItems;
-          } else if (nomeSetor === 'Escritório') {
-            validItems = EscritórioItems;
-          } else if (nomeSetor === 'Consumo_e_Limpeza_Esporádicos') {
-            validItems = Consumo_e_Limpeza_EsporádicosItems;
-          } else if (nomeSetor === 'Consumo_e_Limpeza_Periódico') {
-            validItems = Consumo_e_Limpeza_PeriódicoItems;
-          } else if (nomeSetor === 'Epi_Consumo') {
-            validItems = Epi_ConsumoItems;
-          }
-          if (!validItems.includes(nome)) {
-            todosSetoresValidos = false;
-            alert(`O item "${nome}" não é válido para o setor ${nomeSetor}.`);
-            return;
-          }
-        });
+  const nome = input.value;
+  const qtd = parseInt(itensQtds[index].value || "0", 10);
+  const unidadeInput = setor.querySelectorAll('.unidade-controle');
+  const unidade = (unidadeInput[index] && unidadeInput[index].value) ? unidadeInput[index].value : '';
+
+  let m = nome.trim().match(/^((?:\d+\s+){4}\d+)\s+(.*)$/);
+  let codigo = '';
+  let descricao = nome;
+  if (m) { codigo = m[1]; descricao = m[2]; }
+
+  descricao = descricao.replace(/\s*unidade:\s*[^,\n]+/gi, '').trim();
+
+  if (descricao && qtd > 0) {
+    const unidadeCorreta = pluralizarUnidade(unidade, qtd);
+    corpoEmail += `${codigo ? codigo + ' - ' : ''}${descricao} — ${qtd} ${unidadeCorreta}\n`;
+  }
+});
       });
       if (!todosSetoresValidos) {
         return;
