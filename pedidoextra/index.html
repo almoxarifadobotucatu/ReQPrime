@@ -614,57 +614,48 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
     }
 
     }
-  
-
-
-
-#mensagensErros {
-  display: none;
-  margin: 20px 0;
-  padding: 20px;
-  border-radius: 10px;
-  background-color: #ffe5e5; /* fundo rosa claro */
-  color: #5a0000;            /* texto marrom-avermelhado */
-  font-family: Arial, sans-serif;
-  font-size: 15px;
-  line-height: 1.5;
-}
-
-#mensagensErros h3 {
-  margin: 0 0 12px 0;
-  font-size: 18px;
-  font-weight: 700;
-  color: #a70000;            /* título vermelho */
-}
-
-#mensagensErros strong {
-  display: block;
-  margin: 10px 0 4px 0;
-  color: #a70000;            /* subtítulo vermelho */
-  font-size: 16px;
-}
-
-#mensagensErros ul {
-  margin: 4px 0 10px 24px;
-  padding: 0;
-  list-style-type: disc;
-}
-
-#mensagensErros li {
-  margin: 4px 0;
-}
-
-</style>
+  </style>
 <style>
     .erro-campo {
       outline: 2px solid #ff4d4d !important;
       background-color: rgba(255, 0, 0, 0.08) !important;
       transition: background-color 0.2s ease;
     }
-    
-    
-    
-    
+    #mensagensErros {
+  display: none;
+  margin: 20px 0;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #ffe5e5;
+  color: #600000;
+  font-family: Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+#mensagensErros h3 {
+  margin: 0 0 10px 0;
+  font-size: 17px;
+  font-weight: bold;
+  color: #a70000;
+}
+
+#mensagensErros strong {
+  display: block;
+  margin-top: 10px;
+  color: #a70000;
+  font-size: 15px;
+}
+
+#mensagensErros ul {
+  margin: 5px 0 10px 25px;
+  padding: 0;
+  list-style-type: disc;
+}
+
+#mensagensErros li {
+  margin-bottom: 4px;
+}
   </style>
 <style>
   #enviarPedido {
@@ -679,73 +670,23 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
 <script>
 // --- Mensagens no topo (sem alert do navegador) ---
 (function(){
-  window.mostrarMensagemTopo = function(erros, tipo) {
-  var painel = document.getElementById('mensagensErros');
-  if (!painel) return;
-
-  var html = '<h3>⚠️ Preencha os seguintes campos obrigatórios:</h3>';
-
-  function sec(titulo, arr) {
-    if (!arr || !arr.length) return;
-    html += '<strong>' + titulo + '</strong><ul>';
-    arr.forEach(function(e){ html += '<li>' + e + '</li>'; });
-    html += '</ul>';
-  }
-
-  if (erros == null) {
-    // nada a listar, só o cabeçalho
-  } else if (typeof erros === 'string') {
-    var trimmed = erros.trim();
-    if (trimmed.startsWith('<')) {
-      // Já veio HTML pronto (compatibilidade com versões antigas)
-      html += trimmed;
-    } else {
-      html += '<ul><li>' + erros + '</li></ul>';
-    }
-  } else if (Array.isArray(erros)) {
-    // Agrupa automaticamente pelos termos para ficar como na foto
-    var geral = [], setor = [];
-    erros.forEach(function(e){
-      var t = (e || '').toLowerCase();
-      if (t.includes('respons') || t.includes('unidade de saúde') || t.includes('unidade de saude')) {
-        geral.push(e);
+  window.mostrarMensagemTopo = function(msgHTML, tipo) {
+    try {
+      var painel = document.getElementById('mensagensErros');
+      if (!painel) return;
+      painel.classList.remove('success');
+      painel.classList.remove('erro');
+      var isSuccess = (tipo === 'sucesso' || tipo === 'success');
+      painel.classList.add(isSuccess ? 'success' : 'erro');
+      if (typeof msgHTML === 'string') {
+        painel.innerHTML = msgHTML;
       } else {
-        setor.push(e);
+        painel.innerHTML = String(msgHTML);
       }
-    });
-    sec('Geral', geral);
-    sec('Setor não selecionado', setor);
-  } else if (typeof erros === 'object') {
-    // Objeto com listas
-    var g = erros.geral || [];
-    var s = erros.setor || erros.setores || erros.itens || [];
-    var htmlLivre = erros.html || '';
-    sec('Geral', g);
-    sec('Setor não selecionado', s);
-    if (!g.length && !s.length && htmlLivre) {
-      html += htmlLivre;
-    }
-  }
-
-  painel.innerHTML = html;
-  painel.style.display = 'block';
-  try { painel.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch(e){}
-};
-
-window.limparMensagensTopo = function() {
-  var painel = document.getElementById('mensagensErros');
-  if (painel) { painel.style.display = 'none'; painel.innerHTML = ''; }
-};
-
-window.limparMensagensTopo = function() {
-  var painel = document.getElementById('mensagensErros');
-  if (painel) { painel.style.display = 'none'; painel.innerHTML = ''; }
-};
-
-window.limparMensagensTopo = function() {
-  var painel = document.getElementById('mensagensErros');
-  if (painel) { painel.style.display = 'none'; painel.innerHTML = ''; }
-};
+      painel.style.display = 'block';
+      painel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } catch(e) { /* noop */ }
+  };
   window.limparMensagensTopo = function() {
     var painel = document.getElementById('mensagensErros');
     if (painel) { painel.style.display = 'none'; painel.innerHTML = ''; painel.classList.remove('success','erro'); }
@@ -2783,7 +2724,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     if (erros.length > 0) {
-      let msg = "<h3>⚠️ Erros encontrados:</h3><ul>";
+      let msg = "<h3>⚠️ Preencha os seguintes campos obrigatórios:</h3><ul>";
       erros.forEach(e => msg += "<li>" + e + "</li>");
       msg += "</ul>";
       mostrarMensagemTopo(msg, "erro");
@@ -2898,73 +2839,23 @@ document.addEventListener("DOMContentLoaded", function() {
 <script>
 // --- Mensagens no topo (sem alert do navegador) ---
 (function(){
-  window.mostrarMensagemTopo = function(erros, tipo) {
-  var painel = document.getElementById('mensagensErros');
-  if (!painel) return;
-
-  var html = '<h3>⚠️ Preencha os seguintes campos obrigatórios:</h3>';
-
-  function sec(titulo, arr) {
-    if (!arr || !arr.length) return;
-    html += '<strong>' + titulo + '</strong><ul>';
-    arr.forEach(function(e){ html += '<li>' + e + '</li>'; });
-    html += '</ul>';
-  }
-
-  if (erros == null) {
-    // nada a listar, só o cabeçalho
-  } else if (typeof erros === 'string') {
-    var trimmed = erros.trim();
-    if (trimmed.startsWith('<')) {
-      // Já veio HTML pronto (compatibilidade com versões antigas)
-      html += trimmed;
-    } else {
-      html += '<ul><li>' + erros + '</li></ul>';
-    }
-  } else if (Array.isArray(erros)) {
-    // Agrupa automaticamente pelos termos para ficar como na foto
-    var geral = [], setor = [];
-    erros.forEach(function(e){
-      var t = (e || '').toLowerCase();
-      if (t.includes('respons') || t.includes('unidade de saúde') || t.includes('unidade de saude')) {
-        geral.push(e);
+  window.mostrarMensagemTopo = function(msgHTML, tipo) {
+    try {
+      var painel = document.getElementById('mensagensErros');
+      if (!painel) return;
+      painel.classList.remove('success');
+      painel.classList.remove('erro');
+      var isSuccess = (tipo === 'sucesso' || tipo === 'success');
+      painel.classList.add(isSuccess ? 'success' : 'erro');
+      if (typeof msgHTML === 'string') {
+        painel.innerHTML = msgHTML;
       } else {
-        setor.push(e);
+        painel.innerHTML = String(msgHTML);
       }
-    });
-    sec('Geral', geral);
-    sec('Setor não selecionado', setor);
-  } else if (typeof erros === 'object') {
-    // Objeto com listas
-    var g = erros.geral || [];
-    var s = erros.setor || erros.setores || erros.itens || [];
-    var htmlLivre = erros.html || '';
-    sec('Geral', g);
-    sec('Setor não selecionado', s);
-    if (!g.length && !s.length && htmlLivre) {
-      html += htmlLivre;
-    }
-  }
-
-  painel.innerHTML = html;
-  painel.style.display = 'block';
-  try { painel.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch(e){}
-};
-
-window.limparMensagensTopo = function() {
-  var painel = document.getElementById('mensagensErros');
-  if (painel) { painel.style.display = 'none'; painel.innerHTML = ''; }
-};
-
-window.limparMensagensTopo = function() {
-  var painel = document.getElementById('mensagensErros');
-  if (painel) { painel.style.display = 'none'; painel.innerHTML = ''; }
-};
-
-window.limparMensagensTopo = function() {
-  var painel = document.getElementById('mensagensErros');
-  if (painel) { painel.style.display = 'none'; painel.innerHTML = ''; }
-};
+      painel.style.display = 'block';
+      painel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } catch(e) { /* noop */ }
+  };
   window.limparMensagensTopo = function() {
     var painel = document.getElementById('mensagensErros');
     if (painel) { painel.style.display = 'none'; painel.innerHTML = ''; painel.classList.remove('success','erro'); }
@@ -3189,7 +3080,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 
     if (erros.length > 0) {
-      let msg = "<h3>⚠️ Erros encontrados:</h3><ul>";
+      let msg = "<h3>⚠️ Preencha os seguintes campos obrigatórios:</h3><ul>";
       erros.forEach(e => msg += "<li>" + e + "</li>");
       msg += "</ul>";
       mostrarMensagemTopo(msg, "erro");
@@ -3206,73 +3097,23 @@ document.addEventListener("DOMContentLoaded", function() {
 <script>
 // --- Mensagens no topo (sem alert do navegador) ---
 (function(){
-  window.mostrarMensagemTopo = function(erros, tipo) {
-  var painel = document.getElementById('mensagensErros');
-  if (!painel) return;
-
-  var html = '<h3>⚠️ Preencha os seguintes campos obrigatórios:</h3>';
-
-  function sec(titulo, arr) {
-    if (!arr || !arr.length) return;
-    html += '<strong>' + titulo + '</strong><ul>';
-    arr.forEach(function(e){ html += '<li>' + e + '</li>'; });
-    html += '</ul>';
-  }
-
-  if (erros == null) {
-    // nada a listar, só o cabeçalho
-  } else if (typeof erros === 'string') {
-    var trimmed = erros.trim();
-    if (trimmed.startsWith('<')) {
-      // Já veio HTML pronto (compatibilidade com versões antigas)
-      html += trimmed;
-    } else {
-      html += '<ul><li>' + erros + '</li></ul>';
-    }
-  } else if (Array.isArray(erros)) {
-    // Agrupa automaticamente pelos termos para ficar como na foto
-    var geral = [], setor = [];
-    erros.forEach(function(e){
-      var t = (e || '').toLowerCase();
-      if (t.includes('respons') || t.includes('unidade de saúde') || t.includes('unidade de saude')) {
-        geral.push(e);
+  window.mostrarMensagemTopo = function(msgHTML, tipo) {
+    try {
+      var painel = document.getElementById('mensagensErros');
+      if (!painel) return;
+      painel.classList.remove('success');
+      painel.classList.remove('erro');
+      var isSuccess = (tipo === 'sucesso' || tipo === 'success');
+      painel.classList.add(isSuccess ? 'success' : 'erro');
+      if (typeof msgHTML === 'string') {
+        painel.innerHTML = msgHTML;
       } else {
-        setor.push(e);
+        painel.innerHTML = String(msgHTML);
       }
-    });
-    sec('Geral', geral);
-    sec('Setor não selecionado', setor);
-  } else if (typeof erros === 'object') {
-    // Objeto com listas
-    var g = erros.geral || [];
-    var s = erros.setor || erros.setores || erros.itens || [];
-    var htmlLivre = erros.html || '';
-    sec('Geral', g);
-    sec('Setor não selecionado', s);
-    if (!g.length && !s.length && htmlLivre) {
-      html += htmlLivre;
-    }
-  }
-
-  painel.innerHTML = html;
-  painel.style.display = 'block';
-  try { painel.scrollIntoView({ behavior: 'smooth', block: 'start' }); } catch(e){}
-};
-
-window.limparMensagensTopo = function() {
-  var painel = document.getElementById('mensagensErros');
-  if (painel) { painel.style.display = 'none'; painel.innerHTML = ''; }
-};
-
-window.limparMensagensTopo = function() {
-  var painel = document.getElementById('mensagensErros');
-  if (painel) { painel.style.display = 'none'; painel.innerHTML = ''; }
-};
-
-window.limparMensagensTopo = function() {
-  var painel = document.getElementById('mensagensErros');
-  if (painel) { painel.style.display = 'none'; painel.innerHTML = ''; }
-};
+      painel.style.display = 'block';
+      painel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    } catch(e) { /* noop */ }
+  };
   window.limparMensagensTopo = function() {
     var painel = document.getElementById('mensagensErros');
     if (painel) { painel.style.display = 'none'; painel.innerHTML = ''; painel.classList.remove('success','erro'); }
@@ -3283,5 +3124,9 @@ window.limparMensagensTopo = function() {
 </head></html>
 
 <style>
-  
+  #mensagensErros.success {
+    border-color: #2e7d32;
+    background-color: #e8f5e9;
+    color: #1b5e20;
+  }
 </style>
