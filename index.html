@@ -6,17 +6,12 @@
 <link rel="icon" type="image/png" sizes="32x32" href="https://raw.githubusercontent.com/almoxarifadobotucatu/ReQPrime/refs/heads/main/ReqPrimePequeno.ico"> 
 <title>Iniciar sessão</title>
 
-<!-- Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
 <style>
 :root {
   --primary-extra-color: #1db954;
   --danger-extra-color: #ff6b6b;
   --primary-color: #0a66c2;
   --primary-hover-color: #004182;
-  --danger-color: #e53e3e;
-  --danger-hover-color: #c53030;
   --background-light: #1a1a2e;
   --background-white: #16213e;
   --text-dark: #ffffff;
@@ -81,7 +76,7 @@ label {
 input[type="text"],
 input[type="password"] {
   width: 100%;
-  padding: 14px 40px 14px 18px;
+  padding: 14px 40px 14px 18px; /* espaço para o ícone */
   border: 1px solid var(--border-light);
   border-radius: 12px;
   box-sizing: border-box;
@@ -103,20 +98,25 @@ input:focus {
   width: 100%;
 }
 
-.senha-container .toggle-olho {
+.toggle-olho {
   position: absolute;
   top: 50%;
   right: 15px;
-  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
   cursor: pointer;
   color: #b8b8b8;
-  font-size: 18px;
-  transition: color 0.3s, transform 0.2s;
+  transform: translateY(-50%);
+  transition: transform 0.2s, color 0.3s;
 }
 
-.senha-container .toggle-olho:hover {
+.toggle-olho:hover {
   color: #ffffff;
-  transform: translateY(-50%) scale(1.1);
+  transform: translateY(-50%) scale(1.2);
+}
+
+.toggle-olho.active {
+  color: var(--primary-extra-color);
 }
 
 .buttons {
@@ -162,7 +162,13 @@ button:hover {
     <label for="password">Senha:</label>
     <div class="senha-container">
       <input type="password" id="password" autocomplete="off" required>
-      <i class="fa-solid fa-eye toggle-olho" onclick="toggleSenha()"></i>
+      <!-- Heroicon elegante -->
+      <svg id="togglePassword" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="toggle-olho">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+      </svg>
     </div>
 
     <div class="buttons">
@@ -201,27 +207,19 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 });
 
-function toggleSenha() {
-  const senhaInput = document.getElementById('password');
-  const olho = document.querySelector('.toggle-olho');
+const passwordInput = document.getElementById('password');
+const togglePassword = document.getElementById('togglePassword');
 
-  // animação de fade para trocar o tipo
-  senhaInput.style.transition = "all 0.2s";
-  senhaInput.style.opacity = "0.6";
+togglePassword.addEventListener('click', () => {
+  const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+  passwordInput.setAttribute('type', type);
+  togglePassword.classList.toggle('active');
 
-  setTimeout(() => {
-    if (senhaInput.type === 'password') {
-      senhaInput.type = 'text';
-      olho.classList.remove('fa-eye');
-      olho.classList.add('fa-eye-slash');
-    } else {
-      senhaInput.type = 'password';
-      olho.classList.remove('fa-eye-slash');
-      olho.classList.add('fa-eye');
-    }
-    senhaInput.style.opacity = "1";
-  }, 100);
-}
+  // efeito leve de fade
+  passwordInput.style.transition = "all 0.2s";
+  passwordInput.style.opacity = "0.6";
+  setTimeout(() => passwordInput.style.opacity = "1", 100);
+});
 
 // Bloquear F12, Ctrl+S, Ctrl+U
 document.addEventListener('keydown', function (event) {
