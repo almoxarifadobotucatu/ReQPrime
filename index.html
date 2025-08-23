@@ -203,4 +203,63 @@ document.addEventListener('contextmenu', function (event) {
      alt="Logo" 
      style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width:150px;">
 </body>
+  <!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mostrar/Ocultar Senha - Font Awesome</title>
+<!-- Link do Font Awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+<style>
+  .senha-container {
+    position: relative;
+    width: 250px;
+  }
+  .senha-container input {
+    width: 100%;
+    padding-right: 35px;
+    padding-left: 10px;
+    height: 35px;
+    font-size: 16px;
+  }
+  .senha-container .toggle-olho {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #555;
+  }
+  .senha-container .toggle-olho:hover {
+    color: #000;
+  }
+</style>
+</head>
+<body>
+
+<div class="senha-container">
+  <input type="password" id="senha" placeholder="Digite sua senha">
+  <i class="fa-solid fa-eye toggle-olho" onclick="toggleSenha()"></i>
+</div>
+
+<script>
+function toggleSenha() {
+  const senhaInput = document.getElementById('senha');
+  const olho = document.querySelector('.toggle-olho');
+  if (senhaInput.type === 'password') {
+    senhaInput.type = 'text';
+    olho.classList.remove('fa-eye');
+    olho.classList.add('fa-eye-slash');
+  } else {
+    senhaInput.type = 'password';
+    olho.classList.remove('fa-eye-slash');
+    olho.classList.add('fa-eye');
+  }
+}
+</script>
+
+</body>
+</html>
+
 </html>
