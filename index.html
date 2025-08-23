@@ -7,6 +7,9 @@
   <link rel="icon" type="image/png" sizes="32x32" href="https://raw.githubusercontent.com/almoxarifadobotucatu/ReQPrime/refs/heads/main/ReqPrimePequeno.ico"> 
   <title>Iniciar sessão</title>
 
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+
   <style>
     :root {
       --primary-extra-color: #1db954;
@@ -38,8 +41,8 @@
     }
 
     .login-container {
-      width: 60vw;              /* 60% da largura da tela */
-      height: 70vh;             /* 70% da altura da tela */
+      width: 60vw;
+      height: 70vh;
       max-width: 900px;
       min-width: 300px;
       max-height: 800px;
@@ -64,7 +67,7 @@
       color: var(--text-dark);
       margin-bottom: 40px;
       font-weight: 700;
-      font-size: 2.5rem; /* aumentado para deixar o título maior */
+      font-size: 2.5rem;
     }
 
     label {
@@ -79,7 +82,7 @@
     input[type="text"],
     input[type="password"] {
       width: 100%;
-      padding: 14px 18px;
+      padding: 14px 40px 14px 18px; /* espaço para o ícone */
       border: 1px solid var(--border-light);
       border-radius: 12px;
       box-sizing: border-box;
@@ -94,6 +97,25 @@
       border-color: var(--primary-color);
       box-shadow: 0 0 0 4px rgba(10, 102, 194, 0.3);
       background-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .senha-container {
+      position: relative;
+      width: 100%;
+    }
+
+    .senha-container .toggle-olho {
+      position: absolute;
+      top: 50%;
+      right: 15px;
+      transform: translateY(-50%);
+      cursor: pointer;
+      color: #b8b8b8;
+      font-size: 18px;
+    }
+
+    .senha-container .toggle-olho:hover {
+      color: #ffffff;
     }
 
     .buttons {
@@ -135,8 +157,13 @@
     <form id="loginForm">
       <label for="username">Usuário:</label>
       <input type="text" id="username" autocomplete="off" required>
+
       <label for="password">Senha:</label>
-      <input type="password" id="password" autocomplete="off" required>
+      <div class="senha-container">
+        <input type="password" id="password" autocomplete="off" required>
+        <i class="fa-solid fa-eye toggle-olho" onclick="toggleSenha()"></i>
+      </div>
+
       <div class="buttons">
         <button type="submit">Entrar</button>
       </div>
@@ -145,7 +172,6 @@
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-    // Lista de usuários permitidos
     const usuariosValidos = [
         { usuario: "admin", senha: "master@" },
         { usuario: "", senha: "" },
@@ -160,7 +186,6 @@ document.addEventListener("DOMContentLoaded", function() {
             const username = document.getElementById("username").value.trim();
             const password = document.getElementById("password").value.trim();
 
-            // verifica se o usuário existe
             const usuarioEncontrado = usuariosValidos.find(
                 u => u.usuario === username && u.senha === password
             );
@@ -174,78 +199,9 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 });
-</script>
 
-<footer style="position: fixed; bottom: 4px; left: 50%; transform: translateX(-50%); font-size: 9px; color: #888; background: transparent; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; opacity: 0.75; user-select: none;">
-    © 2025. Todos os direitos reservados.
-</footer>
-
-<script>
-// Bloquear F12, Ctrl+S, Ctrl+U
-document.addEventListener('keydown', function (event) {
-    if (event.key === "F12" || event.keyCode === 123) {
-        event.preventDefault();
-        return false;
-    }
-    if ((event.ctrlKey && event.key.toLowerCase() === 's') || 
-        (event.ctrlKey && event.key.toLowerCase() === 'u')) {
-        event.preventDefault();
-        return false;
-    }
-});
-
-// Bloquear clique direito do mouse
-document.addEventListener('contextmenu', function (event) {
-    event.preventDefault();
-});
-</script>
-<img src="https://almoxarifadobotucatu.netlify.app/ReQPrimeLOGO.png" 
-     alt="Logo" 
-     style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width:150px;">
-</body>
-  <!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mostrar/Ocultar Senha - Font Awesome</title>
-<!-- Link do Font Awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
-<style>
-  .senha-container {
-    position: relative;
-    width: 250px;
-  }
-  .senha-container input {
-    width: 100%;
-    padding-right: 35px;
-    padding-left: 10px;
-    height: 35px;
-    font-size: 16px;
-  }
-  .senha-container .toggle-olho {
-    position: absolute;
-    top: 50%;
-    right: 10px;
-    transform: translateY(-50%);
-    cursor: pointer;
-    color: #555;
-  }
-  .senha-container .toggle-olho:hover {
-    color: #000;
-  }
-</style>
-</head>
-<body>
-
-<div class="senha-container">
-  <input type="password" id="senha" placeholder="Digite sua senha">
-  <i class="fa-solid fa-eye toggle-olho" onclick="toggleSenha()"></i>
-</div>
-
-<script>
 function toggleSenha() {
-  const senhaInput = document.getElementById('senha');
+  const senhaInput = document.getElementById('password');
   const olho = document.querySelector('.toggle-olho');
   if (senhaInput.type === 'password') {
     senhaInput.type = 'text';
@@ -257,9 +213,24 @@ function toggleSenha() {
     olho.classList.add('fa-eye');
   }
 }
+
+// Bloquear F12, Ctrl+S, Ctrl+U
+document.addEventListener('keydown', function (event) {
+    if (event.key === "F12" || event.keyCode === 123) event.preventDefault();
+    if ((event.ctrlKey && event.key.toLowerCase() === 's') || 
+        (event.ctrlKey && event.key.toLowerCase() === 'u')) event.preventDefault();
+});
+document.addEventListener('contextmenu', function (event) {
+    event.preventDefault();
+});
 </script>
 
-</body>
-</html>
+<footer style="position: fixed; bottom: 4px; left: 50%; transform: translateX(-50%); font-size: 9px; color: #888; background: transparent; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; opacity: 0.75; user-select: none;">
+    © 2025. Todos os direitos reservados.
+</footer>
 
+<img src="https://almoxarifadobotucatu.netlify.app/ReQPrimeLOGO.png" 
+     alt="Logo" 
+     style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width:150px;">
+</body>
 </html>
