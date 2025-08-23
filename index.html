@@ -194,7 +194,7 @@ document.addEventListener('contextmenu', function (event) {
      alt="Logo" 
      style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width:150px;">
 
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
@@ -233,59 +233,70 @@ document.addEventListener('contextmenu', function (event) {
       text-align: center;
     }
 
-    button {
-      margin-top: 20px;
-      padding: 12px 24px;
+    /* Botão pequeno no canto superior direito */
+    .theme-toggle {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      padding: 8px 12px;
+      font-size: 0.9rem;
       border: none;
       border-radius: 8px;
       cursor: pointer;
-      font-size: 1rem;
-      font-weight: 600;
+      font-weight: bold;
       transition: background 0.3s, color 0.3s;
+      z-index: 1000;
     }
 
-    body.light button {
+    body.light .theme-toggle {
       background: #1a1a2e;
       color: #fff;
     }
 
-    body.dark button {
+    body.dark .theme-toggle {
       background: #fff;
       color: #1a1a2e;
     }
   </style>
 </head>
 <body class="light">
+  <!-- Botão no canto superior direito -->
+  <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+
   <div class="container">
     <h1>🌞 Modo Claro / 🌙 Modo Escuro</h1>
     <p>Este é um exemplo de alternância entre temas.</p>
-    <button onclick="toggleTheme()">Alternar Tema</button>
   </div>
 
   <script>
     function toggleTheme() {
       const body = document.body;
+      const button = document.querySelector(".theme-toggle");
+
       body.classList.toggle("dark");
       body.classList.toggle("light");
 
-      // salvar preferência no navegador
+      // Atualizar ícone
       if (body.classList.contains("dark")) {
+        button.textContent = "🌞";
         localStorage.setItem("theme", "dark");
       } else {
+        button.textContent = "🌙";
         localStorage.setItem("theme", "light");
       }
     }
 
-    // carregar preferência salva
+    // Carregar preferência salva
     document.addEventListener("DOMContentLoaded", () => {
       const savedTheme = localStorage.getItem("theme");
+      const button = document.querySelector(".theme-toggle");
+
       if (savedTheme) {
         document.body.className = savedTheme;
+        button.textContent = savedTheme === "dark" ? "🌞" : "🌙";
       }
     });
   </script>
 </body>
 </html>
 
-</body>
-</html>
