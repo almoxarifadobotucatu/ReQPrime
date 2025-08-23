@@ -127,10 +127,48 @@
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
+
+    /* Botão modo escuro/claro */
+    .theme-toggle {
+      position: fixed;
+      top: 15px;
+      right: 15px;
+      padding: 8px 12px;
+      font-size: 0.9rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s, color 0.3s;
+      z-index: 1000;
+    }
+
+    body.light .theme-toggle {
+      background: #1a1a2e;
+      color: #fff;
+    }
+
+    body.dark .theme-toggle {
+      background: #fff;
+      color: #1a1a2e;
+    }
+
+    body.light {
+      background: #ffffff;
+      color: #1a1a1a;
+    }
+
+    body.dark {
+      background: var(--background-light);
+      color: var(--text-dark);
+    }
   </style>
 </head>
-<body>
-<div class="login-container">
+<body class="light">
+  <!-- Botão tema -->
+  <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
+
+  <div class="login-container">
     <h2>Iniciar sessão</h2>
     <form id="loginForm">
       <label for="username">Usuário:</label>
@@ -141,12 +179,16 @@
         <button type="submit">Entrar</button>
       </div>
     </form>
-</div>
+  </div>
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
-    const usuarioCorreto = "admin";
-    const senhaCorreta = "master@";
+    // Lista de usuários permitidos
+    const usuariosValidos = [
+        { usuario: "admin", senha: "master@" },
+        { usuario: "joao", senha: "1234" },
+        { usuario: "maria", senha: "senhaSegura" }
+    ];
 
     const loginForm = document.querySelector("#loginForm");
     if (loginForm) {
@@ -156,7 +198,12 @@ document.addEventListener("DOMContentLoaded", function() {
             const username = document.getElementById("username").value.trim();
             const password = document.getElementById("password").value.trim();
 
-            if (username === usuarioCorreto && password === senhaCorreta) {
+            // verifica se o usuário existe
+            const usuarioEncontrado = usuariosValidos.find(
+                u => u.usuario === username && u.senha === password
+            );
+
+            if (usuarioEncontrado) {
                 sessionStorage.setItem("logado", "true");
                 window.location.href = "/central-de-pedidos/";
             } else {
@@ -164,6 +211,33 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
     }
+});
+
+// Função para alternar tema
+function toggleTheme() {
+  const body = document.body;
+  const button = document.querySelector(".theme-toggle");
+
+  body.classList.toggle("dark");
+  body.classList.toggle("light");
+
+  if (body.classList.contains("dark")) {
+    button.textContent = "🌞";
+    localStorage.setItem("theme", "dark");
+  } else {
+    button.textContent = "🌙";
+    localStorage.setItem("theme", "light");
+  }
+}
+
+// Carregar preferência do tema
+window.addEventListener("DOMContentLoaded", () => {
+  const savedTheme = localStorage.getItem("theme");
+  const button = document.querySelector(".theme-toggle");
+  if (savedTheme) {
+    document.body.className = savedTheme;
+    button.textContent = savedTheme === "dark" ? "🌞" : "🌙";
+  }
 });
 </script>
 
@@ -193,7 +267,5 @@ document.addEventListener('contextmenu', function (event) {
 <img src="https://almoxarifadobotucatu.netlify.app/ReQPrimeLOGO.png" 
      alt="Logo" 
      style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width:150px;">
-  </script>
 </body>
 </html>
-
