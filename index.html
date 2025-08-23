@@ -1,19 +1,12 @@
 <!DOCTYPE html>
 <html lang='pt-BR'>
 <head>
-  <!-- Força URL sem index.html -->
-  <script>
-  if (location.pathname.endsWith('/index.html')) {
-      location.replace(location.pathname.replace('/index.html', '/') + location.search + location.hash);
-  }
-  </script>
-
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="icon" type="image/png" sizes="32x32" href="https://raw.githubusercontent.com/almoxarifadobotucatu/ReQPrime/refs/heads/main/remove.photos-removed-background%20(4).ico"> 
+  <link rel="icon" type="image/png" sizes="32x32" href="https://raw.githubusercontent.com/almoxarifadobotucatu/ReQPrime/refs/heads/main/remove.photos-removed-background%20(4).ico"> 
   <title>Login</title>
-<link rel="icon" type="image/png" sizes="32x32" href="https://raw.githubusercontent.com/almoxarifadobotucatu/ReQPrime/refs/heads/main/remove.photos-removed-background%20(4).ico"> 
+
   <style>
     :root {
       --primary-extra-color: #1db954;
@@ -35,24 +28,31 @@
       background-color: var(--background-light);
       font-family: 'Inter', sans-serif;
       margin: 0;
-      padding: 20px;
+      padding: 0;
       display: flex;
       justify-content: center;
-      align-items: flex-start;
+      align-items: center;
       min-height: 100vh;
       box-sizing: border-box;
       color: var(--text-dark);
     }
 
     .login-container {
-      max-width: 800px;
-      width: 100%;
+      width: 60vw;              /* 60% da largura da tela */
+      height: 70vh;             /* 70% da altura da tela */
+      max-width: 900px;
+      min-width: 300px;
+      max-height: 800px;
+      min-height: 400px;
       background-color: var(--background-white);
-      margin: 40px auto;
-      padding: 50px;
+      margin: auto;
+      padding: 5vh 4vw;
       border-radius: 20px;
       box-shadow: var(--shadow-light);
       transition: var(--transition-all);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
     .login-container:hover {
@@ -171,8 +171,6 @@ document.addEventListener("DOMContentLoaded", function() {
     © 2025. Todos os direitos reservados.
 </footer>
 
-</footer>
-
 <script>
 // Bloquear F12, Ctrl+S, Ctrl+U
 document.addEventListener('keydown', function (event) {
@@ -195,6 +193,5 @@ document.addEventListener('contextmenu', function (event) {
 <img src="https://almoxarifadobotucatu.netlify.app/ReQPrimeLOGO.png" 
      alt="Logo" 
      style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width:150px;">
-</footer>
 </body>
 </html>
