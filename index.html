@@ -1,55 +1,158 @@
-// Inicializa Firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
-  authDomain: "almoxarifadobotucatu-5e03d.firebaseapp.com",
-  projectId: "almoxarifadobotucatu-5e03d",
-  storageBucket: "almoxarifadobotucatu-5e03d.firebasestorage.app",
-  messagingSenderId: "828951000388",
-  appId: "1:828951000388:web:06dbe3cb5764872e7b1311"
-};
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Login - Almoxarifado</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-// LOGIN
-loginForm.addEventListener("submit", async function(e){
-  e.preventDefault();
-  const username = document.getElementById("username").value.trim();
-  const password = passwordInput.value.trim();
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
-  try {
-    const doc = await db.collection("usuarios").doc(username).get();
-    if(doc.exists && doc.data().senha === password){
-      sessionStorage.setItem("logado", "true");
-      localStorage.setItem("usuarioLogado", username);
-      window.location.href = "/central-de-pedidos/";
-    } else {
-      alert("Usuário ou senha inválidos!");
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f2f2;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
     }
-  } catch(err){
-    alert("Erro ao acessar o Firebase: " + err);
-  }
-});
+    .login-box {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      width: 300px;
+      text-align: center;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 8px 0;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      margin-top: 10px;
+      border: none;
+      border-radius: 6px;
+      background: #007bff;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    #modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+    }
+    #modalContent {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      width: 300px;
+    }
+  </style>
+</head>
+<body>
+  <!-- Login -->
+  <div class="login-box">
+    <h2>Login</h2>
+    <form id="loginForm">
+      <input type="text" id="username" placeholder="Usuário" required>
+      <input type="password" id="passwordInput" placeholder="Senha" required>
+      <button type="submit">Entrar</button>
+    </form>
+    <button onclick="abrirModal()">Trocar Senha</button>
+  </div>
 
-// TROCAR SENHA
-savePasswordBtn.addEventListener("click", async ()=>{
-  const usuario = document.getElementById("modalUsername").value.trim();
-  const currentPass = document.getElementById("currentPassword").value.trim();
-  const newPass = document.getElementById("newPassword").value.trim();
+  <!-- Modal Trocar Senha -->
+  <div id="modal">
+    <div id="modalContent">
+      <h3>Trocar Senha</h3>
+      <input type="text" id="modalUsername" placeholder="Usuário" required>
+      <input type="password" id="currentPassword" placeholder="Senha Atual" required>
+      <input type="password" id="newPassword" placeholder="Nova Senha" required>
+      <button id="savePasswordBtn">Salvar</button>
+      <button onclick="fecharModal()">Cancelar</button>
+    </div>
+  </div>
 
-  if(!usuario || !currentPass || !newPass){ alert("Preencha todos os campos"); return; }
+  <script>
+    // Configuração Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
+      authDomain: "almoxarifadobotucatu-5e03d.firebaseapp.com",
+      projectId: "almoxarifadobotucatu-5e03d",
+      storageBucket: "almoxarifadobotucatu-5e03d.firebasestorage.app",
+      messagingSenderId: "828951000388",
+      appId: "1:828951000388:web:06dbe3cb5764872e7b1311"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
 
-  try {
-    const doc = await db.collection("usuarios").doc(usuario).get();
-    if(!doc.exists){ alert("Usuário não encontrado"); return; }
-    if(doc.data().senha !== currentPass){ alert("Senha atual incorreta"); return; }
+    const loginForm = document.getElementById("loginForm");
+    const passwordInput = document.getElementById("passwordInput");
+    const modal = document.getElementById("modal");
+    const savePasswordBtn = document.getElementById("savePasswordBtn");
 
-    await db.collection("usuarios").doc(usuario).set({ senha: newPass }, { merge:true });
-    alert("Senha alterada com sucesso!");
-    modal.style.display="none";
-    document.getElementById("modalUsername").value="";
-    document.getElementById("currentPassword").value="";
-    document.getElementById("newPassword").value="";
-  } catch(err){
-    alert("Erro ao acessar o Firebase: " + err);
-  }
-});
+    // Funções Modal
+    function abrirModal(){ modal.style.display="flex"; }
+    function fecharModal(){ modal.style.display="none"; }
+
+    // LOGIN
+    loginForm.addEventListener("submit", async function(e){
+      e.preventDefault();
+      const username = document.getElementById("username").value.trim();
+      const password = passwordInput.value.trim();
+
+      try {
+        const doc = await db.collection("usuarios").doc(username).get();
+        if(doc.exists && doc.data().senha === password){
+          sessionStorage.setItem("logado", "true");
+          localStorage.setItem("usuarioLogado", username);
+          window.location.href = "/central-de-pedidos/";
+        } else {
+          alert("Usuário ou senha inválidos!");
+        }
+      } catch(err){
+        alert("Erro ao acessar o Firebase: " + err);
+      }
+    });
+
+    // TROCAR SENHA
+    savePasswordBtn.addEventListener("click", async ()=>{
+      const usuario = document.getElementById("modalUsername").value.trim();
+      const currentPass = document.getElementById("currentPassword").value.trim();
+      const newPass = document.getElementById("newPassword").value.trim();
+
+      if(!usuario || !currentPass || !newPass){ alert("Preencha todos os campos"); return; }
+
+      try {
+        const doc = await db.collection("usuarios").doc(usuario).get();
+        if(!doc.exists){ alert("Usuário não encontrado"); return; }
+        if(doc.data().senha !== currentPass){ alert("Senha atual incorreta"); return; }
+
+        await db.collection("usuarios").doc(usuario).set({ senha: newPass }, { merge:true });
+        alert("Senha alterada com sucesso!");
+        fecharModal();
+        document.getElementById("modalUsername").value="";
+        document.getElementById("currentPassword").value="";
+        document.getElementById("newPassword").value="";
+      } catch(err){
+        alert("Erro ao acessar o Firebase: " + err);
+      }
+    });
+  </script>
+</body>
+</html>
