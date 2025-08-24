@@ -15,7 +15,6 @@
   <link rel="icon" type="image/png" sizes="32x32" href="https://raw.githubusercontent.com/almoxarifadobotucatu/ReQPrime/refs/heads/main/ReqPrimePequeno.ico"> 
   
   <title>Calculadora</title>
-  <link rel="icon" type="image/png" sizes="32x32" href="https://raw.githubusercontent.com/almoxarifadobotucatu/ReQPrime/refs/heads/main/ReqPrimePequeno.ico"> 
 
   <!-- Flatpickr CSS (tema escuro) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
@@ -25,6 +24,14 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
+  /* Remove a barra de rolagem e ajusta altura total */
+  html, body {
+      height: 100%;
+      overflow: hidden; /* remove a barra de rolagem */
+      margin: 0;
+      padding: 0;
+  }
+
   :root {
       --primary-color: #0a66c2;
       --primary-hover-color: #004182;
@@ -42,13 +49,11 @@
   body {
       background-color: var(--background-light);
       font-family: 'Inter', sans-serif;
-      margin: 0;
-      padding-top: 60px;
       display: flex;
       justify-content: center;
-      align-items: flex-start;
-      height: 100vh;
+      align-items: center; /* centraliza verticalmente */
       color: var(--text-dark);
+      padding: 0;
   }
 
   .container {
@@ -79,12 +84,12 @@
       width: 100%;
       margin-bottom: 25px;
       display: flex;
-      justify-content: center; /* Centraliza o campo */
+      justify-content: center;
   }
 
   .date-picker input {
       flex: 0 1 auto;
-      max-width: 300px; /* Largura máxima */
+      max-width: 300px;
       width: 100%;
       padding: 18px;
       padding-right: 50px;
@@ -98,7 +103,7 @@
 
   .calendar-icon {
       position: absolute;
-      right: calc(50% - 150px + 15px); /* Centralizado em relação ao input */
+      right: calc(50% - 150px + 15px);
       top: 50%;
       transform: translateY(-50%);
       font-size: 1.6rem;
@@ -266,18 +271,11 @@ setInterval(function() {
     }
 }, 500);
 </script>
-  
+
 <footer style="position: fixed; bottom: 4px; right: 4px; font-size: 9px; color: #888; background: transparent; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; opacity: 0.75; user-select: none;">
     © 2025. Todos os direitos reservados.
 </footer>
-  
+
 </body>
 <script src="/protege-pagina.js"></script>
 </html>
-
-
-
-
-
-
-
