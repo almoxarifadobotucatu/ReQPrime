@@ -3,20 +3,24 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <link rel="icon" type="image/png" sizes="32x32" href="https://raw.githubusercontent.com/almoxarifadobotucatu/ReQPrime/refs/heads/main/ReqPrimePequeno.ico"> 
   <title>Iniciar sessão</title>
 
   <style>
     :root {
+      --primary-extra-color: #1db954;
+      --danger-extra-color: #ff6b6b;
       --primary-color: #0a66c2;
       --primary-hover-color: #004182;
+      --danger-color: #e53e3e;
+      --danger-hover-color: #c53030;
       --background-light: #1a1a2e;
       --background-white: #16213e;
       --text-dark: #ffffff;
       --text-medium: #b8b8b8;
       --border-light: #2a2a3a;
-      --shadow-light: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 
-                      0 2px 4px -1px rgba(0, 0, 0, 0.2);
+      --shadow-light: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
       --transition-all: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
@@ -45,10 +49,14 @@
       padding: 5vh 4vw;
       border-radius: 20px;
       box-shadow: var(--shadow-light);
+      transition: var(--transition-all);
       display: flex;
       flex-direction: column;
       justify-content: center;
-      transition: var(--transition-all);
+    }
+
+    .login-container:hover {
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
     }
 
     h2 {
@@ -68,17 +76,13 @@
       font-size: 0.95rem;
     }
 
-    .input-wrapper {
-      position: relative;
-      width: 100%;
-    }
-
     input[type="text"],
     input[type="password"] {
       width: 100%;
-      padding: 14px 45px 14px 18px;
+      padding: 14px 18px;
       border: 1px solid var(--border-light);
       border-radius: 12px;
+      box-sizing: border-box;
       font-size: 1rem;
       color: var(--text-dark);
       background-color: rgba(255, 255, 255, 0.1);
@@ -92,28 +96,21 @@
       background-color: rgba(255, 255, 255, 0.15);
     }
 
-    .toggle-password {
+    .password-wrapper {
+      position: relative;
+      width: 100%;
+    }
+
+    .password-wrapper svg {
       position: absolute;
-      right: 12px;
       top: 50%;
+      right: 12px;
       transform: translateY(-50%);
       cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .toggle-password svg {
+      color: var(--text-medium);
       width: 22px;
       height: 22px;
-      stroke: #b8b8b8; /* cor inicial */
-      stroke-width: 2;
-      fill: none;
-      transition: stroke 0.3s ease; /* transição suave da cor */
-    }
-
-    .toggle-password svg.visible {
-      stroke: var(--primary-color); /* cor quando senha visível */
+      transition: color 0.3s;
     }
 
     .buttons {
@@ -137,7 +134,15 @@
     button:hover {
       transform: translateY(-3px) scale(1.02);
       box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
-      background: var(--primary-hover-color);
+      background: linear-gradient(270deg, var(--primary-color), var(--primary-hover-color), var(--primary-extra-color));
+      background-size: 600% 600%;
+      animation: gradientShift 6s ease infinite;
+    }
+
+    @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
   </style>
 </head>
@@ -149,14 +154,12 @@
       <input type="text" id="username" autocomplete="off" required>
 
       <label for="password">Senha:</label>
-      <div class="input-wrapper">
-        <input type="password" id="password" autocomplete="off" required>
-        <span class="toggle-password" onclick="togglePassword()">
-          <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/>
-            <circle cx="12" cy="12" r="3"/>
-          </svg>
-        </span>
+      <div class="password-wrapper">
+        <input type="password" id="password" autocomplete="off" required style="padding-right: 40px;">
+        <svg id="togglePassword" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+          <circle cx="12" cy="12" r="3"/>
+        </svg>
       </div>
 
       <div class="buttons">
@@ -165,55 +168,73 @@
     </form>
   </div>
 
-  <script>
-    function togglePassword() {
-      const passwordInput = document.getElementById("password");
-      const eyeIcon = document.getElementById("eyeIcon");
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const usuariosValidos = [
+        { usuario: "admin", senha: "master@" },
+        { usuario: "", senha: "" },
+        { usuario: "", senha: "" }
+    ];
 
-      if (passwordInput.type === "password") {
-        passwordInput.type = "text";
-        eyeIcon.classList.add("visible");
-        // olho cortado clean
-        eyeIcon.innerHTML = `
-          <path d="M17.94 17.94A10.94 10.94 0 0 1 12 20
-                   C7 20 2.7 16.4 1 12
-                   a11.77 11.77 0 0 1 4.73-5.73"/>
-          <path d="M1 1l22 22"/>
-        `;
-      } else {
-        passwordInput.type = "password";
-        eyeIcon.classList.remove("visible");
-        // olho normal clean
-        eyeIcon.innerHTML = `
-          <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/>
-          <circle cx="12" cy="12" r="3"/>
-        `;
-      }
+    const loginForm = document.querySelector("#loginForm");
+    if (loginForm) {
+        loginForm.addEventListener("submit", function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById("username").value.trim();
+            const password = document.getElementById("password").value.trim();
+
+            const usuarioEncontrado = usuariosValidos.find(
+                u => u.usuario === username && u.senha === password
+            );
+
+            if (usuarioEncontrado) {
+                sessionStorage.setItem("logado", "true");
+                window.location.href = "/central-de-pedidos/";
+            } else {
+                alert("Usuário ou senha inválidos!");
+            }
+        });
     }
 
-    document.addEventListener("DOMContentLoaded", function() {
-      const usuariosValidos = [
-        { usuario: "admin", senha: "master@" },
-        { usuario: "saude", senha: "@saude123" }
-      ];
+    // Mostrar/ocultar senha
+    const togglePassword = document.getElementById("togglePassword");
+    const passwordInput = document.getElementById("password");
 
-      document.querySelector("#loginForm").addEventListener("submit", function(e) {
-        e.preventDefault();
-        const username = document.getElementById("username").value.trim();
-        const password = document.getElementById("password").value.trim();
+    togglePassword.addEventListener("click", function() {
+        const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
+        passwordInput.setAttribute("type", type);
 
-        const usuarioEncontrado = usuariosValidos.find(
-          u => u.usuario === username && u.senha === password
-        );
-
-        if (usuarioEncontrado) {
-          sessionStorage.setItem("logado", "true");
-          window.location.href = "/central-de-pedidos/";
-        } else {
-          alert("Usuário ou senha inválidos!");
-        }
-      });
+        // Alterna cor do ícone para indicar visibilidade
+        togglePassword.style.color = type === "password" ? "var(--text-medium)" : "var(--primary-color)";
     });
-  </script>
+});
+
+// Bloquear F12, Ctrl+S, Ctrl+U
+document.addEventListener('keydown', function (event) {
+    if (event.key === "F12" || event.keyCode === 123) {
+        event.preventDefault();
+        return false;
+    }
+    if ((event.ctrlKey && event.key.toLowerCase() === 's') || 
+        (event.ctrlKey && event.key.toLowerCase() === 'u')) {
+        event.preventDefault();
+        return false;
+    }
+});
+
+// Bloquear clique direito do mouse
+document.addEventListener('contextmenu', function (event) {
+    event.preventDefault();
+});
+</script>
+
+<footer style="position: fixed; bottom: 4px; left: 50%; transform: translateX(-50%); font-size: 9px; color: #888; background: transparent; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; opacity: 0.75; user-select: none;">
+    © 2025. Todos os direitos reservados.
+</footer>
+
+<img src="https://almoxarifadobotucatu.netlify.app/ReQPrimeLOGO.png" 
+     alt="Logo" 
+     style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width:150px;">
 </body>
 </html>
