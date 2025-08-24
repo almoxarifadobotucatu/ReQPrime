@@ -3241,5 +3241,16 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   }
 </script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const responsavelInput = document.getElementById("responsavel");
+    const nomeUsuario = localStorage.getItem("nomeUsuario");
 
-</body></html></head></html>
+    if (responsavelInput && nomeUsuario) {
+      responsavelInput.value = nomeUsuario;
+    }
+  });
+</script>
+
+</body>
+</html></head></html>
