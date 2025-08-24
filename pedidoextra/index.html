@@ -774,9 +774,21 @@ function pluralizarUnidade(unidade, quantidade) {
 
     // Initialize users from localStorage or use default
     let users = JSON.parse(localStorage.getItem('users')) || [
-      { username: "sms6786", password: "Master1@", name: "Fabiano" },
-      { username: "admin", password: "master@", name: "Administrador" }
+      { username: "sms6786", password: "Master1@" },
+      { username: "admin", password: "master@" }
     ];
+// === Patch: garantir 'name' nos usuários e salvar no localStorage ===
+try {
+  users = users.map(u => ({
+    username: (u.username || "").toLowerCase(),
+    password: u.password || "",
+    name: u.name || (u.username && u.username.toLowerCase() === "sms6786" ? "Fabiano" :
+                     (u.username && u.username.toLowerCase() === "admin" ? "Administrador" : u.username))
+  }));
+  localStorage.setItem('users', JSON.stringify(users));
+} catch(e) { /* silencioso */ }
+// === Fim do patch ===
+
     // Ensure all usernames are lowercase
     users = users.map(user => ({
       username: user.username.toLowerCase(),
@@ -3045,16 +3057,107 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-  const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
-  if (usuarioLogado && usuarioLogado.name) {
-    const solicitanteInput = document.getElementById("solicitante");
-    if (solicitanteInput) {
-      solicitanteInput.value = usuarioLogado.name;
-      solicitanteInput.readOnly = true; // impede edição manual
+// === Auto-preenchimento do campo "Responsável pela solicitação" ===
+(function() {
+  function safeParse(v) {
+    try { return JSON.parse(v); } catch(e) { return null; }
+  }
+  function firstNonEmpty(arr) {
+    for (var i = 0; i < arr.length; i++) if (arr[i]) return arr[i];
+    return null;
+  }
+  function fromStorages(keys, pick) {
+    var stores = [localStorage, sessionStorage];
+    for (var s = 0; s < stores.length; s++) {
+      for (var i = 0; i < keys.length; i++) {
+        var raw = stores[s].getItem(keys[i]);
+        if (!raw) continue;
+        // se for JSON com {name, username}
+        var obj = safeParse(raw);
+        if (obj && typeof obj === 'object') {
+          var val = pick(obj);
+          if (val) return val;
+        }
+        // se for string simples
+        if (!obj && typeof raw === 'string' && raw.trim()) {
+          var trimmed = raw.trim();
+          if (pick({ name: trimmed, username: trimmed })) return trimmed;
+        }
+      }
+    }
+    return null;
+  }
+  function mapUsernameToName(username) {
+    try {
+      var users = safeParse(localStorage.getItem('users')) || [];
+      username = (username || '').toLowerCase();
+      for (var i=0;i<users.length;i++) {
+        if ((users[i].username || '').toLowerCase() === username) {
+          return users[i].name || users[i].username;
+        }
+      }
+    } catch(e) {}
+    // fallback conhecido
+    if (username.toLowerCase() === 'sms6786') return 'Fabiano';
+    if (username.toLowerCase() === 'admin') return 'Administrador';
+    return username;
+  }
+  function fromReferrer() {
+    try {
+      var u = new URL(document.referrer);
+      var nome = u.searchParams.get('nome') || u.searchParams.get('name') || u.searchParams.get('displayName');
+      var user = u.searchParams.get('user') || u.searchParams.get('username') || u.searchParams.get('login');
+      if (nome && nome.trim()) return nome.trim();
+      if (user && user.trim()) return mapUsernameToName(user.trim());
+    } catch(e) {}
+    return null;
+  }
+  function getDisplayName() {
+    // 1) chaves comuns com objeto {name, username}
+    var viaObj = fromStorages(
+      ['usuarioLogado', 'currentUser', 'usuarioAtual', 'userObject', 'authUser'],
+      function(o){ return o.name || (o.displayName) || (o.fullName) || (o.username && mapUsernameToName(o.username)); }
+    );
+    if (viaObj) return viaObj;
+
+    // 2) chaves simples com nome/username string
+    var viaStr = fromStorages(
+      ['nomeUsuario', 'displayName', 'welcomeName', 'user', 'usuario', 'username', 'login'],
+      function(o){ return o.name || o.username; }
+    );
+    if (viaStr) {
+      // se parecer um username (ex: sms6786), tenta mapear
+      var looksLikeUser = /^[A-Za-z]+\d{2,}$/.test(viaStr);
+      return looksLikeUser ? mapUsernameToName(viaStr) : viaStr;
+    }
+    // 3) tentar via referrer (query params)
+    var viaRef = fromReferrer();
+    if (viaRef) return viaRef;
+
+    return null;
+  }
+
+  function applyName() {
+    var input = document.getElementById('solicitante');
+    if (!input) return;
+    var nome = getDisplayName();
+    if (nome && !input.value) {
+      input.value = nome;
+      input.readOnly = true;
+      input.setAttribute('data-autofilled', '1');
     }
   }
-});
+
+  // Garante após DOM pronto e re-aplica se o DOM mudar
+  document.addEventListener('DOMContentLoaded', function() {
+    applyName();
+    setTimeout(applyName, 300); // segunda tentativa
+    setTimeout(applyName, 1200); // terceira tentativa
+  });
+  var obs = new MutationObserver(function(){ applyName(); });
+  obs.observe(document.documentElement, { subtree: true, childList: true });
+})();
+// === Fim do auto-preenchimento ===
 </script>
 
 </body>
@@ -3264,16 +3367,107 @@ document.addEventListener("DOMContentLoaded", function() {
 </head>
 
 <script>
-document.addEventListener("DOMContentLoaded", function() {
-  const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
-  if (usuarioLogado && usuarioLogado.name) {
-    const solicitanteInput = document.getElementById("solicitante");
-    if (solicitanteInput) {
-      solicitanteInput.value = usuarioLogado.name;
-      solicitanteInput.readOnly = true; // impede edição manual
+// === Auto-preenchimento do campo "Responsável pela solicitação" ===
+(function() {
+  function safeParse(v) {
+    try { return JSON.parse(v); } catch(e) { return null; }
+  }
+  function firstNonEmpty(arr) {
+    for (var i = 0; i < arr.length; i++) if (arr[i]) return arr[i];
+    return null;
+  }
+  function fromStorages(keys, pick) {
+    var stores = [localStorage, sessionStorage];
+    for (var s = 0; s < stores.length; s++) {
+      for (var i = 0; i < keys.length; i++) {
+        var raw = stores[s].getItem(keys[i]);
+        if (!raw) continue;
+        // se for JSON com {name, username}
+        var obj = safeParse(raw);
+        if (obj && typeof obj === 'object') {
+          var val = pick(obj);
+          if (val) return val;
+        }
+        // se for string simples
+        if (!obj && typeof raw === 'string' && raw.trim()) {
+          var trimmed = raw.trim();
+          if (pick({ name: trimmed, username: trimmed })) return trimmed;
+        }
+      }
+    }
+    return null;
+  }
+  function mapUsernameToName(username) {
+    try {
+      var users = safeParse(localStorage.getItem('users')) || [];
+      username = (username || '').toLowerCase();
+      for (var i=0;i<users.length;i++) {
+        if ((users[i].username || '').toLowerCase() === username) {
+          return users[i].name || users[i].username;
+        }
+      }
+    } catch(e) {}
+    // fallback conhecido
+    if (username.toLowerCase() === 'sms6786') return 'Fabiano';
+    if (username.toLowerCase() === 'admin') return 'Administrador';
+    return username;
+  }
+  function fromReferrer() {
+    try {
+      var u = new URL(document.referrer);
+      var nome = u.searchParams.get('nome') || u.searchParams.get('name') || u.searchParams.get('displayName');
+      var user = u.searchParams.get('user') || u.searchParams.get('username') || u.searchParams.get('login');
+      if (nome && nome.trim()) return nome.trim();
+      if (user && user.trim()) return mapUsernameToName(user.trim());
+    } catch(e) {}
+    return null;
+  }
+  function getDisplayName() {
+    // 1) chaves comuns com objeto {name, username}
+    var viaObj = fromStorages(
+      ['usuarioLogado', 'currentUser', 'usuarioAtual', 'userObject', 'authUser'],
+      function(o){ return o.name || (o.displayName) || (o.fullName) || (o.username && mapUsernameToName(o.username)); }
+    );
+    if (viaObj) return viaObj;
+
+    // 2) chaves simples com nome/username string
+    var viaStr = fromStorages(
+      ['nomeUsuario', 'displayName', 'welcomeName', 'user', 'usuario', 'username', 'login'],
+      function(o){ return o.name || o.username; }
+    );
+    if (viaStr) {
+      // se parecer um username (ex: sms6786), tenta mapear
+      var looksLikeUser = /^[A-Za-z]+\d{2,}$/.test(viaStr);
+      return looksLikeUser ? mapUsernameToName(viaStr) : viaStr;
+    }
+    // 3) tentar via referrer (query params)
+    var viaRef = fromReferrer();
+    if (viaRef) return viaRef;
+
+    return null;
+  }
+
+  function applyName() {
+    var input = document.getElementById('solicitante');
+    if (!input) return;
+    var nome = getDisplayName();
+    if (nome && !input.value) {
+      input.value = nome;
+      input.readOnly = true;
+      input.setAttribute('data-autofilled', '1');
     }
   }
-});
+
+  // Garante após DOM pronto e re-aplica se o DOM mudar
+  document.addEventListener('DOMContentLoaded', function() {
+    applyName();
+    setTimeout(applyName, 300); // segunda tentativa
+    setTimeout(applyName, 1200); // terceira tentativa
+  });
+  var obs = new MutationObserver(function(){ applyName(); });
+  obs.observe(document.documentElement, { subtree: true, childList: true });
+})();
+// === Fim do auto-preenchimento ===
 </script>
 
 </body>
