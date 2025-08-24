@@ -4,48 +4,43 @@
   <meta charset="UTF-8">
   <title>Painel de Controle</title>
 
-  <!-- Firebase App -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
-  <!-- Firebase Auth -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
+<!-- No início do <body>, ou antes dos seus scripts principais -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
+<script>
+  // Configuração do Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
+    authDomain: "almoxarifadobotucatu-5e03d.firebaseapp.com",
+    projectId: "almoxarifadobotucatu-5e03d",
+    storageBucket: "almoxarifadobotucatu-5e03d.firebasestorage.app",
+    messagingSenderId: "828951000388",
+    appId: "1:828951000388:web:06dbe3cb5764872e7b1311"
+  };
 
-  <script type="module">
-    // Importações do Firebase
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
+  // Inicializa Firebase
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
 
-    // Configuração do Firebase
-    const firebaseConfig = {
-      apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
-      authDomain: "almoxarifadobotucatu-5e03d.firebaseapp.com",
-      projectId: "almoxarifadobotucatu-5e03d",
-      storageBucket: "almoxarifadobotucatu-5e03d.firebasestorage.app",
-      messagingSenderId: "828951000388",
-      appId: "1:828951000388:web:06dbe3cb5764872e7b1311"
-    };
-
-    // Inicializa Firebase
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
-
-    // Proteção da página
-    onAuthStateChanged(auth, (user) => {
-      if (!user) {
-        // Redireciona para login se não estiver logado
-        window.location.href = "/login.html";
-      } else {
-        console.log("Usuário logado:", user.email);
-      }
-    });
-
-    // Função de logout
-    window.logout = function() {
-      signOut(auth).then(() => {
-        window.location.href = "/login.html";
-      }).catch((error) => {
-        alert("Erro ao sair: " + error.message);
-      });
+  // Verifica login
+  auth.onAuthStateChanged(function(user) {
+    if (!user) {
+      window.location.href = "/login.html"; // redireciona se não logado
+    } else {
+      console.log("Usuário logado:", user.email);
     }
+  });
+
+  // Função logout (opcional)
+  function logout() {
+    auth.signOut().then(() => {
+      window.location.href = "/login.html";
+    }).catch((error) => {
+      alert("Erro ao sair: " + error.message);
+    });
+  }
+</script>
+
   </script>
 </head>
 <body>
