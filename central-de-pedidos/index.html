@@ -31,11 +31,10 @@
       }, 500);
     })();
 
-    // Exemplo de usuário logado
-    const usuarioLogado = "João"; // Aqui você pode puxar dinamicamente do backend/localStorage
-
+    // Pega o nome do usuário salvo no localStorage
     window.onload = function() {
-      document.getElementById("usuario-logado").innerText = `Bem-vindo, ${usuarioLogado}`;
+      const usuario = localStorage.getItem("usuarioLogado") || "Usuário";
+      document.getElementById("usuario-logado").innerText = `Bem-vindo, ${usuario}`;
     }
   </script>
 
