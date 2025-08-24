@@ -10,10 +10,10 @@
     // Bloqueia atalhos para código-fonte, devtools e salvar página
     document.addEventListener('keydown', function(e) {
       if (
-        e.key === 'F12' || // DevTools
-        (e.ctrlKey && e.shiftKey && ['I','J','C'].includes(e.key.toUpperCase())) || // Atalhos DevTools
-        (e.ctrlKey && e.key.toUpperCase() === 'U') || // Ver código-fonte
-        (e.ctrlKey && e.key.toUpperCase() === 'S') // Salvar página
+        e.key === 'F12' || 
+        (e.ctrlKey && e.shiftKey && ['I','J','C'].includes(e.key.toUpperCase())) || 
+        (e.ctrlKey && e.key.toUpperCase() === 'U') || 
+        (e.ctrlKey && e.key.toUpperCase() === 'S') 
       ) {
         e.preventDefault();
         return false;
@@ -30,16 +30,19 @@
         }
       }, 500);
     })();
+
+    // Exemplo de usuário logado
+    const usuarioLogado = "João"; // Aqui você pode puxar dinamicamente do backend/localStorage
+
+    window.onload = function() {
+      document.getElementById("usuario-logado").innerText = `Bem-vindo, ${usuarioLogado}`;
+    }
   </script>
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <link rel="icon" type="image/png" sizes="32x32" href=""> 
-  <link rel="icon" type="image/png" sizes="32x32" href=""> 
   <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
-
-  <!-- Fonte Inter -->
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
   <style>
@@ -63,6 +66,21 @@
       align-items: center;
       min-height: 100vh;
       color: var(--text-dark);
+    }
+
+    /* Header com usuário logado */
+    header {
+      position: fixed;
+      top: 10px;
+      right: 20px;
+      font-size: 14px;
+      color: #ddd;
+      font-weight: 500;
+      background: rgba(0,0,0,0.3);
+      padding: 6px 14px;
+      border-radius: 8px;
+      box-shadow: var(--shadow-light);
+      user-select: none;
     }
 
     .container {
@@ -164,6 +182,9 @@
   </style>
 </head>
 <body>
+  <!-- Nome do usuário logado -->
+  <header id="usuario-logado"></header>
+
   <div class="container">
     <h2>Central de Pedidos</h2>
     <div class="buttons">
@@ -187,9 +208,8 @@
     </div>
   </div>
 
-<footer style="position: fixed; bottom: 4px; right: 4px; font-size: 9px; color: #888; background: transparent; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; opacity: 0.75; user-select: none;">
+  <footer>
     © 2025. Todos os direitos reservados.
-</footer>
-  
+  </footer>
 </body>
 </html>
