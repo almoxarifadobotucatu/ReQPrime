@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Iniciar sessão</title>
-<link rel="icon" type="image/png" sizes="32x32" href=""> 
+<link rel="icon" type="image/png" sizes="32x32" href="https://raw.githubusercontent.com/almoxarifadobotucatu/ReQPrime/refs/heads/main/ReqPrimePequeno.ico"> 
 
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
@@ -12,9 +12,10 @@
 
 <style>
   :root {
+    --primary-extra-color: #1db954;
+    --danger-extra-color: #ff6b6b;
     --primary-color: #0a66c2;
     --primary-hover-color: #004182;
-    --primary-extra-color: #1db954;
     --danger-color: #e53e3e;
     --danger-hover-color: #c53030;
     --background-light: #1a1a2e;
@@ -22,57 +23,88 @@
     --text-dark: #ffffff;
     --text-medium: #b8b8b8;
     --border-light: #2a2a3a;
-    --shadow-light: 0 4px 6px -1px rgba(0,0,0,0.3),0 2px 4px -1px rgba(0,0,0,0.2);
-    --transition-all: all 0.3s cubic-bezier(0.4,0,0.2,1);
+    --shadow-light: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+    --transition-all: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
-  body { 
-    background-color: var(--background-light); 
-    font-family: 'Inter', sans-serif; 
-    margin:0; padding:0; 
-    display:flex; justify-content:center; align-items:center; 
-    min-height:100vh; 
-    color:var(--text-dark); 
-  }
-  .login-container { 
-    width:75vw;             /* mais largo */
-    max-width:1100px;       /* limite maior */
-    min-width:350px;        /* mínimo aumentado */
-    padding:7vh 5vw;        /* mais espaço interno */
-    border-radius:20px; 
-    box-shadow:var(--shadow-light); 
-    background-color:var(--background-white); 
-    display:flex; 
-    flex-direction:column; 
-    justify-content:center; 
-    transition:var(--transition-all);
-  }
-  .login-container:hover { 
-    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3),0 4px 6px -2px rgba(0,0,0,0.2);
-  }
-  h2 { text-align:center; color:var(--text-dark); margin-bottom:40px; font-weight:700; font-size:2.8rem;}
-  label { display:block; margin-top:25px; color:var(--text-medium); font-weight:500; margin-bottom:8px; font-size:1rem;}
-  input { width:100%; padding:16px 20px; border:1px solid var(--border-light); border-radius:12px; font-size:1.05rem; color:var(--text-dark); background-color: rgba(255,255,255,0.1); transition:var(--transition-all);}
-  input:focus { outline:none; border-color:var(--primary-color); box-shadow:0 0 0 4px rgba(10,102,194,0.3); background-color: rgba(255,255,255,0.15);}
-  
-  #username {
-    padding: 16px 42px 16px 20px;
+
+  body {
+    background-color: var(--background-light);
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
     box-sizing: border-box;
+    color: var(--text-dark);
   }
-  
+
+  .login-container {
+    width: 60vw;              /* 60% da largura da tela */
+    height: 70vh;             /* 70% da altura da tela */
+    max-width: 900px;
+    min-width: 300px;
+    max-height: 800px;
+    min-height: 400px;
+    background-color: var(--background-white);
+    margin: auto;
+    padding: 5vh 4vw;
+    border-radius: 20px;
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-all);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .login-container:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+  }
+
+  h2 {
+    text-align: center;
+    color: var(--text-dark);
+    margin-bottom: 40px;
+    font-weight: 700;
+    font-size: 2.5rem; /* aumentado para deixar o título maior */
+  }
+
+  label {
+    display: block;
+    margin-top: 25px;
+    color: var(--text-medium);
+    font-weight: 500;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+  }
+
+  input[type="text"],
+  input[type="password"] {
+    width: 100%;
+    padding: 14px 18px;
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    box-sizing: border-box;
+    font-size: 1rem;
+    color: var(--text-dark);
+    background-color: rgba(255, 255, 255, 0.1);
+    transition: var(--transition-all);
+  }
+
+  input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(10, 102, 194, 0.3);
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+
   .password-wrapper {
     position: relative;
     width: 100%;
   }
   .password-wrapper input {
-    width: 100%;
-    padding: 16px 42px 16px 20px;
-    border: 1px solid var(--border-light);
-    border-radius: 12px;
-    font-size: 1.05rem;
-    color: var(--text-dark);
-    background-color: rgba(255,255,255,0.1);
-    transition: var(--transition-all);
-    box-sizing: border-box;
+    padding-right: 42px;
   }
   .password-wrapper svg {
     position: absolute;
@@ -86,17 +118,47 @@
     transition: all 0.3s ease-in-out;
   }
 
-  .buttons { display:flex; justify-content:center; gap:15px; margin-top:35px; }
-  .buttons button { padding:16px 34px; border:none; border-radius:12px; cursor:pointer; font-size:1.05rem; font-weight:600; transition:transform 0.3s, box-shadow 0.3s, background 0.4s ease-in-out; box-shadow:var(--shadow-light); }
-  .buttons button:hover { transform:translateY(-3px) scale(1.02); box-shadow:0 10px 15px -3px rgba(0,0,0,0.3); }
+  .buttons {
+    margin-top: 50px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+  }
 
-  .buttons button[type="submit"] { background: var(--primary-color); color: white; }
-  .buttons button[type="submit"]:hover { background: linear-gradient(270deg,var(--primary-color),var(--primary-hover-color),var(--primary-extra-color)); background-size:600% 600%; animation: gradientShift 6s ease infinite; }
+  button {
+    background: var(--primary-color);
+    color: white;
+    padding: 14px 30px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: transform 0.3s, box-shadow 0.3s, background 0.4s ease-in-out;
+    box-shadow: var(--shadow-light);
+  }
 
-  .buttons button#btnChangePassword { background: var(--danger-color); color:white; }
-  .buttons button#btnChangePassword:hover { background: var(--danger-hover-color); }
+  button:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(270deg, var(--primary-color), var(--primary-hover-color), var(--primary-extra-color));
+    background-size: 600% 600%;
+    animation: gradientShift 6s ease infinite;
+  }
 
-  @keyframes gradientShift { 0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;} }
+  .buttons button#btnChangePassword {
+    background: var(--danger-color);
+  }
+  .buttons button#btnChangePassword:hover {
+    background: var(--danger-hover-color);
+  }
+
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
 
   .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.6); justify-content:center; align-items:center; z-index:1000; }
   .modal-content { background: var(--background-white); padding:30px; border-radius:15px; width: 90%; max-width:400px; box-shadow:var(--shadow-light); position:relative;}
@@ -144,7 +206,9 @@
   </div>
 </div>
 
-<footer style="position: fixed; bottom: 4px; right: 4px; font-size: 9px; color: #888;">© 2025. Todos os direitos reservados.</footer>
+<footer style="position: fixed; bottom: 4px; left: 50%; transform: translateX(-50%); font-size: 9px; color: #888; background: transparent; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; opacity: 0.75; user-select: none;">
+    © 2025. Todos os direitos reservados.
+</footer>
 
 <script>
   const firebaseConfig = {
@@ -241,5 +305,8 @@
   document.addEventListener('contextmenu', function(event){ event.preventDefault(); });
 </script>
 
+<img src="https://almoxarifadobotucatu.netlify.app/ReQPrimeLOGO.png" 
+     alt="Logo" 
+     style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width:150px;">
 </body>
 </html>
