@@ -774,8 +774,8 @@ function pluralizarUnidade(unidade, quantidade) {
 
     // Initialize users from localStorage or use default
     let users = JSON.parse(localStorage.getItem('users')) || [
-      { username: "sms6786", password: "Master1@" },
-      { username: "admin", password: "master@" }
+      { username: "sms6786", password: "Master1@", name: "Fabiano" },
+      { username: "admin", password: "master@", name: "Administrador" }
     ];
     // Ensure all usernames are lowercase
     users = users.map(user => ({
@@ -3240,6 +3240,15 @@ document.addEventListener("DOMContentLoaded", function() {
       setTimeout(() => { btn.disabled = false; }, 2000);
     });
   }
+
+document.addEventListener("DOMContentLoaded", function() {
+  const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
+  if (usuarioLogado && usuarioLogado.name) {
+    document.getElementById("solicitante").value = usuarioLogado.name;
+    document.getElementById("solicitante").readOnly = true;
+  }
+});
+
 </script>
 <!DOCTYPE html>
 <html lang="pt-BR">
