@@ -110,7 +110,7 @@
       color: var(--text-medium);
       width: 22px;
       height: 22px;
-      transition: color 0.3s;
+      transition: all 0.3s ease-in-out;
     }
 
     .buttons {
@@ -198,7 +198,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // Mostrar/ocultar senha com olho riscado
+    // Mostrar/ocultar senha com olho riscado moderno
     const togglePassword = document.getElementById("togglePassword");
     const passwordInput = document.getElementById("password");
 
@@ -206,19 +206,22 @@ document.addEventListener("DOMContentLoaded", function() {
         const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
         passwordInput.setAttribute("type", type);
 
-        // Troca entre olho aberto e olho riscado
         if(type === "password") {
+            // Olho aberto
             togglePassword.innerHTML = `
               <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
               <circle cx="12" cy="12" r="3"/>
             `;
         } else {
+            // Olho riscado moderno
             togglePassword.innerHTML = `
-              <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a21.71 21.71 0 0 1 5.06-6.06M1 1l22 22"/>
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <line x1="1" y1="1" x2="23" y2="23"/>
             `;
         }
 
         togglePassword.style.color = type === "password" ? "var(--text-medium)" : "var(--primary-color)";
+        togglePassword.style.transition = "all 0.3s ease-in-out";
     });
 });
 
