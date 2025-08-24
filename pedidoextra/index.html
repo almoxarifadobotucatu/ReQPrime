@@ -734,7 +734,31 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
 <label for="solicitante">Responsável pela solicitação:</label>
 <input autocomplete="off" id="solicitante" required="" type="text"/>
 <label for="unidade">Unidade de saúde:</label>
-<input autocomplete="off" id="unidade" required="" type="text"/>
+<input autocomplete="off" id="unidade" required="" type="text" list="lista-unidades"/>
+<datalist id="lista-unidades">
+  <option value="USF CAIMA"></option>
+  <option value="USF COHAB IV"></option>
+  <option value="USF SANTA MARIA/MARIA LUIZA"></option>
+  <option value="USF COMERCIARIOS"></option>
+  <option value="USF REAL PARK"></option>
+  <option value="USF JARDIM PEABIRU"></option>
+  <option value="USF JARDIM IOLANDA"></option>
+  <option value="USF JARDIM AEROPORTO"></option>
+  <option value="USF SANTA ELISA"></option>
+  <option value="USF RUBIAO JUNIOR"></option>
+  <option value="USF PARQUE MARAJOARA"></option>
+  <option value="USF CESAR NETO"></option>
+  <option value="USF VITORIANA"></option>
+  <option value="UBS DR JAIR RODRIGUES ALVES"></option>
+  <option value="UBS EDMUNDO DE OLIVEIRA CS 1"></option>
+  <option value="UBS VILA JARDIM"></option>
+  <option value="UBS MARIO AZANHA SAO LUCIO"></option>
+  <option value="UBS CECAP"></option>
+  <option value="UBS SEBASTIAO ALMEIDA PINTO COHAB 1"></option>
+  <option value="CSE UNIDADE VILA FERROVIARIA"></option>
+  <option value="CSE UNIDADE VILA DOS LAVRADO"></option>
+</datalist>
+
 <div id="setoresContainer"></div>
 <div class="buttons">
 <button onclick="adicionarSetor()" type="button">Adicionar novo setor</button>
