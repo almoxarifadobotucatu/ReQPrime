@@ -88,7 +88,6 @@
   <div class="modal-content">
     <span class="modal-close" id="closeModal">&times;</span>
     <h3>Trocar Senha</h3>
-    <input type="text" id="usuarioModal" placeholder="Usuário" required>
     <input type="password" id="currentPassword" placeholder="Senha Atual" required>
     <input type="password" id="newPassword" placeholder="Nova Senha" required>
     <button id="savePasswordBtn">Salvar</button>
@@ -134,6 +133,7 @@
       if(dados.senha === password){
         sessionStorage.setItem("logado", "true");
         localStorage.setItem("usuarioLogado", username);
+        localStorage.setItem("nomeUsuario", dados.nome || username); // salva nome real ou o username
         window.location.href = "/central-de-pedidos/";
       } else {
         alert("Senha incorreta!");
@@ -162,7 +162,7 @@
   window.addEventListener("click", e=> { if(e.target==modal) modal.style.display="none"; });
 
   savePasswordBtn.addEventListener("click", async ()=>{
-    const usuario = document.getElementById("usuarioModal").value.trim();
+    const usuario = document.getElementById("username").value.trim();
     const currentPass = document.getElementById("currentPassword").value.trim();
     const newPass = document.getElementById("newPassword").value.trim();
 
@@ -181,7 +181,6 @@
 
       alert("Senha alterada com sucesso!");
       modal.style.display="none";
-      document.getElementById("usuarioModal").value="";
       document.getElementById("currentPassword").value="";
       document.getElementById("newPassword").value="";
     } catch(err){
