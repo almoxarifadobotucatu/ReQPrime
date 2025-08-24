@@ -88,6 +88,7 @@
   <div class="modal-content">
     <span class="modal-close" id="closeModal">&times;</span>
     <h3>Trocar Senha</h3>
+    <input type="text" id="usuarioModal" placeholder="Usuário" required>
     <input type="password" id="currentPassword" placeholder="Senha Atual" required>
     <input type="password" id="newPassword" placeholder="Nova Senha" required>
     <button id="savePasswordBtn">Salvar</button>
@@ -161,7 +162,7 @@
   window.addEventListener("click", e=> { if(e.target==modal) modal.style.display="none"; });
 
   savePasswordBtn.addEventListener("click", async ()=>{
-    const usuario = document.getElementById("username").value.trim();
+    const usuario = document.getElementById("usuarioModal").value.trim();
     const currentPass = document.getElementById("currentPassword").value.trim();
     const newPass = document.getElementById("newPassword").value.trim();
 
@@ -180,6 +181,7 @@
 
       alert("Senha alterada com sucesso!");
       modal.style.display="none";
+      document.getElementById("usuarioModal").value="";
       document.getElementById("currentPassword").value="";
       document.getElementById("newPassword").value="";
     } catch(err){
