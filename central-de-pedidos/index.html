@@ -31,10 +31,10 @@
       }, 500);
     })();
 
-    // Pega o nome do usuário salvo no localStorage
+    // Pega o nome real do usuário salvo no localStorage
     window.onload = function() {
-      const usuario = localStorage.getItem("usuarioLogado") || "Usuário";
-      document.getElementById("usuario-logado").innerText = `Bem-vindo, ${usuario}!`;
+      const nome = localStorage.getItem("nomeUsuario") || localStorage.getItem("usuarioLogado") || "Usuário";
+      document.getElementById("usuario-logado").innerText = `Bem-vindo, ${nome}!`;
     }
   </script>
 
