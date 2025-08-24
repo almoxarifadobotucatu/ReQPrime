@@ -76,10 +76,15 @@
       font-size: 0.95rem;
     }
 
+    .input-wrapper {
+      position: relative;
+      width: 100%;
+    }
+
     input[type="text"],
     input[type="password"] {
       width: 100%;
-      padding: 14px 18px;
+      padding: 14px 45px 14px 18px; /* espaço para o olho */
       border: 1px solid var(--border-light);
       border-radius: 12px;
       box-sizing: border-box;
@@ -96,28 +101,23 @@
       background-color: rgba(255, 255, 255, 0.15);
     }
 
-    .password-container {
-      position: relative;
-      display: flex;
-      align-items: center;
-    }
-
     .toggle-password {
       position: absolute;
       right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
       cursor: pointer;
-      background: none;
-      border: none;
-      padding: 0;
-      outline: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .toggle-password svg {
       width: 22px;
       height: 22px;
-      fill: none;
       stroke: #b8b8b8;
       stroke-width: 2;
+      fill: none;
     }
 
     .buttons {
@@ -141,15 +141,7 @@
     button:hover {
       transform: translateY(-3px) scale(1.02);
       box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
-      background: linear-gradient(270deg, var(--primary-color), var(--primary-hover-color), var(--primary-extra-color));
-      background-size: 600% 600%;
-      animation: gradientShift 6s ease infinite;
-    }
-
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+      background: var(--primary-hover-color);
     }
   </style>
 </head>
@@ -159,18 +151,19 @@
     <form id="loginForm">
       <label for="username">Usuário:</label>
       <input type="text" id="username" autocomplete="off" required>
+
       <label for="password">Senha:</label>
-      <div class="password-container">
+      <div class="input-wrapper">
         <input type="password" id="password" autocomplete="off" required>
-        <button type="button" class="toggle-password" id="togglePassword" aria-label="Mostrar/ocultar senha">
-          <!-- Ícone olho fechado default -->
-          <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7zm10 
-                     3a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-            <line x1="3" y1="3" x2="21" y2="21"/>
+        <span class="toggle-password" onclick="togglePassword()">
+          <!-- Novo ícone de olho simples -->
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M12 4.5C7 4.5 2.7 8.1 1 12c1.7 3.9 6 7.5 11 7.5s9.3-3.6 11-7.5c-1.7-3.9-6-7.5-11-7.5z"/>
+            <circle cx="12" cy="12" r="3"/>
           </svg>
-        </button>
+        </span>
       </div>
+
       <div class="buttons">
         <button type="submit">Entrar</button>
       </div>
@@ -178,12 +171,15 @@
   </div>
 
 <script>
+function togglePassword() {
+  const passwordInput = document.getElementById("password");
+  passwordInput.type = passwordInput.type === "password" ? "text" : "password";
+}
+
 document.addEventListener("DOMContentLoaded", function() {
-    // Lista de usuários permitidos
     const usuariosValidos = [
         { usuario: "admin", senha: "master@" },
-        { usuario: "saude", senha: "@saude123" },
-        { usuario: "", senha: "" }
+        { usuario: "saude", senha: "@saude123" }
     ];
 
     const loginForm = document.querySelector("#loginForm");
@@ -206,30 +202,6 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
     }
-
-    // Mostrar/ocultar senha com ícone
-    const togglePassword = document.getElementById("togglePassword");
-    const passwordField = document.getElementById("password");
-    const eyeIcon = document.getElementById("eyeIcon");
-
-    togglePassword.addEventListener("click", function () {
-        const isPassword = passwordField.type === "password";
-        passwordField.type = isPassword ? "text" : "password";
-
-        // Olho aberto
-        if (isPassword) {
-            eyeIcon.innerHTML = `
-              <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7zm11 
-                       3a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>`;
-        } 
-        // Olho fechado com risco
-        else {
-            eyeIcon.innerHTML = `
-              <path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7zm10 
-                       3a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
-              <line x1="3" y1="3" x2="21" y2="21"/>`;
-        }
-    });
 });
 </script>
 
