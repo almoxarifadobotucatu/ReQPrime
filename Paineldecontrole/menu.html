@@ -6,6 +6,10 @@
 <title>Painel de Controle</title>
 <link rel="icon" type="image/png" sizes="32x32" href="">
 
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
 <style>
   :root {
     --primary-extra-color: #1db954;
@@ -82,6 +86,25 @@
     100% { background-position: 0% 50%; }
   }
 
+  #logoutBtn {
+    margin-top: 30px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+    background: var(--primary-color);
+    color: white;
+    transition: transform 0.3s, background 0.3s;
+  }
+
+  #logoutBtn:hover {
+    transform: translateY(-2px) scale(1.02);
+    background: linear-gradient(270deg, var(--primary-color), var(--primary-hover-color), var(--primary-extra-color));
+    background-size: 600% 600%;
+    animation: gradientShift 6s ease infinite;
+  }
+
   footer {
     position: fixed;
     bottom: 4px;
@@ -103,9 +126,41 @@
     <a href="cadastrar.html">Cadastrar Usuário</a>
     <a href="cadastros.html">Usuários Cadastrados</a>
   </div>
+  <button id="logoutBtn">Sair</button>
 </div>
 
 <footer>© 2025. Todos os direitos reservados.</footer>
+
+<script>
+  // Configuração do Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
+    authDomain: "almoxarifadobotucatu-5e03d.firebaseapp.com",
+    projectId: "almoxarifadobotucatu-5e03d",
+    storageBucket: "almoxarifadobotucatu-5e03d.firebasestorage.app",
+    messagingSenderId: "828951000388",
+    appId: "1:828951000388:web:06dbe3cb5764872e7b1311"
+  };
+
+  // Inicializa Firebase
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+
+  // Protege página: redireciona se não estiver logado
+  auth.onAuthStateChanged(user => {
+    if (!user) {
+      window.location.href = "login.html"; // coloque aqui sua página de login
+    }
+  });
+
+  // Logout
+  const logoutBtn = document.getElementById('logoutBtn');
+  logoutBtn.addEventListener('click', () => {
+    auth.signOut().then(() => {
+      window.location.href = "login.html";
+    });
+  });
+</script>
 
 </body>
 </html>
