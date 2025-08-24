@@ -32,8 +32,34 @@
   label { display:block; margin-top:25px; color:var(--text-medium); font-weight:500; margin-bottom:8px; font-size:0.95rem;}
   input { width:100%; padding:14px 18px; border:1px solid var(--border-light); border-radius:12px; font-size:1rem; color:var(--text-dark); background-color: rgba(255,255,255,0.1); transition:var(--transition-all);}
   input:focus { outline:none; border-color:var(--primary-color); box-shadow:0 0 0 4px rgba(10,102,194,0.3); background-color: rgba(255,255,255,0.15);}
-  .password-wrapper { position:relative; width:100%; }
-  .password-wrapper svg { position:absolute; top:50%; right:12px; transform:translateY(-50%); cursor:pointer; color:var(--text-medium); width:22px; height:22px; transition:all 0.3s ease-in-out; }
+  
+  /* Caixa de senha ajustada */
+  .password-wrapper {
+    position: relative;
+    width: 100%;
+  }
+  .password-wrapper input {
+    width: 100%;
+    padding: 14px 42px 14px 18px; /* espaço para o olho */
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    font-size: 1rem;
+    color: var(--text-dark);
+    background-color: rgba(255,255,255,0.1);
+    transition: var(--transition-all);
+    box-sizing: border-box;
+  }
+  .password-wrapper svg {
+    position: absolute;
+    top: 50%;
+    right: 14px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: var(--text-medium);
+    width: 22px;
+    height: 22px;
+    transition: all 0.3s ease-in-out;
+  }
 
   /* Botões lado a lado */
   .buttons { display:flex; justify-content:center; gap:15px; margin-top:30px; }
@@ -68,11 +94,13 @@
 
     <label for="password">Senha:</label>
     <div class="password-wrapper">
-      <input type="password" id="password" autocomplete="off" required style="padding-right:40px;">
-      <svg id="togglePassword" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <input type="password" id="password" autocomplete="off" required>
+      <svg id="togglePassword" xmlns="http://www.w3.org/2000/svg" 
+           viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M12 5C7 5 2.73 8.11 1 12c1.73 3.89 6 7 11 7s9.27-3.11 11-7c-1.73-3.89-6-7-11-7z"/>
         <circle cx="12" cy="12" r="3"/>
-        <line id="eyeLine" x1="4" y1="4" x2="20" y2="20" stroke="var(--primary-color)" stroke-dasharray="23" stroke-dashoffset="23"/>
+        <line id="eyeLine" x1="4" y1="4" x2="20" y2="20"
+              stroke="var(--primary-color)" stroke-dasharray="23" stroke-dashoffset="23"/>
       </svg>
     </div>
 
@@ -133,7 +161,7 @@
       if(dados.senha === password){
         sessionStorage.setItem("logado", "true");
         localStorage.setItem("usuarioLogado", username);
-        localStorage.setItem("nomeUsuario", dados.nome || username); // salva nome real ou o username
+        localStorage.setItem("nomeUsuario", dados.nome || username);
         window.location.href = "/central-de-pedidos/";
       } else {
         alert("Senha incorreta!");
