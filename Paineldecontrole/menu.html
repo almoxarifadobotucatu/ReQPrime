@@ -6,106 +6,173 @@
 <title>Painel de Controle</title>
 <link rel="icon" type="image/png" sizes="32x32" href="">
 
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
 <style>
   :root {
-    --primary-extra-color: #1db954;
     --primary-color: #0a66c2;
-    --primary-hover-color: #004182;
-    --background-light: #1a1a2e;
-    --background-white: #16213e;
-    --text-dark: #ffffff;
-    --text-medium: #b8b8b8;
-    --border-light: #2a2a3a;
-    --shadow-light: 0 4px 6px -1px rgba(0, 0, 0, 0.3),
-                    0 2px 4px -1px rgba(0, 0, 0, 0.2);
+    --primary-hover: #004182;
+    --background: #16213e;
+    --background-dark: #1a1a2e;
+    --text: #fff;
+    --text-light: #b8b8b8;
+    --border: #2a2a3a;
   }
-
-  body {
-    background-color: var(--background-light);
-    font-family: 'Inter', sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    box-sizing: border-box;
-    color: var(--text-dark);
-  }
-
-  .container {
-    width: 70vw;
-    max-width: 700px;
-    background-color: var(--background-white);
-    padding: 40px;
-    border-radius: 20px;
-    box-shadow: var(--shadow-light);
-    text-align: center;
-  }
-
-  h2 {
-    font-size: 2rem;
-    margin-bottom: 40px;
-    color: var(--text-dark);
-  }
-
-  .buttons {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    flex-wrap: wrap;
-  }
-
-  .buttons a {
-    display: inline-block;
-    padding: 20px 40px;
-    font-size: 1.2rem;
-    font-weight: 600;
-    border-radius: 15px;
-    text-decoration: none;
-    color: white;
-    background: var(--primary-color);
-    box-shadow: var(--shadow-light);
-    transition: transform 0.3s, background 0.3s;
-  }
-
-  .buttons a:hover {
-    transform: translateY(-3px) scale(1.03);
-    background: linear-gradient(270deg, var(--primary-color), var(--primary-hover-color), var(--primary-extra-color));
-    background-size: 600% 600%;
-    animation: gradientShift 6s ease infinite;
-  }
-
-  @keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
-
-  footer {
-    position: fixed;
-    bottom: 4px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 9px;
-    color: #888;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    opacity: 0.75;
-    user-select: none;
-  }
+  body { font-family:'Inter',sans-serif; background:var(--background-dark); color:var(--text); margin:0; padding:0;}
+  .container { max-width:900px; margin:50px auto; padding:20px; background:var(--background); border-radius:20px;}
+  h2 { text-align:center; margin-bottom:20px;}
+  label { display:block; margin-top:15px; color:var(--text-light);}
+  input { width:100%; padding:12px; margin-top:5px; border-radius:10px; border:1px solid var(--border); background: rgba(255,255,255,0.05); color:var(--text);}
+  button { padding:10px 20px; margin:10px 0; border:none; border-radius:10px; background:var(--primary-color); color:#fff; cursor:pointer;}
+  button:hover { background:var(--primary-hover);}
+  .senha-container { position:relative; }
+  .senha-container span { position:absolute; right:15px; top:50%; transform:translateY(-50%); cursor:pointer; }
+  .buttons { display:flex; gap:10px; margin-top:15px; flex-wrap:wrap; justify-content:center; }
 </style>
 </head>
 <body>
 
-<div class="container">
+<!-- Login -->
+<div class="container" id="loginContainer">
+  <h2>Login Admin</h2>
+  <form id="loginForm">
+    <label>Email:</label>
+    <input type="email" id="email" required>
+    
+    <label>Senha:</label>
+    <div class="senha-container">
+      <input type="password" id="senha" required>
+      <span id="toggleSenha">👁️</span>
+    </div>
+
+    <button type="submit">Entrar</button>
+  </form>
+</div>
+
+<!-- Painel -->
+<div class="container" id="painelContainer" style="display:none;">
   <h2>Painel de Controle</h2>
+  
   <div class="buttons">
-    <a href="cadastrar.html">Cadastrar Usuário</a>
-    <a href="cadastros.html">Usuários Cadastrados</a>
+    <button id="cadastrarBtn">Cadastrar Usuário</button>
+    <button id="menuBtn">Menu</button>
+    <button id="logoutBtn">Sair</button>
+  </div>
+
+  <!-- Formulário de cadastro -->
+  <div id="cadastroFormContainer" style="margin-top:20px; display:none;">
+    <h3>Cadastrar Usuário</h3>
+    <form id="cadastroForm">
+      <label>Nome:</label>
+      <input type="text" id="nome" required>
+      
+      <label>Email:</label>
+      <input type="email" id="emailCadastro" required>
+      
+      <label>Senha:</label>
+      <input type="password" id="senhaCadastro" required>
+      
+      <label>Admin:</label>
+      <input type="checkbox" id="adminCadastro">
+      
+      <button type="submit">Cadastrar</button>
+    </form>
   </div>
 </div>
 
-<footer>© 2025. Todos os direitos reservados.</footer>
+<script>
+  // Configuração Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
+    authDomain: "almoxarifadobotucatu-5e03d.firebaseapp.com",
+    projectId: "almoxarifadobotucatu-5e03d",
+    storageBucket: "almoxarifadobotucatu-5e03d.firebasestorage.app",
+    messagingSenderId: "828951000388",
+    appId: "1:828951000388:web:06dbe3cb5764872e7b1311"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
 
+  // Toggle senha
+  const senhaInput = document.getElementById("senha");
+  const toggleSenha = document.getElementById("toggleSenha");
+  toggleSenha.addEventListener("click", () => {
+    if (senhaInput.type === "password") {
+      senhaInput.type = "text";
+      toggleSenha.textContent = "🙈";
+    } else {
+      senhaInput.type = "password";
+      toggleSenha.textContent = "👁️";
+    }
+  });
+
+  // Elementos
+  const loginContainer = document.getElementById("loginContainer");
+  const painelContainer = document.getElementById("painelContainer");
+
+  // Login
+  document.getElementById("loginForm").addEventListener("submit", async (e)=>{
+    e.preventDefault();
+    const email = document.getElementById("email").value;
+    const senha = document.getElementById("senha").value;
+
+    try {
+      const userCredential = await auth.signInWithEmailAndPassword(email, senha);
+      const uid = userCredential.user.uid;
+      const doc = await db.collection("usuarios").doc(uid).get();
+      if(doc.exists && doc.data().admin){
+        loginContainer.style.display = "none";
+        painelContainer.style.display = "block";
+      } else {
+        alert("⚠️ Apenas administradores podem acessar!");
+        auth.signOut();
+      }
+    } catch(err){
+      alert("Erro: " + err.message);
+    }
+  });
+
+  // Logout
+  document.getElementById("logoutBtn").addEventListener("click", ()=>{
+    auth.signOut();
+    painelContainer.style.display="none";
+    loginContainer.style.display="block";
+  });
+
+  // Abrir cadastro
+  document.getElementById("cadastrarBtn").addEventListener("click", ()=>{
+    document.getElementById("cadastroFormContainer").style.display="block";
+  });
+
+  // Redirecionar para menu
+  document.getElementById("menuBtn").addEventListener("click", ()=>{
+    window.location.href="https://almoxarifadobotucatu.netlify.app/paineldecontrole/menu";
+  });
+
+  // Cadastro de usuário
+  document.getElementById("cadastroForm").addEventListener("submit", async (e)=>{
+    e.preventDefault();
+    const nome = document.getElementById("nome").value;
+    const email = document.getElementById("emailCadastro").value;
+    const senha = document.getElementById("senhaCadastro").value;
+    const admin = document.getElementById("adminCadastro").checked;
+
+    try {
+      const novoUser = await auth.createUserWithEmailAndPassword(email, senha);
+      await db.collection("usuarios").doc(novoUser.user.uid).set({
+        nome: nome,
+        admin: admin
+      });
+      alert("Usuário cadastrado com sucesso!");
+      document.getElementById("cadastroForm").reset();
+    } catch(err){
+      alert("Erro: " + err.message);
+    }
+  });
+</script>
 </body>
 </html>
