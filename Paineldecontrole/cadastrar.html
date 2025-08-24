@@ -91,6 +91,26 @@
     background-color: rgba(255, 255, 255, 0.15);
   }
 
+  .senha-container {
+    position: relative;
+  }
+
+  .senha-container span {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    user-select: none;
+    font-size: 1.1rem;
+    color: var(--text-medium);
+    transition: var(--transition-all);
+  }
+
+  .senha-container span:hover {
+    color: var(--primary-color);
+  }
+
   .buttons {
     margin-top: 30px;
     text-align: center;
@@ -151,7 +171,10 @@
     <input type="text" id="nome" required>
 
     <label for="senha">Senha:</label>
-    <input type="password" id="senha" required>
+    <div class="senha-container">
+      <input type="password" id="senha" required>
+      <span id="toggleSenha">👁️</span>
+    </div>
 
     <div class="buttons">
       <button type="submit">Cadastrar</button>
@@ -204,6 +227,20 @@
       form.reset();
     } catch(err){
       alert("Erro ao cadastrar: " + err);
+    }
+  });
+
+  // Toggle senha
+  const senhaInput = document.getElementById("senha");
+  const toggleSenha = document.getElementById("toggleSenha");
+
+  toggleSenha.addEventListener("click", () => {
+    if (senhaInput.type === "password") {
+      senhaInput.type = "text";
+      toggleSenha.textContent = "🙈";
+    } else {
+      senhaInput.type = "password";
+      toggleSenha.textContent = "👁️";
     }
   });
 </script>
