@@ -109,30 +109,40 @@
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
 
-  const usuariosValidos = [
-    { usuario: "admin", senha: "master@" },
-    { usuario: "saude", senha: "@saude123" }
-  ];
-
   const loginForm = document.querySelector("#loginForm");
   const togglePassword = document.getElementById("togglePassword");
   const passwordInput = document.getElementById("password");
   const eyeLine = document.getElementById("eyeLine");
 
-  loginForm.addEventListener("submit", function(e){
+  // LOGIN
+  loginForm.addEventListener("submit", async function(e){
     e.preventDefault();
     const username = document.getElementById("username").value.trim();
     const password = passwordInput.value.trim();
-    const usuarioEncontrado = usuariosValidos.find(u => u.usuario === username && u.senha === password);
-    if(usuarioEncontrado){
-      sessionStorage.setItem("logado", "true");
-      localStorage.setItem("usuarioLogado", username);
-      window.location.href = "/central-de-pedidos/";
-    } else {
-      alert("Usuário ou senha inválidos!");
+
+    try {
+      const docRef = db.collection("usuarios").doc(username);
+      const docSnap = await docRef.get();
+
+      if(!docSnap.exists){
+        alert("Usuário não encontrado!");
+        return;
+      }
+
+      const dados = docSnap.data();
+      if(dados.senha === password){
+        sessionStorage.setItem("logado", "true");
+        localStorage.setItem("usuarioLogado", username);
+        window.location.href = "/central-de-pedidos/";
+      } else {
+        alert("Senha incorreta!");
+      }
+    } catch(err){
+      alert("Erro ao fazer login: " + err);
     }
   });
 
+  // Mostrar/ocultar senha
   togglePassword.addEventListener("click", function(){
     const type = passwordInput.getAttribute("type")==="password" ? "text":"password";
     passwordInput.setAttribute("type", type);
@@ -157,13 +167,17 @@
 
     if(!usuario || !currentPass || !newPass){ alert("Preencha todos os campos"); return; }
 
-    const usuarioEncontrado = usuariosValidos.find(u => u.usuario===usuario && u.senha===currentPass);
-    if(!usuarioEncontrado){ alert("Senha atual incorreta"); return; }
-
-    usuarioEncontrado.senha = newPass;
-
     try{
-      await db.collection("usuarios").doc(usuario).set({ senha: newPass }, { merge:true });
+      const docRef = db.collection("usuarios").doc(usuario);
+      const docSnap = await docRef.get();
+
+      if(!docSnap.exists){ alert("Usuário não encontrado"); return; }
+      const dados = docSnap.data();
+
+      if(dados.senha !== currentPass){ alert("Senha atual incorreta"); return; }
+
+      await docRef.set({ senha: newPass }, { merge:true });
+
       alert("Senha alterada com sucesso!");
       modal.style.display="none";
       document.getElementById("currentPassword").value="";
@@ -173,6 +187,7 @@
     }
   });
 
+  // Bloqueio de devtools
   document.addEventListener('keydown', function (event) {
       if(event.key==="F12" || event.keyCode===123){ event.preventDefault(); return false; }
       if((event.ctrlKey && event.key.toLowerCase()==='s') || (event.ctrlKey && event.key.toLowerCase()==='u')){ event.preventDefault(); return false; }
@@ -181,96 +196,4 @@
 </script>
 
 </body>
-<script>
-  // Firebase config
-  const firebaseConfig = {
-    apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
-    authDomain: "almoxarifadobotucatu-5e03d.firebaseapp.com",
-    projectId: "almoxarifadobotucatu-5e03d",
-    storageBucket: "almoxarifadobotucatu-5e03d.firebasestorage.app",
-    messagingSenderId: "828951000388",
-    appId: "1:828951000388:web:06dbe3cb5764872e7b1311"
-  };
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
-
-  const loginForm = document.querySelector("#loginForm");
-  const togglePassword = document.getElementById("togglePassword");
-  const passwordInput = document.getElementById("password");
-  const eyeLine = document.getElementById("eyeLine");
-
-  // === LOGIN ===
-  loginForm.addEventListener("submit", async function(e){
-    e.preventDefault();
-    const username = document.getElementById("username").value.trim();
-    const password = passwordInput.value.trim();
-
-    try {
-      const userDoc = await db.collection("usuarios").doc(username).get();
-      if(userDoc.exists){
-        const userData = userDoc.data();
-        if(userData.senha === password){
-          sessionStorage.setItem("logado", "true");
-          localStorage.setItem("usuarioLogado", username);
-          window.location.href = "/central-de-pedidos/";
-        } else {
-          alert("Senha incorreta!");
-        }
-      } else {
-        alert("Usuário não encontrado!");
-      }
-    } catch(err){
-      alert("Erro ao conectar ao banco: " + err);
-    }
-  });
-
-  // === Mostrar/ocultar senha ===
-  togglePassword.addEventListener("click", function(){
-    const type = passwordInput.getAttribute("type")==="password" ? "text":"password";
-    passwordInput.setAttribute("type", type);
-    eyeLine.style.strokeDashoffset = type==="password"?23:0;
-    togglePassword.style.color = type==="password"?"var(--text-medium)":"var(--primary-color)";
-  });
-
-  // === Modal trocar senha ===
-  const modal = document.getElementById("passwordModal");
-  const btnChange = document.getElementById("btnChangePassword");
-  const closeModal = document.getElementById("closeModal");
-  const savePasswordBtn = document.getElementById("savePasswordBtn");
-
-  btnChange.addEventListener("click", ()=> modal.style.display="flex");
-  closeModal.addEventListener("click", ()=> modal.style.display="none");
-  window.addEventListener("click", e=> { if(e.target==modal) modal.style.display="none"; });
-
-  savePasswordBtn.addEventListener("click", async ()=>{
-    const usuario = document.getElementById("username").value.trim();
-    const currentPass = document.getElementById("currentPassword").value.trim();
-    const newPass = document.getElementById("newPassword").value.trim();
-
-    if(!usuario || !currentPass || !newPass){ alert("Preencha todos os campos"); return; }
-
-    try{
-      const userDoc = await db.collection("usuarios").doc(usuario).get();
-      if(userDoc.exists && userDoc.data().senha === currentPass){
-        await db.collection("usuarios").doc(usuario).set({ senha: newPass }, { merge:true });
-        alert("Senha alterada com sucesso!");
-        modal.style.display="none";
-        document.getElementById("currentPassword").value="";
-        document.getElementById("newPassword").value="";
-      } else {
-        alert("Senha atual incorreta ou usuário não encontrado!");
-      }
-    } catch(err){
-      alert("Erro ao salvar a senha: "+err);
-    }
-  });
-
-  // === Bloqueio F12 e etc ===
-  document.addEventListener('keydown', function (event) {
-      if(event.key==="F12" || event.keyCode===123){ event.preventDefault(); return false; }
-      if((event.ctrlKey && event.key.toLowerCase()==='s') || (event.ctrlKey && event.key.toLowerCase()==='u')){ event.preventDefault(); return false; }
-  });
-  document.addEventListener('contextmenu', function(event){ event.preventDefault(); });
-</script>
-
 </html>
