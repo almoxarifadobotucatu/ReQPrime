@@ -39,13 +39,10 @@
   .buttons { display:flex; justify-content:center; gap:15px; margin-top:30px; }
   .buttons button { padding:14px 30px; border:none; border-radius:12px; cursor:pointer; font-size:1rem; font-weight:600; transition:transform 0.3s, box-shadow 0.3s, background 0.4s ease-in-out; box-shadow:var(--shadow-light); }
   .buttons button:hover { transform:translateY(-3px) scale(1.02); box-shadow:0 10px 15px -3px rgba(0,0,0,0.3); }
-
   .buttons button[type="submit"] { background: var(--primary-color); color: white; }
   .buttons button[type="submit"]:hover { background: linear-gradient(270deg,var(--primary-color),var(--primary-hover-color),var(--primary-extra-color)); background-size:600% 600%; animation: gradientShift 6s ease infinite; }
-
   .buttons button#btnChangePassword { background: var(--danger-color); color:white; }
   .buttons button#btnChangePassword:hover { background: var(--danger-hover-color); }
-
   @keyframes gradientShift { 0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;} }
 
   /* Modal */
@@ -83,11 +80,12 @@
   </form>
 </div>
 
-<!-- Modal -->
+<!-- Modal atualizado -->
 <div class="modal" id="passwordModal">
   <div class="modal-content">
     <span class="modal-close" id="closeModal">&times;</span>
     <h3>Trocar Senha</h3>
+    <input type="text" id="modalUsername" placeholder="Usuário" required>
     <input type="password" id="currentPassword" placeholder="Senha Atual" required>
     <input type="password" id="newPassword" placeholder="Nova Senha" required>
     <button id="savePasswordBtn">Salvar</button>
@@ -97,7 +95,6 @@
 <footer style="position: fixed; bottom: 4px; right: 4px; font-size: 9px; color: #888;">© 2025. Todos os direitos reservados.</footer>
 
 <script>
-  // Firebase config
   const firebaseConfig = {
     apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
     authDomain: "almoxarifadobotucatu-5e03d.firebaseapp.com",
@@ -140,7 +137,6 @@
     togglePassword.style.color = type==="password"?"var(--text-medium)":"var(--primary-color)";
   });
 
-  // Modal trocar senha
   const modal = document.getElementById("passwordModal");
   const btnChange = document.getElementById("btnChangePassword");
   const closeModal = document.getElementById("closeModal");
@@ -151,7 +147,7 @@
   window.addEventListener("click", e=> { if(e.target==modal) modal.style.display="none"; });
 
   savePasswordBtn.addEventListener("click", async ()=>{
-    const usuario = document.getElementById("username").value.trim();
+    const usuario = document.getElementById("modalUsername").value.trim();
     const currentPass = document.getElementById("currentPassword").value.trim();
     const newPass = document.getElementById("newPassword").value.trim();
 
@@ -166,6 +162,7 @@
       await db.collection("usuarios").doc(usuario).set({ senha: newPass }, { merge:true });
       alert("Senha alterada com sucesso!");
       modal.style.display="none";
+      document.getElementById("modalUsername").value="";
       document.getElementById("currentPassword").value="";
       document.getElementById("newPassword").value="";
     } catch(err){
