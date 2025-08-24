@@ -3242,15 +3242,33 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 </script>
 <script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const responsavelInput = document.getElementById("responsavel");
-    const nomeUsuario = localStorage.getItem("nomeUsuario");
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pedido Extra</title>
+</head>
+<body>
+  <!-- Outros elementos da página -->
 
-    if (responsavelInput && nomeUsuario) {
-      responsavelInput.value = nomeUsuario;
-    }
-  });
-</script>
+  <label for="responsavel">Responsável pelo Pedido:</label>
+  <input type="text" id="responsavel" name="responsavel" required>
+
+  <!-- Outros elementos da página -->
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const responsavelInput = document.getElementById("responsavel");
+      const nomeUsuario = localStorage.getItem("nomeUsuario");
+
+      if (responsavelInput && nomeUsuario) {
+        responsavelInput.value = nomeUsuario;
+      }
+    });
+  </script>
+</body>
+</html>
 
 </body>
 </html></head></html>
