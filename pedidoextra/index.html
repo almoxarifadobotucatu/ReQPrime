@@ -3043,6 +3043,20 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 </script>
 
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
+  if (usuarioLogado && usuarioLogado.name) {
+    const solicitanteInput = document.getElementById("solicitante");
+    if (solicitanteInput) {
+      solicitanteInput.value = usuarioLogado.name;
+      solicitanteInput.readOnly = true; // impede edição manual
+    }
+  }
+});
+</script>
+
 </body>
 </html>
 <html lang="pt-BR">
@@ -3240,15 +3254,6 @@ document.addEventListener("DOMContentLoaded", function() {
       setTimeout(() => { btn.disabled = false; }, 2000);
     });
   }
-
-document.addEventListener("DOMContentLoaded", function() {
-  const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
-  if (usuarioLogado && usuarioLogado.name) {
-    document.getElementById("solicitante").value = usuarioLogado.name;
-    document.getElementById("solicitante").readOnly = true;
-  }
-});
-
 </script>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -3257,5 +3262,19 @@ document.addEventListener("DOMContentLoaded", function() {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pedido Extra</title>
 </head>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
+  if (usuarioLogado && usuarioLogado.name) {
+    const solicitanteInput = document.getElementById("solicitante");
+    if (solicitanteInput) {
+      solicitanteInput.value = usuarioLogado.name;
+      solicitanteInput.readOnly = true; // impede edição manual
+    }
+  }
+});
+</script>
+
 </body>
 </html>
