@@ -243,5 +243,17 @@
 
   carregarUsuarios();
 </script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+<script>
+  firebase.initializeApp(firebaseConfig);
+
+  firebase.auth().onAuthStateChanged((user) => {
+    if (!user) {
+      // Se não estiver logado, volta pro login
+      window.location.href = "index.html";
+    }
+  });
+</script>
+
 </body>
 </html>
