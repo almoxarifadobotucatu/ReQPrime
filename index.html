@@ -34,17 +34,27 @@
   input:focus { outline:none; border-color:var(--primary-color); box-shadow:0 0 0 4px rgba(10,102,194,0.3); background-color: rgba(255,255,255,0.15);}
   .password-wrapper { position:relative; width:100%; }
   .password-wrapper svg { position:absolute; top:50%; right:12px; transform:translateY(-50%); cursor:pointer; color:var(--text-medium); width:22px; height:22px; transition:all 0.3s ease-in-out; }
-  .buttons { margin-top:30px; text-align:center; }
-  button { background:var(--primary-color); color:white; padding:14px 30px; border:none; border-radius:12px; cursor:pointer; font-size:1rem; font-weight:600; transition:transform 0.3s, box-shadow 0.3s, background 0.4s ease-in-out; box-shadow:var(--shadow-light);}
-  button:hover { transform:translateY(-3px) scale(1.02); box-shadow:0 10px 15px -3px rgba(0,0,0,0.3); background: linear-gradient(270deg,var(--primary-color),var(--primary-hover-color),var(--primary-extra-color)); background-size:600% 600%; animation: gradientShift 6s ease infinite; }
+
+  /* Botões lado a lado */
+  .buttons { display:flex; justify-content:center; gap:15px; margin-top:30px; }
+  .buttons button { padding:14px 30px; border:none; border-radius:12px; cursor:pointer; font-size:1rem; font-weight:600; transition:transform 0.3s, box-shadow 0.3s, background 0.4s ease-in-out; box-shadow:var(--shadow-light); }
+  .buttons button:hover { transform:translateY(-3px) scale(1.02); box-shadow:0 10px 15px -3px rgba(0,0,0,0.3); }
+
+  .buttons button[type="submit"] { background: var(--primary-color); color: white; }
+  .buttons button[type="submit"]:hover { background: linear-gradient(270deg,var(--primary-color),var(--primary-hover-color),var(--primary-extra-color)); background-size:600% 600%; animation: gradientShift 6s ease infinite; }
+
+  .buttons button#btnChangePassword { background: var(--danger-color); color:white; }
+  .buttons button#btnChangePassword:hover { background: var(--danger-hover-color); }
+
   @keyframes gradientShift { 0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;} }
 
   /* Modal */
   .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.6); justify-content:center; align-items:center; z-index:1000; }
-  .modal-content { background: var(--background-white); padding:30px; border-radius:15px; width: 90%; max-width:400px; box-shadow:var(--shadow-light);}
+  .modal-content { background: var(--background-white); padding:30px; border-radius:15px; width: 90%; max-width:400px; box-shadow:var(--shadow-light); position:relative;}
   .modal-content h3 { text-align:center; margin-bottom:20px; color:var(--text-dark);}
-  .modal-content input { margin-bottom:15px; }
-  .modal-content button { width:100%; }
+  .modal-content input { margin-bottom:15px; width:100%; padding:12px; border-radius:8px; border:1px solid var(--border-light); background-color: rgba(255,255,255,0.1); color: var(--text-dark); }
+  .modal-content button { width:100%; padding:12px; background: var(--primary-color); color:white; border:none; border-radius:8px; cursor:pointer; }
+  .modal-content button:hover { background: linear-gradient(270deg,var(--primary-color),var(--primary-hover-color),var(--primary-extra-color)); background-size:600% 600%; animation: gradientShift 6s ease infinite; }
   .modal-close { position:absolute; top:10px; right:20px; cursor:pointer; font-size:1.2rem; color:var(--text-medium);}
 </style>
 </head>
@@ -68,7 +78,7 @@
 
     <div class="buttons">
       <button type="submit">Entrar</button>
-      <button type="button" id="btnChangePassword" style="margin-top:15px; background: var(--danger-color);">Trocar Senha</button>
+      <button type="button" id="btnChangePassword">Trocar Senha</button>
     </div>
   </form>
 </div>
@@ -99,7 +109,6 @@
   firebase.initializeApp(firebaseConfig);
   const db = firebase.firestore();
 
-  // Usuários válidos
   const usuariosValidos = [
     { usuario: "admin", senha: "master@" },
     { usuario: "saude", senha: "@saude123" }
@@ -110,12 +119,10 @@
   const passwordInput = document.getElementById("password");
   const eyeLine = document.getElementById("eyeLine");
 
-  // Login
   loginForm.addEventListener("submit", function(e){
     e.preventDefault();
     const username = document.getElementById("username").value.trim();
     const password = passwordInput.value.trim();
-
     const usuarioEncontrado = usuariosValidos.find(u => u.usuario === username && u.senha === password);
     if(usuarioEncontrado){
       sessionStorage.setItem("logado", "true");
@@ -126,7 +133,6 @@
     }
   });
 
-  // Toggle senha
   togglePassword.addEventListener("click", function(){
     const type = passwordInput.getAttribute("type")==="password" ? "text":"password";
     passwordInput.setAttribute("type", type);
@@ -154,10 +160,8 @@
     const usuarioEncontrado = usuariosValidos.find(u => u.usuario===usuario && u.senha===currentPass);
     if(!usuarioEncontrado){ alert("Senha atual incorreta"); return; }
 
-    // Atualizar senha local
     usuarioEncontrado.senha = newPass;
 
-    // Salvar no Firebase Firestore
     try{
       await db.collection("usuarios").doc(usuario).set({ senha: newPass }, { merge:true });
       alert("Senha alterada com sucesso!");
@@ -169,7 +173,6 @@
     }
   });
 
-  // Bloqueios
   document.addEventListener('keydown', function (event) {
       if(event.key==="F12" || event.keyCode===123){ event.preventDefault(); return false; }
       if((event.ctrlKey && event.key.toLowerCase()==='s') || (event.ctrlKey && event.key.toLowerCase()==='u')){ event.preventDefault(); return false; }
