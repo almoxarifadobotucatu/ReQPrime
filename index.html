@@ -115,12 +115,14 @@
     .toggle-password svg {
       width: 22px;
       height: 22px;
-      fill: #b8b8b8;
-      transition: fill 0.3s;
+      fill: none;
+      stroke: #b8b8b8;
+      stroke-width: 2;
+      transition: stroke 0.3s;
     }
 
     .toggle-password:hover svg {
-      fill: var(--primary-color);
+      stroke: var(--primary-color);
     }
 
     .buttons {
@@ -166,13 +168,11 @@
       <div class="password-container">
         <input type="password" id="password" autocomplete="off" required>
         <button type="button" class="toggle-password" id="togglePassword" aria-label="Mostrar/ocultar senha">
-          <!-- Ícone de olho -->
+          <!-- Ícone olho fechado default -->
           <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-            <path d="M12 5c-7.633 0-12 7-12 7s4.367 7 12 7 12-7 12-7-4.367-7-12-7zm0 12c-2.761
-             0-5-2.239-5-5s2.239-5 5-5 5 2.239 5 
-             5-2.239 5-5 5zm0-8c-1.654 0-3 
-             1.346-3 3s1.346 3 3 3 3-1.346 
-             3-3-1.346-3-3-3z"/>
+            <path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7zm10 
+                     3a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+            <line x1="3" y1="3" x2="21" y2="21"/>
           </svg>
         </button>
       </div>
@@ -212,7 +212,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // Mostrar/ocultar senha
+    // Mostrar/ocultar senha com ícone
     const togglePassword = document.getElementById("togglePassword");
     const passwordField = document.getElementById("password");
     const eyeIcon = document.getElementById("eyeIcon");
@@ -221,10 +221,19 @@ document.addEventListener("DOMContentLoaded", function() {
         const isPassword = passwordField.type === "password";
         passwordField.type = isPassword ? "text" : "password";
 
-        // alternar ícone (olho aberto/fechado)
-        eyeIcon.innerHTML = isPassword
-            ? '<path d="M12 4.5C7 4.5 2.73 7.61 1 12c1.73 4.39 6 7.5 11 7.5s9.27-3.11 11-7.5c-1.73-4.39-6-7.5-11-7.5zm0 12a4.5 4.5 0 1 1 0-9 4.5 4.5 0 0 1 0 9z"/><circle cx="12" cy="12" r="2.5"/>'
-            : '<path d="M12 5c-7.633 0-12 7-12 7s4.367 7 12 7 12-7 12-7-4.367-7-12-7zm0 12c-2.761 0-5-2.239-5-5s2.239-5 5-5 5 2.239 5 5-2.239 5-5 5zm0-8c-1.654 0-3 1.346-3 3s1.346 3 3 3 3-1.346 3-3-1.346-3-3-3z"/>';
+        // Olho aberto
+        if (isPassword) {
+            eyeIcon.innerHTML = `
+              <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7zm11 
+                       3a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>`;
+        } 
+        // Olho fechado com risco
+        else {
+            eyeIcon.innerHTML = `
+              <path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7-10-7-10-7zm10 
+                       3a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+              <line x1="3" y1="3" x2="21" y2="21"/>`;
+        }
     });
 });
 </script>
