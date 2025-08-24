@@ -1,111 +1,57 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Painel de Controle</title>
-<link rel="icon" type="image/png" sizes="32x32" href="">
+  <meta charset="UTF-8">
+  <title>Painel de Controle</title>
 
-<style>
-  :root {
-    --primary-extra-color: #1db954;
-    --primary-color: #0a66c2;
-    --primary-hover-color: #004182;
-    --background-light: #1a1a2e;
-    --background-white: #16213e;
-    --text-dark: #ffffff;
-    --text-medium: #b8b8b8;
-    --border-light: #2a2a3a;
-    --shadow-light: 0 4px 6px -1px rgba(0, 0, 0, 0.3),
-                    0 2px 4px -1px rgba(0, 0, 0, 0.2);
-  }
+  <!-- Firebase App -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js"></script>
+  <!-- Firebase Auth -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js"></script>
 
-  body {
-    background-color: var(--background-light);
-    font-family: 'Inter', sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    box-sizing: border-box;
-    color: var(--text-dark);
-  }
+  <script type="module">
+    // Importações do Firebase
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-app.js";
+    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/9.23.0/firebase-auth.js";
 
-  .container {
-    width: 70vw;
-    max-width: 700px;
-    background-color: var(--background-white);
-    padding: 40px;
-    border-radius: 20px;
-    box-shadow: var(--shadow-light);
-    text-align: center;
-  }
+    // Configuração do Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
+      authDomain: "almoxarifadobotucatu-5e03d.firebaseapp.com",
+      projectId: "almoxarifadobotucatu-5e03d",
+      storageBucket: "almoxarifadobotucatu-5e03d.firebasestorage.app",
+      messagingSenderId: "828951000388",
+      appId: "1:828951000388:web:06dbe3cb5764872e7b1311"
+    };
 
-  h2 {
-    font-size: 2rem;
-    margin-bottom: 40px;
-    color: var(--text-dark);
-  }
+    // Inicializa Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
 
-  .buttons {
-    display: flex;
-    justify-content: center;
-    gap: 30px;
-    flex-wrap: wrap;
-  }
+    // Proteção da página
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        // Redireciona para login se não estiver logado
+        window.location.href = "/login.html";
+      } else {
+        console.log("Usuário logado:", user.email);
+      }
+    });
 
-  .buttons a {
-    display: inline-block;
-    padding: 20px 40px;
-    font-size: 1.2rem;
-    font-weight: 600;
-    border-radius: 15px;
-    text-decoration: none;
-    color: white;
-    background: var(--primary-color);
-    box-shadow: var(--shadow-light);
-    transition: transform 0.3s, background 0.3s;
-  }
-
-  .buttons a:hover {
-    transform: translateY(-3px) scale(1.03);
-    background: linear-gradient(270deg, var(--primary-color), var(--primary-hover-color), var(--primary-extra-color));
-    background-size: 600% 600%;
-    animation: gradientShift 6s ease infinite;
-  }
-
-  @keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
-
-  footer {
-    position: fixed;
-    bottom: 4px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 9px;
-    color: #888;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    opacity: 0.75;
-    user-select: none;
-  }
-</style>
+    // Função de logout
+    window.logout = function() {
+      signOut(auth).then(() => {
+        window.location.href = "/login.html";
+      }).catch((error) => {
+        alert("Erro ao sair: " + error.message);
+      });
+    }
+  </script>
 </head>
 <body>
+  <h1>Painel de Controle</h1>
+  <button onclick="logout()">Sair</button>
 
-<div class="container">
-  <h2>Painel de Controle</h2>
-  <div class="buttons">
-    <a href="cadastrar.html">Cadastrar Usuário</a>
-    <a href="cadastros.html">Usuários Cadastrados</a>
-  </div>
-</div>
-
-<footer>© 2025. Todos os direitos reservados.</footer>
-
+  <!-- Resto do conteúdo da sua página -->
 </body>
 </html>
