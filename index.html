@@ -157,9 +157,11 @@
       <div class="password-wrapper">
         <input type="password" id="password" autocomplete="off" required style="padding-right: 40px;">
         <svg id="togglePassword" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <!-- Olho aberto inicialmente -->
+          <!-- Olho aberto -->
           <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
           <circle cx="12" cy="12" r="3"/>
+          <!-- Linha riscada inicial invisível -->
+          <line id="eyeLine" x1="1" y1="1" x2="23" y2="23" stroke="var(--primary-color)" stroke-dasharray="28" stroke-dashoffset="28" style="transition: stroke-dashoffset 0.3s ease"/>
         </svg>
       </div>
 
@@ -198,30 +200,24 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // Mostrar/ocultar senha com olho riscado moderno
+    // Mostrar/ocultar senha com animação do olho riscado
     const togglePassword = document.getElementById("togglePassword");
     const passwordInput = document.getElementById("password");
+    const eyeLine = document.getElementById("eyeLine");
 
     togglePassword.addEventListener("click", function() {
         const type = passwordInput.getAttribute("type") === "password" ? "text" : "password";
         passwordInput.setAttribute("type", type);
 
         if(type === "password") {
-            // Olho aberto
-            togglePassword.innerHTML = `
-              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-              <circle cx="12" cy="12" r="3"/>
-            `;
+            // Olho aberto: linha sumida
+            eyeLine.style.strokeDashoffset = 28;
         } else {
-            // Olho riscado moderno
-            togglePassword.innerHTML = `
-              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-              <line x1="1" y1="1" x2="23" y2="23"/>
-            `;
+            // Olho riscado: linha aparece
+            eyeLine.style.strokeDashoffset = 0;
         }
 
         togglePassword.style.color = type === "password" ? "var(--text-medium)" : "var(--primary-color)";
-        togglePassword.style.transition = "all 0.3s ease-in-out";
     });
 });
 
