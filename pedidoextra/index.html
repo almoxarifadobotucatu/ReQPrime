@@ -3251,22 +3251,23 @@ document.addEventListener("DOMContentLoaded", function() {
 <body>
   <!-- Outros elementos da página -->
 
-  <label for="responsavel">Responsável pelo Pedido:</label>
-  <input type="text" id="responsavel" name="responsavel" required>
+<label for="responsavelSolicitacao">Responsável pela solicitação:</label>
+<input type="text" id="responsavelSolicitacao" name="responsavelSolicitacao" required>
 
   <!-- Outros elementos da página -->
 
   <!-- Script colocado no final, antes do fechamento do body -->
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const responsavelInput = document.getElementById("responsavel");
-      const nomeUsuario = localStorage.getItem("nomeUsuario");
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const responsavelInput = document.getElementById("responsavelSolicitacao");
+    const nomeUsuario = localStorage.getItem("nomeUsuario");
 
-      if (responsavelInput && nomeUsuario) {
-        responsavelInput.value = nomeUsuario;
-      }
-    });
-  </script>
+    if (responsavelInput && nomeUsuario) {
+      responsavelInput.value = nomeUsuario;
+    }
+  });
+</script>
+
 </body>
 </html>
 
