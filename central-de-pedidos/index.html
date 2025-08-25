@@ -199,13 +199,12 @@
     © 2025. Todos os direitos reservados.
 </footer>
 
-<!-- Firebase e saudação dinâmica -->
+<!-- Firebase e saudação dinâmica com nome -->
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
   import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
   import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
 
-  // Sua configuração do Firebase
   const firebaseConfig = {
     apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
     authDomain: "almoxarifadobotucatu-5e03d.firebaseapp.com",
@@ -219,7 +218,6 @@
   const db = getFirestore(app);
   const auth = getAuth(app);
 
-  // Detecta usuário logado e atualiza saudação
   onAuthStateChanged(auth, async (user) => {
     if (user) {
       const uid = user.uid;
@@ -231,6 +229,7 @@
         const nome = data.nome || "Usuário";
         const genero = data.genero || "masculino";
 
+        // Saudação com nome à frente
         const saudacao = genero.toLowerCase() === "feminino" ? "Bem-vinda" : "Bem-vindo";
         document.getElementById("usuario-logado").innerText = `${saudacao}, ${nome}!`;
       } else {
