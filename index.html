@@ -1,183 +1,117 @@
 <!DOCTYPE html>
-<html lang='pt-BR'>
+<html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Iniciar sessão</title>
-<link rel="icon" type="image/png" sizes="32x32" href=""> 
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <style>
+    :root {
+      --primary-color: #007bff;
+      --text-medium: #666;
+      --background-light: #f9f9f9;
+    }
 
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+    body {
+      font-family: Arial, sans-serif;
+      background: var(--background-light);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
 
-<style>
-  :root {
-    --primary-extra-color: #1db954;
-    --danger-extra-color: #ff6b6b;
-    --primary-color: #0a66c2;
-    --primary-hover-color: #004182;
-    --danger-color: #e53e3e;
-    --danger-hover-color: #c53030;
-    --background-light: #1a1a2e;
-    --background-white: #16213e;
-    --text-dark: #ffffff;
-    --text-medium: #b8b8b8;
-    --border-light: #2a2a3a;
-    --shadow-light: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
-    --transition-all: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
+    .login-box {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+      width: 300px;
+    }
 
-  body {
-    background-color: var(--background-light);
-    font-family: 'Inter', sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    box-sizing: border-box;
-    color: var(--text-dark);
-  }
+    .password-wrapper {
+      position: relative;
+      margin-bottom: 20px;
+    }
 
-  .login-container {
-    width: 60vw;
-    height: 70vh;
-    max-width: 900px;
-    min-width: 300px;
-    max-height: 800px;
-    min-height: 400px;
-    background-color: var(--background-white);
-    margin: auto;
-    padding: 5vh 4vw;
-    border-radius: 20px;
-    box-shadow: var(--shadow-light);
-    transition: var(--transition-all);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
+    .password-wrapper input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+    }
 
-  .login-container:hover {
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 
-                0 4px 6px -2px rgba(0, 0, 0, 0.2);
-  }
+    .password-wrapper svg {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+      color: var(--text-medium);
+      transition: color 0.3s ease;
+    }
 
-  h2 {
-    text-align: center;
-    color: var(--text-dark);
-    margin-bottom: 40px;
-    font-weight: 700;
-    font-size: 2.5rem;
-  }
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.5);
+      justify-content: center;
+      align-items: center;
+    }
 
-  label {
-    display: block;
-    margin-top: 25px;
-    color: var(--text-medium);
-    font-weight: 500;
-    margin-bottom: 8px;
-    font-size: 0.95rem;
-  }
+    .modal-content {
+      background: #fff;
+      padding: 25px;
+      border-radius: 12px;
+      width: 320px;
+      text-align: center;
+      position: relative;
+    }
 
-  input[type="text"],
-  input[type="password"] {
-    width: 100%;
-    padding: 14px 18px;
-    border: 1px solid var(--border-light);
-    border-radius: 12px;
-    box-sizing: border-box;
-    font-size: 1rem;
-    color: var(--text-dark);
-    background-color: rgba(255, 255, 255, 0.1);
-    transition: var(--transition-all);
-  }
+    .modal-close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 22px;
+      cursor: pointer;
+    }
 
-  input:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 4px rgba(10, 102, 194, 0.3);
-    background-color: rgba(255, 255, 255, 0.15);
-  }
+    .modal-content h3 {
+      margin-bottom: 20px;
+    }
 
-  .password-wrapper {
-    position: relative;
-    width: 100%;
-  }
-  .password-wrapper input {
-    padding-right: 42px;
-  }
-  .password-wrapper svg {
-    position: absolute;
-    top: 50%;
-    right: 14px;
-    transform: translateY(-50%);
-    cursor: pointer;
-    color: var(--text-medium);
-    width: 22px;
-    height: 22px;
-    transition: all 0.3s ease-in-out;
-  }
+    .modal-content button {
+      display: block;
+      margin: 20px auto 0;
+      padding: 10px 20px;
+      background: var(--primary-color);
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s ease;
+    }
 
-  .buttons {
-    margin-top: 50px;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-  }
-
-  button {
-    background: var(--primary-color);
-    color: white;
-    padding: 14px 30px;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    font-size: 1rem;
-    font-weight: 600;
-    transition: transform 0.3s, box-shadow 0.3s, background 0.4s ease-in-out;
-    box-shadow: var(--shadow-light);
-  }
-
-  button:hover {
-    transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
-    background: linear-gradient(270deg, var(--primary-color), var(--primary-hover-color), var(--primary-extra-color));
-    background-size: 600% 600%;
-    animation: gradientShift 6s ease infinite;
-  }
-
-  .buttons button#btnChangePassword {
-    background: var(--danger-color);
-  }
-  .buttons button#btnChangePassword:hover {
-    background: var(--danger-hover-color);
-  }
-
-  @keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
-
-  .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.6); justify-content:center; align-items:center; z-index:1000; }
-  .modal-content { background: var(--background-white); padding:30px; border-radius:15px; width: 90%; max-width:400px; box-shadow:var(--shadow-light); position:relative;}
-  .modal-content h3 { text-align:center; margin-bottom:20px; color:var(--text-dark);}
-  .modal-close { position:absolute; top:10px; right:20px; cursor:pointer; font-size:1.2rem; color:var(--text-medium);}
-</style>
+    .modal-content button:hover {
+      background: #0d99ff;
+    }
+  </style>
 </head>
 <body>
-
-<div class="login-container">
-  <h2>Iniciar sessão</h2>
-  <form id="loginForm">
-    <label for="username">Usuário:</label>
-    <input type="text" id="username" autocomplete="off" required>
-
-    <label for="password">Senha:</label>
+  <div class="login-box">
+    <h2>Login</h2>
     <div class="password-wrapper">
-      <input type="password" id="password" autocomplete="off" required>
+      <input type="password" id="password" placeholder="Senha">
       <svg id="togglePassword" xmlns="http://www.w3.org/2000/svg" 
            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M12 5C7 5 2.73 8.11 1 12c1.73 3.89 6 7 11 7s9.27-3.11 11-7c-1.73-3.89-6-7-11-7z"/>
@@ -186,173 +120,90 @@
               stroke="var(--primary-color)" stroke-dasharray="23" stroke-dashoffset="23"/>
       </svg>
     </div>
-
-    <div class="buttons">
-      <button type="submit">Entrar</button>
-      <button type="button" id="btnChangePassword">Alterar Senha</button>
-    </div>
-  </form>
-</div>
-
-<!-- MODAL -->
-<div class="modal" id="passwordModal">
-  <div class="modal-content">
-    <span class="modal-close" id="closeModal">&times;</span>
-    <h3>Alterar Senha</h3>
-
-    <!-- Senha atual -->
-    <div class="password-wrapper">
-      <input type="password" id="currentPassword" placeholder="Senha atual" required>
-      <svg id="toggleCurrentPass" xmlns="http://www.w3.org/2000/svg" 
-           viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M12 5C7 5 2.73 8.11 1 12c1.73 3.89 6 7 11 7s9.27-3.11 11-7c-1.73-3.89-6-7-11-7z"/>
-        <circle cx="12" cy="12" r="3"/>
-        <line id="eyeLineCurrent" x1="4" y1="4" x2="20" y2="20"
-              stroke="var(--primary-color)" stroke-dasharray="23" stroke-dashoffset="23"/>
-      </svg>
-    </div>
-
-    <!-- Nova senha -->
-    <div class="password-wrapper">
-      <input type="password" id="newPassword" placeholder="Nova senha" required>
-      <svg id="toggleNewPass" xmlns="http://www.w3.org/2000/svg" 
-           viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M12 5C7 5 2.73 8.11 1 12c1.73 3.89 6 7 11 7s9.27-3.11 11-7c-1.73-3.89-6-7-11-7z"/>
-        <circle cx="12" cy="12" r="3"/>
-        <line id="eyeLineNew" x1="4" y1="4" x2="20" y2="20"
-              stroke="var(--primary-color)" stroke-dasharray="23" stroke-dashoffset="23"/>
-      </svg>
-    </div>
-
-    <button id="savePasswordBtn">Salvar</button>
+    <button id="openModal">Alterar senha</button>
   </div>
-</div>
 
-<footer style="position: fixed; bottom: 4px; left: 50%; transform: translateX(-50%); font-size: 9px; color: #888; background: transparent; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; opacity: 0.75; user-select: none;">
-    © 2025. Todos os direitos reservados.
-</footer>
+  <!-- Modal -->
+  <div class="modal" id="passwordModal">
+    <div class="modal-content">
+      <span class="modal-close" id="closeModal">&times;</span>
+      <h3>Alterar Senha</h3>
 
-<script>
-  const firebaseConfig = {
-    apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
-    authDomain: "almoxarifadobotucatu-5e03d.firebaseapp.com",
-    projectId: "almoxarifadobotucatu-5e03d",
-    storageBucket: "almoxarifadobotucatu-5e03d.firebasestorage.app",
-    messagingSenderId: "828951000388",
-    appId: "1:828951000388:web:06dbe3cb5764872e7b1311"
-  };
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
+      <!-- Senha atual -->
+      <div class="password-wrapper">
+        <input type="password" id="currentPassword" placeholder="Senha atual" required>
+        <svg id="toggleCurrentPass" xmlns="http://www.w3.org/2000/svg" 
+             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 5C7 5 2.73 8.11 1 12c1.73 3.89 6 7 11 7s9.27-3.11 11-7c-1.73-3.89-6-7-11-7z"/>
+          <circle cx="12" cy="12" r="3"/>
+          <line id="eyeLineCurrent" x1="4" y1="4" x2="20" y2="20"
+                stroke="var(--primary-color)" stroke-dasharray="23" stroke-dashoffset="23"/>
+        </svg>
+      </div>
 
-  const loginForm = document.querySelector("#loginForm");
-  const togglePassword = document.getElementById("togglePassword");
-  const passwordInput = document.getElementById("password");
-  const eyeLine = document.getElementById("eyeLine");
+      <!-- Nova senha -->
+      <div class="password-wrapper">
+        <input type="password" id="newPassword" placeholder="Nova senha" required>
+        <svg id="toggleNewPass" xmlns="http://www.w3.org/2000/svg" 
+             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 5C7 5 2.73 8.11 1 12c1.73 3.89 6 7 11 7s9.27-3.11 11-7c-1.73-3.89-6-7-11-7z"/>
+          <circle cx="12" cy="12" r="3"/>
+          <line id="eyeLineNew" x1="4" y1="4" x2="20" y2="20"
+                stroke="var(--primary-color)" stroke-dasharray="23" stroke-dashoffset="23"/>
+        </svg>
+      </div>
 
-  loginForm.addEventListener("submit", async function(e){
-    e.preventDefault();
-    const username = document.getElementById("username").value.trim();
-    const password = passwordInput.value.trim();
+      <button id="savePasswordBtn">Salvar</button>
+    </div>
+  </div>
 
-    try {
-      const docRef = db.collection("usuarios").doc(username);
-      const docSnap = await docRef.get();
+  <script>
+    // Toggle senha login
+    const togglePassword = document.getElementById("togglePassword");
+    const passwordInput = document.getElementById("password");
+    const eyeLine = document.getElementById("eyeLine");
 
-      if(!docSnap.exists){
-        alert("Usuário não encontrado!");
-        return;
-      }
+    togglePassword.addEventListener("click", function(){
+      const type = passwordInput.getAttribute("type")==="password" ? "text":"password";
+      passwordInput.setAttribute("type", type);
+      eyeLine.style.strokeDashoffset = type==="password"?23:0;
+      togglePassword.style.color = type==="password"?"var(--text-medium)":"var(--primary-color)";
+    });
 
-      const dados = docSnap.data();
-      if(dados.senha === password){
-        sessionStorage.setItem("logado", "true");
-        localStorage.setItem("usuarioLogado", username);
-        localStorage.setItem("nomeUsuario", dados.nome || username);
-        window.location.href = "/central-de-pedidos/";
-      } else {
-        alert("Senha incorreta!");
-      }
-    } catch(err){
-      alert("Erro ao fazer login: " + err);
-    }
-  });
+    // Toggle senha atual
+    const toggleCurrentPass = document.getElementById("toggleCurrentPass");
+    const currentPasswordInput = document.getElementById("currentPassword");
+    const eyeLineCurrent = document.getElementById("eyeLineCurrent");
 
-  // toggle senha login
-  togglePassword.addEventListener("click", function(){
-    const type = passwordInput.getAttribute("type")==="password" ? "text":"password";
-    passwordInput.setAttribute("type", type);
-    eyeLine.style.strokeDashoffset = type==="password"?23:0;
-    togglePassword.style.color = type==="password"?"var(--text-medium)":"var(--primary-color)";
-  });
+    toggleCurrentPass.addEventListener("click", function(){
+      const type = currentPasswordInput.getAttribute("type")==="password" ? "text":"password";
+      currentPasswordInput.setAttribute("type", type);
+      eyeLineCurrent.style.strokeDashoffset = type==="password"?23:0;
+      toggleCurrentPass.style.color = type==="password"?"var(--text-medium)":"var(--primary-color)";
+    });
 
-  // modal
-  const modal = document.getElementById("passwordModal");
-  const btnChange = document.getElementById("btnChangePassword");
-  const closeModal = document.getElementById("closeModal");
-  const savePasswordBtn = document.getElementById("savePasswordBtn");
+    // Toggle nova senha
+    const toggleNewPass = document.getElementById("toggleNewPass");
+    const newPasswordInput = document.getElementById("newPassword");
+    const eyeLineNew = document.getElementById("eyeLineNew");
 
-  btnChange.addEventListener("click", ()=> modal.style.display="flex");
-  closeModal.addEventListener("click", ()=> modal.style.display="none");
-  window.addEventListener("click", e=> { if(e.target==modal) modal.style.display="none"; });
+    toggleNewPass.addEventListener("click", function(){
+      const type = newPasswordInput.getAttribute("type")==="password" ? "text":"password";
+      newPasswordInput.setAttribute("type", type);
+      eyeLineNew.style.strokeDashoffset = type==="password"?23:0;
+      toggleNewPass.style.color = type==="password"?"var(--text-medium)":"var(--primary-color)";
+    });
 
-  // salvar senha
-  savePasswordBtn.addEventListener("click", async ()=>{
-    const usuario = document.getElementById("username").value.trim();
-    const currentPass = document.getElementById("currentPassword").value.trim();
-    const newPass = document.getElementById("newPassword").value.trim();
+    // Modal abrir/fechar
+    const modal = document.getElementById("passwordModal");
+    const openModal = document.getElementById("openModal");
+    const closeModal = document.getElementById("closeModal");
 
-    if(!usuario || !currentPass || !newPass){ alert("Preencha todos os campos"); return; }
-
-    try{
-      const docRef = db.collection("usuarios").doc(usuario);
-      const docSnap = await docRef.get();
-
-      if(!docSnap.exists){ alert("Usuário não encontrado"); return; }
-      const dados = docSnap.data();
-
-      if(dados.senha !== currentPass){ alert("Senha atual incorreta"); return; }
-
-      await docRef.set({ senha: newPass }, { merge:true });
-
-      alert("Senha alterada com sucesso!");
-      modal.style.display="none";
-      document.getElementById("currentPassword").value="";
-      document.getElementById("newPassword").value="";
-    } catch(err){
-      alert("Erro ao salvar a senha: "+err);
-    }
-  });
-
-  // toggle senha atual
-  const toggleCurrentPass = document.getElementById("toggleCurrentPass");
-  const currentPasswordInput = document.getElementById("currentPassword");
-  const eyeLineCurrent = document.getElementById("eyeLineCurrent");
-
-  toggleCurrentPass.addEventListener("click", function(){
-    const type = currentPasswordInput.getAttribute("type")==="password" ? "text":"password";
-    currentPasswordInput.setAttribute("type", type);
-    eyeLineCurrent.style.strokeDashoffset = type==="password"?23:0;
-    toggleCurrentPass.style.color = type==="password"?"var(--text-medium)":"var(--primary-color)";
-  });
-
-  // toggle nova senha
-  const toggleNewPass = document.getElementById("toggleNewPass");
-  const newPasswordInput = document.getElementById("newPassword");
-  const eyeLineNew = document.getElementById("eyeLineNew");
-
-  toggleNewPass.addEventListener("click", function(){
-    const type = newPasswordInput.getAttribute("type")==="password" ? "text":"password";
-    newPasswordInput.setAttribute("type", type);
-    eyeLineNew.style.strokeDashoffset = type==="password"?23:0;
-    toggleNewPass.style.color = type==="password"?"var(--text-medium)":"var(--primary-color)";
-  });
-
-  // bloquear inspeção
-  document.addEventListener('keydown', function (event) {
-      if(event.key==="F12" || event.keyCode===123){ event.preventDefault(); return false; }
-      if((event.ctrlKey && event.key.toLowerCase()==='s') || (event.ctrlKey && event.key.toLowerCase()==='u')){ event.preventDefault(); return false; }
-  });
-  document.addEventListener('contextmenu', function(event){ event.preventDefault(); });
-</script>
+    openModal.addEventListener("click", ()=> modal.style.display="flex");
+    closeModal.addEventListener("click", ()=> modal.style.display="none");
+    window.addEventListener("click", (e)=> {
+      if(e.target === modal){ modal.style.display="none"; }
+    });
+  </script>
 </body>
 </html>
