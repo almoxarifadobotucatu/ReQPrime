@@ -5,11 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Central de Pedidos</title>
 
-<!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-
 <!-- Ícones e fontes -->
 <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -178,39 +173,20 @@ footer {
 </footer>
 
 <script>
-  // Configuração Firebase
-  const firebaseConfig = {
-    apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
-    authDomain: "almoxarifadobotucatu-5e03d.firebaseapp.com",
-    projectId: "almoxarifadobotucatu-5e03d",
-    storageBucket: "almoxarifadobotucatu-5e03d.firebasestorage.app",
-    messagingSenderId: "828951000388",
-    appId: "1:828951000388:web:06dbe3cb5764872e7b1311"
-  };
-  firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
-  const auth = firebase.auth();
+  // ======= Simula login/localStorage =======
+  // Se ainda não tiver, define nome e gênero
+  if(!localStorage.getItem("nomeUsuario")) localStorage.setItem("nomeUsuario", "Maria");
+  if(!localStorage.getItem("generoUsuario")) localStorage.setItem("generoUsuario", "f"); // "f" feminino, "m" masculino
 
-  // Detecta usuário logado
-  auth.onAuthStateChanged(user => {
-    if(user) {
-      db.collection("usuarios").doc(user.uid).get()
-        .then(doc => {
-          if(doc.exists) {
-            const data = doc.data();
-            const nome = data.nome || "Usuário";
-            const genero = data.genero || "m"; // "m" masculino, "f" feminino
-            const saudacao = (genero === "f") ? "Bem-vinda" : "Bem-vindo";
-            document.getElementById("usuario-logado").innerText = `${saudacao}, ${nome}!`;
-          } else {
-            document.getElementById("usuario-logado").innerText = "Bem-vindo, Usuário!";
-          }
-        });
-    } else {
-      document.getElementById("usuario-logado").innerText = "Bem-vindo, visitante!";
-      window.location.href = "/login.html";
-    }
-  });
+  // Pega nome e gênero do localStorage
+  const nome = localStorage.getItem("nomeUsuario") || "Usuário";
+  const genero = localStorage.getItem("generoUsuario") || "m";
+
+  // Define saudação
+  const saudacao = (genero === "f") ? "Bem-vinda" : "Bem-vindo";
+
+  // Atualiza o header
+  document.getElementById("usuario-logado").innerText = `${saudacao}, ${nome}!`;
 </script>
 
 </body>
