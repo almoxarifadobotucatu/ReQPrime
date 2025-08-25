@@ -3493,6 +3493,27 @@ document.addEventListener("DOMContentLoaded", function() {
 })();
 // === Fim do auto-preenchimento ===
 </script>
+...
+<datalist id="lista-itens"></datalist>
+
+<script>
+// Preencher automaticamente o responsável pela solicitação
+document.addEventListener("DOMContentLoaded", function () {
+  try {
+    // Pega o usuário logado que foi salvo na Central de Pedido
+    const usuarioLogado = JSON.parse(localStorage.getItem("usuarioLogado"));
+
+    if (usuarioLogado && usuarioLogado.name) {
+      document.getElementById("solicitante").value = usuarioLogado.name;
+    }
+  } catch (e) {
+    console.error("Erro ao carregar usuário logado:", e);
+  }
+});
+</script>
+
+</body>
+</html>
 
 </body>
 </html>
