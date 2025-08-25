@@ -31,25 +31,30 @@
       }, 500);
     })();
 
-    // Detecta se o nome é masculino ou feminino e mostra a saudação correta
-    function detectarGenero(nome) {
-      nome = nome.trim().toLowerCase();
+    // Detecta se o primeiro nome é masculino ou feminino e retorna "masculino" ou "feminino"
+    function detectarGenero(nomeCompleto) {
+      let nome = nomeCompleto.trim().split(" ")[0].toLowerCase(); // pega só o primeiro nome
 
       // listas de exceções
-      const excecoesMasculinas = ["josé", "noé", "andré", "mané"];
-      const excecoesFemininas = ["ruth", "miriam", "raquel", "abigail"];
+      const excecoesMasculinas = [
+        "josé","josue","josué","noé","elias","jonas","isaías","messias",
+        "abdias","jeremias","sofonias","zacarias","malaquias","obadias",
+        "oséias","amos","nanias","mateus","emanuel","andré","mané"
+      ];
+
+      const excecoesFemininas = [
+        "ruth","raquel","rachel","ester","esther","noemi","abigail",
+        "déborah","deborah","raab","tamar","michal","batseba","yael",
+        "miriam","ana","maria"
+      ];
 
       if (excecoesMasculinas.includes(nome)) return "masculino";
       if (excecoesFemininas.includes(nome)) return "feminino";
 
-      // regra: nome terminando com 'a' → feminino
       if (nome.endsWith("a")) return "feminino";
-
-      // regra: nome terminando com 'o' ou consoante → masculino
       if (nome.endsWith("o") || nome.match(/[bcdfghjklmnpqrstvwxyz]$/)) return "masculino";
 
-      // padrão neutro
-      return "masculino";
+      return "masculino"; // padrão neutro
     }
 
     // Pega o nome real do usuário salvo no localStorage
