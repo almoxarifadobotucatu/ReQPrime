@@ -1,223 +1,217 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <!-- Proteção -->
-  <script src="/protege-pagina.js"></script>
-  <script>
-    // Bloqueia clique com botão direito
-    document.addEventListener('contextmenu', event => event.preventDefault());
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Central de Pedidos</title>
 
-    // Bloqueia atalhos para código-fonte, devtools e salvar página
-    document.addEventListener('keydown', function(e) {
-      if (
-        e.key === 'F12' || 
-        (e.ctrlKey && e.shiftKey && ['I','J','C'].includes(e.key.toUpperCase())) || 
-        (e.ctrlKey && e.key.toUpperCase() === 'U') || 
-        (e.ctrlKey && e.key.toUpperCase() === 'S') 
-      ) {
-        e.preventDefault();
-        return false;
-      }
-    });
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 
-    // Detecção contínua de DevTools
-    (function() {
-      const threshold = 160;
-      setInterval(function() {
-        if (window.outerWidth - window.innerWidth > threshold || 
-            window.outerHeight - window.innerHeight > threshold) {
-          window.location.href = "/acesso-negado.html";
-        }
-      }, 500);
-    })();
+<!-- Ícones e fontes -->
+<link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-    // Pega o nome real do usuário salvo no localStorage
-    window.onload = function() {
-      // tenta recuperar o nome salvo
-      let nome = localStorage.getItem("nomeUsuario") || localStorage.getItem("usuarioLogado") || "Usuário";
+<style>
+:root {
+  --primary-color: #0a66c2;
+  --primary-hover-color: #004182;
+  --primary-extra-color: #1db954;
+  --background-light: #1a1a2e;
+  --background-white: #16213e;
+  --text-dark: #ffffff;
+  --shadow-light: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+}
 
-      // Atualiza o header
-      document.getElementById("usuario-logado").innerText = `Bem-vindo, ${nome}!`;
+body {
+  background-color: var(--background-light);
+  font-family: 'Inter', sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  color: var(--text-dark);
+}
 
-      // Garante que fique salvo de forma padronizada
-      localStorage.setItem("nomeUsuario", nome);
-      localStorage.setItem("usuarioLogado", JSON.stringify({ name: nome }));
-    }
-  </script>
+header {
+  position: fixed;
+  top: 10px;
+  right: 20px;
+  font-size: 14px;
+  color: #ddd;
+  font-weight: 500;
+  background: rgba(0,0,0,0.3);
+  padding: 6px 14px;
+  border-radius: 8px;
+  box-shadow: var(--shadow-light);
+  user-select: none;
+}
 
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+.container {
+  background-color: var(--background-white);
+  padding: 50px;
+  border-radius: 20px;
+  box-shadow: var(--shadow-light);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  transform: translateY(-80px);
+}
 
-  <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+h2 {
+  font-weight: 700;
+  font-size: 2rem;
+  margin: 0;
+}
 
-  <style>
-    :root {
-      --primary-color: #0a66c2;
-      --primary-hover-color: #004182;
-      --primary-extra-color: #1db954;
-      --background-light: #1a1a2e;
-      --background-white: #16213e;
-      --text-dark: #ffffff;
-      --shadow-light: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
-    }
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
 
-    body {
-      background-color: var(--background-light);
-      font-family: 'Inter', sans-serif;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      color: var(--text-dark);
-    }
+.btn-block {
+  text-align: center;
+}
 
-    /* Header com usuário logado */
-    header {
-      position: fixed;
-      top: 10px;
-      right: 20px;
-      font-size: 14px;
-      color: #ddd;
-      font-weight: 500;
-      background: rgba(0,0,0,0.3);
-      padding: 6px 14px;
-      border-radius: 8px;
-      box-shadow: var(--shadow-light);
-      user-select: none;
-    }
+.btn-block i {
+  font-size: 60px;
+  display: block;
+  margin-bottom: 8px;
+  transition: transform 0.3s ease, filter 0.3s ease;
+  filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.4));
+}
 
-    .container {
-      background-color: var(--background-white);
-      padding: 50px;
-      border-radius: 20px;
-      box-shadow: var(--shadow-light);
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 40px;
-      transform: translateY(-80px);
-    }
+.btn-block:hover i {
+  transform: scale(1.15);
+  filter: drop-shadow(0px 4px 8px rgba(0,0,0,0.6)) brightness(1.3);
+}
 
-    h2 {
-      font-weight: 700;
-      font-size: 2rem;
-      margin: 0;
-    }
+button {
+  background: var(--primary-color);
+  color: white;
+  padding: 16px 36px;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  font-weight: 600;
+  transition: transform 0.3s, box-shadow 0.3s, background 0.4s;
+  box-shadow: var(--shadow-light);
+}
 
-    .buttons {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      flex-wrap: wrap;
-    }
+button:hover {
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(270deg, var(--primary-color), var(--primary-hover-color), var(--primary-extra-color));
+  background-size: 600% 600%;
+  animation: gradientShift 6s ease infinite;
+}
 
-    .btn-block {
-      text-align: center;
-    }
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
 
-    .btn-block i {
-      font-size: 60px;
-      display: block;
-      margin-bottom: 8px;
-      transition: transform 0.3s ease, filter 0.3s ease;
-      filter: drop-shadow(0px 2px 4px rgba(0,0,0,0.4));
-    }
+@media (max-width: 768px) {
+  .container {
+    padding: 30px;
+    transform: translateY(-60px);
+  }
+  .buttons {
+    flex-direction: column;
+    gap: 15px;
+  }
+  h2 {
+    font-size: 1.8rem;
+  }
+  button {
+    font-size: 1.1rem;
+    padding: 14px 30px;
+  }
+}
 
-    .btn-block:hover i {
-      transform: scale(1.15);
-      filter: drop-shadow(0px 4px 8px rgba(0,0,0,0.6)) brightness(1.3);
-    }
-
-    button {
-      background: var(--primary-color);
-      color: white;
-      padding: 16px 36px;
-      border: none;
-      border-radius: 12px;
-      cursor: pointer;
-      font-size: 1.2rem;
-      font-weight: 600;
-      transition: transform 0.3s, box-shadow 0.3s, background 0.4s;
-      box-shadow: var(--shadow-light);
-    }
-
-    button:hover {
-      transform: translateY(-3px) scale(1.02);
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
-      background: linear-gradient(270deg, var(--primary-color), var(--primary-hover-color), var(--primary-extra-color));
-      background-size: 600% 600%;
-      animation: gradientShift 6s ease infinite;
-    }
-
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    @media (max-width: 768px) {
-      .container {
-        padding: 30px;
-        transform: translateY(-60px);
-      }
-      .buttons {
-        flex-direction: column;
-        gap: 15px;
-      }
-      h2 {
-        font-size: 1.8rem;
-      }
-      button {
-        font-size: 1.1rem;
-        padding: 14px 30px;
-      }
-    }
-
-    footer {
-      position: fixed;
-      bottom: 8px;
-      right: 12px;
-      font-size: 9px;
-      color: #888888;
-      opacity: 0.75;
-    }
-  </style>
+footer {
+  position: fixed;
+  bottom: 8px;
+  right: 12px;
+  font-size: 9px;
+  color: #888888;
+  opacity: 0.75;
+}
+</style>
 </head>
 <body>
-  <!-- Nome do usuário logado -->
-  <header id="usuario-logado"></header>
 
-  <div class="container">
-    <h2>Central de Pedidos</h2>
-    <div class="buttons">
-      <!-- Pedido Extra -->
-      <div class="btn-block">
-        <i class="ri-add-circle-fill" style="color:#FF9800;"></i>
-        <button type="button" onclick="window.location.href='/pedidoextra/'">Pedido Extra</button>
-      </div>
+<header id="usuario-logado">Carregando...</header>
 
-      <!-- Pedido Mensal -->
-      <div class="btn-block">
-        <i class="ri-calendar-fill" style="color:#4CAF50;"></i>
-        <button type="button" onclick="window.location.href='/pedidomensal/'">Pedido Mensal</button>
-      </div>
+<div class="container">
+  <h2>Central de Pedidos</h2>
+  <div class="buttons">
+    <div class="btn-block">
+      <i class="ri-add-circle-fill" style="color:#FF9800;"></i>
+      <button type="button" onclick="window.location.href='/pedidoextra/'">Pedido Extra</button>
+    </div>
 
-      <!-- Calculadora -->
-      <div class="btn-block">
-        <i class="ri-calculator-fill" style="color:#2196F3;"></i>
-        <button type="button" onclick="window.location.href='/calculadora/'">Calculadora</button>
-      </div>
+    <div class="btn-block">
+      <i class="ri-calendar-fill" style="color:#4CAF50;"></i>
+      <button type="button" onclick="window.location.href='/pedidomensal/'">Pedido Mensal</button>
+    </div>
+
+    <div class="btn-block">
+      <i class="ri-calculator-fill" style="color:#2196F3;"></i>
+      <button type="button" onclick="window.location.href='/calculadora/'">Calculadora</button>
     </div>
   </div>
-  
-<footer style="position: fixed; bottom: 4px; right: 4px; font-size: 9px; color: #888; background: transparent; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; opacity: 0.75; user-select: none;">
-    © 2025. Todos os direitos reservados.
+</div>
+
+<footer>
+  © 2025. Todos os direitos reservados.
 </footer>
-  
-  </footer>
+
+<script>
+  // Configuração Firebase
+  const firebaseConfig = {
+    apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
+    authDomain: "almoxarifadobotucatu-5e03d.firebaseapp.com",
+    projectId: "almoxarifadobotucatu-5e03d",
+    storageBucket: "almoxarifadobotucatu-5e03d.firebasestorage.app",
+    messagingSenderId: "828951000388",
+    appId: "1:828951000388:web:06dbe3cb5764872e7b1311"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+  const auth = firebase.auth();
+
+  // Detecta usuário logado
+  auth.onAuthStateChanged(user => {
+    if(user) {
+      db.collection("usuarios").doc(user.uid).get()
+        .then(doc => {
+          if(doc.exists) {
+            const data = doc.data();
+            const nome = data.nome || "Usuário";
+            const genero = data.genero || "m"; // "m" masculino, "f" feminino
+            const saudacao = (genero === "f") ? "Bem-vinda" : "Bem-vindo";
+            document.getElementById("usuario-logado").innerText = `${saudacao}, ${nome}!`;
+          } else {
+            document.getElementById("usuario-logado").innerText = "Bem-vindo, Usuário!";
+          }
+        });
+    } else {
+      document.getElementById("usuario-logado").innerText = "Bem-vindo, visitante!";
+      window.location.href = "/login.html";
+    }
+  });
+</script>
+
 </body>
 </html>
