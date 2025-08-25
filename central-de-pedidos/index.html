@@ -12,8 +12,7 @@
       if (
         e.key === 'F12' || 
         (e.ctrlKey && e.shiftKey && ['I','J','C'].includes(e.key.toUpperCase())) || 
-        (e.ctrlKey && e.key.toUpperCase() === 'U') || 
-        (e.ctrlKey && e.key.toUpperCase() === 'S') 
+        (e.ctrlKey && ['U','S'].includes(e.key.toUpperCase()))
       ) {
         e.preventDefault();
         return false;
@@ -31,42 +30,43 @@
       }, 500);
     })();
 
-    // Detecta se o primeiro nome é masculino ou feminino e retorna "masculino" ou "feminino"
+    // Função de detecção de gênero baseada no primeiro nome
     function detectarGenero(nomeCompleto) {
-      let nome = nomeCompleto.trim().split(" ")[0].toLowerCase(); // pega só o primeiro nome
+      if (!nomeCompleto) return "masculino";
 
-      // listas de exceções
-      const excecoesMasculinas = [
-        "josé","josue","josué","noé","elias","jonas","isaías","messias",
-        "abdias","jeremias","sofonias","zacarias","malaquias","obadias",
-        "oséias","amos","nanias","mateus","emanuel","andré","mané"
-      ];
+      let primeiroNome = nomeCompleto.trim().split(" ")[0].toLowerCase();
 
-      const excecoesFemininas = [
-        "ruth","raquel","rachel","ester","esther","noemi","abigail",
-        "déborah","deborah","raab","tamar","michal","batseba","yael",
-        "miriam","ana","maria"
-      ];
+      const excecoesMasculinas = ["josé","josue","josué","noé","elias","jonas","isaías","messias","abdias","jeremias","sofonias","zacarias","malaquias","obadias","oséias","amos","nanias","mateus","emanuel","andré","mané"];
+      const excecoesFemininas = ["ruth","raquel","rachel","ester","esther","noemi","abigail","déborah","deborah","raab","tamar","michal","batseba","yael","miriam","ana","maria"];
 
-      if (excecoesMasculinas.includes(nome)) return "masculino";
-      if (excecoesFemininas.includes(nome)) return "feminino";
+      if (excecoesMasculinas.includes(primeiroNome)) return "masculino";
+      if (excecoesFemininas.includes(primeiroNome)) return "feminino";
 
-      if (nome.endsWith("a")) return "feminino";
-      if (nome.endsWith("o") || nome.match(/[bcdfghjklmnpqrstvwxyz]$/)) return "masculino";
+      if (primeiroNome.endsWith("a")) return "feminino";
+      if (primeiroNome.endsWith("o") || primeiroNome.match(/[bcdfghjklmnpqrstvwxyz]$/)) return "masculino";
 
-      return "masculino"; // padrão neutro
+      return "masculino";
     }
 
     // Pega o nome real do usuário salvo no localStorage
     window.onload = function() {
-      let nome = localStorage.getItem("nomeUsuario") || localStorage.getItem("usuarioLogado") || "Usuário";
+      let nomeRaw = localStorage.getItem("usuarioLogado") || localStorage.getItem("nomeUsuario") || "Usuário";
+      let nome = "Usuário";
+
+      // Trata JSON caso esteja salvo assim
+      try {
+        let obj = JSON.parse(nomeRaw);
+        if (obj && obj.name) nome = obj.name;
+        else nome = nomeRaw;
+      } catch {
+        nome = nomeRaw;
+      }
 
       let genero = detectarGenero(nome);
       let saudacao = genero === "feminino" ? "Bem-vinda" : "Bem-vindo";
 
       document.getElementById("usuario-logado").innerText = `${saudacao}, ${nome}!`;
 
-      // salva de forma padronizada
       localStorage.setItem("nomeUsuario", nome);
       localStorage.setItem("usuarioLogado", JSON.stringify({ name: nome }));
     }
@@ -101,7 +101,6 @@
       color: var(--text-dark);
     }
 
-    /* Header com usuário logado */
     header {
       position: fixed;
       top: 10px;
@@ -215,25 +214,21 @@
   </style>
 </head>
 <body>
-  <!-- Nome do usuário logado -->
   <header id="usuario-logado"></header>
 
   <div class="container">
     <h2>Central de Pedidos</h2>
     <div class="buttons">
-      <!-- Pedido Extra -->
       <div class="btn-block">
         <i class="ri-add-circle-fill" style="color:#FF9800;"></i>
         <button type="button" onclick="window.location.href='/pedidoextra/'">Pedido Extra</button>
       </div>
 
-      <!-- Pedido Mensal -->
       <div class="btn-block">
         <i class="ri-calendar-fill" style="color:#4CAF50;"></i>
         <button type="button" onclick="window.location.href='/pedidomensal/'">Pedido Mensal</button>
       </div>
 
-      <!-- Calculadora -->
       <div class="btn-block">
         <i class="ri-calculator-fill" style="color:#2196F3;"></i>
         <button type="button" onclick="window.location.href='/calculadora/'">Calculadora</button>
