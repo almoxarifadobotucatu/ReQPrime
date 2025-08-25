@@ -48,25 +48,28 @@
       return "masculino";
     }
 
-    // Pega o nome real do usuário salvo no localStorage
     window.onload = function() {
-      let nomeRaw = localStorage.getItem("usuarioLogado") || localStorage.getItem("nomeUsuario") || "Usuário";
       let nome = "Usuário";
+      let usuarioRaw = localStorage.getItem("usuarioLogado") || localStorage.getItem("nomeUsuario");
 
-      // Trata JSON caso esteja salvo assim
-      try {
-        let obj = JSON.parse(nomeRaw);
-        if (obj && obj.name) nome = obj.name;
-        else nome = nomeRaw;
-      } catch {
-        nome = nomeRaw;
+      if (usuarioRaw) {
+        try {
+          let usuarioObj = JSON.parse(usuarioRaw);
+          if (usuarioObj.name) nome = usuarioObj.name;
+          else nome = usuarioRaw;
+        } catch {
+          nome = usuarioRaw; // se não for JSON
+        }
       }
 
-      let genero = detectarGenero(nome);
+      // Pega apenas o primeiro nome para detecção
+      let primeiroNome = nome.split(" ")[0];
+      let genero = detectarGenero(primeiroNome);
       let saudacao = genero === "feminino" ? "Bem-vinda" : "Bem-vindo";
 
       document.getElementById("usuario-logado").innerText = `${saudacao}, ${nome}!`;
 
+      // Salva padronizado
       localStorage.setItem("nomeUsuario", nome);
       localStorage.setItem("usuarioLogado", JSON.stringify({ name: nome }));
     }
