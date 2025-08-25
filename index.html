@@ -41,8 +41,8 @@
   }
 
   .login-container {
-    width: 60vw;              /* 60% da largura da tela */
-    height: 70vh;             /* 70% da altura da tela */
+    width: 60vw;
+    height: 70vh;
     max-width: 900px;
     min-width: 300px;
     max-height: 800px;
@@ -67,7 +67,7 @@
     color: var(--text-dark);
     margin-bottom: 40px;
     font-weight: 700;
-    font-size: 2.5rem; /* aumentado para deixar o título maior */
+    font-size: 2.5rem;
   }
 
   label {
@@ -196,12 +196,34 @@
   </form>
 </div>
 
+<!-- Modal com olhos -->
 <div class="modal" id="passwordModal">
   <div class="modal-content">
     <span class="modal-close" id="closeModal">&times;</span>
     <h3>Alterar Senha</h3>
-    <input type="password" id="currentPassword" placeholder="Senha atual" required>
-    <input type="password" id="newPassword" placeholder="Nova senha" required>
+
+    <div class="password-wrapper">
+      <input type="password" id="currentPassword" placeholder="Senha atual" required>
+      <svg id="toggleCurrentPassword" xmlns="http://www.w3.org/2000/svg" 
+           viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 5C7 5 2.73 8.11 1 12c1.73 3.89 6 7 11 7s9.27-3.11 11-7c-1.73-3.89-6-7-11-7z"/>
+        <circle cx="12" cy="12" r="3"/>
+        <line id="eyeLineCurrent" x1="4" y1="4" x2="20" y2="20"
+              stroke="var(--primary-color)" stroke-dasharray="23" stroke-dashoffset="23"/>
+      </svg>
+    </div>
+
+    <div class="password-wrapper">
+      <input type="password" id="newPassword" placeholder="Nova senha" required>
+      <svg id="toggleNewPassword" xmlns="http://www.w3.org/2000/svg" 
+           viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 5C7 5 2.73 8.11 1 12c1.73 3.89 6 7 11 7s9.27-3.11 11-7c-1.73-3.89-6-7-11-7z"/>
+        <circle cx="12" cy="12" r="3"/>
+        <line id="eyeLineNew" x1="4" y1="4" x2="20" y2="20"
+              stroke="var(--primary-color)" stroke-dasharray="23" stroke-dashoffset="23"/>
+      </svg>
+    </div>
+
     <button id="savePasswordBtn">Salvar</button>
   </div>
 </div>
@@ -260,6 +282,30 @@
     passwordInput.setAttribute("type", type);
     eyeLine.style.strokeDashoffset = type==="password"?23:0;
     togglePassword.style.color = type==="password"?"var(--text-medium)":"var(--primary-color)";
+  });
+
+  // Olho da Senha Atual
+  const toggleCurrentPassword = document.getElementById("toggleCurrentPassword");
+  const currentPasswordInput = document.getElementById("currentPassword");
+  const eyeLineCurrent = document.getElementById("eyeLineCurrent");
+
+  toggleCurrentPassword.addEventListener("click", function(){
+    const type = currentPasswordInput.getAttribute("type")==="password" ? "text":"password";
+    currentPasswordInput.setAttribute("type", type);
+    eyeLineCurrent.style.strokeDashoffset = type==="password"?23:0;
+    toggleCurrentPassword.style.color = type==="password"?"var(--text-medium)":"var(--primary-color)";
+  });
+
+  // Olho da Nova Senha
+  const toggleNewPassword = document.getElementById("toggleNewPassword");
+  const newPasswordInput = document.getElementById("newPassword");
+  const eyeLineNew = document.getElementById("eyeLineNew");
+
+  toggleNewPassword.addEventListener("click", function(){
+    const type = newPasswordInput.getAttribute("type")==="password" ? "text":"password";
+    newPasswordInput.setAttribute("type", type);
+    eyeLineNew.style.strokeDashoffset = type==="password"?23:0;
+    toggleNewPassword.style.color = type==="password"?"var(--text-medium)":"var(--primary-color)";
   });
 
   const modal = document.getElementById("passwordModal");
