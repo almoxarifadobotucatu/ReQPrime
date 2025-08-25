@@ -30,6 +30,19 @@
         }
       }, 500);
     })();
+
+    // Pega o nome real do usuário salvo no localStorage
+    window.onload = function() {
+      // tenta recuperar o nome salvo
+      let nome = localStorage.getItem("nomeUsuario") || localStorage.getItem("usuarioLogado") || "Usuário";
+
+      // Atualiza o header
+      document.getElementById("usuario-logado").innerText = `Bem-vindo, ${nome}!`;
+
+      // Garante que fique salvo de forma padronizada
+      localStorage.setItem("nomeUsuario", nome);
+      localStorage.setItem("usuarioLogado", JSON.stringify({ name: nome }));
+    }
   </script>
 
   <meta charset="UTF-8">
@@ -61,6 +74,7 @@
       color: var(--text-dark);
     }
 
+    /* Header com usuário logado */
     header {
       position: fixed;
       top: 10px;
@@ -175,19 +189,24 @@
 </head>
 <body>
   <!-- Nome do usuário logado -->
-  <header id="usuario-logado">Carregando...</header>
+  <header id="usuario-logado"></header>
 
   <div class="container">
     <h2>Central de Pedidos</h2>
     <div class="buttons">
+      <!-- Pedido Extra -->
       <div class="btn-block">
         <i class="ri-add-circle-fill" style="color:#FF9800;"></i>
         <button type="button" onclick="window.location.href='/pedidoextra/'">Pedido Extra</button>
       </div>
+
+      <!-- Pedido Mensal -->
       <div class="btn-block">
         <i class="ri-calendar-fill" style="color:#4CAF50;"></i>
         <button type="button" onclick="window.location.href='/pedidomensal/'">Pedido Mensal</button>
       </div>
+
+      <!-- Calculadora -->
       <div class="btn-block">
         <i class="ri-calculator-fill" style="color:#2196F3;"></i>
         <button type="button" onclick="window.location.href='/calculadora/'">Calculadora</button>
@@ -198,48 +217,7 @@
 <footer style="position: fixed; bottom: 4px; right: 4px; font-size: 9px; color: #888; background: transparent; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; opacity: 0.75; user-select: none;">
     © 2025. Todos os direitos reservados.
 </footer>
-
-<!-- Firebase e saudação dinâmica com nome -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-app.js";
-  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore.js";
-  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.2/firebase-auth.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
-    authDomain: "almoxarifadobotucatu-5e03d.firebaseapp.com",
-    projectId: "almoxarifadobotucatu-5e03d",
-    storageBucket: "almoxarifadobotucatu-5e03d.firebasestorage.app",
-    messagingSenderId: "828951000388",
-    appId: "1:828951000388:web:06dbe3cb5764872e7b1311"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-  const auth = getAuth(app);
-
-  onAuthStateChanged(auth, async (user) => {
-    if (user) {
-      const uid = user.uid;
-      const docRef = doc(db, "usuarios", uid);
-      const docSnap = await getDoc(docRef);
-
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        const nome = data.nome || "Usuário";
-        const genero = data.genero || "masculino";
-
-        // Saudação com nome à frente
-        const saudacao = genero.toLowerCase() === "feminino" ? "Bem-vinda" : "Bem-vindo";
-        document.getElementById("usuario-logado").innerText = `${saudacao}, ${nome}!`;
-      } else {
-        document.getElementById("usuario-logado").innerText = "Bem-vindo, Usuário!";
-      }
-    } else {
-      document.getElementById("usuario-logado").innerText = "Bem-vindo, Usuário!";
-    }
-  });
-</script>
-
+  
+  </footer>
 </body>
 </html>
