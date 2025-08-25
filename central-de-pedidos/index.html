@@ -31,15 +31,37 @@
       }, 500);
     })();
 
+    // Detecta se o nome é masculino ou feminino e mostra a saudação correta
+    function detectarGenero(nome) {
+      nome = nome.trim().toLowerCase();
+
+      // listas de exceções
+      const excecoesMasculinas = ["josé", "noé", "andré", "mané"];
+      const excecoesFemininas = ["ruth", "miriam", "raquel", "abigail"];
+
+      if (excecoesMasculinas.includes(nome)) return "masculino";
+      if (excecoesFemininas.includes(nome)) return "feminino";
+
+      // regra: nome terminando com 'a' → feminino
+      if (nome.endsWith("a")) return "feminino";
+
+      // regra: nome terminando com 'o' ou consoante → masculino
+      if (nome.endsWith("o") || nome.match(/[bcdfghjklmnpqrstvwxyz]$/)) return "masculino";
+
+      // padrão neutro
+      return "masculino";
+    }
+
     // Pega o nome real do usuário salvo no localStorage
     window.onload = function() {
-      // tenta recuperar o nome salvo
       let nome = localStorage.getItem("nomeUsuario") || localStorage.getItem("usuarioLogado") || "Usuário";
 
-      // Atualiza o header
-      document.getElementById("usuario-logado").innerText = `Bem-vindo, ${nome}!`;
+      let genero = detectarGenero(nome);
+      let saudacao = genero === "feminino" ? "Bem-vinda" : "Bem-vindo";
 
-      // Garante que fique salvo de forma padronizada
+      document.getElementById("usuario-logado").innerText = `${saudacao}, ${nome}!`;
+
+      // salva de forma padronizada
       localStorage.setItem("nomeUsuario", nome);
       localStorage.setItem("usuarioLogado", JSON.stringify({ name: nome }));
     }
@@ -214,10 +236,8 @@
     </div>
   </div>
   
-<footer style="position: fixed; bottom: 4px; right: 4px; font-size: 9px; color: #888; background: transparent; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; opacity: 0.75; user-select: none;">
+  <footer style="position: fixed; bottom: 4px; right: 4px; font-size: 9px; color: #888; background: transparent; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; opacity: 0.75; user-select: none;">
     © 2025. Todos os direitos reservados.
-</footer>
-  
   </footer>
 </body>
 </html>
