@@ -41,8 +41,8 @@
   }
 
   .login-container {
-    width: 60vw;              /* 60% da largura da tela */
-    height: 70vh;             /* 70% da altura da tela */
+    width: 60vw;
+    height: 70vh;
     max-width: 900px;
     min-width: 300px;
     max-height: 800px;
@@ -59,7 +59,8 @@
   }
 
   .login-container:hover {
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 
+                0 4px 6px -2px rgba(0, 0, 0, 0.2);
   }
 
   h2 {
@@ -67,7 +68,7 @@
     color: var(--text-dark);
     margin-bottom: 40px;
     font-weight: 700;
-    font-size: 2.5rem; /* aumentado para deixar o título maior */
+    font-size: 2.5rem;
   }
 
   label {
@@ -163,9 +164,6 @@
   .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background: rgba(0,0,0,0.6); justify-content:center; align-items:center; z-index:1000; }
   .modal-content { background: var(--background-white); padding:30px; border-radius:15px; width: 90%; max-width:400px; box-shadow:var(--shadow-light); position:relative;}
   .modal-content h3 { text-align:center; margin-bottom:20px; color:var(--text-dark);}
-  .modal-content input { margin-bottom:15px; width:100%; padding:12px; border-radius:8px; border:1px solid var(--border-light); background-color: rgba(255,255,255,0.1); color: var(--text-dark); }
-  .modal-content button { width:100%; padding:12px; background: var(--primary-color); color:white; border:none; border-radius:8px; cursor:pointer; }
-  .modal-content button:hover { background: linear-gradient(270deg,var(--primary-color),var(--primary-hover-color),var(--primary-extra-color)); background-size:600% 600%; animation: gradientShift 6s ease infinite; }
   .modal-close { position:absolute; top:10px; right:20px; cursor:pointer; font-size:1.2rem; color:var(--text-medium);}
 </style>
 </head>
@@ -196,12 +194,36 @@
   </form>
 </div>
 
+<!-- MODAL -->
 <div class="modal" id="passwordModal">
   <div class="modal-content">
     <span class="modal-close" id="closeModal">&times;</span>
     <h3>Alterar Senha</h3>
-    <input type="password" id="currentPassword" placeholder="Senha atual" required>
-    <input type="password" id="newPassword" placeholder="Nova senha" required>
+
+    <!-- Senha atual -->
+    <div class="password-wrapper">
+      <input type="password" id="currentPassword" placeholder="Senha atual" required>
+      <svg id="toggleCurrentPass" xmlns="http://www.w3.org/2000/svg" 
+           viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 5C7 5 2.73 8.11 1 12c1.73 3.89 6 7 11 7s9.27-3.11 11-7c-1.73-3.89-6-7-11-7z"/>
+        <circle cx="12" cy="12" r="3"/>
+        <line id="eyeLineCurrent" x1="4" y1="4" x2="20" y2="20"
+              stroke="var(--primary-color)" stroke-dasharray="23" stroke-dashoffset="23"/>
+      </svg>
+    </div>
+
+    <!-- Nova senha -->
+    <div class="password-wrapper">
+      <input type="password" id="newPassword" placeholder="Nova senha" required>
+      <svg id="toggleNewPass" xmlns="http://www.w3.org/2000/svg" 
+           viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M12 5C7 5 2.73 8.11 1 12c1.73 3.89 6 7 11 7s9.27-3.11 11-7c-1.73-3.89-6-7-11-7z"/>
+        <circle cx="12" cy="12" r="3"/>
+        <line id="eyeLineNew" x1="4" y1="4" x2="20" y2="20"
+              stroke="var(--primary-color)" stroke-dasharray="23" stroke-dashoffset="23"/>
+      </svg>
+    </div>
+
     <button id="savePasswordBtn">Salvar</button>
   </div>
 </div>
@@ -255,6 +277,7 @@
     }
   });
 
+  // toggle senha login
   togglePassword.addEventListener("click", function(){
     const type = passwordInput.getAttribute("type")==="password" ? "text":"password";
     passwordInput.setAttribute("type", type);
@@ -262,6 +285,7 @@
     togglePassword.style.color = type==="password"?"var(--text-medium)":"var(--primary-color)";
   });
 
+  // modal
   const modal = document.getElementById("passwordModal");
   const btnChange = document.getElementById("btnChangePassword");
   const closeModal = document.getElementById("closeModal");
@@ -271,6 +295,7 @@
   closeModal.addEventListener("click", ()=> modal.style.display="none");
   window.addEventListener("click", e=> { if(e.target==modal) modal.style.display="none"; });
 
+  // salvar senha
   savePasswordBtn.addEventListener("click", async ()=>{
     const usuario = document.getElementById("username").value.trim();
     const currentPass = document.getElementById("currentPassword").value.trim();
@@ -298,6 +323,31 @@
     }
   });
 
+  // toggle senha atual
+  const toggleCurrentPass = document.getElementById("toggleCurrentPass");
+  const currentPasswordInput = document.getElementById("currentPassword");
+  const eyeLineCurrent = document.getElementById("eyeLineCurrent");
+
+  toggleCurrentPass.addEventListener("click", function(){
+    const type = currentPasswordInput.getAttribute("type")==="password" ? "text":"password";
+    currentPasswordInput.setAttribute("type", type);
+    eyeLineCurrent.style.strokeDashoffset = type==="password"?23:0;
+    toggleCurrentPass.style.color = type==="password"?"var(--text-medium)":"var(--primary-color)";
+  });
+
+  // toggle nova senha
+  const toggleNewPass = document.getElementById("toggleNewPass");
+  const newPasswordInput = document.getElementById("newPassword");
+  const eyeLineNew = document.getElementById("eyeLineNew");
+
+  toggleNewPass.addEventListener("click", function(){
+    const type = newPasswordInput.getAttribute("type")==="password" ? "text":"password";
+    newPasswordInput.setAttribute("type", type);
+    eyeLineNew.style.strokeDashoffset = type==="password"?23:0;
+    toggleNewPass.style.color = type==="password"?"var(--text-medium)":"var(--primary-color)";
+  });
+
+  // bloquear inspeção
   document.addEventListener('keydown', function (event) {
       if(event.key==="F12" || event.keyCode===123){ event.preventDefault(); return false; }
       if((event.ctrlKey && event.key.toLowerCase()==='s') || (event.ctrlKey && event.key.toLowerCase()==='u')){ event.preventDefault(); return false; }
