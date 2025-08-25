@@ -5,7 +5,36 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Central de Pedidos</title>
 
-<!-- Ícones e fontes -->
+<!-- Proteção -->
+<script>
+  // Bloqueia clique com botão direito
+  document.addEventListener('contextmenu', event => event.preventDefault());
+
+  // Bloqueia atalhos para código-fonte, devtools e salvar página
+  document.addEventListener('keydown', function(e) {
+    if (
+      e.key === 'F12' || 
+      (e.ctrlKey && e.shiftKey && ['I','J','C'].includes(e.key.toUpperCase())) || 
+      (e.ctrlKey && e.key.toUpperCase() === 'U') || 
+      (e.ctrlKey && e.key.toUpperCase() === 'S') 
+    ) {
+      e.preventDefault();
+      return false;
+    }
+  });
+
+  // Detecção contínua de DevTools
+  (function() {
+    const threshold = 160;
+    setInterval(function() {
+      if (window.outerWidth - window.innerWidth > threshold || 
+          window.outerHeight - window.innerHeight > threshold) {
+        window.location.href = "/acesso-negado.html";
+      }
+    }, 500);
+  })();
+</script>
+
 <link href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
@@ -30,6 +59,7 @@ body {
   align-items: center;
   min-height: 100vh;
   color: var(--text-dark);
+  flex-direction: column;
 }
 
 header {
@@ -116,6 +146,16 @@ button:hover {
   100% { background-position: 0% 50%; }
 }
 
+input {
+  padding: 10px 14px;
+  border-radius: 8px;
+  border: none;
+  margin-top: 10px;
+  font-size: 1rem;
+  width: 250px;
+  text-align: center;
+}
+
 @media (max-width: 768px) {
   .container {
     padding: 30px;
@@ -150,6 +190,10 @@ footer {
 
 <div class="container">
   <h2>Central de Pedidos</h2>
+
+  <!-- Input opcional para alterar nome -->
+  <input type="text" id="input-nome" placeholder="Digite seu nome" />
+
   <div class="buttons">
     <div class="btn-block">
       <i class="ri-add-circle-fill" style="color:#FF9800;"></i>
@@ -173,20 +217,47 @@ footer {
 </footer>
 
 <script>
-  // ======= Simula login/localStorage =======
-  // Se ainda não tiver, define nome e gênero
-  if(!localStorage.getItem("nomeUsuario")) localStorage.setItem("nomeUsuario", "Maria");
-  if(!localStorage.getItem("generoUsuario")) localStorage.setItem("generoUsuario", "f"); // "f" feminino, "m" masculino
+  // ===== Inicializa nome no localStorage =====
+  if(!localStorage.getItem("nomeUsuario")) localStorage.setItem("nomeUsuario", "Gabriel");
+  let nome = localStorage.getItem("nomeUsuario");
 
-  // Pega nome e gênero do localStorage
-  const nome = localStorage.getItem("nomeUsuario") || "Usuário";
-  const genero = localStorage.getItem("generoUsuario") || "m";
+  // ===== Função inteligente para detectar gênero =====
+  function adivinharGenero(nome) {
+    const n = nome.trim().toLowerCase();
+    const ultima = n.slice(-1);
 
-  // Define saudação
-  const saudacao = (genero === "f") ? "Bem-vinda" : "Bem-vindo";
+    const femininos = ["ana","maria","juliana","carla","patricia","fernanda","amanda","camila","lily","mayra"];
+    const masculinos = ["joão","josé","pedro","lucas","rafael","carlos","bruno","fernando","yuri"];
 
-  // Atualiza o header
-  document.getElementById("usuario-logado").innerText = `${saudacao}, ${nome}!`;
+    if(femininos.includes(n)) return "f";
+    if(masculinos.includes(n)) return "m";
+
+    if(ultima === "a") return "f";
+    if(ultima === "o") return "m";
+
+    if(["i","u","l","r","s","n"].includes(ultima)) return "m";
+    if(["y","h","e"].includes(ultima)) return "f";
+
+    return "m"; // padrão
+  }
+
+  function atualizarSaudacao(nome) {
+    const genero = adivinharGenero(nome);
+    const saudacao = genero === "f" ? "Bem-vinda" : "Bem-vindo";
+    document.getElementById("usuario-logado").innerText = `${saudacao}, ${nome}!`;
+  }
+
+  // ===== Inicializa header e input =====
+  atualizarSaudacao(nome);
+  const inputNome = document.getElementById("input-nome");
+  inputNome.value = nome;
+
+  // ===== Atualiza nome e saudação em tempo real =====
+  inputNome.addEventListener("input", function() {
+    const novoNome = inputNome.value.trim() || "Usuário";
+    localStorage.setItem("nomeUsuario", novoNome);
+    atualizarSaudacao(novoNome);
+  });
 </script>
 
 </body>
