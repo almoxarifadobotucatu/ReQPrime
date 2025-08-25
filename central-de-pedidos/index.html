@@ -31,17 +31,65 @@
       }, 500);
     })();
 
+    // Listas de nomes comuns em português
+    const nomesMasculinos = [
+      "João","Pedro","Lucas","Mateus","Gabriel","Rafael","Felipe","Bruno","Gustavo","Leonardo",
+      "Carlos","Daniel","Thiago","Marcelo","André","Rodrigo","Eduardo","Vinicius","Fernando","Alexandre",
+      "Diego","Murilo","Vitor","Samuel","Caio","Ricardo","Leandro","Hugo","Paulo","Fábio"
+    ];
+
+    const nomesFemininos = [
+      "Maria","Ana","Juliana","Fernanda","Patricia","Camila","Larissa","Mariana","Amanda","Bianca",
+      "Bruna","Carla","Aline","Renata","Gabriela","Letícia","Sofia","Isabela","Raquel","Daniela",
+      "Júlia","Laura","Clara","Rafaela","Natália","Yasmin","Alice","Emanuelle","Vanessa"
+    ];
+
+    // Sufixos refinados
+    const sufixosFemininos = ["a","e","ina","ela","ida","isa","ia","y","ada","ama","amah","ara","ora","ava"];
+    const sufixosMasculinos = ["o","el","or","io","an","as","os","im","u","ino","ivo","us"];
+
+    // Função para pegar o primeiro nome
+    function obterPrimeiroNome(nomeCompleto) {
+      return nomeCompleto.split(" ")[0].trim();
+    }
+
+    // Função avançada para detectar gênero
+    function detectarGenero(primeiroNome) {
+      if (nomesFemininos.includes(primeiroNome)) return "Bem-vinda";
+      if (nomesMasculinos.includes(primeiroNome)) return "Bem-vindo";
+
+      const nomeMinusculo = primeiroNome.toLowerCase();
+
+      for (let suf of sufixosFemininos) {
+        if (nomeMinusculo.endsWith(suf)) return "Bem-vinda";
+      }
+
+      for (let suf of sufixosMasculinos) {
+        if (nomeMinusculo.endsWith(suf)) return "Bem-vindo";
+      }
+
+      return "Bem-vindo(a)";
+    }
+
     // Pega o nome real do usuário salvo no localStorage
     window.onload = function() {
-      // tenta recuperar o nome salvo
-      let nome = localStorage.getItem("nomeUsuario") || localStorage.getItem("usuarioLogado") || "Usuário";
+      let nomeCompleto = localStorage.getItem("nomeUsuario") || localStorage.getItem("usuarioLogado") || "Usuário";
 
-      // Atualiza o header
-      document.getElementById("usuario-logado").innerText = `Bem-vindo, ${nome}!`;
+      if (typeof nomeCompleto === "string" && nomeCompleto.startsWith("{")) {
+        try {
+          nomeCompleto = JSON.parse(nomeCompleto).name || "Usuário";
+        } catch(e) {
+          nomeCompleto = "Usuário";
+        }
+      }
 
-      // Garante que fique salvo de forma padronizada
-      localStorage.setItem("nomeUsuario", nome);
-      localStorage.setItem("usuarioLogado", JSON.stringify({ name: nome }));
+      const primeiroNome = obterPrimeiroNome(nomeCompleto);
+      const saudacao = detectarGenero(primeiroNome);
+
+      document.getElementById("usuario-logado").innerText = `${saudacao}, ${primeiroNome}!`;
+
+      localStorage.setItem("nomeUsuario", nomeCompleto);
+      localStorage.setItem("usuarioLogado", JSON.stringify({ name: nomeCompleto }));
     }
   </script>
 
@@ -74,7 +122,6 @@
       color: var(--text-dark);
     }
 
-    /* Header com usuário logado */
     header {
       position: fixed;
       top: 10px;
@@ -214,10 +261,8 @@
     </div>
   </div>
   
-<footer style="position: fixed; bottom: 4px; right: 4px; font-size: 9px; color: #888; background: transparent; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; opacity: 0.75; user-select: none;">
-    © 2025. Todos os direitos reservados.
-</footer>
-  
+  <footer style="position: fixed; bottom: 4px; right: 4px; font-size: 9px; color: #888; background: transparent; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; opacity: 0.75; user-select: none;">
+      © 2025. Todos os direitos reservados.
   </footer>
 </body>
 </html>
