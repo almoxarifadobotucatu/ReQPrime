@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Painel de Controle</title>
 <link rel="icon" type="image/png" sizes="32x32" href="">
+
 <style>
   :root {
     --primary-extra-color: #1db954;
@@ -18,6 +19,7 @@
     --shadow-light: 0 4px 6px -1px rgba(0, 0, 0, 0.3),
                     0 2px 4px -1px rgba(0, 0, 0, 0.2);
   }
+
   body {
     background-color: var(--background-light);
     font-family: 'Inter', sans-serif;
@@ -30,6 +32,7 @@
     box-sizing: border-box;
     color: var(--text-dark);
   }
+
   .container {
     width: 70vw;
     max-width: 700px;
@@ -39,29 +42,20 @@
     box-shadow: var(--shadow-light);
     text-align: center;
   }
-  h2 { font-size: 2rem; margin-bottom: 20px; color: var(--text-dark); }
-  p { margin-bottom: 20px; }
-  button {
-    background: var(--primary-color);
-    color: white;
-    padding: 10px 20px;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    font-size: 1rem;
-    font-weight: 600;
-    margin: 5px;
+
+  h2 {
+    font-size: 2rem;
+    margin-bottom: 40px;
+    color: var(--text-dark);
   }
-  button:hover {
-    background: var(--primary-hover-color);
-  }
+
   .buttons {
     display: flex;
     justify-content: center;
-    gap: 20px;
+    gap: 30px;
     flex-wrap: wrap;
-    margin-top: 20px;
   }
+
   .buttons a {
     display: inline-block;
     padding: 20px 40px;
@@ -74,17 +68,20 @@
     box-shadow: var(--shadow-light);
     transition: transform 0.3s, background 0.3s;
   }
+
   .buttons a:hover {
     transform: translateY(-3px) scale(1.03);
     background: linear-gradient(270deg, var(--primary-color), var(--primary-hover-color), var(--primary-extra-color));
     background-size: 600% 600%;
     animation: gradientShift 6s ease infinite;
   }
+
   @keyframes gradientShift {
     0% { background-position: 0% 50%; }
     50% { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
   }
+
   footer {
     position: fixed;
     bottom: 4px;
@@ -99,24 +96,23 @@
 </style>
 </head>
 <body>
+
 <div class="container">
   <h2>Painel de Controle</h2>
-  <p id="status">Carregando...</p>
-  <div id="authButtons">
-    <button onclick="login()">Entrar</button>
-  </div>
-  <div class="buttons" id="menuLinks" style="display:none;">
+  <div class="buttons">
     <a href="cadastrar.html">Cadastrar Usuário</a>
     <a href="cadastros.html">Usuários Cadastrados</a>
-    <button onclick="logout()">Sair</button>
   </div>
 </div>
+
 <footer>© 2025. Todos os direitos reservados.</footer>
 
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-<script>
+</body>
+  <script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
+
+  // Configuração do Firebase (mesma que você já tem)
   const firebaseConfig = {
     apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
     authDomain: "almoxarifadobotucatu-5e03d.firebaseapp.com",
@@ -125,35 +121,18 @@
     messagingSenderId: "828951000388",
     appId: "1:828951000388:web:06dbe3cb5764872e7b1311"
   };
-  firebase.initializeApp(firebaseConfig);
-  const auth = firebase.auth();
-  auth.onAuthStateChanged(user => {
-    if(user){
-      document.getElementById("status").innerText = `✅ Logado como: ${user.email}`;
-      document.getElementById("authButtons").style.display = "none";
-      document.getElementById("menuLinks").style.display = "flex";
-    } else {
-      document.getElementById("status").innerText = "❌ Não logado";
-      document.getElementById("authButtons").style.display = "block";
-      document.getElementById("menuLinks").style.display = "none";
+
+  // Inicializa Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  // Verifica autenticação
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      // Usuário não logado → redireciona
+      window.location.href = "paineldecontrole.html";
     }
   });
-<div id="loginForm">
-  <input type="email" id="email" placeholder="E-mail" required>
-  <input type="password" id="password" placeholder="Senha" required>
-  <button onclick="login()">Entrar</button>
-</div>
-function login(){
-  const email = document.getElementById("email").value;
-  const senha = document.getElementById("password").value;
-  auth.signInWithEmailAndPassword(email, senha)
-    .catch(err => alert("Erro: " + err.message));
-}
-      .catch(err => alert("Erro: " + err.message));
-  }
-  function logout(){
-    auth.signOut();
-  }
 </script>
-</body>
+
 </html>
