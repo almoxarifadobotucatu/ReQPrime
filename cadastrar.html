@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang='pt-BR'>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cadastrar Usuário</title>
+<link rel="icon" type="image/png" sizes="32x32" href="">
+
+<!-- Firebase -->
+
+
+
+<style>
+  :root {
+    --primary-extra-color: #1db954;
+    --primary-color: #0a66c2;
+    --primary-hover-color: #004182;
+    --background-light: #1a1a2e;
+    --background-white: #16213e;
+    --text-dark: #ffffff;
+    --text-medium: #b8b8b8;
+    --border-light: #2a2a3a;
+    --shadow-light: 0 4px 6px -1px rgba(0, 0, 0, 0.3),
+                    0 2px 4px -1px rgba(0, 0, 0, 0.2);
+    --transition-all: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  body {
+    background-color: var(--background-light);
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    box-sizing: border-box;
+    color: var(--text-dark);
+  }
+
+  .login-container {
+    width: 60vw;
+    height: auto;
+    max-width: 900px;
+    min-width: 300px;
+    background-color: var(--background-white);
+    margin: auto;
+    padding: 5vh 4vw;
+    border-radius: 20px;
+    box-shadow: var(--shadow-light);
+    transition: var(--transition-all);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  h2 {
+    text-align: center;
+    color: var(--text-dark);
+    margin-bottom: 30px;
+    font-weight: 700;
+    font-size: 2.3rem;
+  }
+
+  label {
+    display: block;
+    margin-top: 20px;
+    color: var(--text-medium);
+    font-weight: 500;
+    margin-bottom: 8px;
+    font-size: 0.95rem;
+  }
+
+  input {
+    width: 100%;
+    padding: 14px 18px;
+    border: 1px solid var(--border-light);
+    border-radius: 12px;
+    box-sizing: border-box;
+    font-size: 1rem;
+    color: var(--text-dark);
+    background-color: rgba(255, 255, 255, 0.1);
+    transition: var(--transition-all);
+    margin-bottom: 10px;
+  }
+
+  input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 4px rgba(10, 102, 194, 0.3);
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+
+  .buttons {
+    margin-top: 30px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+  }
+
+  button {
+    background: var(--primary-color);
+    color: white;
+    padding: 14px 30px;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: transform 0.3s, box-shadow 0.3s, background 0.4s ease-in-out;
+    box-shadow: var(--shadow-light);
+  }
+
+  button:hover {
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(270deg, var(--primary-color), var(--primary-hover-color), var(--primary-extra-color));
+    background-size: 600% 600%;
+    animation: gradientShift 6s ease infinite;
+  }
+
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+
+  footer {
+    position: fixed;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 9px;
+    color: #888;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    opacity: 0.75;
+    user-select: none;
+  }
+</style>
+</head>
+<body>
+
+<div class="login-container">
+  <h2>Cadastrar Usuário</h2>
+  <form id="cadastroForm">
+    <label for="login">Login:</label>
+    <input type="text" id="login" required>
+
+    <label for="nome">Nome:</label>
+    <input type="text" id="nome" required>
+
+    <label for="senha">Senha:</label>
+    <input type="password" id="senha" required>
+
+    <div class="buttons">
+      <button type="submit">Cadastrar</button>
+    </div>
+  </form>
+</div>
+
+<footer>© 2025. Todos os direitos reservados.</footer>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
+    authDomain: "almoxarifadobotucatu-5e03d.firebaseapp.com",
+    projectId: "almoxarifadobotucatu-5e03d",
+    storageBucket: "almoxarifadobotucatu-5e03d.firebasestorage.app",
+    messagingSenderId: "828951000388",
+    appId: "1:828951000388:web:06dbe3cb5764872e7b1311"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+
+  const form = document.getElementById("cadastroForm");
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+
+    const login = document.getElementById("login").value.trim();
+    const nome = document.getElementById("nome").value.trim();
+    const senha = document.getElementById("senha").value.trim();
+
+    if(!login || !nome || !senha){
+      alert("Preencha todos os campos!");
+      return;
+    }
+
+    try {
+      const docRef = db.collection("usuarios").doc(login);
+      const docSnap = await docRef.get();
+
+      if(docSnap.exists){
+        alert("⚠️ Já existe um usuário com este login!");
+        return;
+      }
+
+      await docRef.set({
+        nome: nome,
+        senha: senha
+      });
+
+      alert("✅ Usuário cadastrado com sucesso!");
+      form.reset();
+    } catch(err){
+      alert("Erro ao cadastrar: " + err);
+    }
+  });
+</script>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+<script>
+  const firebaseConfig = {
+    apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
+    authDomain: "almoxarifadobotucatu-5e03d.firebaseapp.com",
+    projectId: "almoxarifadobotucatu-5e03d",
+    storageBucket: "almoxarifadobotucatu-5e03d.firebasestorage.app",
+    messagingSenderId: "828951000388",
+    appId: "1:828951000388:web:06dbe3cb5764872e7b1311"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
+  const db = firebase.firestore();
+
+  // Proteção de acesso
+  auth.onAuthStateChanged(user => {
+    if(!user){
+      window.location.href = "menu.html";
+    }
+  });
+</script>
+
+</body>
+</html>
