@@ -138,10 +138,17 @@
       document.getElementById("menuLinks").style.display = "none";
     }
   });
-  function login(){
-    const email = prompt("Digite seu e-mail:");
-    const senha = prompt("Digite sua senha:");
-    auth.signInWithEmailAndPassword(email, senha)
+<div id="loginForm">
+  <input type="email" id="email" placeholder="E-mail" required>
+  <input type="password" id="password" placeholder="Senha" required>
+  <button onclick="login()">Entrar</button>
+</div>
+function login(){
+  const email = document.getElementById("email").value;
+  const senha = document.getElementById("password").value;
+  auth.signInWithEmailAndPassword(email, senha)
+    .catch(err => alert("Erro: " + err.message));
+}
       .catch(err => alert("Erro: " + err.message));
   }
   function logout(){
