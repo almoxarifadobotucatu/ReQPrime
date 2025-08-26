@@ -170,4 +170,37 @@
     }
   </script>
 </body>
+  <script>
+  // Bloqueia clique com botão direito
+  document.addEventListener("contextmenu", event => event.preventDefault());
+
+  // Bloqueia teclas e atalhos perigosos
+  document.addEventListener("keydown", function (event) {
+    // F12
+    if (event.key === "F12") {
+      event.preventDefault();
+    }
+
+    // Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C
+    if (event.ctrlKey && event.shiftKey && (event.key === "I" || event.key === "J" || event.key === "C")) {
+      event.preventDefault();
+    }
+
+    // Ctrl+U (Exibir código-fonte)
+    if (event.ctrlKey && event.key === "u") {
+      event.preventDefault();
+    }
+
+    // Ctrl+S e Ctrl+Shift+S (Salvar página/Salvar como)
+    if (event.ctrlKey && (event.key === "s" || event.key === "S")) {
+      event.preventDefault();
+    }
+
+    // Ctrl+P (Imprimir)
+    if (event.ctrlKey && event.key === "p") {
+      event.preventDefault();
+    }
+  });
+</script>
+
 </html>
