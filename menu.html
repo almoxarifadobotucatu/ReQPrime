@@ -31,37 +31,38 @@
     min-height: 100vh;
     box-sizing: border-box;
     color: var(--text-dark);
+    text-align: center;
   }
 
   .container {
-    width: 70vw;
-    max-width: 700px;
+    width: 90%;
+    max-width: 600px;
     background-color: var(--background-white);
     padding: 40px;
     border-radius: 20px;
     box-shadow: var(--shadow-light);
-    text-align: center;
   }
 
   h2 {
     font-size: 2rem;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
     color: var(--text-dark);
   }
 
   .buttons {
     display: flex;
     justify-content: center;
-    gap: 30px;
+    gap: 20px;
     flex-wrap: wrap;
+    margin-bottom: 20px;
   }
 
   .buttons a {
     display: inline-block;
-    padding: 20px 40px;
-    font-size: 1.2rem;
+    padding: 15px 30px;
+    font-size: 1.1rem;
     font-weight: 600;
-    border-radius: 15px;
+    border-radius: 12px;
     text-decoration: none;
     color: white;
     background: var(--primary-color);
@@ -83,10 +84,7 @@
   }
 
   footer {
-    position: fixed;
-    bottom: 4px;
-    left: 50%;
-    transform: translateX(-50%);
+    margin-top: 20px;
     font-size: 9px;
     color: #888;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -103,9 +101,9 @@
     <a href="cadastrar.html">Cadastrar Usuário</a>
     <a href="cadastros.html">Usuários Cadastrados</a>
   </div>
+  <h3>Bem-vindo ao Painel</h3>
+  <footer>© 2025. Todos os direitos reservados.</footer>
 </div>
-
-<footer>© 2025. Todos os direitos reservados.</footer>
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
