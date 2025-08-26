@@ -57,20 +57,22 @@
     margin-bottom: 20px;
   }
 
-  .buttons a {
+  .buttons a, .buttons button {
     display: inline-block;
     padding: 15px 30px;
     font-size: 1.1rem;
     font-weight: 600;
     border-radius: 12px;
     text-decoration: none;
+    border: none;
+    cursor: pointer;
     color: white;
     background: var(--primary-color);
     box-shadow: var(--shadow-light);
     transition: transform 0.3s, background 0.3s;
   }
 
-  .buttons a:hover {
+  .buttons a:hover, .buttons button:hover {
     transform: translateY(-3px) scale(1.03);
     background: linear-gradient(270deg, var(--primary-color), var(--primary-hover-color), var(--primary-extra-color));
     background-size: 600% 600%;
@@ -100,6 +102,7 @@
   <div class="buttons">
     <a href="cadastrar.html">Cadastrar Usuário</a>
     <a href="cadastros.html">Usuários Cadastrados</a>
+    <button id="logoutBtn">Sair</button> <!-- 🔘 Botão de sair -->
   </div>
   <h3>Bem-vindo ao Painel</h3>
   <footer>© 2025. Todos os direitos reservados.</footer>
@@ -107,7 +110,7 @@
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
-  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
+  import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
 
   // Configuração do Firebase
   const firebaseConfig = {
@@ -126,11 +129,29 @@
   // Verifica autenticação
   onAuthStateChanged(auth, (user) => {
     if (!user) {
-      // Usuário não logado → redireciona
-      window.location.replace("paineldecontrole.html");
+      window.location.replace("login.html"); // 🔄 redireciona para login
     } else {
-      // Usuário logado → mostra o conteúdo
       document.body.style.display = "flex";
+    }
+  });
+
+  // Botão de sair
+  document.getElementById("logoutBtn").addEventListener("click", async () => {
+    try {
+      await signOut(auth);
+      // Limpa cache e dados locais
+      localStorage.clear();
+      sessionStorage.clear();
+      if ('caches' in window) {
+        const keys = await caches.keys();
+        for (let key of keys) {
+          await caches.delete(key);
+        }
+      }
+      // Redireciona
+      window.location.replace("login.html");
+    } catch (error) {
+      console.error("Erro ao sair:", error);
     }
   });
 </script>
