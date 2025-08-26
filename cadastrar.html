@@ -1,5 +1,53 @@
 <!DOCTYPE html>
 <html lang='pt-BR'>
+  <!-- 🔒 Gate de Autenticação: cole no INÍCIO do <head> -->
+<style id="auth-gate">html{visibility:hidden;opacity:0}</style>
+
+<!-- Firebase (sem defer/async para bloquear até carregar) -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+
+<script>
+  (function () {
+    // 👉 ajuste o caminho se necessário (ex.: "./menu.html" ou "/seu-repo/menu.html")
+    var REDIRECT = "menu.html";
+
+    var firebaseConfig = {
+      apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
+      authDomain: "almoxarifadobotucatu-5e03d.firebaseapp.com",
+      projectId: "almoxarifadobotucatu-5e03d",
+      storageBucket: "almoxarifadobotucatu-5e03d.firebasestorage.app",
+      messagingSenderId: "828951000388",
+      appId: "1:828951000388:web:06dbe3cb5764872e7b1311"
+    };
+
+    // Inicializa só se ainda não existir
+    if (!firebase.apps || !firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+
+    var auth = firebase.auth();
+
+    // Se estiver logado → mostra a página; se não → redireciona
+    auth.onAuthStateChanged(function (user) {
+      if (user) {
+        document.documentElement.style.visibility = "visible";
+        document.documentElement.style.opacity = "1";
+      } else {
+        location.replace(REDIRECT);
+      }
+    });
+
+    // Fail-safe: se o callback não rodar em 2500ms, redireciona
+    setTimeout(function () {
+      try {
+        if (!auth.currentUser) location.replace(REDIRECT);
+      } catch (e) {
+        location.replace(REDIRECT);
+      }
+    }, 2500);
+  })();
+</script>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
