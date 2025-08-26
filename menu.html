@@ -108,31 +108,49 @@
 <footer>© 2025. Todos os direitos reservados.</footer>
 
 </body>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Página Protegida</title>
+</head>
+<body style="display:none;">
+  <!-- Conteúdo da sua página -->
+  <h1>Bem-vindo ao Painel</h1>
+
   <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
-  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
 
-  // Configuração do Firebase (mesma que você já tem)
-  const firebaseConfig = {
-    apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
-    authDomain: "almoxarifadobotucatu-5e03d.firebaseapp.com",
-    projectId: "almoxarifadobotucatu-5e03d",
-    storageBucket: "almoxarifadobotucatu-5e03d.firebasestorage.app",
-    messagingSenderId: "828951000388",
-    appId: "1:828951000388:web:06dbe3cb5764872e7b1311"
-  };
+    // Configuração do Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
+      authDomain: "almoxarifadobotucatu-5e03d.firebaseapp.com",
+      projectId: "almoxarifadobotucatu-5e03d",
+      storageBucket: "almoxarifadobotucatu-5e03d.firebasestorage.app",
+      messagingSenderId: "828951000388",
+      appId: "1:828951000388:web:06dbe3cb5764872e7b1311"
+    };
 
-  // Inicializa Firebase
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
+    // Inicializa Firebase
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
 
-  // Verifica autenticação
-  onAuthStateChanged(auth, (user) => {
-    if (!user) {
-      // Usuário não logado → redireciona
-      window.location.href = "paineldecontrole.html";
-    }
-  });
+    // Verifica autenticação
+    onAuthStateChanged(auth, (user) => {
+      if (!user) {
+        // Usuário não logado → redireciona
+        window.location.replace("paineldecontrole.html");
+      } else {
+        // Usuário logado → mostra o conteúdo
+        document.body.style.display = "block";
+      }
+    });
+  </script>
+</body>
+</html>
+
 </script>
 
 </html>
