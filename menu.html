@@ -129,7 +129,7 @@
   // Verifica autenticação
   onAuthStateChanged(auth, (user) => {
     if (!user) {
-      window.location.replace("paineldecontrole.html"); // 🔄 redireciona para login
+      window.location.replace("paineldecontrole.html"); // 🔄 redireciona se não logado
     } else {
       document.body.style.display = "flex";
     }
@@ -148,8 +148,8 @@
           await caches.delete(key);
         }
       }
-      // Redireciona
-      window.location.replace("login.html");
+      // Redireciona para painel de controle
+      window.location.replace("paineldecontrole.html");
     } catch (error) {
       console.error("Erro ao sair:", error);
     }
