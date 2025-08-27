@@ -251,6 +251,7 @@
   const passwordInput = document.getElementById("password");
   const eyeLine = document.getElementById("eyeLine");
 
+  // ---------- LOGIN ----------
   loginForm.addEventListener("submit", async function(e){
     e.preventDefault();
     const username = document.getElementById("username").value.trim();
@@ -266,16 +267,26 @@
       }
 
       const dados = docSnap.data();
-      const senhaConfere = await dcodeIO.bcrypt.compare(password, dados.senhaHash);
+      const senhaConfere = await bcrypt.compare(password, dados.senhaHash);
 
-      if(senhaConfere){
-        sessionStorage.setItem("logado","true");
-        localStorage.setItem("usuarioLogado", username);
-        localStorage.setItem("nomeUsuario", dados.nome || username);
-        window.location.href = "/central-de-pedidos/";
-      } else {
+      if(!senhaConfere){
         alert("Senha incorreta!");
+        return;
       }
+
+      // Se precisa trocar a senha -> abre modal e não deixa logar
+      if(dados.precisaTrocar){
+        alert("Você precisa alterar a senha padrão antes de continuar.");
+        document.getElementById("btnChangePassword").click();
+        return;
+      }
+
+      // Login ok
+      sessionStorage.setItem("logado","true");
+      localStorage.setItem("usuarioLogado", username);
+      localStorage.setItem("nomeUsuario", dados.nome || username);
+      window.location.href = "/central-de-pedidos/";
+
     } catch(err){
       alert("Erro ao fazer login: " + err);
     }
@@ -289,7 +300,7 @@
     togglePassword.style.color = type==="password"?"var(--text-medium)":"var(--primary-color)";
   });
 
-  // Modal e olhos da senha (igual ao seu código)
+  // ---------- MODAL ALTERAR SENHA ----------
   const toggleCurrentPassword = document.getElementById("toggleCurrentPassword");
   const currentPasswordInput = document.getElementById("currentPassword");
   const eyeLineCurrent = document.getElementById("eyeLineCurrent");
@@ -324,7 +335,10 @@
     const currentPass = document.getElementById("currentPassword").value.trim();
     const newPass = document.getElementById("newPassword").value.trim();
 
-    if(!usuario || !currentPass || !newPass){ alert("Preencha todos os campos"); return; }
+    if(!usuario || !currentPass || !newPass){ 
+      alert("Preencha todos os campos"); 
+      return; 
+    }
 
     try{
       const docRef = db.collection("usuarios").doc(usuario);
@@ -333,11 +347,11 @@
       if(!docSnap.exists){ alert("Usuário não encontrado"); return; }
       const dados = docSnap.data();
 
-      const senhaConfere = await dcodeIO.bcrypt.compare(currentPass, dados.senhaHash);
+      const senhaConfere = await bcrypt.compare(currentPass, dados.senhaHash);
       if(!senhaConfere){ alert("Senha atual incorreta"); return; }
 
-      const newHash = await dcodeIO.bcrypt.hash(newPass, 10);
-      await docRef.set({ senhaHash: newHash }, { merge:true });
+      const newHash = await bcrypt.hash(newPass, 10);
+      await docRef.set({ senhaHash: newHash, precisaTrocar: false }, { merge:true });
 
       alert("Senha alterada com sucesso!");
       modal.style.display="none";
@@ -348,7 +362,7 @@
     }
   });
 
-  // Bloqueios de teclado e clique direito
+  // ---------- BLOQUEIOS DE TECLADO ----------
   document.addEventListener('keydown', function (event) {
     if(event.key==="F12" || event.keyCode===123){ event.preventDefault(); return false; }
     if((event.ctrlKey && event.key.toLowerCase()==='s') || (event.ctrlKey && event.key.toLowerCase()==='u')){ event.preventDefault(); return false; }
