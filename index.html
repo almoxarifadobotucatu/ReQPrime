@@ -334,11 +334,11 @@
       if(!docSnap.exists){ alert("Usuário não encontrado"); return; }
       const dados = docSnap.data();
 
-      const senhaConfere = await bcrypt.compare(currentPass, dados.senhaHash);
+      const senhaConfere = await dcodeIO.bcrypt.compare(password, dados.senhaHash);
       if(!senhaConfere){ alert("Senha atual incorreta"); return; }
 
       const newHash = await bcrypt.hash(newPass, 10);
-      await docRef.set({ senhaHash: newHash }, { merge:true });
+      const newHash = await dcodeIO.bcrypt.hash(newPass, 10);
 
       alert("Senha alterada com sucesso!");
       modal.style.display="none";
