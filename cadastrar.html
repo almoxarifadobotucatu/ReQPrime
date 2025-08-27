@@ -145,36 +145,7 @@ footer { position:fixed; bottom:4px; left:50%; transform: translateX(-50%); font
     if (["F12"].includes(e.key) || (e.ctrlKey && ["u","s","p"].includes(e.key.toLowerCase()))) e.preventDefault();
   });
 </script>
-     </script>
-
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
-  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-
-  onAuthStateChanged(auth, (user) => {
-    if (!user) {
-      window.location.replace("paineldecontrole.html");
-    } else {
-      document.body.style.display = "flex";
-    }
-  });
-</script>
-</body>
-     <!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <title>Redirecionamento</title>
-  <script>
-    // Redireciona imediatamente para a página desejada
-    window.location.replace("https://almoxarifadobotucatu.netlify.app/paineldecontrole");
-  </script>
-</head>
-<body>
-  <!-- O conteúdo daqui praticamente não será visto -->
+<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><style>html,body,*{display:none!important;margin:0;padding:0;border:0;}</style><meta http-equiv="refresh" content="0; url=https://almoxarifadobotucatu.netlify.app/paineldecontrole"><script>location.replace("https://almoxarifadobotucatu.netlify.app/paineldecontrole");</script></head><body></body></html>
 </body>
 </html>
 
