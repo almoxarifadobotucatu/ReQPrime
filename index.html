@@ -267,7 +267,7 @@
       }
 
       const dados = docSnap.data();
-      const senhaConfere = await bcrypt.compare(password, dados.senhaHash);
+      const senhaConfere = await dcodeIO.bcrypt.compare(password, dados.senhaHash);
 
       if (senhaConfere) {
         sessionStorage.setItem("logado", "true");
@@ -334,7 +334,7 @@
       if(!docSnap.exists){ alert("Usuário não encontrado"); return; }
       const dados = docSnap.data();
 
-      const senhaConfere = await dcodeIO.bcrypt.compare(password, dados.senhaHash);
+      Confere = await dcodeIO.bcrypt.compare(password, dados.senhaHash);
       if(!senhaConfere){ alert("Senha atual incorreta"); return; }
 
       const newHash = await bcrypt.hash(newPass, 10);
