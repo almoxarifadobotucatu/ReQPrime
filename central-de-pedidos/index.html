@@ -20,6 +20,17 @@
       }
     });
 
+    // Detecção contínua de DevTools
+    (function() {
+      const threshold = 160;
+      setInterval(function() {
+        if (window.outerWidth - window.innerWidth > threshold || 
+            window.outerHeight - window.innerHeight > threshold) {
+          window.location.href = "/acesso-negado.html";
+        }
+      }, 500);
+    })();
+
     // Listas de nomes comuns em português
     const nomesMasculinos = [
       "João","Pedro","Lucas","Mateus","Gabriel","Rafael","Felipe","Bruno","Gustavo","Leonardo",
