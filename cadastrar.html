@@ -1,127 +1,105 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cadastrar Usuário</title>
-<link rel="icon" type="image/png" sizes="32x32" href="">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cadastro de Usuário</title>
+  <!-- Firebase -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 
-<!-- Firebase -->
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <!-- bcryptjs (versão correta para navegador!) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bcryptjs/2.4.3/bcryptjs.min.js"></script>
 
-<!-- bcryptjs -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bcryptjs/2.4.3/bcrypt.min.js"></script>
-
-<style>
-:root {
-  --primary-color: #0a66c2;
-  --primary-hover-color: #004182;
-  --background-light: #1a1a2e;
-  --background-white: #16213e;
-  --text-dark: #ffffff;
-  --text-medium: #b8b8b8;
-  --border-light: #2a2a3a;
-  --shadow-light: 0 4px 6px -1px rgba(0,0,0,0.3), 0 2px 4px -1px rgba(0,0,0,0.2);
-}
-body {
-  background-color: var(--background-light);
-  font-family: 'Inter', sans-serif;
-  margin: 0; padding: 0;
-  display: flex; justify-content: center; align-items: center;
-  min-height: 100vh;
-  color: var(--text-dark);
-}
-.login-container {
-  width: 60vw; max-width: 900px; min-width: 300px;
-  background-color: var(--background-white);
-  margin: auto; padding: 5vh 4vw;
-  border-radius: 20px; box-shadow: var(--shadow-light);
-  display: flex; flex-direction: column; justify-content: center;
-}
-h2 { text-align:center; color: var(--text-dark); margin-bottom:30px; font-size:2.3rem; }
-label { display:block; margin-top:20px; color: var(--text-medium); font-weight:500; margin-bottom:8px; font-size:0.95rem; }
-input { width:100%; padding:14px 18px; border:1px solid var(--border-light); border-radius:12px; box-sizing:border-box; font-size:1rem; color: var(--text-dark); background-color: rgba(255,255,255,0.1); margin-bottom:10px; }
-input:focus { outline:none; border-color: var(--primary-color); box-shadow: 0 0 0 4px rgba(10,102,194,0.3); background-color: rgba(255,255,255,0.15); }
-.buttons { margin-top:30px; text-align:center; display:flex; justify-content:center; gap:15px; }
-button { background: var(--primary-color); color:white; padding:14px 30px; border:none; border-radius:12px; cursor:pointer; font-size:1rem; font-weight:600; box-shadow: var(--shadow-light); transition:0.3s; }
-button:hover { background: var(--primary-hover-color); transform: scale(1.02); }
-footer { position:fixed; bottom:4px; left:50%; transform: translateX(-50%); font-size:9px; color:#888; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; opacity:0.75; user-select:none;}
-</style>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f0f0f0;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 500px;
+      margin: 50px auto;
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    input, button {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 16px;
+    }
+    button {
+      background: #28a745;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    button:hover {
+      background: #218838;
+    }
+  </style>
 </head>
 <body>
+  <div class="container">
+    <h2>Cadastrar Usuário</h2>
+    <input type="text" id="nome" placeholder="Nome do usuário" required>
+    <input type="text" id="usuario" placeholder="Usuário (login)" required>
+    <input type="password" id="senha" placeholder="Senha padrão (ex: master1@)" required>
+    <button onclick="cadastrarUsuario()">Cadastrar</button>
+  </div>
 
-<div class="login-container">
-  <h2>Cadastrar Usuário</h2>
-  <form id="cadastroForm">
-    <label for="login">Login:</label>
-    <input type="text" id="login" required>
-    <label for="nome">Nome:</label>
-    <input type="text" id="nome" required>
-    <label for="senha">Senha:</label>
-    <input type="password" id="senha" required>
-    <div class="buttons">
-      <button type="submit">Cadastrar</button>
-    </div>
-  </form>
-</div>
+  <script>
+    // 🔹 Configuração do Firebase
+    const firebaseConfig = {
+      apiKey: "SUA_API_KEY",
+      authDomain: "SEU_PROJETO.firebaseapp.com",
+      projectId: "SEU_PROJETO",
+      storageBucket: "SEU_PROJETO.appspot.com",
+      messagingSenderId: "SEU_ID",
+      appId: "SUA_APP_ID"
+    };
 
-<footer>© 2025. Todos os direitos reservados.</footer>
+    // 🔹 Inicializa o Firebase e o Firestore
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
 
-<script>
-const firebaseConfig = {
-  apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
-  authDomain: "almoxarifadobotucatu-5e03d.firebaseapp.com",
-  projectId: "almoxarifadobotucatu-5e03d",
-  storageBucket: "almoxarifadobotucatu-5e03d.firebasestorage.app",
-  messagingSenderId: "828951000388",
-  appId: "1:828951000388:web:06dbe3cb5764872e7b1311"
-};
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+    // 🔹 Função para cadastrar novo usuário
+    async function cadastrarUsuario() {
+      const nome = document.getElementById("nome").value.trim();
+      const usuario = document.getElementById("usuario").value.trim();
+      const senha = document.getElementById("senha").value.trim();
 
-const form = document.getElementById("cadastroForm");
+      if (!nome || !usuario || !senha) {
+        alert("Preencha todos os campos!");
+        return;
+      }
 
-form.addEventListener("submit", async (e) => {
-  e.preventDefault();
+      try {
+        // ✅ Gera o hash da senha com bcryptjs
+        const senhaHash = bcrypt.hashSync(senha, 10);
 
-  const login = document.getElementById("login").value.trim();
-  const nome = document.getElementById("nome").value.trim();
-  const senha = document.getElementById("senha").value.trim();
+        // 🔹 Salva no Firestore com flag `precisaTrocar`
+        await db.collection("usuarios").doc(usuario).set({
+          nome: nome,
+          senhaHash: senhaHash,
+          precisaTrocar: true // ⚠️ obriga troca de senha no 1º login
+        });
 
-  if (!login || !nome || !senha) {
-    alert("Preencha todos os campos!");
-    return;
-  }
+        alert("Usuário cadastrado com sucesso!");
+        document.getElementById("nome").value = "";
+        document.getElementById("usuario").value = "";
+        document.getElementById("senha").value = "";
 
-  try {
-    const docRef = db.collection("usuarios").doc(login);
-    const docSnap = await docRef.get();
-    if (docSnap.exists) {
-      alert("⚠️ Já existe um usuário com este login!");
-      return;
+      } catch (erro) {
+        console.error("Erro ao cadastrar:", erro);
+        alert("Erro ao cadastrar: " + erro);
+      }
     }
-
-    // gera hash da senha usando bcryptjs
-    const senhaHash = bcrypt.hashSync(senha, 10);
-
-    await docRef.set({
-      nome: nome,
-      senhaHash: senhaHash
-    });
-
-    alert("✅ Usuário cadastrado com sucesso!");
-    form.reset();
-  } catch (err) {
-    alert("Erro ao cadastrar: " + err);
-  }
-});
-</script>
-<script>
-document.addEventListener("contextmenu", e => e.preventDefault());
-document.addEventListener("keydown", function(e){
-  if(["F12","p"].includes(e.key) || (e.ctrlKey && ["u","s"].includes(e.key.toLowerCase()))) e.preventDefault();
-});
-</script>
+  </script>
 </body>
 </html>
