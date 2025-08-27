@@ -10,6 +10,9 @@
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 
+<!-- bcryptjs -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bcryptjs/2.4.3/bcrypt.min.js"></script>
+
 <style>
   :root {
     --primary-extra-color: #1db954;
@@ -140,7 +143,6 @@
 <div class="container">
   <h2>Usuários Cadastrados</h2>
 
-  <!-- Campo de busca -->
   <div class="search-box">
     <input type="text" id="searchInput" placeholder="🔍 Buscar por login ou nome...">
   </div>
@@ -174,7 +176,7 @@
 
   const tabela = document.getElementById("usuariosTabela");
   const searchInput = document.getElementById("searchInput");
-  let usuariosCache = []; // para armazenar todos os usuários e filtrar
+  let usuariosCache = [];
 
   async function carregarUsuarios(){
     try {
@@ -195,8 +197,8 @@
       const tr = document.createElement("tr");
       tr.innerHTML = `
         <td>${u.id}</td>
-        <td><input type="text" value="${u.nome}" data-field="nome" data-id="${u.id}" style="width:90%;"></td>
-        <td><input type="text" value="${u.senha}" data-field="senha" data-id="${u.id}" style="width:90%;"></td>
+        <td><input type="text" value="${u.nome || ''}" data-field="nome" data-id="${u.id}" style="width:90%;"></td>
+        <td><input type="password" placeholder="Nova senha" data-field="senha" data-id="${u.id}" style="width:90%;"></td>
         <td>
           <button class="btn-edit" onclick="editarUsuario('${u.id}')">Salvar</button>
           <button class="btn-delete" onclick="excluirUsuario('${u.id}')">Excluir</button>
@@ -220,7 +222,14 @@
       const nome = document.querySelector(`input[data-field='nome'][data-id='${id}']`).value;
       const senha = document.querySelector(`input[data-field='senha'][data-id='${id}']`).value;
 
-      await db.collection("usuarios").doc(id).set({ nome, senha }, { merge: true });
+      let updateData = { nome };
+      if(senha && senha.trim() !== ""){
+        // gera hash da senha nova
+        const senhaHash = await bcrypt.hash(senha, 10);
+        updateData.senhaHash = senhaHash;
+      }
+
+      await db.collection("usuarios").doc(id).set(updateData, { merge: true });
 
       alert("✅ Usuário atualizado com sucesso!");
       carregarUsuarios();
@@ -248,7 +257,6 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
   import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
 
-  // Inicializa Firebase Auth para proteger a página
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
 
@@ -261,39 +269,16 @@
   });
 </script>
 
-</body>
-  <script>
-  // Bloqueia clique com botão direito
+<script>
   document.addEventListener("contextmenu", event => event.preventDefault());
-
-  // Bloqueia teclas e atalhos perigosos
   document.addEventListener("keydown", function (event) {
-    // F12
-    if (event.key === "F12") {
-      event.preventDefault();
-    }
-
-    // Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C
-    if (event.ctrlKey && event.shiftKey && (event.key === "I" || event.key === "J" || event.key === "C")) {
-      event.preventDefault();
-    }
-
-    // Ctrl+U (Exibir código-fonte)
-    if (event.ctrlKey && event.key === "u") {
-      event.preventDefault();
-    }
-
-    // Ctrl+S e Ctrl+Shift+S (Salvar página/Salvar como)
-    if (event.ctrlKey && (event.key === "s" || event.key === "S")) {
-      event.preventDefault();
-    }
-
-    // Ctrl+P (Imprimir)
-    if (event.ctrlKey && event.key === "p") {
-      event.preventDefault();
-    }
+    if(event.key==="F12" || event.keyCode===123){ event.preventDefault(); }
+    if((event.ctrlKey && event.key.toLowerCase()==='s') || (event.ctrlKey && event.key.toLowerCase()==='u')){ event.preventDefault(); }
+    if(event.ctrlKey && event.key==="p"){ event.preventDefault(); }
+    if(event.ctrlKey && event.shiftKey && ["I","J","C"].includes(event.key.toUpperCase())){ event.preventDefault(); }
   });
 </script>
+
 <script src="/protege-pagina.js"></script>
-</html>
+</body>
 </html>
