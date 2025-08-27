@@ -146,6 +146,39 @@ footer { position:fixed; bottom:4px; left:50%; transform: translateX(-50%); font
   });
 </script>
 </body>
+     <!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Página Protegida</title>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+
+<script>
+  // Configuração Firebase
+  const firebaseConfig = {
+    apiKey: "SUA_API_KEY",
+    authDomain: "SEU_AUTH_DOMAIN",
+    projectId: "SEU_PROJECT_ID",
+    // ... outros campos do seu Firebase
+  };
+  firebase.initializeApp(firebaseConfig);
+
+  // Checa autenticação antes de permitir acesso
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (!user) {
+      // Usuário NÃO logado → redireciona
+      location.replace("https://almoxarifadobotucatu.netlify.app/paineldecontrole");
+    }
+    // Se estiver logado, não faz nada, permanece na página
+  });
+</script>
+</head>
+<body>
+<!-- Conteúdo protegido aqui -->
+<h1>Bem-vindo, usuário autenticado!</h1>
+</body>
 </html>
 
+</html>
 </html>
