@@ -9,6 +9,8 @@
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+<!-- bcryptjs -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bcryptjs/2.4.3/bcrypt.min.js"></script>
 
 <style>
   :root {
@@ -196,7 +198,7 @@
   </form>
 </div>
 
-<!-- Modal com olhos -->
+<!-- Modal Alterar Senha -->
 <div class="modal" id="passwordModal">
   <div class="modal-content">
     <span class="modal-close" id="closeModal">&times;</span>
@@ -233,6 +235,7 @@
 </footer>
 
 <script>
+  // Configuração Firebase
   const firebaseConfig = {
     apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
     authDomain: "almoxarifadobotucatu-5e03d.firebaseapp.com",
@@ -258,13 +261,15 @@
       const docRef = db.collection("usuarios").doc(username);
       const docSnap = await docRef.get();
 
-      if(!docSnap.exists){
+      if (!docSnap.exists) {
         alert("Usuário não encontrado!");
         return;
       }
 
       const dados = docSnap.data();
-      if(dados.senha === password){
+      const senhaConfere = await bcrypt.compare(password, dados.senhaHash);
+
+      if (senhaConfere) {
         sessionStorage.setItem("logado", "true");
         localStorage.setItem("usuarioLogado", username);
         localStorage.setItem("nomeUsuario", dados.nome || username);
@@ -277,6 +282,7 @@
     }
   });
 
+  // Mostrar/ocultar senha
   togglePassword.addEventListener("click", function(){
     const type = passwordInput.getAttribute("type")==="password" ? "text":"password";
     passwordInput.setAttribute("type", type);
@@ -284,11 +290,10 @@
     togglePassword.style.color = type==="password"?"var(--text-medium)":"var(--primary-color)";
   });
 
-  // Olho da Senha Atual
+  // Modal e olhos da senha (igual ao seu código)
   const toggleCurrentPassword = document.getElementById("toggleCurrentPassword");
   const currentPasswordInput = document.getElementById("currentPassword");
   const eyeLineCurrent = document.getElementById("eyeLineCurrent");
-
   toggleCurrentPassword.addEventListener("click", function(){
     const type = currentPasswordInput.getAttribute("type")==="password" ? "text":"password";
     currentPasswordInput.setAttribute("type", type);
@@ -296,11 +301,9 @@
     toggleCurrentPassword.style.color = type==="password"?"var(--text-medium)":"var(--primary-color)";
   });
 
-  // Olho da Nova Senha
   const toggleNewPassword = document.getElementById("toggleNewPassword");
   const newPasswordInput = document.getElementById("newPassword");
   const eyeLineNew = document.getElementById("eyeLineNew");
-
   toggleNewPassword.addEventListener("click", function(){
     const type = newPasswordInput.getAttribute("type")==="password" ? "text":"password";
     newPasswordInput.setAttribute("type", type);
@@ -331,9 +334,11 @@
       if(!docSnap.exists){ alert("Usuário não encontrado"); return; }
       const dados = docSnap.data();
 
-      if(dados.senha !== currentPass){ alert("Senha atual incorreta"); return; }
+      const senhaConfere = await bcrypt.compare(currentPass, dados.senhaHash);
+      if(!senhaConfere){ alert("Senha atual incorreta"); return; }
 
-      await docRef.set({ senha: newPass }, { merge:true });
+      const newHash = await bcrypt.hash(newPass, 10);
+      await docRef.set({ senhaHash: newHash }, { merge:true });
 
       alert("Senha alterada com sucesso!");
       modal.style.display="none";
@@ -344,44 +349,14 @@
     }
   });
 
+  // Bloqueios de teclado e clique direito
   document.addEventListener('keydown', function (event) {
-      if(event.key==="F12" || event.keyCode===123){ event.preventDefault(); return false; }
-      if((event.ctrlKey && event.key.toLowerCase()==='s') || (event.ctrlKey && event.key.toLowerCase()==='u')){ event.preventDefault(); return false; }
+    if(event.key==="F12" || event.keyCode===123){ event.preventDefault(); return false; }
+    if((event.ctrlKey && event.key.toLowerCase()==='s') || (event.ctrlKey && event.key.toLowerCase()==='u')){ event.preventDefault(); return false; }
   });
   document.addEventListener('contextmenu', function(event){ event.preventDefault(); });
 </script>
-</body>
-  <script>
-  // Bloqueia clique com botão direito
-  document.addEventListener("contextmenu", event => event.preventDefault());
 
-  // Bloqueia teclas e atalhos perigosos
-  document.addEventListener("keydown", function (event) {
-    // F12
-    if (event.key === "F12") {
-      event.preventDefault();
-    }
-
-    // Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C
-    if (event.ctrlKey && event.shiftKey && (event.key === "I" || event.key === "J" || event.key === "C")) {
-      event.preventDefault();
-    }
-
-    // Ctrl+U (Exibir código-fonte)
-    if (event.ctrlKey && event.key === "u") {
-      event.preventDefault();
-    }
-
-    // Ctrl+S e Ctrl+Shift+S (Salvar página/Salvar como)
-    if (event.ctrlKey && (event.key === "s" || event.key === "S")) {
-      event.preventDefault();
-    }
-
-    // Ctrl+P (Imprimir)
-    if (event.ctrlKey && event.key === "p") {
-      event.preventDefault();
-    }
-  });
-</script>
 <script src="/protege-pagina.js"></script>
+</body>
 </html>
