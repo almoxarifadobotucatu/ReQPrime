@@ -9,7 +9,7 @@
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
-<!-- bcryptjs -->
+<!-- bcryptjs para navegador -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bcryptjs/2.4.3/bcrypt.min.js"></script>
 
 <style>
@@ -235,7 +235,6 @@
 </footer>
 
 <script>
-  // Configuração Firebase
   const firebaseConfig = {
     apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
     authDomain: "almoxarifadobotucatu-5e03d.firebaseapp.com",
@@ -261,7 +260,7 @@
       const docRef = db.collection("usuarios").doc(username);
       const docSnap = await docRef.get();
 
-      if (!docSnap.exists) {
+      if(!docSnap.exists){
         alert("Usuário não encontrado!");
         return;
       }
@@ -269,8 +268,8 @@
       const dados = docSnap.data();
       const senhaConfere = await dcodeIO.bcrypt.compare(password, dados.senhaHash);
 
-      if (senhaConfere) {
-        sessionStorage.setItem("logado", "true");
+      if(senhaConfere){
+        sessionStorage.setItem("logado","true");
         localStorage.setItem("usuarioLogado", username);
         localStorage.setItem("nomeUsuario", dados.nome || username);
         window.location.href = "/central-de-pedidos/";
@@ -282,7 +281,7 @@
     }
   });
 
-  // Mostrar/ocultar senha
+  // Toggle senha
   togglePassword.addEventListener("click", function(){
     const type = passwordInput.getAttribute("type")==="password" ? "text":"password";
     passwordInput.setAttribute("type", type);
@@ -334,11 +333,11 @@
       if(!docSnap.exists){ alert("Usuário não encontrado"); return; }
       const dados = docSnap.data();
 
-      Confere = await dcodeIO.bcrypt.compare(password, dados.senhaHash);
+      const senhaConfere = await dcodeIO.bcrypt.compare(currentPass, dados.senhaHash);
       if(!senhaConfere){ alert("Senha atual incorreta"); return; }
 
-      const senhaConfere = await dcodeIO.bcrypt.compare(password, dados.senhaHash);
       const newHash = await dcodeIO.bcrypt.hash(newPass, 10);
+      await docRef.set({ senhaHash: newHash }, { merge:true });
 
       alert("Senha alterada com sucesso!");
       modal.style.display="none";
