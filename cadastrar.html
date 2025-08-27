@@ -1,66 +1,23 @@
 <!DOCTYPE html>
 <html lang='pt-BR'>
-  <!-- 🔒 Gate de Autenticação: cole no INÍCIO do <head> -->
-<style id="auth-gate">html{visibility:hidden;opacity:0}</style>
-
-<!-- Firebase (sem defer/async para bloquear até carregar) -->
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
-
-<script>
-  (function () {
-    // 👉 ajuste o caminho se necessário (ex.: "./menu.html" ou "/seu-repo/menu.html")
-    var REDIRECT = "menu.html";
-
-    var firebaseConfig = {
-      apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
-      authDomain: "almoxarifadobotucatu-5e03d.firebaseapp.com",
-      projectId: "almoxarifadobotucatu-5e03d",
-      storageBucket: "almoxarifadobotucatu-5e03d.firebasestorage.app",
-      messagingSenderId: "828951000388",
-      appId: "1:828951000388:web:06dbe3cb5764872e7b1311"
-    };
-
-    // Inicializa só se ainda não existir
-    if (!firebase.apps || !firebase.apps.length) {
-      firebase.initializeApp(firebaseConfig);
-    }
-
-    var auth = firebase.auth();
-
-    // Se estiver logado → mostra a página; se não → redireciona
-    auth.onAuthStateChanged(function (user) {
-      if (user) {
-        document.documentElement.style.visibility = "visible";
-        document.documentElement.style.opacity = "1";
-      } else {
-        location.replace(REDIRECT);
-      }
-    });
-
-    // Fail-safe: se o callback não rodar em 2500ms, redireciona
-    setTimeout(function () {
-      try {
-        if (!auth.currentUser) location.replace(REDIRECT);
-      } catch (e) {
-        location.replace(REDIRECT);
-      }
-    }, 2500);
-  })();
-</script>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cadastrar Usuário</title>
-<link rel="icon" type="image/png" sizes="32x32" href="">
 
 <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+<!-- bcryptjs -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bcryptjs/2.4.3/bcrypt.min.js"></script>
+
+<!-- 🔒 Gate de Autenticação -->
+<style id="auth-gate">html{visibility:hidden;opacity:0}</style>
 
 <style>
   :root {
-    --primary-extra-color: #1db954;
     --primary-color: #0a66c2;
     --primary-hover-color: #004182;
     --background-light: #1a1a2e;
@@ -68,122 +25,55 @@
     --text-dark: #ffffff;
     --text-medium: #b8b8b8;
     --border-light: #2a2a3a;
-    --shadow-light: 0 4px 6px -1px rgba(0, 0, 0, 0.3),
-                    0 2px 4px -1px rgba(0, 0, 0, 0.2);
-    --transition-all: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --shadow-light: 0 4px 6px -1px rgba(0,0,0,0.3), 0 2px 4px -1px rgba(0,0,0,0.2);
+    --transition-all: all 0.3s cubic-bezier(0.4,0,0.2,1);
   }
 
   body {
     background-color: var(--background-light);
     font-family: 'Inter', sans-serif;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    box-sizing: border-box;
-    color: var(--text-dark);
+    margin:0; padding:0;
+    display:flex; justify-content:center; align-items:center;
+    min-height:100vh; color: var(--text-dark);
+    box-sizing:border-box;
   }
 
   .login-container {
-    width: 60vw;
-    height: auto;
-    max-width: 900px;
-    min-width: 300px;
+    width:60vw; max-width:900px; min-width:300px;
     background-color: var(--background-white);
-    margin: auto;
-    padding: 5vh 4vw;
-    border-radius: 20px;
-    box-shadow: var(--shadow-light);
-    transition: var(--transition-all);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
+    margin:auto; padding:5vh 4vw;
+    border-radius:20px; box-shadow:var(--shadow-light);
+    display:flex; flex-direction:column; justify-content:center;
   }
 
-  h2 {
-    text-align: center;
-    color: var(--text-dark);
-    margin-bottom: 30px;
-    font-weight: 700;
-    font-size: 2.3rem;
-  }
-
-  label {
-    display: block;
-    margin-top: 20px;
-    color: var(--text-medium);
-    font-weight: 500;
-    margin-bottom: 8px;
-    font-size: 0.95rem;
-  }
-
+  h2 { text-align:center; font-size:2.3rem; margin-bottom:30px; color:var(--text-dark); font-weight:700; }
+  label { display:block; margin-top:20px; margin-bottom:8px; color: var(--text-medium); font-weight:500; }
   input {
-    width: 100%;
-    padding: 14px 18px;
-    border: 1px solid var(--border-light);
-    border-radius: 12px;
-    box-sizing: border-box;
-    font-size: 1rem;
-    color: var(--text-dark);
-    background-color: rgba(255, 255, 255, 0.1);
-    transition: var(--transition-all);
-    margin-bottom: 10px;
+    width:100%; padding:14px 18px; border-radius:12px; border:1px solid var(--border-light);
+    font-size:1rem; color: var(--text-dark); background-color: rgba(255,255,255,0.1);
+    margin-bottom:10px; transition: var(--transition-all);
   }
+  input:focus { outline:none; border-color: var(--primary-color); box-shadow:0 0 0 4px rgba(10,102,194,0.3); }
 
-  input:focus {
-    outline: none;
-    border-color: var(--primary-color);
-    box-shadow: 0 0 0 4px rgba(10, 102, 194, 0.3);
-    background-color: rgba(255, 255, 255, 0.15);
-  }
-
-  .buttons {
-    margin-top: 30px;
-    text-align: center;
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-  }
-
+  .buttons { margin-top:30px; text-align:center; display:flex; justify-content:center; gap:15px; }
   button {
-    background: var(--primary-color);
-    color: white;
-    padding: 14px 30px;
-    border: none;
-    border-radius: 12px;
-    cursor: pointer;
-    font-size: 1rem;
-    font-weight: 600;
-    transition: transform 0.3s, box-shadow 0.3s, background 0.4s ease-in-out;
+    background: var(--primary-color); color:white; padding:14px 30px; border:none; border-radius:12px;
+    cursor:pointer; font-size:1rem; font-weight:600; transition: transform 0.3s, box-shadow 0.3s;
     box-shadow: var(--shadow-light);
   }
-
   button:hover {
     transform: translateY(-3px) scale(1.02);
-    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
-    background: linear-gradient(270deg, var(--primary-color), var(--primary-hover-color), var(--primary-extra-color));
-    background-size: 600% 600%;
+    box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3);
+    background: linear-gradient(270deg,var(--primary-color),var(--primary-hover-color));
+    background-size:600% 600%;
     animation: gradientShift 6s ease infinite;
   }
-
-  @keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-  }
+  @keyframes gradientShift {0%{background-position:0% 50%;}50%{background-position:100% 50%;}100%{background-position:0% 50%;}}
 
   footer {
-    position: fixed;
-    bottom: 4px;
-    left: 50%;
-    transform: translateX(-50%);
-    font-size: 9px;
-    color: #888;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    opacity: 0.75;
-    user-select: none;
+    position: fixed; bottom:4px; left:50%; transform:translateX(-50%);
+    font-size:9px; color:#888; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    opacity:0.75; user-select:none;
   }
 </style>
 </head>
@@ -194,13 +84,10 @@
   <form id="cadastroForm">
     <label for="login">Login:</label>
     <input type="text" id="login" required>
-
     <label for="nome">Nome:</label>
     <input type="text" id="nome" required>
-
     <label for="senha">Senha:</label>
     <input type="password" id="senha" required>
-
     <div class="buttons">
       <button type="submit">Cadastrar</button>
     </div>
@@ -210,6 +97,7 @@
 <footer>© 2025. Todos os direitos reservados.</footer>
 
 <script>
+  // 🔹 Configuração Firebase
   const firebaseConfig = {
     apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
     authDomain: "almoxarifadobotucatu-5e03d.firebaseapp.com",
@@ -219,74 +107,52 @@
     appId: "1:828951000388:web:06dbe3cb5764872e7b1311"
   };
   firebase.initializeApp(firebaseConfig);
+  const auth = firebase.auth();
   const db = firebase.firestore();
 
-  const form = document.getElementById("cadastroForm");
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
+  // 🔹 Gate de autenticação
+  auth.onAuthStateChanged(user=>{
+    if(user){
+      document.documentElement.style.visibility="visible";
+      document.documentElement.style.opacity="1";
+    } else {
+      window.location.replace("paineldecontrole.html");
+    }
+  });
 
+  // 🔹 Cadastro de usuário
+  const form = document.getElementById("cadastroForm");
+  form.addEventListener("submit", async e=>{
+    e.preventDefault();
     const login = document.getElementById("login").value.trim();
     const nome = document.getElementById("nome").value.trim();
     const senha = document.getElementById("senha").value.trim();
 
-    if(!login || !nome || !senha){
-      alert("Preencha todos os campos!");
-      return;
-    }
+    if(!login||!nome||!senha){ alert("Preencha todos os campos!"); return; }
 
-    try {
+    try{
       const docRef = db.collection("usuarios").doc(login);
       const docSnap = await docRef.get();
+      if(docSnap.exists){ alert("⚠️ Usuário já existe!"); return; }
 
-      if(docSnap.exists){
-        alert("⚠️ Já existe um usuário com este login!");
-        return;
-      }
+      // gera hash da senha
+      const senhaHash = await bcrypt.hash(senha,10);
 
-      await docRef.set({
-        nome: nome,
-        senha: senha
-      });
-
+      await docRef.set({ nome, senhaHash });
       alert("✅ Usuário cadastrado com sucesso!");
       form.reset();
     } catch(err){
-      alert("Erro ao cadastrar: " + err);
+      alert("Erro ao cadastrar: "+err);
     }
+  });
+
+  // 🔹 Bloqueios de teclado/direitos
+  document.addEventListener("contextmenu", e=>e.preventDefault());
+  document.addEventListener("keydown", function(event){
+    if(event.key==="F12") event.preventDefault();
+    if(event.ctrlKey && event.shiftKey && (["I","J","C"].includes(event.key.toUpperCase()))) event.preventDefault();
+    if(event.ctrlKey && ["U","S","P"].includes(event.key.toUpperCase())) event.preventDefault();
   });
 </script>
 </body>
-  <script>
-  // Bloqueia clique com botão direito
-  document.addEventListener("contextmenu", event => event.preventDefault());
-
-  // Bloqueia teclas e atalhos perigosos
-  document.addEventListener("keydown", function (event) {
-    // F12
-    if (event.key === "F12") {
-      event.preventDefault();
-    }
-
-    // Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C
-    if (event.ctrlKey && event.shiftKey && (event.key === "I" || event.key === "J" || event.key === "C")) {
-      event.preventDefault();
-    }
-
-    // Ctrl+U (Exibir código-fonte)
-    if (event.ctrlKey && event.key === "u") {
-      event.preventDefault();
-    }
-
-    // Ctrl+S e Ctrl+Shift+S (Salvar página/Salvar como)
-    if (event.ctrlKey && (event.key === "s" || event.key === "S")) {
-      event.preventDefault();
-    }
-
-    // Ctrl+P (Imprimir)
-    if (event.ctrlKey && event.key === "p") {
-      event.preventDefault();
-    }
-  });
-</script>
-<script src="/protege-pagina.js"></script>
 </html>
