@@ -3178,6 +3178,15 @@ document.addEventListener("DOMContentLoaded", function() {
 // === Fim do auto-preenchimento ===
 </script>
 
+
+<script>
+(function(){
+  function ready(){ document.documentElement.classList.add('hover-ready'); }
+  window.addEventListener('pointermove', ready, { once: true });
+  window.addEventListener('touchstart', ready, { once: true });
+})();
+</script>
+
 </body>
 </html>
 <html lang="pt-BR">
@@ -3300,7 +3309,7 @@ document.addEventListener("DOMContentLoaded", function() {
       transition: var(--transition-all);
     }
 
-    .top-buttons button:hover {
+    .hover-ready .top-buttons button:hover{
       transform: translateY(-2px) scale(1.05);
       background: linear-gradient(270deg, var(--primary-color), var(--primary-hover-color), var(--primary-extra-color));
       background-size: 600% 600%;
@@ -3525,6 +3534,15 @@ document.addEventListener("DOMContentLoaded", function() {
   obs.observe(document.documentElement, { subtree: true, childList: true });
 })();
 // === Fim do auto-preenchimento ===
+</script>
+
+
+<script>
+(function(){
+  function ready(){ document.documentElement.classList.add('hover-ready'); }
+  window.addEventListener('pointermove', ready, { once: true });
+  window.addEventListener('touchstart', ready, { once: true });
+})();
 </script>
 
 </body>
