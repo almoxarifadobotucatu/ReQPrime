@@ -1,10 +1,4 @@
 <!DOCTYPE html>
-  <!-- Botões fixos no topo -->
-  <div class="top-buttons">
-    <button class="btn-voltar" onclick="history.back()">⬅ Voltar</button>
-    <button class="btn-sair" onclick="window.location.href='https://almoxarifadobotucatu.netlify.app/'">Sair ⮕</button>
-  </div>
-
 
 <html lang="pt-BR">
 <head>
@@ -283,6 +277,7 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
       box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
       background: linear-gradient(270deg, var(--primary-color), var(--primary-hover-color), var(--primary-extra-color));
       background-size: 600% 600%;
+      animation: gradientShift 6s ease infinite;
     }
 
     .remove-button {
@@ -292,6 +287,7 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
     .remove-button:hover {
       background: linear-gradient(270deg, var(--danger-color), var(--danger-hover-color), var(--danger-extra-color));
       background-size: 600% 600%;
+      animation: gradientShift 6s ease infinite;
     }
 
     @keyframes gradientShift {
@@ -380,6 +376,7 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
       box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
       background: linear-gradient(270deg, var(--primary-color), var(--primary-hover-color), var(--primary-extra-color));
       background-size: 600% 600%;
+      animation: gradientShift 6s ease infinite;
     }
 
     .remove-button {
@@ -389,6 +386,7 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
     .remove-button:hover {
       background: linear-gradient(270deg, var(--danger-color), var(--danger-hover-color), var(--danger-extra-color));
       background-size: 600% 600%;
+      animation: gradientShift 6s ease infinite;
     }
 
     @keyframes gradientShift {
@@ -453,6 +451,7 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
       box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
       background: linear-gradient(270deg, var(--primary-color), var(--primary-hover-color), var(--primary-extra-color));
       background-size: 600% 600%;
+      animation: gradientShift 6s ease infinite;
     }
 
     .remove-button {
@@ -462,6 +461,7 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
     .remove-button:hover {
       background: linear-gradient(270deg, var(--danger-color), var(--danger-hover-color), var(--danger-extra-color));
       background-size: 600% 600%;
+      animation: gradientShift 6s ease infinite;
     }
 
     @keyframes gradientShift {
@@ -493,6 +493,7 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
       box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
       background: linear-gradient(270deg, var(--primary-color), var(--primary-hover-color), var(--primary-extra-color));
       background-size: 600% 600%;
+      animation: gradientShift 6s ease infinite;
     }
 
     .remove-button {
@@ -502,6 +503,7 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
     .remove-button:hover {
       background: linear-gradient(270deg, var(--danger-color), var(--danger-hover-color), var(--danger-extra-color));
       background-size: 600% 600%;
+      animation: gradientShift 6s ease infinite;
     }
 
     @keyframes gradientShift {
@@ -572,6 +574,7 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
       box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
       background: linear-gradient(270deg, var(--primary-color), var(--primary-hover-color), var(--primary-extra-color));
       background-size: 600% 600%;
+      animation: gradientShift 6s ease infinite;
     }
 
     .remove-button {
@@ -581,6 +584,7 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
     .remove-button:hover {
       background: linear-gradient(270deg, var(--danger-color), var(--danger-hover-color), var(--danger-extra-color));
       background-size: 600% 600%;
+      animation: gradientShift 6s ease infinite;
     }
 
     @keyframes gradientShift {
@@ -619,6 +623,7 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
       box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
       background: linear-gradient(270deg, var(--primary-color), var(--primary-hover-color), var(--primary-extra-color));
       background-size: 600% 600%;
+      animation: gradientShift 6s ease infinite;
     }
 
     .remove-button {
@@ -628,6 +633,7 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
     .remove-button:hover {
       background: linear-gradient(270deg, var(--danger-color), var(--danger-hover-color), var(--danger-extra-color));
       background-size: 600% 600%;
+      animation: gradientShift 6s ease infinite;
     }
 
     @keyframes gradientShift {
@@ -717,8 +723,54 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
 })();
 </script>
 
+<style>
+
+/* === Botões fixos no topo (voltar e sair) === */
+.corner-btn {
+  position: fixed;
+  top: 14px;
+  z-index: 1000;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--border-light);
+  background: rgba(0,0,0,0.15);
+  color: var(--text-dark);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+}
+.corner-left { left: 14px; }
+.corner-right { right: 14px; }
+.corner-btn:hover {
+  background: rgba(255,255,255,0.10);
+  border-color: var(--primary-color);
+  transform: translateY(-1px);
+}
+.corner-btn:active {
+  transform: translateY(0);
+}
+@media (max-width: 768px) {
+  .corner-btn {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    top: 10px;
+  }
+  .corner-left { left: 10px; }
+  .corner-right { right: 10px; }
+}
+
+</style>
 </head>
 <body oncontextmenu="return false;">
+
+<!-- Botões de ação no topo -->
+<button id="btnVoltar" class="corner-btn corner-left" aria-label="Voltar" title="Voltar">← Voltar</button>
+<button id="btnSair" class="corner-btn corner-right" aria-label="Sair" title="Sair">Sair ✕</button>
+
+
 
 
 <div class="container" id="mainContainer">
@@ -3178,15 +3230,35 @@ document.addEventListener("DOMContentLoaded", function() {
 // === Fim do auto-preenchimento ===
 </script>
 
-
 <script>
-(function(){
-  function ready(){ document.documentElement.classList.add('hover-ready'); }
-  window.addEventListener('pointermove', ready, { once: true });
-  window.addEventListener('touchstart', ready, { once: true });
-})();
-</script>
 
+// === Ações dos botões Voltar e Sair ===
+(function(){
+  function goHome() {
+    window.location.href = "https://almoxarifadobotucatu.netlify.app/";
+  }
+  var voltar = document.getElementById("btnVoltar");
+  var sair = document.getElementById("btnSair");
+  if (voltar) {
+    voltar.addEventListener("click", function(e){
+      e.preventDefault();
+      if (window.history.length > 1) { window.history.back(); }
+      else { goHome(); }
+    });
+  }
+  if (sair) {
+    sair.addEventListener("click", function(e){
+      e.preventDefault();
+      try { 
+        localStorage.removeItem("loggedInUser");
+        sessionStorage.clear();
+      } catch(_) {}
+      window.location.replace("https://almoxarifadobotucatu.netlify.app/");
+    });
+  }
+})();
+
+</script>
 </body>
 </html>
 <html lang="pt-BR">
@@ -3284,47 +3356,48 @@ document.addEventListener("DOMContentLoaded", function() {
   #enviarPedido {
     display: none;
   }
+</style>
+</meta><style>
 
-    .top-buttons {
-      position: fixed;
-      top: 15px;
-      left: 0;
-      right: 0;
-      display: flex;
-      justify-content: space-between;
-      padding: 0 20px;
-      z-index: 1000;
-    }
-
-    .top-buttons button {
-      background: var(--primary-color);
-      color: white;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-      font-size: 0.95rem;
-      font-weight: 600;
-      box-shadow: var(--shadow-light);
-      transition: var(--transition-all);
-    }
-
-    .hover-ready .top-buttons button:hover{
-      transform: translateY(-2px) scale(1.05);
-      background: linear-gradient(270deg, var(--primary-color), var(--primary-hover-color), var(--primary-extra-color));
-      background-size: 600% 600%;
-    }
-
-    .btn-sair {
-      background: var(--danger-color);
-    }
-
-    .btn-sair:hover {
-      background: linear-gradient(270deg, var(--danger-color), var(--danger-hover-color), var(--danger-extra-color));
-    }
+/* === Botões fixos no topo (voltar e sair) === */
+.corner-btn {
+  position: fixed;
+  top: 14px;
+  z-index: 1000;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--border-light);
+  background: rgba(0,0,0,0.15);
+  color: var(--text-dark);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+}
+.corner-left { left: 14px; }
+.corner-right { right: 14px; }
+.corner-btn:hover {
+  background: rgba(255,255,255,0.10);
+  border-color: var(--primary-color);
+  transform: translateY(-1px);
+}
+.corner-btn:active {
+  transform: translateY(0);
+}
+@media (max-width: 768px) {
+  .corner-btn {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    top: 10px;
+  }
+  .corner-left { left: 10px; }
+  .corner-right { right: 10px; }
+}
 
 </style>
-</meta></head>
+</head>
   
 <body>
 <script src="/protege-pagina.js"></script>
@@ -3430,6 +3503,46 @@ document.addEventListener("DOMContentLoaded", function() {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pedido Extra</title>
+<style>
+
+/* === Botões fixos no topo (voltar e sair) === */
+.corner-btn {
+  position: fixed;
+  top: 14px;
+  z-index: 1000;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 1px solid var(--border-light);
+  background: rgba(0,0,0,0.15);
+  color: var(--text-dark);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+}
+.corner-left { left: 14px; }
+.corner-right { right: 14px; }
+.corner-btn:hover {
+  background: rgba(255,255,255,0.10);
+  border-color: var(--primary-color);
+  transform: translateY(-1px);
+}
+.corner-btn:active {
+  transform: translateY(0);
+}
+@media (max-width: 768px) {
+  .corner-btn {
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    top: 10px;
+  }
+  .corner-left { left: 10px; }
+  .corner-right { right: 10px; }
+}
+
+</style>
 </head>
 
 <script>
@@ -3536,15 +3649,35 @@ document.addEventListener("DOMContentLoaded", function() {
 // === Fim do auto-preenchimento ===
 </script>
 
-
 <script>
-(function(){
-  function ready(){ document.documentElement.classList.add('hover-ready'); }
-  window.addEventListener('pointermove', ready, { once: true });
-  window.addEventListener('touchstart', ready, { once: true });
-})();
-</script>
 
+// === Ações dos botões Voltar e Sair ===
+(function(){
+  function goHome() {
+    window.location.href = "https://almoxarifadobotucatu.netlify.app/";
+  }
+  var voltar = document.getElementById("btnVoltar");
+  var sair = document.getElementById("btnSair");
+  if (voltar) {
+    voltar.addEventListener("click", function(e){
+      e.preventDefault();
+      if (window.history.length > 1) { window.history.back(); }
+      else { goHome(); }
+    });
+  }
+  if (sair) {
+    sair.addEventListener("click", function(e){
+      e.preventDefault();
+      try { 
+        localStorage.removeItem("loggedInUser");
+        sessionStorage.clear();
+      } catch(_) {}
+      window.location.replace("https://almoxarifadobotucatu.netlify.app/");
+    });
+  }
+})();
+
+</script>
 </body>
   <script>
   // Bloqueia clique com botão direito
