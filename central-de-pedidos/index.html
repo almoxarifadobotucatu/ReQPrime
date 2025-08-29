@@ -4,10 +4,7 @@
   <!-- Proteção -->
   <script src="/protege-pagina.js"></script>
   <script>
-    // Bloqueia clique com botão direito
     document.addEventListener('contextmenu', event => event.preventDefault());
-
-    // Bloqueia atalhos para código-fonte, devtools e salvar página
     document.addEventListener('keydown', function(e) {
       if (
         e.key === 'F12' || 
@@ -20,7 +17,6 @@
       }
     });
 
-    // Detecção contínua de DevTools
     (function() {
       const threshold = 160;
       setInterval(function() {
@@ -31,7 +27,6 @@
       }, 500);
     })();
 
-    // Listas de nomes comuns em português
     const nomesMasculinos = ["João","Pedro","Lucas","Mateus","Gabriel","Rafael","Felipe","Bruno","Gustavo","Leonardo","Carlos","Daniel","Thiago","Marcelo","André","Rodrigo","Eduardo","Vinicius","Fernando","Alexandre","Diego","Murilo","Vitor","Samuel","Caio","Regez","Reges","Ricardo","Leandro","Hugo","Paulo","Fábio"];
     const nomesFemininos = ["Maria","Ana","Juliana","Fernanda","Patricia","Camila","Larissa","Mariana","Amanda","Bianca","Bruna","Carla","Aline","Renata","Gabriela","Letícia","Sofia","Isabela","Raquel","Daniela","Júlia","Laura","Clara","Rafaela","Natália","Yasmin","Alice","Emanuelle","Vanessa"];
     const sufixosFemininos = ["a","e","ina","ela","ida","isa","ia","y","ada","ama","amah","ara","ora","ava"];
@@ -96,26 +91,25 @@
 
     header {
       position: fixed;
-      top: 10px;
+      top: 10px;        /* alinhado */
       left: 20px;
-      font-size: 16px;   /* aumentado de 14px para 16px */
+      font-size: 16px;
       color: #ddd;
       font-weight: 500;
       background: rgba(0,0,0,0.3);
-      padding: 6px 14px;
+      padding: 8px 16px;  /* padding igual ao botão */
       border-radius: 8px;
       box-shadow: var(--shadow-light);
       user-select: none;
       z-index: 1000;
     }
 
-    /* Botão fixo no topo (Sair agora no lado direito) */
     .corner-btn {
       position: fixed;
-      top: 14px;
+      top: 10px;        /* alinhado com o header */
       right: 14px;
       z-index: 1000;
-      padding: 10px 16px;
+      padding: 8px 16px; /* padding igual ao header */
       border-radius: 999px;
       border: 1px solid var(--border-light);
       background: rgba(0,0,0,0.15);
@@ -216,10 +210,7 @@
   </style>
 </head>
 <body>
-  <!-- Botão fixo (Sair no lado direito) -->
   <button id="btnSair" class="corner-btn" aria-label="Sair" title="Sair">Sair ✕</button>
-
-  <!-- Nome do usuário logado (no lado esquerdo) -->
   <header id="usuario-logado"></header>
 
   <div class="container">
@@ -243,7 +234,6 @@
   <footer>© 2025. Todos os direitos reservados.</footer>
 
   <script>
-    // Ação do botão Sair
     (function(){
       var sair = document.getElementById("btnSair");
       if (sair) {
