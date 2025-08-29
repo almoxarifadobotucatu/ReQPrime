@@ -3800,4 +3800,12 @@ document.addEventListener("DOMContentLoaded", function() {
   <script src="/protege-pagina.js"></script>
 </html>
   </script>
+  <script>
+  // Impede retorno à página anterior pelo botão voltar do navegador
+  window.history.pushState(null, '', window.location.href);
+  window.onpopstate = function() {
+    window.history.pushState(null, '', window.location.href);
+  };
+</script>
+
   </body>
