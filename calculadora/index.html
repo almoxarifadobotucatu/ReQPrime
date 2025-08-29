@@ -272,19 +272,20 @@
       if (widthThreshold || heightThreshold) window.devtoolsOpen = true;
   }, 500);
 
-  // BOTÃO SAIR: limpa cache e redireciona
-  document.getElementById('btnSair').addEventListener('click', function() {
-      localStorage.clear();
-      sessionStorage.clear();
-
-      if ('caches' in window) {
-          caches.keys().then(function(names) {
-              for (let name of names) caches.delete(name);
-          });
-      }
-
-      window.location.href = 'https://almoxarifadobotucatu.netlify.app';
-  });
+  // BOTÃO SAIR - mesmo do central de pedidos
+  (function(){
+    var sair = document.getElementById("btnSair");
+    if (sair) {
+      sair.addEventListener("click", function(e){
+        e.preventDefault();
+        try { 
+          localStorage.removeItem("loggedInUser");
+          sessionStorage.clear();
+        } catch(_) {}
+        window.location.replace("/");
+      });
+    }
+  })();
   </script>
 
   <footer style="position: fixed; bottom: 4px; right: 4px; font-size: 9px; color: #888; background: transparent; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; opacity: 0.75; user-select: none;">
@@ -293,5 +294,3 @@
 
 </body>
 </html>
-
-
