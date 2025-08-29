@@ -58,8 +58,7 @@
       }
       const primeiroNome = obterPrimeiroNome(nomeCompleto);
       const saudacao = detectarGenero(primeiroNome);
-      var el = document.getElementById("usuario-logado");
-      if (el) el.innerText = `${saudacao}, ${primeiroNome}!`;
+      document.getElementById("usuario-logado").innerText = `${saudacao}, ${primeiroNome}!`;
       localStorage.setItem("nomeUsuario", nomeCompleto);
       localStorage.setItem("usuarioLogado", JSON.stringify({ name: nomeCompleto }));
     }
@@ -98,8 +97,8 @@
     header {
       position: fixed;
       top: 10px;
-      left: 20px;       /* <-- alterado: antes era right: 20px */
-      font-size: 14px;
+      left: 20px;
+      font-size: 16px;   /* aumentado de 14px para 16px */
       color: #ddd;
       font-weight: 500;
       background: rgba(0,0,0,0.3);
@@ -110,11 +109,11 @@
       z-index: 1000;
     }
 
-    /* Botão fixo no topo (Sair no lado direito) */
+    /* Botão fixo no topo (Sair agora no lado direito) */
     .corner-btn {
       position: fixed;
       top: 14px;
-      right: 14px;     /* <-- alterado: antes era left: 14px */
+      right: 14px;
       z-index: 1000;
       padding: 10px 16px;
       border-radius: 999px;
@@ -203,7 +202,7 @@
       .buttons { flex-direction: column; gap: 15px; }
       h2 { font-size: 1.8rem; }
       button { font-size: 1.1rem; padding: 14px 30px; }
-      .corner-btn { top: 10px; right: 10px; }   /* <-- alterado: antes era left: 10px */
+      .corner-btn { top: 10px; right: 10px; }
     }
 
     footer {
@@ -217,10 +216,10 @@
   </style>
 </head>
 <body>
-  <!-- Botão Sair no lado direito -->
+  <!-- Botão fixo (Sair no lado direito) -->
   <button id="btnSair" class="corner-btn" aria-label="Sair" title="Sair">Sair ✕</button>
 
-  <!-- Nome do usuário logado no lado esquerdo -->
+  <!-- Nome do usuário logado (no lado esquerdo) -->
   <header id="usuario-logado"></header>
 
   <div class="container">
