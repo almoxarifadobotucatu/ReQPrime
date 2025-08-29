@@ -272,26 +272,27 @@
       if (widthThreshold || heightThreshold) window.devtoolsOpen = true;
   }, 500);
 
-  // BOTÃO SAIR: limpa cache e redireciona
-  document.getElementById('btnSair').addEventListener('click', function() {
-      localStorage.clear();
-      sessionStorage.clear();
-
-      if ('caches' in window) {
-          caches.keys().then(function(names) {
-              for (let name of names) caches.delete(name);
-          });
-      }
-
-      window.location.href = 'https://almoxarifadobotucatu.netlify.app';
+<script>
+  document.getElementById('botaoSair').addEventListener('click', function(e) {
+    e.preventDefault();
+    // Limpar localStorage e sessionStorage
+    localStorage.clear();
+    sessionStorage.clear();
+    // Limpar cookies
+    document.cookie.split(";").forEach(function(c) { 
+      document.cookie = c.replace(/^ +/, "").replace(/=.*/, 
+        "=;expires=" + new Date().toUTCString() + ";path=/");
+    });
+    // Redirecionar para tela de login index.html
+    window.location.href = 'index.html';
   });
-  </script>
-
+</script>
   <footer style="position: fixed; bottom: 4px; right: 4px; font-size: 9px; color: #888; background: transparent; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; opacity: 0.75; user-select: none;">
       © 2025. Todos os direitos reservados.
   </footer>
 
 </body>
 </html>
+
 
 
