@@ -18,7 +18,6 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
     }
 }
 
-
     // Função para preparar a exibição sem "unidade: ..."
     function formatarItemParaExibicao(item) {
       return item.replace(/unidade:\s*[A-Za-zÀ-ú]+/i, "").trim();
@@ -296,7 +295,6 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
       100% { background-position: 0% 50%; }
     }
 
-
     .item {
   display: flex;
   flex-wrap: nowrap;
@@ -325,7 +323,6 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
   background-color: rgba(255, 255, 255, 0.1);
   color: var(--text-dark);
 }
-
 
 .item .item-input-group.item-unidade-group select:focus {
   outline: none;
@@ -394,7 +391,6 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
-
 
     .Justificativa-group {
       margin-top: 20px;
@@ -470,7 +466,6 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
       100% { background-position: 0% 50%; }
     }
 
-
     .remove-
     /* Botões estilo Central de Pedidos */
     button {
@@ -511,7 +506,6 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
     }
-
 
     .remove-button:hover {
       background: linear-gradient(135deg, var(--danger-hover-color), var(--danger-color));
@@ -644,13 +638,6 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
 
     }
   
-/* Borda azul translúcida fixa nos botões Voltar e Sair */
-#btnVoltar, 
-#btnSair {
-  border: 1px solid rgba(10, 102, 194, 0.5) !important;
-  border-radius: 999px !important;
-  background: rgba(0,0,0,0.15);
-}
 
 </style>
 <style>
@@ -704,7 +691,6 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
 <style>
   </style>
 
-
 <script>
 // --- Mensagens no topo (sem alert do navegador) ---
 (function(){
@@ -734,16 +720,16 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
 
 <style>
 
-
 /* === Botões fixos no topo (voltar e sair) === */
     
+
 .corner-btn {
   position: fixed;
   top: 10px;
   z-index: 1000;
   padding: 8px 16px;
   border-radius: 999px;
-  border: 1px solid rgba(10,102,194,0.6); /* azul translúcido igual ao print */
+  border: 1px solid rgba(10,102,194,0.38); /* azul translúcido leve */
   background: rgba(0,0,0,0.15);
   color: var(--text-dark);
   font-size: 0.95rem;
@@ -752,14 +738,17 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.25), inset 0 0 0 1px rgba(10,102,194,0.18);
 }
+.corner-left { left: 14px; }
+.corner-right { right: 14px; }
+
 .corner-btn:hover {
   background: rgba(255,255,255,0.10);
-  border-color: rgba(0,65,130,0.7); /* hover azul mais forte translúcido */
+  border-color: rgba(0,65,130,0.6); /* hover um pouco mais visível porém ainda translúcido */
   transform: translateY(-1px);
 }
-
-    .corner-left { left: 14px; }
+.corner-left { left: 14px; }
     .corner-right { right: 14px; }
     .corner-btn:hover {
       background: rgba(255,255,255,0.10);
@@ -771,13 +760,14 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
     }
     @media (max-width: 768px) {
       
+
 .corner-btn {
   position: fixed;
   top: 10px;
   z-index: 1000;
   padding: 8px 16px;
   border-radius: 999px;
-  border: 1px solid rgba(10,102,194,0.6); /* azul translúcido igual ao print */
+  border: 1px solid rgba(10,102,194,0.38); /* azul translúcido leve */
   background: rgba(0,0,0,0.15);
   color: var(--text-dark);
   font-size: 0.95rem;
@@ -786,14 +776,17 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.25), inset 0 0 0 1px rgba(10,102,194,0.18);
 }
+.corner-left { left: 14px; }
+.corner-right { right: 14px; }
+
 .corner-btn:hover {
   background: rgba(255,255,255,0.10);
-  border-color: rgba(0,65,130,0.7); /* hover azul mais forte translúcido */
+  border-color: rgba(0,65,130,0.6); /* hover um pouco mais visível porém ainda translúcido */
   transform: translateY(-1px);
 }
-
-      .corner-left { left: 10px; }
+.corner-left { left: 10px; }
       .corner-right { right: 10px; }
 }
 
@@ -804,9 +797,6 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
 <!-- Botões de ação no topo -->
 <button id="btnVoltar" class="corner-btn corner-left" aria-label="Voltar" title="Voltar">← Voltar</button>
 <button id="btnSair" class="corner-btn corner-right" aria-label="Sair" title="Sair">Sair ✕</button>
-
-
-
 
 <div class="container" id="mainContainer">
 <h2>Solicitação de Pedido Extra</h2>
@@ -2568,8 +2558,6 @@ function selectOptionUnidade(unidadeId, value) {
       }
     }
 
-
-
     if (Object.keys(errosPorSetor).length) {
       let msgHTML = "<h3>⚠️ Preencha os seguintes campos obrigatórios:</h3>";
       for (const setor in errosPorSetor) {
@@ -2678,8 +2666,6 @@ document.addEventListener("change", function(e) {
 
 <!-- Firebase integração -->
 
-
-
 <script>
 document.addEventListener("DOMContentLoaded", function() {
   const btnEnviar = document.getElementById("enviarPedido");
@@ -2700,7 +2686,6 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 });
 </script>
-
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
@@ -2768,7 +2753,6 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 </script>
 
-
 <script>
 function atualizarUnidade() {
   const select = document.getElementById("medicamento");
@@ -2780,7 +2764,6 @@ function atualizarUnidade() {
   }
 }
 </script>
-
 
 <script>
 function atualizarUnidade(selectElement) {
@@ -2796,7 +2779,6 @@ function atualizarUnidade(selectElement) {
 }
 </script>
 
-
 <script>
 function atualizarUnidade(selectElement) {
   const valor = selectElement.value;
@@ -2812,7 +2794,6 @@ function atualizarUnidade(selectElement) {
 }
 </script>
 
-
 <script>
 document.addEventListener("input", function(e) {
   if (e.target && e.target.classList.contains("item-nome")) {
@@ -2824,10 +2805,6 @@ document.addEventListener("input", function(e) {
   }
 });
 </script>
-
-
-
-
 
 <script>
 // --- Ao selecionar no datalist: manter o input sem "unidade:" e preencher a Unidade de Controle ---
@@ -2866,7 +2843,6 @@ document.addEventListener("input", function(e) {
 </script>
 
 </script>
-
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
@@ -2956,8 +2932,6 @@ document.addEventListener("DOMContentLoaded", function() {
       }
     }
 
-
-
     if (Object.keys(errosPorSetor).length) {
       let msgHTML = "<h3>⚠️ Preencha os seguintes campos obrigatórios:</h3>";
       for (const setor in errosPorSetor) {
@@ -3066,8 +3040,6 @@ document.addEventListener("change", function(e) {
 
 <!-- Firebase integração -->
 
-
-
 <script>
 document.addEventListener("DOMContentLoaded", function() {
   const btnEnviar = document.getElementById("enviarPedido");
@@ -3088,7 +3060,6 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 });
 </script>
-
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
@@ -3159,7 +3130,6 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   }
 </script>
-
 
 <script>
 // === Auto-preenchimento do campo "Responsável pela solicitação" ===
@@ -3382,7 +3352,6 @@ document.addEventListener("DOMContentLoaded", function() {
   background-color: rgba(255, 255, 255, 0.15);
 }
 
-
 /* Unidade de Controle reutiliza o mesmo visual do Setor */
 .item .item-input-group.item-unidade-group .custom-select {
   width: 100%;
@@ -3407,8 +3376,8 @@ document.addEventListener("DOMContentLoaded", function() {
 </style>
 </meta><style>
 
-
 /* === Botões fixos no topo (voltar e sair) === */
+
 
 .corner-btn {
   position: fixed;
@@ -3416,7 +3385,7 @@ document.addEventListener("DOMContentLoaded", function() {
   z-index: 1000;
   padding: 8px 16px;
   border-radius: 999px;
-  border: 1px solid rgba(10,102,194,0.6); /* azul translúcido igual ao print */
+  border: 1px solid rgba(10,102,194,0.38); /* azul translúcido leve */
   background: rgba(0,0,0,0.15);
   color: var(--text-dark);
   font-size: 0.95rem;
@@ -3425,13 +3394,16 @@ document.addEventListener("DOMContentLoaded", function() {
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.25), inset 0 0 0 1px rgba(10,102,194,0.18);
 }
+.corner-left { left: 14px; }
+.corner-right { right: 14px; }
+
 .corner-btn:hover {
   background: rgba(255,255,255,0.10);
-  border-color: rgba(0,65,130,0.7); /* hover azul mais forte translúcido */
+  border-color: rgba(0,65,130,0.6); /* hover um pouco mais visível porém ainda translúcido */
   transform: translateY(-1px);
 }
-
 .corner-left { left: 14px; }
 .corner-right { right: 14px; }
 .corner-btn:hover {
@@ -3444,13 +3416,14 @@ document.addEventListener("DOMContentLoaded", function() {
 }
 @media (max-width: 768px) {
   
+
 .corner-btn {
   position: fixed;
   top: 10px;
   z-index: 1000;
   padding: 8px 16px;
   border-radius: 999px;
-  border: 1px solid rgba(10,102,194,0.6); /* azul translúcido igual ao print */
+  border: 1px solid rgba(10,102,194,0.38); /* azul translúcido leve */
   background: rgba(0,0,0,0.15);
   color: var(--text-dark);
   font-size: 0.95rem;
@@ -3459,14 +3432,17 @@ document.addEventListener("DOMContentLoaded", function() {
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.25), inset 0 0 0 1px rgba(10,102,194,0.18);
 }
+.corner-left { left: 14px; }
+.corner-right { right: 14px; }
+
 .corner-btn:hover {
   background: rgba(255,255,255,0.10);
-  border-color: rgba(0,65,130,0.7); /* hover azul mais forte translúcido */
+  border-color: rgba(0,65,130,0.6); /* hover um pouco mais visível porém ainda translúcido */
   transform: translateY(-1px);
 }
-
-  .corner-left { left: 10px; }
+.corner-left { left: 10px; }
   .corner-right { right: 10px; }
 }
 
@@ -3480,8 +3456,6 @@ document.addEventListener("DOMContentLoaded", function() {
 </footer>
   
 <!-- Firebase integração -->
-
-
 
 <script>
 document.addEventListener("DOMContentLoaded", function() {
@@ -3503,7 +3477,6 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 });
 </script>
-
 
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.1.0/firebase-app.js";
@@ -3579,8 +3552,8 @@ document.addEventListener("DOMContentLoaded", function() {
   <title>Pedido Extra</title>
 <style>
 
-
 /* === Botões fixos no topo (voltar e sair) === */
+
 
 .corner-btn {
   position: fixed;
@@ -3588,7 +3561,7 @@ document.addEventListener("DOMContentLoaded", function() {
   z-index: 1000;
   padding: 8px 16px;
   border-radius: 999px;
-  border: 1px solid rgba(10,102,194,0.6); /* azul translúcido igual ao print */
+  border: 1px solid rgba(10,102,194,0.38); /* azul translúcido leve */
   background: rgba(0,0,0,0.15);
   color: var(--text-dark);
   font-size: 0.95rem;
@@ -3597,13 +3570,16 @@ document.addEventListener("DOMContentLoaded", function() {
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.25), inset 0 0 0 1px rgba(10,102,194,0.18);
 }
+.corner-left { left: 14px; }
+.corner-right { right: 14px; }
+
 .corner-btn:hover {
   background: rgba(255,255,255,0.10);
-  border-color: rgba(0,65,130,0.7); /* hover azul mais forte translúcido */
+  border-color: rgba(0,65,130,0.6); /* hover um pouco mais visível porém ainda translúcido */
   transform: translateY(-1px);
 }
-
 .corner-left { left: 14px; }
 .corner-right { right: 14px; }
 .corner-btn:hover {
@@ -3616,13 +3592,14 @@ document.addEventListener("DOMContentLoaded", function() {
 }
 @media (max-width: 768px) {
   
+
 .corner-btn {
   position: fixed;
   top: 10px;
   z-index: 1000;
   padding: 8px 16px;
   border-radius: 999px;
-  border: 1px solid rgba(10,102,194,0.6); /* azul translúcido igual ao print */
+  border: 1px solid rgba(10,102,194,0.38); /* azul translúcido leve */
   background: rgba(0,0,0,0.15);
   color: var(--text-dark);
   font-size: 0.95rem;
@@ -3631,14 +3608,17 @@ document.addEventListener("DOMContentLoaded", function() {
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.25), inset 0 0 0 1px rgba(10,102,194,0.18);
 }
+.corner-left { left: 14px; }
+.corner-right { right: 14px; }
+
 .corner-btn:hover {
   background: rgba(255,255,255,0.10);
-  border-color: rgba(0,65,130,0.7); /* hover azul mais forte translúcido */
+  border-color: rgba(0,65,130,0.6); /* hover um pouco mais visível porém ainda translúcido */
   transform: translateY(-1px);
 }
-
-  .corner-left { left: 10px; }
+.corner-left { left: 10px; }
   .corner-right { right: 10px; }
 }
 
