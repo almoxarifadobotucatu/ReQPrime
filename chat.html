@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chat</title>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: #1a1a2e;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      width: 100vw;
+    }
+
+    .chat-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: 100%;
+      border: none;
+      border-radius: 0;
+      background: #16213e;
+    }
+
+    .messages {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .msg {
+      max-width: 75%;
+      padding: 10px 15px;
+      border-radius: 15px;
+      font-size: 0.95rem;
+      line-height: 1.4;
+      word-wrap: break-word;
+    }
+    .msg.self {
+      background: #0a66c2;
+      align-self: flex-end;
+      border-bottom-right-radius: 5px;
+    }
+    .msg.other {
+      background: #2a2a3a;
+      align-self: flex-start;
+      border-bottom-left-radius: 5px;
+    }
+
+    .input-area {
+      display: flex;
+      border-top: 1px solid rgba(255,255,255,0.2);
+      padding: 10px;
+      background: #111827;
+    }
+    .input-area input {
+      flex: 1;
+      border: none;
+      border-radius: 8px;
+      padding: 12px;
+      outline: none;
+      font-size: 1rem;
+    }
+    .input-area button {
+      margin-left: 10px;
+      padding: 12px 18px;
+      border: none;
+      border-radius: 8px;
+      background: #0a66c2;
+      color: white;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.3s;
+    }
+    .input-area button:hover {
+      background: #004182;
+    }
+  </style>
+</head>
+<body>
+  <div class="chat-container">
+    <div id="messages" class="messages"></div>
+    <div class="input-area">
+      <input id="msgInput" type="text" placeholder="Digite uma mensagem...">
+      <button id="sendBtn">Enviar</button>
+    </div>
+  </div>
+
+  <script>
+    // 🔥 Configuração Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
+      authDomain: "almoxarifadobotucatu-5e03d.firebaseapp.com",
+      projectId: "almoxarifadobotucatu-5e03d",
+      storageBucket: "almoxarifadobotucatu-5e03d.firebasestorage.app",
+      messagingSenderId: "828951000388",
+      appId: "1:828951000388:web:06dbe3cb5764872e7b1311"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    // 🔑 Usuário atual
+    const currentUser = localStorage.getItem("nomeUsuario") || "Usuário";
+
+    const messagesRef = db.collection("messages");
+
+    // 🔄 Escutar mensagens em tempo real
+    messagesRef.orderBy("timestamp").onSnapshot(snapshot => {
+      const chat = document.getElementById("messages");
+      chat.innerHTML = "";
+      snapshot.forEach(doc => {
+        const msg = doc.data();
+        const div = document.createElement("div");
+        div.classList.add("msg");
+        div.classList.add(msg.sender === currentUser ? "self" : "other");
+        div.innerHTML = `<b>${msg.sender}</b><br>${msg.text}`;
+        chat.appendChild(div);
+      });
+      chat.scrollTop = chat.scrollHeight;
+    });
+
+    // ➡️ Enviar mensagem
+    document.getElementById("sendBtn").addEventListener("click", sendMessage);
+    document.getElementById("msgInput").addEventListener("keypress", e => {
+      if (e.key === "Enter") sendMessage();
+    });
+
+    function sendMessage() {
+      const input = document.getElementById("msgInput");
+      const text = input.value.trim();
+      if (!text) return;
+
+      messagesRef.add({
+        sender: currentUser,
+        text: text,
+        timestamp: firebase.firestore.FieldValue.serverTimestamp()
+      });
+
+      input.value = "";
+    }
+  </script>
+</body>
+</html>
