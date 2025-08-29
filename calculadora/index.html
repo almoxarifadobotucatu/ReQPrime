@@ -24,9 +24,10 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
+  /* Remove a barra de rolagem e ajusta altura total */
   html, body {
       height: 100%;
-      overflow: hidden;
+      overflow: hidden; /* remove a barra de rolagem */
       margin: 0;
       padding: 0;
   }
@@ -50,57 +51,110 @@
       font-family: 'Inter', sans-serif;
       display: flex;
       justify-content: center;
-      align-items: center;
+      align-items: center; /* centraliza verticalmente */
       color: var(--text-dark);
       padding: 0;
   }
 
+  .container {
+      background-color: var(--background-white);
+      padding: 40px;
+      border-radius: 18px;
+      box-shadow: var(--shadow-light);
+      max-width: 550px;
+      width: 100%;
+      text-align: center;
+  }
+
+  h1 {
+      color: var(--text-dark);
+      margin-bottom: 30px;
+      font-size: 2.4rem;
+  }
+
+  label {
+      display: block;
+      margin-bottom: 12px;
+      color: var(--text-medium);
+      font-size: 1.4rem;
+  }
+
+  .date-picker {
+      position: relative;
+      width: 100%;
+      margin-bottom: 25px;
+      display: flex;
+      justify-content: center;
+  }
+
+  .date-picker input {
+      flex: 0 1 auto;
+      max-width: 300px;
+      width: 100%;
+      padding: 18px;
+      padding-right: 50px;
+      font-size: 1.4rem;
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      background-color: var(--background-light);
+      color: var(--text-dark);
+      text-align: center;
+  }
+
+  .calendar-icon {
+      position: absolute;
+      right: calc(50% - 150px + 15px);
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.6rem;
+      color: white;
+      cursor: pointer;
+  }
+
+  button {
+      background: var(--primary-color);
+      color: white;
+      padding: 16px 36px;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 1.2rem;
+      font-weight: 600;
+      transition: transform 0.3s, box-shadow 0.3s, background 0.4s ease-in-out;
+      box-shadow: var(--shadow-light);
+  }
+
+  button:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+      background: linear-gradient(270deg, var(--primary-color), var(--primary-hover-color), var(--primary-extra-color));
+      background-size: 600% 600%;
+      animation: gradientShift 6s ease infinite;
+  }
+
+  @keyframes gradientShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+  }
+
+  .result {
+      margin-top: 25px;
+      padding: 18px;
+      font-size: 1.4rem;
+      background-color: var(--background-light);
+      border-radius: 12px;
+      border: 1px solid var(--border-light);
+  }
+  
+/* Botões nos cantos */
 .corner-btn {
   position: fixed;
   top: 10px;
   z-index: 1000;
   padding: 8px 16px;
   border-radius: 999px;
-  border: 1px solid rgba(24,144,255,0.65); /* azul mais vivo translúcido */
-  background: rgba(0,0,0,0.15);
-  color: var(--text-dark);
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.25), inset 0 0 0 1px rgba(24,144,255,0.35);
-}
-.corner-left { left: 14px; }
-.corner-right { right: 14px; }
-
-.corner-btn:hover {
-  background: rgba(255,255,255,0.12);
-  border-color: rgba(10,132,255,0.85); /* hover azul mais vivo */
-  transform: translateY(-1px);
-}
-.corner-left { left: 14px; }
-    .corner-right { right: 14px; }
-    .corner-btn:hover {
-      background: rgba(255,255,255,0.10);
-      border-color: var(--primary-hover-color);
-      transform: translateY(-1px);
-    }
-    .corner-btn:active {
-      transform: translateY(0);
-    }
-    @media (max-width: 768px) {
-      
-
-
-.corner-btn {
-  position: fixed;
-  top: 10px;
-  z-index: 1000;
-  padding: 8px 16px;
-  border-radius: 999px;
-  border: 0.8px solid rgba(24,144,255,0.65); /* azul vivo translúcido, mais delicado */
+  border: 0.8px solid rgba(24,144,255,0.65);
   background: rgba(0,0,0,0.15);
   color: var(--text-dark);
   font-size: 0.95rem;
@@ -117,19 +171,25 @@
 
 .corner-btn:hover {
   background: rgba(255,255,255,0.12);
-  border-color: rgba(10,132,255,0.85); /* hover azul mais vivo */
+  border-color: rgba(10,132,255,0.85);
   transform: translateY(-1px);
 }
-.corner-left { left: 10px; }
-      .corner-right { right: 10px; }
+
+.corner-btn:active {
+  transform: translateY(0);
 }
-  }
-  </style>
+
+@media (max-width: 768px) {
+  .corner-left { left: 10px; }
+  .corner-right { right: 10px; }
+}
+
+</style>
 </head>
 <body>
-  <!-- Botões fixos -->
-  <button id="btnVoltar" class="corner-btn corner-left" aria-label="Voltar" title="Voltar">← Voltar</button>
-  <button id="btnSair" class="corner-btn corner-right" aria-label="Sair" title="Sair">Sair ✕</button>
+
+<button class="corner-btn corner-left" onclick="history.back()">⬅ Voltar</button>
+<button class="corner-btn corner-right" onclick="window.location.href='https://almoxarifadobotucatu.netlify.app/'">🏠 Início</button>
 
 <div class="container">
     <h1>45 Dias Úteis Retroativos</h1>
@@ -149,13 +209,20 @@
 <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/pt.js"></script>
 
 <script>
+// Ativa o calendário Flatpickr
 const fp = flatpickr("#endDate", {
     dateFormat: "d/m/Y",
     locale: flatpickr.l10ns.pt,
     position: "below",
     allowInput: true
 });
-document.getElementById("calendarBtn").addEventListener("click", () => { fp.open(); });
+
+// Faz o clique no ícone abrir o calendário
+document.getElementById("calendarBtn").addEventListener("click", () => {
+    fp.open();
+});
+
+// Máscara para formato brasileiro dd/mm/yyyy
 document.getElementById("endDate").addEventListener("input", function(e) {
     let value = e.target.value.replace(/\D/g, "");
     if (value.length > 2 && value.length <= 4) {
@@ -165,6 +232,7 @@ document.getElementById("endDate").addEventListener("input", function(e) {
     }
     e.target.value = value;
 });
+
 function parseDateFromInput(value) {
     if (!value) return null;
     const parts = value.split('/');
@@ -173,56 +241,118 @@ function parseDateFromInput(value) {
     if (!y || !m || !d) return null;
     return new Date(y, m - 1, d);
 }
+
 function calcular() {
     const endDateInput = document.getElementById('endDate').value;
     const resultEl = document.getElementById('result');
-    if (!endDateInput) { resultEl.textContent = "Por favor, selecione a data final."; return; }
+
+    if (!endDateInput) {
+        resultEl.textContent = "Por favor, selecione a data final.";
+        return;
+    }
+
     let currentDate = parseDateFromInput(endDateInput);
-    if (!currentDate || isNaN(currentDate.getTime())) { resultEl.textContent = "Data inválida."; return; }
-    let businessDaysCount = 0, safety = 0, SAFETY_LIMIT = 10000;
+    if (!currentDate || isNaN(currentDate.getTime())) {
+        resultEl.textContent = "Data inválida.";
+        return;
+    }
+
+    let businessDaysCount = 0;
+    let safety = 0;
+    const SAFETY_LIMIT = 10000;
+
     while (businessDaysCount < 45 && safety < SAFETY_LIMIT) {
         currentDate.setDate(currentDate.getDate() - 1);
         const day = currentDate.getDay();
-        if (day !== 0 && day !== 6) { businessDaysCount++; }
+        if (day !== 0 && day !== 6) {
+            businessDaysCount++;
+        }
         safety++;
     }
-    if (safety >= SAFETY_LIMIT) { resultEl.textContent = "Erro ao calcular."; return; }
+
+    if (safety >= SAFETY_LIMIT) {
+        resultEl.textContent = "Erro ao calcular — limite de iterações atingido.";
+        return;
+    }
+
     resultEl.textContent = `Data inicial retroativa (45 dias úteis): ${currentDate.toLocaleDateString('pt-BR')}`;
 }
 </script>
 
 <script>
-// Ações dos botões Voltar e Sair
-(function(){
-  function goHome() {
-    window.location.href = "/";
-  }
-  var voltar = document.getElementById("btnVoltar");
-  var sair = document.getElementById("btnSair");
-  if (voltar) {
-    voltar.addEventListener("click", function(e){
-      e.preventDefault();
-      if (window.history.length > 1) { window.history.back(); }
-      else { goHome(); }
-    });
-  }
-  if (sair) {
-    sair.addEventListener("click", function(e){
-      e.preventDefault();
-      try { 
-        localStorage.removeItem("loggedInUser");
-        sessionStorage.clear();
-      } catch(_) {}
-      window.location.replace("/");
-    });
-  }
-})();
+// Proteção contra inspeção
+document.addEventListener('keydown', function(e) {
+    if (
+        e.key === 'F12' ||
+        (e.ctrlKey && e.key.toLowerCase() === 'u') ||
+        (e.ctrlKey && e.key.toLowerCase() === 's') ||
+        (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'i') ||
+        (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'j') ||
+        (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'c') ||
+        (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === 'p') ||
+        (e.ctrlKey && e.altKey && e.key.toLowerCase() === 'i')
+    ) {
+        e.preventDefault();
+        e.stopPropagation();
+        return false;
+    }
+});
+
+document.addEventListener('contextmenu', function(e) {
+    e.preventDefault();
+});
+
+setInterval(function() {
+    if (window.devtoolsOpen) {
+        window.location.href = 'about:blank';
+    }
+    const widthThreshold = window.outerWidth - window.innerWidth > 160;
+    const heightThreshold = window.outerHeight - window.innerHeight > 160;
+    if (widthThreshold || heightThreshold) {
+        window.devtoolsOpen = true;
+    }
+}, 500);
 </script>
 
 <footer style="position: fixed; bottom: 4px; right: 4px; font-size: 9px; color: #888; background: transparent; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; opacity: 0.75; user-select: none;">
     © 2025. Todos os direitos reservados.
 </footer>
+
 </body>
+  <script>
+  // Bloqueia clique com botão direito
+  document.addEventListener("contextmenu", event => event.preventDefault());
+
+  // Bloqueia teclas e atalhos perigosos
+  document.addEventListener("keydown", function (event) {
+    // F12
+    if (event.key === "F12") {
+      event.preventDefault();
+    }
+
+    // Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+Shift+C
+    if (event.ctrlKey && event.shiftKey && (event.key === "I" || event.key === "J" || event.key === "C")) {
+      event.preventDefault();
+    }
+
+    // Ctrl+U (Exibir código-fonte)
+    if (event.ctrlKey && event.key === "u") {
+      event.preventDefault();
+    }
+
+    // Ctrl+S e Ctrl+Shift+S (Salvar página/Salvar como)
+    if (event.ctrlKey && (event.key === "s" || event.key === "S")) {
+      event.preventDefault();
+    }
+
+    // Ctrl+P (Imprimir)
+    if (event.ctrlKey && event.key === "p") {
+      event.preventDefault();
+    }
+  });
+</script>
+
 <script src="/protege-pagina.js"></script>
 </html>
+
 
