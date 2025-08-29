@@ -272,47 +272,26 @@
       if (widthThreshold || heightThreshold) window.devtoolsOpen = true;
   }, 500);
 
-<script>
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Outra Página</title>
-</head>
-<body>
-  <!-- Botão Sair com id para o script -->
-  <a href="#" id="botaoSair">Sair ✕</a>
+  // BOTÃO SAIR: limpa cache e redireciona
+  document.getElementById('btnSair').addEventListener('click', function() {
+      localStorage.clear();
+      sessionStorage.clear();
 
-  <h1>Conteúdo da outra página</h1>
+      if ('caches' in window) {
+          caches.keys().then(function(names) {
+              for (let name of names) caches.delete(name);
+          });
+      }
 
-  <!-- Conteúdo adicional da página -->
-
-<script>
-  document.getElementById('botaoSair').addEventListener('click', function(e) {
-    e.preventDefault();
-    // Limpar localStorage e sessionStorage
-    localStorage.clear();
-    sessionStorage.clear();
-    // Limpar cookies
-    document.cookie.split(";").forEach(function(c) { 
-      document.cookie = c.replace(/^ +/, "").replace(/=.*/, 
-        "=;expires=" + new Date().toUTCString() + ";path=/");
-    });
-    // Redirecionar para tela de login index.html
-    window.location.href = 'index.html';
+      window.location.href = 'https://almoxarifadobotucatu.netlify.app';
   });
-</script>
-</body>
-</html>
+  </script>
+
   <footer style="position: fixed; bottom: 4px; right: 4px; font-size: 9px; color: #888; background: transparent; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; opacity: 0.75; user-select: none;">
       © 2025. Todos os direitos reservados.
   </footer>
 
 </body>
 </html>
-
-
-
 
 
