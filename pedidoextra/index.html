@@ -736,22 +736,29 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
 
 
 /* === Botões fixos no topo (voltar e sair) === */
-    .corner-btn {
-      position: fixed;
-      top: 10px;
-      z-index: 1000;
-      padding: 8px 16px;
-      border-radius: 999px;
-      border: 1px solid var(--primary-color);
-      background: rgba(0,0,0,0.15);
-      color: var(--text-dark);
-      font-size: 0.95rem;
-      font-weight: 600;
-      cursor: pointer;
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
-    }
+    
+.corner-btn {
+  position: fixed;
+  top: 10px;
+  z-index: 1000;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(10,102,194,0.6); /* azul translúcido igual ao print */
+  background: rgba(0,0,0,0.15);
+  color: var(--text-dark);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+}
+.corner-btn:hover {
+  background: rgba(255,255,255,0.10);
+  border-color: rgba(0,65,130,0.7); /* hover azul mais forte translúcido */
+  transform: translateY(-1px);
+}
+
     .corner-left { left: 14px; }
     .corner-right { right: 14px; }
     .corner-btn:hover {
@@ -763,11 +770,29 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
       transform: translateY(0);
     }
     @media (max-width: 768px) {
-      .corner-btn {
-        padding: 8px 12px;
-        font-size: 0.9rem;
-        top: 10px;
-      }
+      
+.corner-btn {
+  position: fixed;
+  top: 10px;
+  z-index: 1000;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(10,102,194,0.6); /* azul translúcido igual ao print */
+  background: rgba(0,0,0,0.15);
+  color: var(--text-dark);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+}
+.corner-btn:hover {
+  background: rgba(255,255,255,0.10);
+  border-color: rgba(0,65,130,0.7); /* hover azul mais forte translúcido */
+  transform: translateY(-1px);
+}
+
       .corner-left { left: 10px; }
       .corner-right { right: 10px; }
 }
@@ -3384,13 +3409,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 /* === Botões fixos no topo (voltar e sair) === */
+
 .corner-btn {
   position: fixed;
-  top: 10px;        /* alinhado */
+  top: 10px;
   z-index: 1000;
-  padding: 8px 16px; /* padding igual ao header */
+  padding: 8px 16px;
   border-radius: 999px;
-  border: 1px solid var(--border-light);
+  border: 1px solid rgba(10,102,194,0.6); /* azul translúcido igual ao print */
   background: rgba(0,0,0,0.15);
   color: var(--text-dark);
   font-size: 0.95rem;
@@ -3400,6 +3426,12 @@ document.addEventListener("DOMContentLoaded", function() {
   -webkit-backdrop-filter: blur(6px);
   transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
 }
+.corner-btn:hover {
+  background: rgba(255,255,255,0.10);
+  border-color: rgba(0,65,130,0.7); /* hover azul mais forte translúcido */
+  transform: translateY(-1px);
+}
+
 .corner-left { left: 14px; }
 .corner-right { right: 14px; }
 .corner-btn:hover {
@@ -3411,11 +3443,29 @@ document.addEventListener("DOMContentLoaded", function() {
   transform: translateY(0);
 }
 @media (max-width: 768px) {
-  .corner-btn {
-    padding: 8px 12px;
-    font-size: 0.9rem;
-    top: 10px;
-  }
+  
+.corner-btn {
+  position: fixed;
+  top: 10px;
+  z-index: 1000;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(10,102,194,0.6); /* azul translúcido igual ao print */
+  background: rgba(0,0,0,0.15);
+  color: var(--text-dark);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+}
+.corner-btn:hover {
+  background: rgba(255,255,255,0.10);
+  border-color: rgba(0,65,130,0.7); /* hover azul mais forte translúcido */
+  transform: translateY(-1px);
+}
+
   .corner-left { left: 10px; }
   .corner-right { right: 10px; }
 }
@@ -3531,13 +3581,14 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 /* === Botões fixos no topo (voltar e sair) === */
+
 .corner-btn {
   position: fixed;
-  top: 10px;        /* alinhado */
+  top: 10px;
   z-index: 1000;
-  padding: 8px 16px; /* padding igual ao header */
+  padding: 8px 16px;
   border-radius: 999px;
-  border: 1px solid var(--border-light);
+  border: 1px solid rgba(10,102,194,0.6); /* azul translúcido igual ao print */
   background: rgba(0,0,0,0.15);
   color: var(--text-dark);
   font-size: 0.95rem;
@@ -3547,6 +3598,12 @@ document.addEventListener("DOMContentLoaded", function() {
   -webkit-backdrop-filter: blur(6px);
   transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
 }
+.corner-btn:hover {
+  background: rgba(255,255,255,0.10);
+  border-color: rgba(0,65,130,0.7); /* hover azul mais forte translúcido */
+  transform: translateY(-1px);
+}
+
 .corner-left { left: 14px; }
 .corner-right { right: 14px; }
 .corner-btn:hover {
@@ -3558,11 +3615,29 @@ document.addEventListener("DOMContentLoaded", function() {
   transform: translateY(0);
 }
 @media (max-width: 768px) {
-  .corner-btn {
-    padding: 8px 12px;
-    font-size: 0.9rem;
-    top: 10px;
-  }
+  
+.corner-btn {
+  position: fixed;
+  top: 10px;
+  z-index: 1000;
+  padding: 8px 16px;
+  border-radius: 999px;
+  border: 1px solid rgba(10,102,194,0.6); /* azul translúcido igual ao print */
+  background: rgba(0,0,0,0.15);
+  color: var(--text-dark);
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+}
+.corner-btn:hover {
+  background: rgba(255,255,255,0.10);
+  border-color: rgba(0,65,130,0.7); /* hover azul mais forte translúcido */
+  transform: translateY(-1px);
+}
+
   .corner-left { left: 10px; }
   .corner-right { right: 10px; }
 }
