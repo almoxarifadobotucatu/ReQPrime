@@ -769,7 +769,7 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
   z-index: 1000;
   padding: 8px 16px;
   border-radius: 999px;
-  border: 1px solid rgba(24,144,255,0.65); /* azul mais vivo translúcido */
+  border: 0.8px solid rgba(24,144,255,0.65); /* azul vivo translúcido, mais delicado */
   background: rgba(0,0,0,0.15);
   color: var(--text-dark);
   font-size: 0.95rem;
@@ -778,8 +778,9 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
   backdrop-filter: blur(6px);
   -webkit-backdrop-filter: blur(6px);
   transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.25), inset 0 0 0 1px rgba(24,144,255,0.35);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2), inset 0 0 0 0.6px rgba(24,144,255,0.35);
 }
+
 .corner-left { left: 14px; }
 .corner-right { right: 14px; }
 
