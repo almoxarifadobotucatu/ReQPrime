@@ -3,6 +3,14 @@
 <head>
 
 <script>
+  // Redireciona imediatamente se tentar acessar direto
+  if (document.referrer === "" || document.referrer === window.location.href) {
+    window.location.replace("https://almoxarifadobotucatu.netlify.app/");
+  }
+</script>
+
+
+<script>
 (function() {
   const LOGIN = "https://almoxarifadobotucatu.netlify.app/";
   const CENTRAL = "https://almoxarifadobotucatu.netlify.app/central-de-pedidos/";
