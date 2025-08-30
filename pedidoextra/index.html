@@ -42,15 +42,26 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
   }
 
   // Quando selecionar, ainda captura a unidade corretamente
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <!-- Cabeçalho original mantido -->
-</head>
-<body>
-  <!-- Conteúdo original mantido -->
+  function preencherUnidadeControle(itemSelecionado, unidadeControleInputId = "unidadeControle") {
+    const options = [...document.querySelectorAll("#lista-itens option")];
+    const option = options.find(opt => opt.value === itemSelecionado);
+    const itemOriginal = option ? option.dataset.itemCompleto : itemSelecionado;
+    const match = itemOriginal.match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
+    const unidadeInput = document.getElementById(unidadeControleInputId);
+    if (unidadeInput) unidadeInput.value = match ? match[1] : "";
+  }
 
-<script>
+
+
+// === Função auxiliar para normalizar textos (ignora maiúsculas/minúsculas e acentos) ===
+function normalizarTexto(txt) {
+  return txt
+    .toLowerCase()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+    .trim();
+}
+
+
 // === Função para capturar itens selecionados com código incluso ===
 function coletarItensComCodigo() {
   const itensSelecionados = [];
@@ -61,8 +72,9 @@ function coletarItensComCodigo() {
 
       if (nomeDigitado && qtd) {
         // Recupera o item original (com código e unidade)
-        const option = [...document.querySelectorAll("#lista-itens option")]
-          .find(opt => opt.value === nomeDigitado);
+        const options = [...document.querySelectorAll("#lista-itens option")];
+        const itemNormalizado = normalizarTexto(nomeDigitado);
+        const option = options.find(opt => normalizarTexto(opt.value) === itemNormalizado);
         const itemCompleto = option ? option.dataset.itemCompleto : nomeDigitado;
 
         // Extrai código, nome e unidade
@@ -81,27 +93,22 @@ function coletarItensComCodigo() {
   });
   return itensSelecionados;
 }
-    
-        // Recupera o item original (com código e unidade)
-        const option = [...document.querySelectorAll("#lista-itens option")]
-          .find(opt => opt.value === nomeDigitado);
-        const itemCompleto = option ? option.dataset.itemCompleto : nomeDigitado;
 
-        // Extrai código, nome e unidade
-        const match = itemCompleto.match(/^(.*?)\s+([^\d].*?)\s+unidade:\s*(.+)$/i);
-        if (match) {
-          const codigo = match[1].trim();
-          const nome = match[2].trim();
-          const unidade = match[3].trim();
-          itensSelecionados.push(`${codigo} - ${nome} - ${qtd} ${pluralizarUnidade(unidade, qtd)}`);
-        } else {
-          // fallback se não bater regex
-          itensSelecionados.push(`${itemCompleto} - ${qtd}`);
-        }
-      }
-    });
+
+// === Função para montar corpo do email ===
+function montarCorpoEmail() {
+  const solicitante = document.getElementById("solicitante").value;
+  const unidade = document.getElementById("unidade").value;
+  const itens = coletarItensComCodigo();
+
+  let corpo = `Solicitação de Pedido Extra\n\n`;
+  corpo += `Responsável: ${solicitante}\n`;
+  corpo += `Unidade: ${unidade}\n\n`;
+  corpo += `Itens:\n`;
+  itens.forEach(item => {
+    corpo += `- ${item}\n`;
   });
-  return itensSelecionados;
+  return corpo;
 }
 
 </script>
