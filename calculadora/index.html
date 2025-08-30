@@ -36,7 +36,7 @@
         --text-dark: #ffffff;
         --text-medium: #b8b8b8;
         --border-light: #2a2a3a;
-        --shadow-light: 0 4px 6px -1px rgba(0,0,0,0.3),0 2px 4px -1px rgba(0,0,0.2);
+        --shadow-light: 0 4px 6px -1px rgba(0,0,0,0.3),0 2px 4px -1px rgba(0,0,0,0.2);
     }
     body {
         background-color: var(--background-light);
@@ -167,7 +167,7 @@
             for (let key of keys) { await caches.delete(key); }
           }
         } catch(_) {}
-        window.location.href = "/login.html";
+        window.location.href = "https://almoxarifadobotucatu.netlify.app/";
       });
     }
   })();
@@ -175,10 +175,13 @@
   // Impede voltar sem login
   window.addEventListener("pageshow", function () {
     const user = localStorage.getItem("loggedInUser");
-    if (!user) {
-      window.location.replace("/login.html");
+    const isLoginPage = window.location.href === "https://almoxarifadobotucatu.netlify.app/";
+
+    if (!user && !isLoginPage) {
+      window.location.replace("https://almoxarifadobotucatu.netlify.app/");
     }
   });
+
   history.pushState(null, null, window.location.href);
   window.onpopstate = function () { history.go(1); };
   </script>
