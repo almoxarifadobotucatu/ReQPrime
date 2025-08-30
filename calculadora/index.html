@@ -7,85 +7,42 @@
   const LOGIN = "https://almoxarifadobotucatu.netlify.app/";
   const CENTRAL = "https://almoxarifadobotucatu.netlify.app/central-de-pedidos/";
   
-  // --- valida origem + token de sessão curto ---
   const ref = document.referrer || "";
-  const fromCentral = ref.startsWith(CENTRAL);
-
-  const ts = parseInt(sessionStorage.getItem("central_token_ts") || "0", 10);
-  const tok = sessionStorage.getItem("central_token");
-  const fresh = Date.now() - ts < 5 * 60 * 1000; // 5 min de validade
-
-  if (!fromCentral || !tok || !fresh) {
+  if (!ref.startsWith(CENTRAL)) {
     try {
-      // limpa todos os dados do seu domínio
+      // limpa dados do domínio
       localStorage.clear();
       sessionStorage.clear();
-      // cookies do seu domínio
       document.cookie.split(';').forEach(c => {
         const eq = c.indexOf('=');
         const name = (eq > -1 ? c.substr(0, eq) : c).trim();
         if (name) document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
       });
-      // caches + SW
       if ('caches' in window) { caches.keys().then(keys => keys.forEach(k => caches.delete(k))); }
       if ('serviceWorker' in navigator) { navigator.serviceWorker.getRegistrations().then(regs => regs.forEach(r => r.unregister())); }
     } catch (e) {}
-    // sai imediatamente
     window.location.replace(LOGIN);
     return;
   }
 
-  // --- bloqueio definitivo do voltar/avançar ---
+  // Bloqueio do botão voltar/avançar
   try { history.replaceState({guard:1}, "", location.href); } catch(_) {}
   try { history.pushState({guard:2}, "", location.href); } catch(_) {}
   addEventListener("popstate", function(){ window.location.replace(LOGIN); });
 
-  // --- BFCache & revalidação contínua ---
+  // Bloqueio BFCache
   addEventListener("pageshow", function(ev){
-    if (ev.persisted) { window.location.replace(LOGIN); return; }
-    const ts2 = parseInt(sessionStorage.getItem("central_token_ts") || "0", 10);
-    if (!sessionStorage.getItem("central_token") || (Date.now() - ts2) > 5*60*1000) {
-      window.location.replace(LOGIN);
-    }
-  });
-
-  document.addEventListener("visibilitychange", function(){
-    if (document.visibilityState === "visible") {
-      const ts3 = parseInt(sessionStorage.getItem("central_token_ts") || "0", 10);
-      if (!sessionStorage.getItem("central_token") || (Date.now() - ts3) > 5*60*1000) {
-        window.location.replace(LOGIN);
-      }
-    }
+    if (ev.persisted) { window.location.replace(LOGIN); }
   });
 })();
 </script>
 
 
 
-<script>
-(function() {
-  const origem = document.referrer;
-  const permitido = "https://almoxarifadobotucatu.netlify.app/central-de-pedidos/";
 
-  // Se não veio da página permitida, redireciona imediatamente
-  if (!origem || !origem.startsWith(permitido)) {
-    window.location.replace("https://almoxarifadobotucatu.netlify.app/");
-  }
 
-  // Bloqueia múltiplos "Voltar"
-  try { history.pushState(null, null, location.href); } catch(_) {}
-  window.onpopstate = function () {
-    window.location.replace("https://almoxarifadobotucatu.netlify.app/");
-  };
 
-  // Também bloqueia BFCache (quando o navegador tenta restaurar páginas anteriores)
-  window.addEventListener("pageshow", function (event) {
-    if (event.persisted) {
-      window.location.replace("https://almoxarifadobotucatu.netlify.app/");
-    }
-  });
-})();
-</script>
+
 
 
   <meta charset="UTF-8">
