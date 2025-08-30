@@ -2335,8 +2335,12 @@ try {
         }
         itensNomes.forEach((input, index) => {
           const nomeOriginal = input.dataset.original || input.value || '';
-          const qtd = itensQtds[index].value.trim();
-          if (!nome || !qtd) {
+          let m = nomeOriginal.trim().match(/^((?:\d+\s+){4}\d+)\s+(.*)$/);
+let codigo = '';
+let descricao = nomeOriginal;
+if (m) { codigo = m[1]; descricao = m[2]; }
+descricao = descricao.replace(/\s*unidade:\s*[^,\n]+/gi, '').trim();
+corpoEmail += `${codigo ? codigo + ' - ' : ''}${descricao} - ${qtd} ${pluralizarUnidade(unidade, qtd)}\n`;
             todosSetoresValidos = false;
             mostrarMensagemTopo('Por favor, preencha todos os campos de item e quantidade.');
             return;
@@ -2391,8 +2395,12 @@ if (!listaLimpa.includes(nomeLimpo)) {
         const itensQtds = setor.querySelectorAll('.item-qtd');
         itensNomes.forEach((input, index) => {
           const nomeOriginal = input.dataset.original || input.value || '';
-          const qtd = itensQtds[index].value;
-          const unidades = setor.querySelectorAll('.item-unidade');
+          let m = nomeOriginal.trim().match(/^((?:\d+\s+){4}\d+)\s+(.*)$/);
+let codigo = '';
+let descricao = nomeOriginal;
+if (m) { codigo = m[1]; descricao = m[2]; }
+descricao = descricao.replace(/\s*unidade:\s*[^,\n]+/gi, '').trim();
+corpoEmail += `${codigo ? codigo + ' - ' : ''}${descricao} - ${qtd} ${pluralizarUnidade(unidade, qtd)}\n`;
 const unidade = (unidades[index] && unidades[index].value) ? unidades[index].value : '';
 let m = nome.trim().match(/^((?:\d+\s+){4}\d+)\s+(.*)$/);
 let codigo = '';
