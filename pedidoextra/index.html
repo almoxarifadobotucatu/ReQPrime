@@ -2334,7 +2334,7 @@ try {
           return;
         }
         itensNomes.forEach((input, index) => {
-          const nome = input.value.trim();
+          const nomeOriginal = input.dataset.original || input.value || '';
           const qtd = itensQtds[index].value.trim();
           if (!nome || !qtd) {
             todosSetoresValidos = false;
