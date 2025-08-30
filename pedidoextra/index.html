@@ -36,7 +36,7 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
     lista.forEach(item => {
       const option = document.createElement("option");
       option.value = formatarItemParaExibicao(item); // exibe só o nome
-      option.dataset.itemCompleto = item;            // mantém original
+      option.dataset.original = item; option.dataset.itemCompleto = item;            // mantém original
       dataList.appendChild(option);
     });
   }
@@ -2842,10 +2842,10 @@ document.addEventListener("input", function(e) {
 
       if (hiddenUnid) hiddenUnid.value = unidade;
       if (unidCtrl)   unidCtrl.value   = unidade;
-      if (selDisplay) selDisplay.textContent = unidade || 'Selecione';
+      if (selDisplay) selDisplay.textContent = formatarItemParaExibicao(original) || 'Selecione';
     }
 
-    e.target.dataset.original = original;
+    e.target.dataset.original = original; e.target.dataset.itemCompleto = original;
     e.target.dispatchEvent(new Event('change', { bubbles: true }));
   }, true);
 })();
