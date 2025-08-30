@@ -2,17 +2,32 @@
 <html lang="pt-BR">
 <head>
 
-<script>
-  (function() {
-    const origem = document.referrer;
-    const permitido = "https://almoxarifadobotucatu.netlify.app/central-de-pedidos/";
 
-    // Se não veio da página permitida, manda direto para login
-    if (!origem || !origem.startsWith(permitido)) {
+<script>
+(function() {
+  const origem = document.referrer;
+  const permitido = "https://almoxarifadobotucatu.netlify.app/central-de-pedidos/";
+
+  // Se não veio da página permitida, redireciona imediatamente
+  if (!origem || !origem.startsWith(permitido)) {
+    window.location.replace("https://almoxarifadobotucatu.netlify.app/");
+  }
+
+  // Bloqueia múltiplos "Voltar"
+  try { history.pushState(null, null, location.href); } catch(_) {}
+  window.onpopstate = function () {
+    window.location.replace("https://almoxarifadobotucatu.netlify.app/");
+  };
+
+  // Também bloqueia BFCache (quando o navegador tenta restaurar páginas anteriores)
+  window.addEventListener("pageshow", function (event) {
+    if (event.persisted) {
       window.location.replace("https://almoxarifadobotucatu.netlify.app/");
     }
-  })();
+  });
+})();
 </script>
+
 
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
