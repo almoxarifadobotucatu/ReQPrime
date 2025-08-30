@@ -86,16 +86,15 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
     }
 
     .container, .login-container, .change-password-container {
-  width: 100%;
-  max-width: 100%;
-  height: 100vh;
-  margin: 0;
-  border-radius: 0;
-  padding: 40px;
-  background-color: var(--background-white);
-  box-shadow: none;
-  transition: var(--transition-all);
-}
+      max-width: 800px;
+      width: 100%;
+      background-color: var(--background-white);
+      margin: 40px auto;
+      padding: 50px;
+      border-radius: 20px;
+      box-shadow: var(--shadow-light);
+      transition: var(--transition-all);
+    }
 
     .container:hover, .login-container:hover, .change-password-container:hover {
       box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
@@ -536,16 +535,9 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
 
     @media (max-width: 768px) {
       .container, .login-container, .change-password-container {
-  width: 100%;
-  max-width: 100%;
-  height: 100vh;
-  margin: 0;
-  border-radius: 0;
-  padding: 40px;
-  background-color: var(--background-white);
-  box-shadow: none;
-  transition: var(--transition-all);
-}
+        margin: 20px;
+        padding: 30px;
+      }
       .buttons {
         flex-direction: column;
         gap: 15px;
