@@ -160,6 +160,12 @@
     <button type="button" onclick="calcular()">Calcular</button>
 
     <div class="result" id="result"></div>
+    <!-- Botões Voltar e Sair -->
+    <div class="buttons" style="margin-top:30px; display:flex; justify-content:center; gap:20px;">
+        <button type="button" onclick="window.history.back()">Voltar</button>
+        <button type="button" onclick="logout()">Sair</button>
+    </div>
+
 </div>
 
 <!-- Flatpickr JS + pt-BR -->
@@ -275,6 +281,16 @@ setInterval(function() {
 <footer style="position: fixed; bottom: 4px; right: 4px; font-size: 9px; color: #888; background: transparent; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; opacity: 0.75; user-select: none;">
     © 2025. Todos os direitos reservados.
 </footer>
+
+
+<script>
+function logout() {
+  // Limpa dados salvos e redireciona
+  localStorage.clear();
+  sessionStorage.clear();
+  window.location.href = "https://almoxarifadobotucatu.netlify.app/";
+}
+</script>
 
 </body>
   <script>
