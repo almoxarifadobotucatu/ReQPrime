@@ -1,67 +1,10 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-
-<script>
-  // Redireciona imediatamente se tentar acessar direto
-  if (document.referrer === "" || document.referrer === window.location.href) {
-    window.location.replace("https://almoxarifadobotucatu.netlify.app/");
-  }
-</script>
-
-
-<script>
-(function() {
-  const LOGIN = "https://almoxarifadobotucatu.netlify.app/";
-  const CENTRAL = "https://almoxarifadobotucatu.netlify.app/central-de-pedidos/";
-  
-  const ref = document.referrer || "";
-  if (!ref.startsWith(CENTRAL)) {
-    try {
-      // limpa dados do domínio
-      localStorage.clear();
-      sessionStorage.clear();
-      document.cookie.split(';').forEach(c => {
-        const eq = c.indexOf('=');
-        const name = (eq > -1 ? c.substr(0, eq) : c).trim();
-        if (name) document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT;path=/";
-      });
-      if ('caches' in window) { caches.keys().then(keys => keys.forEach(k => caches.delete(k))); }
-      if ('serviceWorker' in navigator) { navigator.serviceWorker.getRegistrations().then(regs => regs.forEach(r => r.unregister())); }
-    } catch (e) {}
-    window.location.replace(LOGIN);
-    return;
-  }
-
-  // Bloqueio do botão voltar/avançar
-  try { history.replaceState({guard:1}, "", location.href); } catch(_) {}
-  try { history.pushState({guard:2}, "", location.href); } catch(_) {}
-  addEventListener("popstate", function(){ window.location.replace(LOGIN); });
-
-  // Bloqueio BFCache
-  addEventListener("pageshow", function(ev){
-    if (ev.persisted) { window.location.replace(LOGIN); }
-  });
-})();
-</script>
-
-
-
-
-
-
-
-
-
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Calculadora</title>
   <link rel="icon" type="image/png" sizes="32x32" href=""> 
-
-  <!-- Bloqueio de cache para evitar reuso de páginas protegidas -->
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
-  <meta http-equiv="Pragma" content="no-cache" />
-  <meta http-equiv="Expires" content="0" />
 
   <!-- Flatpickr CSS (tema escuro) -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
@@ -265,9 +208,9 @@
   document.getElementById("calendarBtn").addEventListener("click", () => { fp.open(); });
 
   document.getElementById("endDate").addEventListener("input", function(e) {
-      let value = e.target.value.replace(/\\D/g, "");
-      if (value.length > 2 && value.length <= 4) value = value.replace(/(\\d{2})(\\d+)/, "$1/$2");
-      else if (value.length > 4) value = value.replace(/(\\d{2})(\\d{2})(\\d+)/, "$1/$2/$3");
+      let value = e.target.value.replace(/\D/g, "");
+      if (value.length > 2 && value.length <= 4) value = value.replace(/(\d{2})(\d+)/, "$1/$2");
+      else if (value.length > 4) value = value.replace(/(\d{2})(\d{2})(\d+)/, "$1/$2/$3");
       e.target.value = value;
   });
 
@@ -308,7 +251,7 @@
       resultEl.textContent = `Data inicial retroativa (45 dias úteis): ${currentDate.toLocaleDateString('pt-BR')}`;
   }
 
-  // Proteção contra inspeção (como estava no seu arquivo)
+  // Proteção contra inspeção
   document.addEventListener('keydown', function(e) {
       if (
           e.key === 'F12' ||
@@ -329,54 +272,19 @@
       if (widthThreshold || heightThreshold) window.devtoolsOpen = true;
   }, 500);
 
-  // ====== LOGOUT: limpar tudo e ir para a página de login ======
+  // BOTÃO SAIR - mesmo do central de pedidos
   (function(){
     var sair = document.getElementById("btnSair");
     if (sair) {
-      sair.addEventListener("click", async function(e){
+      sair.addEventListener("click", function(e){
         e.preventDefault();
-        try {
-          // limpa storage
-          localStorage.clear();
+        try { 
+          localStorage.removeItem("loggedInUser");
           sessionStorage.clear();
-
-          // limpa caches
-          if ('caches' in window) {
-            const keys = await caches.keys();
-            for (let key of keys) { await caches.delete(key); }
-          }
-
-          // desregistra service workers (se houver)
-          if ('serviceWorker' in navigator) {
-            const regs = await navigator.serviceWorker.getRegistrations();
-            for (const reg of regs) { try { await reg.unregister(); } catch (_) {} }
-          }
         } catch(_) {}
-        // usa replace para não deixar o usuário voltar para esta página
-        window.location.replace("https://almoxarifadobotucatu.netlify.app/");
+        window.location.replace("/");
       });
     }
-  })();
-
-  // ====== BOTÃO VOLTAR do navegador: sempre mandar para login ======
-  (function(){
-    // cria uma entrada falsa no histórico; ao pressionar "voltar", cairemos no popstate
-    try { history.pushState({blockBack:true}, "", window.location.href); } catch(_) {}
-
-    window.addEventListener("popstate", function () {
-      window.location.replace("https://almoxarifadobotucatu.netlify.app/");
-    });
-
-    // trata o BFCache do Chrome/Firefox: se a página voltar do cache (navegação back/forward), manda para login
-    window.addEventListener("pageshow", function (event) {
-      try {
-        const nav = performance.getEntriesByType && performance.getEntriesByType("navigation")[0];
-        const isBFCache = event.persisted || (nav && nav.type === "back_forward");
-        if (isBFCache) {
-          window.location.replace("https://almoxarifadobotucatu.netlify.app/");
-        }
-      } catch(_) {}
-    });
   })();
   </script>
 
