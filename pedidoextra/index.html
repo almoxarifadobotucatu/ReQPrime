@@ -21,36 +21,37 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
     // Função para preparar a exibição sem "unidade: ..."
     
   // Função para exibir apenas o nome do item (sem código e sem "unidade: ...")
-function formatarItemParaExibicao(item) {
-  return item
-    .replace(/^\d+(\s\d+)*/g, "")           // remove código do início
-    .replace(/unidade:\s*[A-Za-zÀ-ú]+/gi, "") // remove unidade
-    .trim();
-}
+  function formatarItemParaExibicao(item) {
+    return item
+      .replace(/^\d+(\s\d+)*\s*/, "")   // remove códigos no início
+      .replace(/unidade:\s*[A-Za-zÀ-ú]+/i, "") // remove "unidade: ..."
+      .trim();
+  }
 
-// Preencher datalist ocultando código e unidade
-function carregarListaItens(lista, datalistId = "lista-itens") {
-  const dataList = document.getElementById(datalistId);
-  if (!dataList) return;
-  dataList.innerHTML = "";
-  lista.forEach(item => {
-    const option = document.createElement("option");
-    option.value = formatarItemParaExibicao(item); // só o nome
-    option.dataset.itemCompleto = item;            // mantém original
-    dataList.appendChild(option);
-  });
-}
+  // Preencher datalist ocultando código e unidade
+  function carregarListaItens(lista, datalistId = "lista-itens") {
+    const dataList = document.getElementById(datalistId);
+    if (!dataList) return;
+    dataList.innerHTML = "";
+    lista.forEach(item => {
+      const option = document.createElement("option");
+      option.value = formatarItemParaExibicao(item); // exibe só o nome
+      option.dataset.itemCompleto = item;            // mantém original
+      dataList.appendChild(option);
+    });
+  }
 
-// Quando selecionar, ainda captura a unidade corretamente
-function preencherUnidadeControle(itemSelecionado, unidadeControleInputId = "unidadeControle") {
-  const options = [...document.querySelectorAll("#lista-itens option")];
-  const option = options.find(opt => opt.value === itemSelecionado);
-  const itemOriginal = option ? option.dataset.itemCompleto : itemSelecionado;
-  const match = itemOriginal.match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
-  const unidadeInput = document.getElementById(unidadeControleInputId);
-  if (unidadeInput) unidadeInput.value = match ? match[1] : "";
-}
-    
+  // Quando selecionar, ainda captura a unidade corretamente
+  function preencherUnidadeControle(itemSelecionado, unidadeControleInputId = "unidadeControle") {
+    const options = [...document.querySelectorAll("#lista-itens option")];
+    const option = options.find(opt => opt.value === itemSelecionado);
+    const itemOriginal = option ? option.dataset.itemCompleto : itemSelecionado;
+    const match = itemOriginal.match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
+    const unidadeInput = document.getElementById(unidadeControleInputId);
+    if (unidadeInput) unidadeInput.value = match ? match[1] : "";
+  }
+
+
 </script>
 
 <meta charset="utf-8"/>
