@@ -293,39 +293,31 @@
   </footer>
 
 </body>
-  <script>
+<script>
 function logout() {
     // Limpa sessionStorage e localStorage
     sessionStorage.clear();
     localStorage.clear();
 
-    // Limpa caches (suporte em navegadores modernos)
+    // Limpa caches
     if ('caches' in window) {
         caches.keys().then(function(names) {
             for (let name of names) caches.delete(name);
         });
     }
 
-    // Expira todos os cookies
+    // Expira cookies
     document.cookie.split(";").forEach(function(c) {
         document.cookie = c
             .replace(/^ +/, "")
             .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
     });
 
-    // Bloqueia voltar no navegador
-    history.pushState(null, null, window.location.href);
-    window.addEventListener('popstate', function () {
-        history.pushState(null, null, window.location.href);
-    });
-
-    // Redireciona para a página de login
-    window.location.href = "/index.html";
+    // Redireciona para a página de login substituindo no histórico
+    window.location.replace("/index.html");
 }
 </script>
 
-<!-- Exemplo do botão sair -->
-<button onclick="logout()">Sair</button>
-
 </html>
+
 
