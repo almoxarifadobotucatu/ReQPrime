@@ -42,6 +42,16 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
   }
 
   // Quando selecionar, ainda captura a unidade corretamente
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <!-- Cabeçalho original mantido -->
+</head>
+<body>
+  <!-- Conteúdo original mantido -->
+
+<script>
+// === Função para capturar itens selecionados com código incluso ===
 function coletarItensComCodigo() {
   const itensSelecionados = [];
   document.querySelectorAll("#setoresContainer .setor").forEach(setor => {
@@ -50,6 +60,28 @@ function coletarItensComCodigo() {
       const qtd = itemDiv.querySelector(".item-qtd").value;
 
       if (nomeDigitado && qtd) {
+        // Recupera o item original (com código e unidade)
+        const option = [...document.querySelectorAll("#lista-itens option")]
+          .find(opt => opt.value === nomeDigitado);
+        const itemCompleto = option ? option.dataset.itemCompleto : nomeDigitado;
+
+        // Extrai código, nome e unidade
+        const match = itemCompleto.match(/^(.*?)\s+([^\d].*?)\s+unidade:\s*(.+)$/i);
+        if (match) {
+          const codigo = match[1].trim();
+          const nome = match[2].trim();
+          const unidade = match[3].trim();
+          itensSelecionados.push(`${codigo} - ${nome} - ${qtd} ${pluralizarUnidade(unidade, qtd)}`);
+        } else {
+          // fallback se não bater regex
+          itensSelecionados.push(`${itemCompleto} - ${qtd}`);
+        }
+      }
+    });
+  });
+  return itensSelecionados;
+}
+    
         // Recupera o item original (com código e unidade)
         const option = [...document.querySelectorAll("#lista-itens option")]
           .find(opt => opt.value === nomeDigitado);
