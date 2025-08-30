@@ -172,16 +172,18 @@
     }
   })();
 
-  // Impede voltar sem login
+  // Proteção de acesso
   window.addEventListener("pageshow", function () {
     const user = localStorage.getItem("loggedInUser");
-    const isLoginPage = window.location.href === "https://almoxarifadobotucatu.netlify.app/";
 
-    if (!user && !isLoginPage) {
+    // Só redireciona se NÃO estiver logado e não for a página inicial
+    if (!user && window.location.href !== "https://almoxarifadobotucatu.netlify.app/") {
+      alert("Sua sessão expirou. Faça login novamente.");
       window.location.replace("https://almoxarifadobotucatu.netlify.app/");
     }
   });
 
+  // Impede usar botão voltar do navegador para reabrir páginas protegidas
   history.pushState(null, null, window.location.href);
   window.onpopstate = function () { history.go(1); };
   </script>
