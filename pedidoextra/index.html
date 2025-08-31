@@ -2384,34 +2384,52 @@ if (!listaLimpa.includes(nomeLimpo)) {
       if (!todosSetoresValidos) {
         return;
       }
-      let corpoEmail = `SOLICITAÇÃO DE PEDIDO EXTRA\n\n`;
-      corpoEmail += `Responsável pela solicitação: ${solicitante}\n`;
-      corpoEmail += `Unidade de saúde: ${unidade}\n\n`;
-      corpoEmail += `----------------------------------------\n\n`;
-      setores.forEach(setor => {
-        const nomeSetor = setor.querySelector('input[name="setor"]').value;
-        corpoEmail += `SETOR: ${nomeSetor}\n\n`;
-        const itensNomes = setor.querySelectorAll('.item-nome');
-        const itensQtds = setor.querySelectorAll('.item-qtd');
-        itensNomes.forEach((input, index) => {
-          const nome = input.value;
-          const qtd = itensQtds[index].value;
-          \1// Resolver item original com código a partir da lista do setor\nlet items;\nif (nomeSetor === 'Farmácia') { items = farmaciaItems; }\nelse if (nomeSetor === 'Psicotrópico') { items = PsicotópicoItems; }\nelse if (nomeSetor === 'Enfermagem') { items = enfermagemItems; }\nelse if (nomeSetor === 'Enfermagem_Urgência_e_Emergência') { items = Enfermagem_Urgência_e_EmergênciaItems; }\nelse if (nomeSetor === 'Enfermagem_Teste_DST') { items = Enfermagem_Teste_DSTItems; }\nelse if (nomeSetor === 'Odonto') { items = OdontoItems; }\nelse if (nomeSetor === 'Odonto_Instrumental') { items = Odonto_InstrumentalItems; }\nelse if (nomeSetor === 'Impressos') { items = ImpressosItems; }\nelse if (nomeSetor === 'Escritório') { items = EscritórioItems; }\nelse if (nomeSetor === 'Consumo_e_Limpeza_Esporádicos') { items = Consumo_e_Limpeza_EsporádicosItems; }\nelse if (nomeSetor === 'Consumo_e_Limpeza_Periódico') { items = Consumo_e_Limpeza_PeriódicoItems; }\nelse if (nomeSetor === 'Epi_Consumo') { items = Epi_ConsumoItems; }\nelse { items = []; }\nconst normalizarEmail = s => (s || '').replace(/\s*unidade:\s*[^,\n]+/gi, '').replace(/^((?:\d+\s+){4}\d+)\s+/, '').trim();\nconst baseNome = normalizarEmail(nome);\nconst original = (items.find(v => normalizarEmail(v) === baseNome) || nome);\nlet m = String(original).trim().match(/^((?:\d+\s+){4}\d+)\s+(.*)$/);\nlet codigo = '';\nlet descricao = String(original);\nif (m) { codigo = m[1]; descricao = m[2]; }\ndescricao = descricao.replace(/\s*unidade:\s*[^,\n]+/gi, '').trim();
-corpoEmail += `${codigo ? codigo + ' - ' : ''}${descricao} - ${qtd} ${pluralizarUnidade(unidade, qtd)}
-`;
-        });
-        corpoEmail += `\n`;
-        const Justificativa = setor.querySelector('.Justificativa').value;
-        if (Justificativa) {
-          corpoEmail += `Justificativa: ${Justificativa}\n\n`;
-        }
-        corpoEmail += `----------------------------------------\n\n`;
-      });
-      const bodyEncoded = encodeURIComponent(corpoEmail);
+let corpoEmail = `SOLICITAÇÃO DE PEDIDO EXTRA\n\n`;
+corpoEmail += `Responsável pela solicitação: ${solicitante}\n`;
+corpoEmail += `Unidade de saúde: ${unidade}\n\n`;
+corpoEmail += `----------------------------------------\n\n`;
+
+setores.forEach(setor => {
+  const nomeSetor = setor.querySelector('input[name="setor"]').value;
+  corpoEmail += `SETOR: ${nomeSetor}\n\n`;
+
+  const itensNomes = setor.querySelectorAll('.item-nome');
+  const itensQtds = setor.querySelectorAll('.item-qtd');
+  const unidades = setor.querySelectorAll('.item-unidade');
+
+  itensNomes.forEach((input, index) => {
+    const nome = input.value;
+    const qtd = itensQtds[index].value;
+    const unidade = (unidades[index] && unidades[index].value) ? unidades[index].value : '';
+
+    // Recupera item original com código a partir do datalist
+    const options = [...document.querySelectorAll("#lista-itens option")];
+    const option = options.find(opt => opt.value === nome);
+    const itemOriginal = option ? option.dataset.itemCompleto : nome;
+
+    // Extrai código e descrição
+    let m = itemOriginal.trim().match(/^((?:\d+\s+){4}\d+)\s+(.*)$/);
+    let codigo = '';
+    let descricao = itemOriginal;
+    if (m) { codigo = m[1]; descricao = m[2]; }
+
+    descricao = descricao.replace(/\s*unidade:\s*[^,\n]+/gi, '').trim();
+
+    corpoEmail += `${codigo ? codigo + ' - ' : ''}${descricao} - ${qtd} ${pluralizarUnidade(unidade, qtd)}\n`;
+  });
+
+  corpoEmail += `\n`;
+  const Justificativa = setor.querySelector('.Justificativa').value;
+  if (Justificativa) {
+    corpoEmail += `Justificativa: ${Justificativa}\n\n`;
+  }
+  corpoEmail += `----------------------------------------\n\n`;
+});
+
+const bodyEncoded = encodeURIComponent(corpoEmail);
 const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=leitaoochefe@gmail.com&su=Pedido Extra - ${encodeURIComponent(unidade)}&body=${bodyEncoded}`;
 let win = window.open('about:blank', '_blank');
-if (win) {
-  win.location.href = gmailUrl;
+
 } else {
   window.location.href = gmailUrl;
 }
