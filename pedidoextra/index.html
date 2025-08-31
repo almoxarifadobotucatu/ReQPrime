@@ -2381,38 +2381,56 @@ if (!listaLimpa.includes(nomeLimpo)) {
         return;
       }
       let corpoEmail = `SOLICITAÇÃO DE PEDIDO EXTRA\n\n`;
-      corpoEmail += `Responsável pela solicitação: ${solicitante}\n`;
-      corpoEmail += `Unidade de saúde: ${unidade}\n\n`;
-      corpoEmail += `----------------------------------------\n\n`;
-      setores.forEach(setor => {
-        const nomeSetor = setor.querySelector('input[name="setor"]').value;
-        corpoEmail += `SETOR: ${nomeSetor}\n\n`;
-        const itensNomes = setor.querySelectorAll('.item-nome');
-        const itensQtds = setor.querySelectorAll('.item-qtd');
-        itensNomes.forEach((input, index) => {
-          const nome = input.value;
-          const qtd = itensQtds[index].value;
-          const unidades = setor.querySelectorAll('.item-unidade');
-const unidade = (unidades[index] && unidades[index].value) ? unidades[index].value : '';
-let m = nome.trim().match(/^((?:\d+\s+){4}\d+)\s+(.*)$/);
-let codigo = '';
-let descricao = nome;
-if (m) { codigo = m[1]; descricao = m[2]; }
+corpoEmail += `Responsável pela solicitação: ${solicitante}\n`;
+corpoEmail += `Unidade de saúde: ${unidade}\n\n`;
+corpoEmail += `----------------------------------------\n\n`;
 
-descricao = descricao.replace(/\s*unidade:\s*[^,\n]+/gi, '').trim();
-corpoEmail += `${codigo ? codigo + ' - ' : ''}${descricao} - ${qtd} ${pluralizarUnidade(unidade, qtd)}
-`;
-        });
-        corpoEmail += `\n`;
-        const Justificativa = setor.querySelector('.Justificativa').value;
-        if (Justificativa) {
-          corpoEmail += `Justificativa: ${Justificativa}\n\n`;
-        }
-        corpoEmail += `----------------------------------------\n\n`;
-      });
-      const bodyEncoded = encodeURIComponent(corpoEmail);
+setores.forEach(setor => {
+  const nomeSetor = setor.querySelector('input[name="setor"]').value;
+  corpoEmail += `SETOR: ${nomeSetor}\n\n`;
+
+  const itensNomes = setor.querySelectorAll('.item-nome');
+  const itensQtds = setor.querySelectorAll('.item-qtd');
+  const unidades = setor.querySelectorAll('.item-unidade');
+
+  itensNomes.forEach((input, index) => {
+    const nome = input.value;
+    const qtd = itensQtds[index].value;
+    const unidade = (unidades[index] && unidades[index].value) ? unidades[index].value : '';
+
+    // 🔧 Recupera o item original com código
+    const options = [...document.querySelectorAll("#lista-itens option")];
+    const option = options.find(opt => opt.value === nome);
+    const itemOriginal = option ? option.dataset.itemCompleto : nome;
+
+    // Extrai código e descrição do item original
+    let m = itemOriginal.trim().match(/^((?:\d+\s+){4}\d+)\s+(.*)$/);
+    let codigo = '';
+    let descricao = itemOriginal;
+    if (m) { 
+      codigo = m[1]; 
+      descricao = m[2]; 
+    }
+
+    // Remove "unidade: ..." da descrição
+    descricao = descricao.replace(/\s*unidade:\s*[^,\n]+/gi, '').trim();
+
+    // Monta a linha do item
+    corpoEmail += `${codigo ? codigo + ' - ' : ''}${descricao} - ${qtd} ${pluralizarUnidade(unidade, qtd)}\n`;
+  });
+
+  corpoEmail += `\n`;
+  const Justificativa = setor.querySelector('.Justificativa').value;
+  if (Justificativa) {
+    corpoEmail += `Justificativa: ${Justificativa}\n\n`;
+  }
+  corpoEmail += `----------------------------------------\n\n`;
+});
+
+const bodyEncoded = encodeURIComponent(corpoEmail);
 const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=leitaoochefe@gmail.com&su=Pedido Extra - ${encodeURIComponent(unidade)}&body=${bodyEncoded}`;
 let win = window.open('about:blank', '_blank');
+
 if (win) {
   win.location.href = gmailUrl;
 } else {
