@@ -52,6 +52,15 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
   }
 
 
+
+// --- Função auxiliar para garantir que a validação e envio usem o valor completo ---
+function resolverItemCompleto(valorDigitado) {
+  const dataListEl = document.getElementById('lista-itens');
+  if (!dataListEl) return valorDigitado;
+  const opt = [...dataListEl.options].find(o => o.value === valorDigitado);
+  return opt ? (opt.dataset.original || opt.dataset.itemCompleto || valorDigitado) : valorDigitado;
+}
+
 </script>
 
 <meta charset="utf-8"/>
@@ -2394,6 +2403,7 @@ if (!listaLimpa.includes(nomeLimpo)) {
         const itensQtds = setor.querySelectorAll('.item-qtd');
         itensNomes.forEach((input, index) => {
           const nomeDisplay = input.value;
+const nomeCompleto = resolverItemCompleto(nomeDisplay);
 const qtd = itensQtds[index].value;
 const dataListEl = document.getElementById('lista-itens');
 let nomeCompleto = nomeDisplay;
