@@ -3358,6 +3358,67 @@ function adicionarSetor() {
 }
 </script>
 
+
+<script>
+// ✅ Robust event delegation for custom select (works for dynamically added setores)
+document.addEventListener('click', function(e) {
+  // Toggle options when clicking the "selected" area
+  const selectedEl = e.target.closest('.selected');
+  if (selectedEl && selectedEl.closest('.custom-select')) {
+    const cs = selectedEl.closest('.custom-select');
+    const options = cs.querySelector('.options');
+    if (options) {
+      // Close other open dropdowns
+      document.querySelectorAll('.custom-select .options').forEach(o => {
+        if (o !== options) o.style.display = 'none';
+      });
+      options.style.display = options.style.display === 'block' ? 'none' : 'block';
+    }
+    return;
+  }
+
+  // Handle click on an option
+  const optionEl = e.target.closest('.option');
+  if (optionEl && optionEl.closest('.custom-select')) {
+    const cs = optionEl.closest('.custom-select');
+    const selectedDiv = cs.querySelector('.selected');
+    const hiddenInput = cs.querySelector('input[name="setor"]');
+    const value = optionEl.getAttribute('data-value') || optionEl.textContent.trim();
+
+    // Evitar duplicidade de setor
+    try {
+      const allInputs = document.querySelectorAll('.setor input[name="setor"]');
+      const values = Array.from(allInputs).map(i => i.value.trim()).filter(Boolean);
+      if (values.includes(value) && (hiddenInput ? hiddenInput.value.trim() !== value : true)) {
+        if (typeof mostrarMensagemTopo === 'function') {
+          mostrarMensagemTopo('Este setor já foi adicionado.');
+        } else {
+          console.warn('Setor duplicado:', value);
+        }
+        return;
+      }
+    } catch (_) {}
+
+    if (selectedDiv) selectedDiv.textContent = value;
+    if (hiddenInput) hiddenInput.value = value;
+
+    const optBox = cs.querySelector('.options');
+    if (optBox) optBox.style.display = 'none';
+
+    // Atualizar datalist dos itens conforme o setor escolhido, se a função existir
+    try { if (typeof updateDatalist === 'function') updateDatalist(cs.id, value); } catch (_) {}
+
+    // Limpar campos de itens do setor selecionado (nome e quantidade)
+    const setor = cs.closest('.setor');
+    if (setor) {
+      setor.querySelectorAll('.item-nome').forEach(i => i.value = '');
+      setor.querySelectorAll('.item-qtd').forEach(i => i.value = '');
+    }
+    return;
+  }
+});
+</script>
+
 </body>
 </html>
 <html lang="pt-BR">
@@ -3929,6 +3990,67 @@ function adicionarSetor() {
   adicionarItem(setorIndex);
   setorIndex++;
 }
+</script>
+
+
+<script>
+// ✅ Robust event delegation for custom select (works for dynamically added setores)
+document.addEventListener('click', function(e) {
+  // Toggle options when clicking the "selected" area
+  const selectedEl = e.target.closest('.selected');
+  if (selectedEl && selectedEl.closest('.custom-select')) {
+    const cs = selectedEl.closest('.custom-select');
+    const options = cs.querySelector('.options');
+    if (options) {
+      // Close other open dropdowns
+      document.querySelectorAll('.custom-select .options').forEach(o => {
+        if (o !== options) o.style.display = 'none';
+      });
+      options.style.display = options.style.display === 'block' ? 'none' : 'block';
+    }
+    return;
+  }
+
+  // Handle click on an option
+  const optionEl = e.target.closest('.option');
+  if (optionEl && optionEl.closest('.custom-select')) {
+    const cs = optionEl.closest('.custom-select');
+    const selectedDiv = cs.querySelector('.selected');
+    const hiddenInput = cs.querySelector('input[name="setor"]');
+    const value = optionEl.getAttribute('data-value') || optionEl.textContent.trim();
+
+    // Evitar duplicidade de setor
+    try {
+      const allInputs = document.querySelectorAll('.setor input[name="setor"]');
+      const values = Array.from(allInputs).map(i => i.value.trim()).filter(Boolean);
+      if (values.includes(value) && (hiddenInput ? hiddenInput.value.trim() !== value : true)) {
+        if (typeof mostrarMensagemTopo === 'function') {
+          mostrarMensagemTopo('Este setor já foi adicionado.');
+        } else {
+          console.warn('Setor duplicado:', value);
+        }
+        return;
+      }
+    } catch (_) {}
+
+    if (selectedDiv) selectedDiv.textContent = value;
+    if (hiddenInput) hiddenInput.value = value;
+
+    const optBox = cs.querySelector('.options');
+    if (optBox) optBox.style.display = 'none';
+
+    // Atualizar datalist dos itens conforme o setor escolhido, se a função existir
+    try { if (typeof updateDatalist === 'function') updateDatalist(cs.id, value); } catch (_) {}
+
+    // Limpar campos de itens do setor selecionado (nome e quantidade)
+    const setor = cs.closest('.setor');
+    if (setor) {
+      setor.querySelectorAll('.item-nome').forEach(i => i.value = '');
+      setor.querySelectorAll('.item-qtd').forEach(i => i.value = '');
+    }
+    return;
+  }
+});
 </script>
 
 </body>
