@@ -52,6 +52,14 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
   }
 
 
+
+// Função para garantir que no envio do pedido vá o valor COMPLETO (com código)
+function obterValorCompletoItem(inputValue) {
+  const options = [...document.querySelectorAll("#lista-itens option")];
+  const opt = options.find(o => o.value === inputValue);
+  return opt ? opt.dataset.itemCompleto : inputValue;
+}
+
 </script>
 
 <meta charset="utf-8"/>
