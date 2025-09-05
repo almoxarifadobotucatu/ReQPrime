@@ -2080,339 +2080,7 @@ const EscritórioItems = [
      "1 06 04 0001 1 Protetor facial (viseira) (4.01.02 - ODONTO) unidade: Unidade",
   ];
 
-    function updateDatalist(setorId, sectorValue) {
-      const datalist = document.getElementById('lista-itens');
-      datalist.innerHTML = '';
-      let items;
-      if (sectorValue === 'Farmácia') {
-        items = farmaciaItems;
-      } else if (sectorValue === 'Psicotrópico') {
-        items = PsicotópicoItems;
-      } else if (sectorValue === 'Enfermagem') {
-        items = enfermagemItems;
-      } else if (sectorValue === 'Enfermagem_Urgência_e_Emergência') {
-        items = Enfermagem_Urgência_e_EmergênciaItems;
-      } else if (sectorValue === 'Enfermagem_Teste_DST') {
-        items = Enfermagem_Teste_DSTItems;
-      } else if (sectorValue === 'Odonto') {
-        items = OdontoItems;
-      } else if (sectorValue === 'Odonto_Instrumental') {
-        items = Odonto_InstrumentalItems;
-      } else if (sectorValue === 'Impressos') {
-        items = ImpressosItems;
-      } else if (sectorValue === 'Escritório') {
-        items = EscritórioItems;
-      } else if (sectorValue === 'Consumo_e_Limpeza_Esporádicos') {
-        items = Consumo_e_Limpeza_EsporádicosItems;
-      } else if (sectorValue === 'Consumo_e_Limpeza_Periódico') {
-        items = Consumo_e_Limpeza_PeriódicoItems;
-      } else if (sectorValue === 'Epi_Consumo') {
-        items = Epi_ConsumoItems;
-      } else {
-        items = defaultItems;
-      }
-      items.forEach(item => {
-        const option = document.createElement('option');
-        // Texto exibido sem "unidade: ..."
-        const display = item
-        .replace(/^\d+(?:\s\d+)*\s*/, '')
-        .replace(/\s*unidade:\s*[^,\n]+/i, '')
-        .trim();
-        option.value = display;                   // o usuário vê o texto limpo
-        option.dataset.original = item;           // guardamos o original para usar no formulário
-        datalist.appendChild(option);
-      });
-    }
-
-    document.addEventListener('contextmenu', function(e) {
-      e.preventDefault();
-      return false;
-    });
-
-    document.addEventListener('keydown', function(e) {
-      if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) || (e.ctrlKey && e.keyCode === 85)) {
-        e.preventDefault();
-        return false;
-      }
-    });
-
-    let setorIndex = 0;
-
-    function adicionarSetor() {
-
-      // Exibe o botão Enviar Pedido assim que um setor for adicionado
-      document.getElementById("enviarPedido").style.display = "inline-block";
-
-      const setores = document.querySelectorAll('.setor input[name="setor"]');
-      const setoresSelecionados = Array.from(setores).map(input => input.value.trim());
-      const container = document.getElementById('setoresContainer');
-      const div = document.createElement('div');
-      div.className = 'setor';
-      div.setAttribute('data-setor-index', setorIndex);
-      const setorId = `setor-${setorIndex}`;
-      div.innerHTML = `
-        <label>Setor:</label>
-        <div class="setor-select-group">
-          <div class="custom-select" id="${setorId}">
-            <div class="selected" onclick="toggleOptions('${setorId}')">Selecione um setor</div>
-            <input type="hidden" name="setor" value="" required>
-            <div class="options">
-              <div class="option" data-value="Farmácia" onclick="selectOption('${setorId}', 'Farmácia')">Farmácia</div>
-              <div class="option" data-value="Psicotrópico" onclick="selectOption('${setorId}', 'Psicotrópico')">Psicotrópico</div>
-              <div class="option" data-value="Enfermagem" onclick="selectOption('${setorId}', 'Enfermagem')">Enfermagem</div>
-              <div class="option" data-value="Enfermagem_Urgência_e_Emergência" onclick="selectOption('${setorId}', 'Enfermagem_Urgência_e_Emergência')">Enfermagem_Urgência_e_Emergência</div>
-              <div class="option" data-value="Enfermagem_Teste_DST" onclick="selectOption('${setorId}', 'Enfermagem_Teste_DST')">Enfermagem_Teste_DST</div>
-              <div class="option" data-value="Odonto" onclick="selectOption('${setorId}', 'Odonto')">Odonto</div>
-              <div class="option" data-value="Odonto_Instrumental" onclick="selectOption('${setorId}', 'Odonto_Instrumental')">Odonto_Instrumental</div>
-              <div class="option" data-value="Consumo_e_Limpeza_Esporádicos" onclick="selectOption('${setorId}', 'Consumo_e_Limpeza_Esporádicos')">Consumo_e_Limpeza_Esporádicos</div>
-              <div class="option" data-value="Consumo_e_Limpeza_Periódico" onclick="selectOption('${setorId}', 'Consumo_e_Limpeza_Periódico')">Consumo_e_Limpeza_Periódico</div>
-              <div class="option" data-value="Escritório" onclick="selectOption('${setorId}', 'Escritório')">Escritório</div>
-              <div class="option" data-value="Impressos" onclick="selectOption('${setorId}', 'Impressos')">Impressos</div>
-              <div class="option" data-value="Epi_Consumo" onclick="selectOption('${setorId}', 'Epi_Consumo')">Epi_Consumo</div>
-            </div>
-          </div>
-          <button type="button" onclick="removerSetor(this)" class="remove-button remove-setor-button">Remover Setor</button>
-        </div>
-        <div class="itens" id="itens-${setorIndex}"></div>
-        <div class="item-buttons">
-          <button type="button" onclick="adicionarItem(${setorIndex})">Adicionar Item</button>
-        </div>
-        <div class="Justificativa-group">
-          <label>Digite aqui uma justificativa para itens do setor acima:</label>
-          <textarea class="Justificativa" maxlength="300" rows="3" placeholder="Digite sua justificativa..."></textarea>
-        </div>
-      `;
-      container.appendChild(div);
-      adicionarItem(setorIndex);
-      setorIndex++;
-    }
-
-    function toggleOptions(setorId) {
-      const options = document.querySelector(`#${setorId} .options`);
-      options.style.display = options.style.display === 'block' ? 'none' : 'block';
-    }
-
-    function selectOption(setorId, value) {
-      const setores = document.querySelectorAll('.setor input[name="setor"]');
-      const setoresSelecionados = Array.from(setores).map(input => input.value.trim());
-      if (setoresSelecionados.includes(value)) {
-        mostrarMensagemTopo('Este setor já foi adicionado.');
-        return;
-      }
-      const selected = document.querySelector(`#${setorId} .selected`);
-      const hiddenInput = document.querySelector(`#${setorId} input[name="setor"]`);
-      selected.textContent = value;
-      hiddenInput.value = value;
-      toggleOptions(setorId);
-      updateDatalist(setorId, value);
-      // Clear all item names and quantities in this sector
-      const setor = document.querySelector(`#${setorId}`).closest('.setor');
-      const itemInputs = setor.querySelectorAll('.item-nome');
-      const quantityInputs = setor.querySelectorAll('.item-qtd');
-      itemInputs.forEach(input => input.value = '');
-      quantityInputs.forEach(input => input.value = '');
-    }
-
-    document.addEventListener('click', function(e) {
-      if (!e.target.closest('.custom-select')) {
-        document.querySelectorAll('.options').forEach(opt => opt.style.display = 'none');
-      }
-    });
-
-    function removerSetor(button) {
-      button.closest('.setor').remove();
-      // Update datalist for the first remaining sector, if any
-      const firstSetor = document.querySelector('.setor');
-      if (firstSetor) {
-        const setorId = firstSetor.querySelector('.custom-select').id;
-        const sectorValue = firstSetor.querySelector('input[name="setor"]').value.trim();
-        updateDatalist(setorId, sectorValue);
-      } else {
-        updateDatalist('setor-0', ''); // Clear datalist if no sectors remain
-      }
-    }
-
-    function adicionarItem(index) {
-      const container = document.getElementById(`itens-${index}`);
-      const setor = container.closest('.setor');
-      const nomeSetor = setor.querySelector('input[name="setor"]').value.trim();
-      if (!nomeSetor) {
-      }
-      const itensExistentes = Array.from(container.querySelectorAll('.item-nome')).map(input => input.value.trim());
-      const div = document.createElement('div');
-      div.className = 'item';
-      const count = container.querySelectorAll('.item').length;
-      const unidadeId = `unidade-${index}-${count+1}`;
-      div.innerHTML = `
-        <div class="item-input-group item-nome-group">
-          <label>Item:</label>
-          <input type="text" class="item-nome" list="lista-itens" required onchange="verificarDuplicata(this, '${index}')">
-        </div>
-        <div class="item-input-group item-qtd-group">
-          <label>Quantidade:</label>
-          <input type="number" class="item-qtd" min="1" required>
-        </div>
-        
-<div class="item-input-group item-unidade-group">
-  <label>Unidade de Controle</label>
-  <input type="text" class="unidade-controle" readonly />
-</div>
-    <input type="hidden" class="item-unidade" name="unidade" value="">
-    <div class="options">
-      <div class="option" data-value="Comprimido" onclick="selectOptionUnidade(\'${unidadeId}\', 'Comprimido')">Comprimido</div>
-      <div class="option" data-value="Cápsula" onclick="selectOptionUnidade(\'${unidadeId}\', 'Cápsula')">Cápsula</div>
-      <div class="option" data-value="Frasco" onclick="selectOptionUnidade(\'${unidadeId}\', 'Frasco')">Frasco</div>
-      <div class="option" data-value="Ampola" onclick="selectOptionUnidade(\'${unidadeId}\', 'Ampola')">Ampola</div>
-      <div class="option" data-value="Tubo" onclick="selectOptionUnidade(\'${unidadeId}\', 'Tubo')">Tubo</div>
-      <div class="option" data-value="Refil" onclick="selectOptionUnidade(\'${unidadeId}\', 'Refil')">Refil</div>
-      <div class="option" data-value="Sachê" onclick="selectOptionUnidade(\'${unidadeId}\', 'Sachê')">Sachê</div>
-      <div class="option" data-value="Drágea" onclick="selectOptionUnidade(\'${unidadeId}\', 'Drágea')">Drágea</div>
-      <div class="option" data-value="Caneta" onclick="selectOptionUnidade(\'${unidadeId}\', 'Caneta')">Caneta</div>
-      <div class="option" data-value="Unidade" onclick="selectOptionUnidade(\'${unidadeId}\', 'Unidade')">Unidade</div>
-      <div class="option" data-value="Cartela" onclick="selectOptionUnidade(\'${unidadeId}\', 'Cartela')">Cartela</div>
-      <div class="option" data-value="Bisnaga" onclick="selectOptionUnidade(\'${unidadeId}\', 'Bisnaga')">Bisnaga</div>
-      <div class="option" data-value="Envelope" onclick="selectOptionUnidade(\'${unidadeId}\', 'Envelope')">Envelope</div>
-    </div>
-  </div>
-</div>
-        <button type="button" onclick="removerItem(this)" class="remove-button remove-item-button">Remover</button>
-      `;
-      container.appendChild(div);
-    }
-
-    function verificarDuplicata(input, index) {
-      const container = document.getElementById(`itens-${index}`);
-      const itensExistentes = Array.from(container.querySelectorAll('.item-nome')).map(input => input.value.trim());
-      const valorAtual = input.value.trim();
-      const duplicatas = itensExistentes.filter((item, idx) => item === valorAtual && itensExistentes.indexOf(item) !== idx);
-      if (duplicatas.length > 0) {
-        mostrarMensagemTopo('Este item já foi adicionado.');
-        input.value = '';
-      }
-// Auto-preenche a unidade de controle a partir do datalist (sem apagar se não achar)
-try {
-  const itemDiv = input.closest('.item');
-  if (itemDiv) {
-    const hiddenUnidade = itemDiv.querySelector('.item-unidade');
-    const selectedDiv   = itemDiv.querySelector('.custom-select .selected');
-
-    let unidadeEncontrada = '';
-    const listId = input.getAttribute('list');
-    const dl = listId ? document.getElementById(listId) : null;
-    if (dl) {
-      const match = Array.from(dl.options).find(o => o.value === input.value && o.dataset && o.dataset.original);
-      if (match) {
-        const mu = match.dataset.original.match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
-        if (mu) unidadeEncontrada = mu[1];
-      }
-    }
-
-    if (unidadeEncontrada) {
-      if (hiddenUnidade) hiddenUnidade.value = unidadeEncontrada;
-      if (selectedDiv)   selectedDiv.textContent = unidadeEncontrada;
-    }
-  }
-} catch (e) { /* noop */ }
-
     
-    }
-
-    function removerItem(button) {
-      button.closest('.item').remove();
-    }
-
-    document.getElementById('enviarPedido').addEventListener('click', function(e) {
-      e.preventDefault();
-      const solicitante = document.getElementById('solicitante').value.trim();
-      const unidade = document.getElementById('unidade').value.trim();
-      if (!solicitante || !unidade) {
-        mostrarMensagemTopo('Por favor, preencha os campos: Responsável pela solicitação e Unidade de sáude.');
-        return;
-      }
-      const setores = document.querySelectorAll('.setor');
-      let todosSetoresValidos = true;
-      setores.forEach(setor => {
-        const nomeSetor = setor.querySelector('input[name="setor"]').value.trim();
-        const itensNomes = setor.querySelectorAll('.item-nome');
-        const itensQtds = setor.querySelectorAll('.item-qtd');
-        if (!nomeSetor) {
-          todosSetoresValidos = false;
-          mostrarMensagemTopo('Por favor, selecione um setor.');
-          return;
-        }
-        if (itensNomes.length === 0) {
-          todosSetoresValidos = false;
-          mostrarMensagemTopo('Por favor, adicione pelo menos um item em cada setor.');
-          return;
-        }
-        itensNomes.forEach((input, index) => {
-          const nome = input.value.trim();
-          const qtd = itensQtds[index].value.trim();
-          if (!nome || !qtd) {
-            todosSetoresValidos = false;
-            mostrarMensagemTopo('Por favor, preencha todos os campos de item e quantidade.');
-            return;
-          }
-          let validItems;
-          if (nomeSetor === 'Farmácia') {
-            validItems = farmaciaItems;
-          } else if (nomeSetor === 'Psicotrópico') {
-            validItems = PsicotópicoItems;
-          } else if (nomeSetor === 'Enfermagem') {
-            validItems = enfermagemItems;
-          } else if (nomeSetor === 'Enfermagem_Urgência_e_Emergência') {
-            validItems = Enfermagem_Urgência_e_EmergênciaItems;
-          } else if (nomeSetor === 'Enfermagem_Teste_DST') {
-            validItems = Enfermagem_Teste_DSTItems;
-          } else if (nomeSetor === 'Odonto') {
-            validItems = OdontoItems;
-          } else if (nomeSetor === 'Odonto_Instrumental') {
-            validItems = Odonto_InstrumentalItems;
-          } else if (nomeSetor === 'Impressos') {
-            validItems = ImpressosItems;
-          } else if (nomeSetor === 'Escritório') {
-            validItems = EscritórioItems;
-          } else if (nomeSetor === 'Consumo_e_Limpeza_Esporádicos') {
-            validItems = Consumo_e_Limpeza_EsporádicosItems;
-          } else if (nomeSetor === 'Consumo_e_Limpeza_Periódico') {
-            validItems = Consumo_e_Limpeza_PeriódicoItems;
-          } else if (nomeSetor === 'Epi_Consumo') {
-            validItems = Epi_ConsumoItems;
-          }
-const nomeLimpo = (nome || '').replace(/\s*unidade:\s*[^,\n]+/gi, '').trim();
-const listaLimpa = validItems.map(v => v.replace(/\s*unidade:\s*[^,\n]+/gi, '').trim());
-if (!listaLimpa.includes(nomeLimpo)) {
-
-            todosSetoresValidos = false;
-            mostrarMensagemTopo(`O item "${nome}" não é válido para o setor ${nomeSetor}.`);
-            return;
-          }
-        });
-      });
-      if (!todosSetoresValidos) {
-        return;
-      }
-      let corpoEmail = `SOLICITAÇÃO DE PEDIDO EXTRA\n\n`;
-      corpoEmail += `Responsável pela solicitação: ${solicitante}\n`;
-      corpoEmail += `Unidade de saúde: ${unidade}\n\n`;
-      corpoEmail += `----------------------------------------\n\n`;
-      setores.forEach(setor => {
-        const nomeSetor = setor.querySelector('input[name="setor"]').value;
-        corpoEmail += `SETOR: ${nomeSetor}\n\n`;
-        const itensNomes = setor.querySelectorAll('.item-nome');
-        const itensQtds = setor.querySelectorAll('.item-qtd');
-        itensNomes.forEach((input, index) => {
-          const nomeDisplay = input.value;
-const nomeCompleto = resolverItemCompleto(nomeDisplay);
-const qtd = itensQtds[index].value;
-const dataListEl = document.getElementById('lista-itens');
-let nomeCompleto = nomeDisplay;
-if (dataListEl) {
-  const opt = [...dataListEl.options].find(o => o.value === nomeDisplay);
-  if (opt && (opt.dataset.original || opt.dataset.itemCompleto)) {
-    nomeCompleto = opt.dataset.original || opt.dataset.itemCompleto;
-  }
-}
 const unidades = setor.querySelectorAll('.item-unidade');
 const unidade = (unidades[index] && unidades[index].value) ? unidades[index].value : '';
 let m = nomeCompleto.trim().match(/^(\d+(?:\s\d+)*)\s+(.*)$/);
@@ -2733,65 +2401,7 @@ document.addEventListener("DOMContentLoaded", function() {
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  async function enviarPedido() {
-    const solicitante = document.getElementById("solicitante").value.trim();
-    const unidade = document.getElementById("unidade").value.trim();
-    const itens = [];
-
-    document.querySelectorAll(".item").forEach(itemDiv => {
-      const nome = itemDiv.querySelector(".item-nome")?.value;
-      const quantidade = itemDiv.querySelector(".item-qtd")?.value;
-      const unidadeControle = itemDiv.querySelector(".item-unidade")?.value;
-      );
-      }
-    });
-
-    if (!solicitante || !unidade || itens.length === 0) {
-      mostrarMensagemTopo("⚠️ Preencha todos os campos e adicione pelo menos um item.");
-      return;
-    }
-
-    const dados = {
-      solicitante,
-      unidade,
-      itens,
-      data: new Date().toISOString()
-    };
-
-    try {
-      await addDoc(collection(db, "pedidos"), dados);
-      mostrarMensagemTopo("<h3>✅ Pedido enviado com sucesso!</h3>", "success");
-      document.getElementById("pedidoForm").reset();
-      document.getElementById("setoresContainer").innerHTML = "";
-    } catch (erro) {
-      console.error("Erro ao salvar no Firebase:", erro);
-      mostrarMensagemTopo("❌ Erro ao enviar o pedido. Tente novamente.");
-    }
-  }
-
-  // Listener único para o botão
-  const btn = document.getElementById("enviarPedido");
-  if (btn) {
-    btn.addEventListener("click", async (e) => {
-      e.preventDefault();
-      if (btn.disabled) return;
-      btn.disabled = true;
-      await enviarPedido();
-      setTimeout(() => { btn.disabled = false; }, 2000);
-    });
-  }
-</script>
-
-<script>
-function atualizarUnidade() {
-  const select = document.getElementById("medicamento");
-  const valor = select.value;
-  if (!valor) return;
-  const match = valor.match(/unidade:\s*([^"]+)/i);
-  if (match) {
-    document.getElementById("unidadeControle").value = match[1].trim();
-  }
-}
+  async 
 </script>
 
 <script>
@@ -3107,160 +2717,7 @@ document.addEventListener("DOMContentLoaded", function() {
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  async function enviarPedido() {
-    const solicitante = document.getElementById("solicitante").value.trim();
-    const unidade = document.getElementById("unidade").value.trim();
-    const itens = [];
-
-    document.querySelectorAll(".item").forEach(itemDiv => {
-      const nome = itemDiv.querySelector(".item-nome")?.value;
-      const quantidade = itemDiv.querySelector(".item-qtd")?.value;
-      const unidadeControle = itemDiv.querySelector(".item-unidade")?.value;
-      // Captura o setor a partir do container .setor mais próximo
-      const setorContainer = itemDiv.closest(".setor");
-      const setor = setorContainer ? (setorContainer.querySelector('input[name="setor"]')?.value || "") : "";
-      if (nome && quantidade && unidadeControle) {
-        itens.push({ nome, quantidade, unidadeControle, setor });
-      }
-    });
-
-    if (!solicitante || !unidade || itens.length === 0) {
-      alert("⚠️ Preencha todos os campos e adicione pelo menos um item.");
-      return;
-    }
-
-    const dados = {
-      solicitante,
-      unidade,
-      itens,
-      data: new Date().toISOString()
-    };
-
-    try {
-      await addDoc(collection(db, "pedidos"), dados);
-      alert("✅ Pedido enviado com sucesso!");
-      document.getElementById("pedidoForm").reset();
-      document.getElementById("setoresContainer").innerHTML = "";
-    } catch (erro) {
-      console.error("Erro ao salvar no Firebase:", erro);
-      alert("❌ Erro ao enviar o pedido. Tente novamente.");
-    }
-  }
-
-  // Listener único para o botão
-  const btn = document.getElementById("enviarPedido");
-  if (btn) {
-    btn.addEventListener("click", async (e) => {
-      e.preventDefault();
-      if (btn.disabled) return;
-      btn.disabled = true;
-      await enviarPedido();
-      setTimeout(() => { btn.disabled = false; }, 2000);
-    });
-  }
-</script>
-
-<script>
-// === Auto-preenchimento do campo "Responsável pela solicitação" ===
-(function() {
-  function safeParse(v) {
-    try { return JSON.parse(v); } catch(e) { return null; }
-  }
-  function firstNonEmpty(arr) {
-    for (var i = 0; i < arr.length; i++) if (arr[i]) return arr[i];
-    return null;
-  }
-  function fromStorages(keys, pick) {
-    var stores = [localStorage, sessionStorage];
-    for (var s = 0; s < stores.length; s++) {
-      for (var i = 0; i < keys.length; i++) {
-        var raw = stores[s].getItem(keys[i]);
-        if (!raw) continue;
-        // se for JSON com {name, username}
-        var obj = safeParse(raw);
-        if (obj && typeof obj === 'object') {
-          var val = pick(obj);
-          if (val) return val;
-        }
-        // se for string simples
-        if (!obj && typeof raw === 'string' && raw.trim()) {
-          var trimmed = raw.trim();
-          if (pick({ name: trimmed, username: trimmed })) return trimmed;
-        }
-      }
-    }
-    return null;
-  }
-  function mapUsernameToName(username) {
-    try {
-      var users = safeParse(localStorage.getItem('users')) || [];
-      username = (username || '').toLowerCase();
-      for (var i=0;i<users.length;i++) {
-        if ((users[i].username || '').toLowerCase() === username) {
-          return users[i].name || users[i].username;
-        }
-      }
-    } catch(e) {}
-    // fallback conhecido
-    if (username.toLowerCase() === 'sms6786') return 'Fabiano';
-    if (username.toLowerCase() === 'admin') return 'Administrador';
-    return username;
-  }
-  function fromReferrer() {
-    try {
-      var u = new URL(document.referrer);
-      var nome = u.searchParams.get('nome') || u.searchParams.get('name') || u.searchParams.get('displayName');
-      var user = u.searchParams.get('user') || u.searchParams.get('username') || u.searchParams.get('login');
-      if (nome && nome.trim()) return nome.trim();
-      if (user && user.trim()) return mapUsernameToName(user.trim());
-    } catch(e) {}
-    return null;
-  }
-  function getDisplayName() {
-    // 1) chaves comuns com objeto {name, username}
-    var viaObj = fromStorages(
-      ['usuarioLogado', 'currentUser', 'usuarioAtual', 'userObject', 'authUser'],
-      function(o){ return o.name || (o.displayName) || (o.fullName) || (o.username && mapUsernameToName(o.username)); }
-    );
-    if (viaObj) return viaObj;
-
-    // 2) chaves simples com nome/username string
-    var viaStr = fromStorages(
-      ['nomeUsuario', 'displayName', 'welcomeName', 'user', 'usuario', 'username', 'login'],
-      function(o){ return o.name || o.username; }
-    );
-    if (viaStr) {
-      // se parecer um username (ex: sms6786), tenta mapear
-      var looksLikeUser = /^[A-Za-z]+\d{2,}$/.test(viaStr);
-      return looksLikeUser ? mapUsernameToName(viaStr) : viaStr;
-    }
-    // 3) tentar via referrer (query params)
-    var viaRef = fromReferrer();
-    if (viaRef) return viaRef;
-
-    return null;
-  }
-
-  function applyName() {
-    var input = document.getElementById('solicitante');
-    if (!input) return;
-    var nome = getDisplayName();
-    if (nome && !input.value) {
-      input.value = nome;
-      input.readOnly = true;
-      input.setAttribute('data-autofilled', '1');
-    }
-  }
-
-  // Garante após DOM pronto e re-aplica se o DOM mudar
-  document.addEventListener('DOMContentLoaded', function() {
-    applyName();
-    setTimeout(applyName, 300); // segunda tentativa
-    setTimeout(applyName, 1200); // terceira tentativa
-  });
-  var obs = new MutationObserver(function(){ applyName(); });
-  obs.observe(document.documentElement, { subtree: true, childList: true });
-})();
+  async )();
 // === Fim do auto-preenchimento ===
 </script>
 
@@ -3370,6 +2827,906 @@ document.addEventListener('click', function(e) {
 });
 </script>
 
+<script>
+let setorIndex = 0;
+
+function adicionarSetor() {
+
+      // Exibe o botão Enviar Pedido assim que um setor for adicionado
+      document.getElementById("enviarPedido").style.display = "inline-block";
+
+      const setores = document.querySelectorAll('.setor input[name="setor"]');
+      const setoresSelecionados = Array.from(setores).map(input => input.value.trim());
+      const container = document.getElementById('setoresContainer');
+      const div = document.createElement('div');
+      div.className = 'setor';
+      div.setAttribute('data-setor-index', setorIndex);
+      const setorId = `setor-${setorIndex}`;
+      div.innerHTML = `
+        <label>Setor:</label>
+        <div class="setor-select-group">
+          <div class="custom-select" id="${setorId}">
+            <div class="selected" onclick="toggleOptions('${setorId}')">Selecione um setor</div>
+            <input type="hidden" name="setor" value="" required>
+            <div class="options">
+              <div class="option" data-value="Farmácia" onclick="selectOption('${setorId}', 'Farmácia')">Farmácia</div>
+              <div class="option" data-value="Psicotrópico" onclick="selectOption('${setorId}', 'Psicotrópico')">Psicotrópico</div>
+              <div class="option" data-value="Enfermagem" onclick="selectOption('${setorId}', 'Enfermagem')">Enfermagem</div>
+              <div class="option" data-value="Enfermagem_Urgência_e_Emergência" onclick="selectOption('${setorId}', 'Enfermagem_Urgência_e_Emergência')">Enfermagem_Urgência_e_Emergência</div>
+              <div class="option" data-value="Enfermagem_Teste_DST" onclick="selectOption('${setorId}', 'Enfermagem_Teste_DST')">Enfermagem_Teste_DST</div>
+              <div class="option" data-value="Odonto" onclick="selectOption('${setorId}', 'Odonto')">Odonto</div>
+              <div class="option" data-value="Odonto_Instrumental" onclick="selectOption('${setorId}', 'Odonto_Instrumental')">Odonto_Instrumental</div>
+              <div class="option" data-value="Consumo_e_Limpeza_Esporádicos" onclick="selectOption('${setorId}', 'Consumo_e_Limpeza_Esporádicos')">Consumo_e_Limpeza_Esporádicos</div>
+              <div class="option" data-value="Consumo_e_Limpeza_Periódico" onclick="selectOption('${setorId}', 'Consumo_e_Limpeza_Periódico')">Consumo_e_Limpeza_Periódico</div>
+              <div class="option" data-value="Escritório" onclick="selectOption('${setorId}', 'Escritório')">Escritório</div>
+              <div class="option" data-value="Impressos" onclick="selectOption('${setorId}', 'Impressos')">Impressos</div>
+              <div class="option" data-value="Epi_Consumo" onclick="selectOption('${setorId}', 'Epi_Consumo')">Epi_Consumo</div>
+            </div>
+          </div>
+          <button type="button" onclick="removerSetor(this)" class="remove-button remove-setor-button">Remover Setor</button>
+        </div>
+        <div class="itens" id="itens-${setorIndex}"></div>
+        <div class="item-buttons">
+          <button type="button" onclick="adicionarItem(${setorIndex})">Adicionar Item</button>
+        </div>
+        <div class="Justificativa-group">
+          <label>Digite aqui uma justificativa para itens do setor acima:</label>
+          <textarea class="Justificativa" maxlength="300" rows="3" placeholder="Digite sua justificativa..."></textarea>
+        </div>
+      `;
+      container.appendChild(div);
+      adicionarItem(setorIndex);
+      setorIndex++;
+    }
+
+    function toggleOptions(setorId) {
+      const options = document.querySelector(`#${setorId} .options`);
+      options.style.display = options.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function selectOption(setorId, value) {
+      const setores = document.querySelectorAll('.setor input[name="setor"]');
+      const setoresSelecionados = Array.from(setores).map(input => input.value.trim());
+      if (setoresSelecionados.includes(value)) {
+        mostrarMensagemTopo('Este setor já foi adicionado.');
+        return;
+      }
+      const selected = document.querySelector(`#${setorId} .selected`);
+      const hiddenInput = document.querySelector(`#${setorId} input[name="setor"]`);
+      selected.textContent = value;
+      hiddenInput.value = value;
+      toggleOptions(setorId);
+      updateDatalist(setorId, value);
+      // Clear all item names and quantities in this sector
+      const setor = document.querySelector(`#${setorId}`).closest('.setor');
+      const itemInputs = setor.querySelectorAll('.item-nome');
+      const quantityInputs = setor.querySelectorAll('.item-qtd');
+      itemInputs.forEach(input => input.value = '');
+      quantityInputs.forEach(input => input.value = '');
+    }
+
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.custom-select')) {
+        document.querySelectorAll('.options').forEach(opt => opt.style.display = 'none');
+      }
+    });
+
+    function removerSetor(button) {
+      button.closest('.setor').remove();
+      // Update datalist for the first remaining sector, if any
+      const firstSetor = document.querySelector('.setor');
+      if (firstSetor) {
+        const setorId = firstSetor.querySelector('.custom-select').id;
+        const sectorValue = firstSetor.querySelector('input[name="setor"]').value.trim();
+        updateDatalist(setorId, sectorValue);
+      } else {
+        updateDatalist('setor-0', ''); // Clear datalist if no sectors remain
+      }
+    }
+
+    function adicionarItem(index) {
+      const container = document.getElementById(`itens-${index}`);
+      const setor = container.closest('.setor');
+      const nomeSetor = setor.querySelector('input[name="setor"]').value.trim();
+      if (!nomeSetor) {
+      }
+      const itensExistentes = Array.from(container.querySelectorAll('.item-nome')).map(input => input.value.trim());
+      const div = document.createElement('div');
+      div.className = 'item';
+      const count = container.querySelectorAll('.item').length;
+      const unidadeId = `unidade-${index}-${count+1}`;
+      div.innerHTML = `
+        <div class="item-input-group item-nome-group">
+          <label>Item:</label>
+          <input type="text" class="item-nome" list="lista-itens" required onchange="verificarDuplicata(this, '${index}')">
+        </div>
+        <div class="item-input-group item-qtd-group">
+          <label>Quantidade:</label>
+          <input type="number" class="item-qtd" min="1" required>
+        </div>
+        
+<div class="item-input-group item-unidade-group">
+  <label>Unidade de Controle</label>
+  <input type="text" class="unidade-controle" readonly />
+</div>
+    <input type="hidden" class="item-unidade" name="unidade" value="">
+    <div class="options">
+      <div class="option" data-value="Comprimido" onclick="selectOptionUnidade(\'${unidadeId}\', 'Comprimido')">Comprimido</div>
+      <div class="option" data-value="Cápsula" onclick="selectOptionUnidade(\'${unidadeId}\', 'Cápsula')">Cápsula</div>
+      <div class="option" data-value="Frasco" onclick="selectOptionUnidade(\'${unidadeId}\', 'Frasco')">Frasco</div>
+      <div class="option" data-value="Ampola" onclick="selectOptionUnidade(\'${unidadeId}\', 'Ampola')">Ampola</div>
+      <div class="option" data-value="Tubo" onclick="selectOptionUnidade(\'${unidadeId}\', 'Tubo')">Tubo</div>
+      <div class="option" data-value="Refil" onclick="selectOptionUnidade(\'${unidadeId}\', 'Refil')">Refil</div>
+      <div class="option" data-value="Sachê" onclick="selectOptionUnidade(\'${unidadeId}\', 'Sachê')">Sachê</div>
+      <div class="option" data-value="Drágea" onclick="selectOptionUnidade(\'${unidadeId}\', 'Drágea')">Drágea</div>
+      <div class="option" data-value="Caneta" onclick="selectOptionUnidade(\'${unidadeId}\', 'Caneta')">Caneta</div>
+      <div class="option" data-value="Unidade" onclick="selectOptionUnidade(\'${unidadeId}\', 'Unidade')">Unidade</div>
+      <div class="option" data-value="Cartela" onclick="selectOptionUnidade(\'${unidadeId}\', 'Cartela')">Cartela</div>
+      <div class="option" data-value="Bisnaga" onclick="selectOptionUnidade(\'${unidadeId}\', 'Bisnaga')">Bisnaga</div>
+      <div class="option" data-value="Envelope" onclick="selectOptionUnidade(\'${unidadeId}\', 'Envelope')">Envelope</div>
+    </div>
+  </div>
+</div>
+        <button type="button" onclick="removerItem(this)" class="remove-button remove-item-button">Remover</button>
+      `;
+      container.appendChild(div);
+    }
+
+    function verificarDuplicata(input, index) {
+      const container = document.getElementById(`itens-${index}`);
+      const itensExistentes = Array.from(container.querySelectorAll('.item-nome')).map(input => input.value.trim());
+      const valorAtual = input.value.trim();
+      const duplicatas = itensExistentes.filter((item, idx) => item === valorAtual && itensExistentes.indexOf(item) !== idx);
+      if (duplicatas.length > 0) {
+        mostrarMensagemTopo('Este item já foi adicionado.');
+        input.value = '';
+      }
+// Auto-preenche a unidade de controle a partir do datalist (sem apagar se não achar)
+try {
+  const itemDiv = input.closest('.item');
+  if (itemDiv) {
+    const hiddenUnidade = itemDiv.querySelector('.item-unidade');
+    const selectedDiv   = itemDiv.querySelector('.custom-select .selected');
+
+    let unidadeEncontrada = '';
+    const listId = input.getAttribute('list');
+    const dl = listId ? document.getElementById(listId) : null;
+    if (dl) {
+      const match = Array.from(dl.options).find(o => o.value === input.value && o.dataset && o.dataset.original);
+      if (match) {
+        const mu = match.dataset.original.match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
+        if (mu) unidadeEncontrada = mu[1];
+      }
+    }
+
+    if (unidadeEncontrada) {
+      if (hiddenUnidade) hiddenUnidade.value = unidadeEncontrada;
+      if (selectedDiv)   selectedDiv.textContent = unidadeEncontrada;
+    }
+  }
+}
+
+function adicionarItem(index) {
+      const container = document.getElementById(`itens-${index}`);
+      const setor = container.closest('.setor');
+      const nomeSetor = setor.querySelector('input[name="setor"]').value.trim();
+      if (!nomeSetor) {
+      }
+      const itensExistentes = Array.from(container.querySelectorAll('.item-nome')).map(input => input.value.trim());
+      const div = document.createElement('div');
+      div.className = 'item';
+      const count = container.querySelectorAll('.item').length;
+      const unidadeId = `unidade-${index}-${count+1}`;
+      div.innerHTML = `
+        <div class="item-input-group item-nome-group">
+          <label>Item:</label>
+          <input type="text" class="item-nome" list="lista-itens" required onchange="verificarDuplicata(this, '${index}')">
+        </div>
+        <div class="item-input-group item-qtd-group">
+          <label>Quantidade:</label>
+          <input type="number" class="item-qtd" min="1" required>
+        </div>
+        
+<div class="item-input-group item-unidade-group">
+  <label>Unidade de Controle</label>
+  <input type="text" class="unidade-controle" readonly />
+</div>
+    <input type="hidden" class="item-unidade" name="unidade" value="">
+    <div class="options">
+      <div class="option" data-value="Comprimido" onclick="selectOptionUnidade(\'${unidadeId}\', 'Comprimido')">Comprimido</div>
+      <div class="option" data-value="Cápsula" onclick="selectOptionUnidade(\'${unidadeId}\', 'Cápsula')">Cápsula</div>
+      <div class="option" data-value="Frasco" onclick="selectOptionUnidade(\'${unidadeId}\', 'Frasco')">Frasco</div>
+      <div class="option" data-value="Ampola" onclick="selectOptionUnidade(\'${unidadeId}\', 'Ampola')">Ampola</div>
+      <div class="option" data-value="Tubo" onclick="selectOptionUnidade(\'${unidadeId}\', 'Tubo')">Tubo</div>
+      <div class="option" data-value="Refil" onclick="selectOptionUnidade(\'${unidadeId}\', 'Refil')">Refil</div>
+      <div class="option" data-value="Sachê" onclick="selectOptionUnidade(\'${unidadeId}\', 'Sachê')">Sachê</div>
+      <div class="option" data-value="Drágea" onclick="selectOptionUnidade(\'${unidadeId}\', 'Drágea')">Drágea</div>
+      <div class="option" data-value="Caneta" onclick="selectOptionUnidade(\'${unidadeId}\', 'Caneta')">Caneta</div>
+      <div class="option" data-value="Unidade" onclick="selectOptionUnidade(\'${unidadeId}\', 'Unidade')">Unidade</div>
+      <div class="option" data-value="Cartela" onclick="selectOptionUnidade(\'${unidadeId}\', 'Cartela')">Cartela</div>
+      <div class="option" data-value="Bisnaga" onclick="selectOptionUnidade(\'${unidadeId}\', 'Bisnaga')">Bisnaga</div>
+      <div class="option" data-value="Envelope" onclick="selectOptionUnidade(\'${unidadeId}\', 'Envelope')">Envelope</div>
+    </div>
+  </div>
+</div>
+        <button type="button" onclick="removerItem(this)" class="remove-button remove-item-button">Remover</button>
+      `;
+      container.appendChild(div);
+    }
+
+    function verificarDuplicata(input, index) {
+      const container = document.getElementById(`itens-${index}`);
+      const itensExistentes = Array.from(container.querySelectorAll('.item-nome')).map(input => input.value.trim());
+      const valorAtual = input.value.trim();
+      const duplicatas = itensExistentes.filter((item, idx) => item === valorAtual && itensExistentes.indexOf(item) !== idx);
+      if (duplicatas.length > 0) {
+        mostrarMensagemTopo('Este item já foi adicionado.');
+        input.value = '';
+      }
+// Auto-preenche a unidade de controle a partir do datalist (sem apagar se não achar)
+try {
+  const itemDiv = input.closest('.item');
+  if (itemDiv) {
+    const hiddenUnidade = itemDiv.querySelector('.item-unidade');
+    const selectedDiv   = itemDiv.querySelector('.custom-select .selected');
+
+    let unidadeEncontrada = '';
+    const listId = input.getAttribute('list');
+    const dl = listId ? document.getElementById(listId) : null;
+    if (dl) {
+      const match = Array.from(dl.options).find(o => o.value === input.value && o.dataset && o.dataset.original);
+      if (match) {
+        const mu = match.dataset.original.match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
+        if (mu) unidadeEncontrada = mu[1];
+      }
+    }
+
+    if (unidadeEncontrada) {
+      if (hiddenUnidade) hiddenUnidade.value = unidadeEncontrada;
+      if (selectedDiv)   selectedDiv.textContent = unidadeEncontrada;
+    }
+  }
+}
+
+function removerSetor(button) {
+      button.closest('.setor').remove();
+      // Update datalist for the first remaining sector, if any
+      const firstSetor = document.querySelector('.setor');
+      if (firstSetor) {
+        const setorId = firstSetor.querySelector('.custom-select').id;
+        const sectorValue = firstSetor.querySelector('input[name="setor"]').value.trim();
+        updateDatalist(setorId, sectorValue);
+      } else {
+        updateDatalist('setor-0', ''); // Clear datalist if no sectors remain
+      }
+    }
+
+    function adicionarItem(index) {
+      const container = document.getElementById(`itens-${index}`);
+      const setor = container.closest('.setor');
+      const nomeSetor = setor.querySelector('input[name="setor"]').value.trim();
+      if (!nomeSetor) {
+      }
+      const itensExistentes = Array.from(container.querySelectorAll('.item-nome')).map(input => input.value.trim());
+      const div = document.createElement('div');
+      div.className = 'item';
+      const count = container.querySelectorAll('.item').length;
+      const unidadeId = `unidade-${index}-${count+1}`;
+      div.innerHTML = `
+        <div class="item-input-group item-nome-group">
+          <label>Item:</label>
+          <input type="text" class="item-nome" list="lista-itens" required onchange="verificarDuplicata(this, '${index}')">
+        </div>
+        <div class="item-input-group item-qtd-group">
+          <label>Quantidade:</label>
+          <input type="number" class="item-qtd" min="1" required>
+        </div>
+        
+<div class="item-input-group item-unidade-group">
+  <label>Unidade de Controle</label>
+  <input type="text" class="unidade-controle" readonly />
+</div>
+    <input type="hidden" class="item-unidade" name="unidade" value="">
+    <div class="options">
+      <div class="option" data-value="Comprimido" onclick="selectOptionUnidade(\'${unidadeId}\', 'Comprimido')">Comprimido</div>
+      <div class="option" data-value="Cápsula" onclick="selectOptionUnidade(\'${unidadeId}\', 'Cápsula')">Cápsula</div>
+      <div class="option" data-value="Frasco" onclick="selectOptionUnidade(\'${unidadeId}\', 'Frasco')">Frasco</div>
+      <div class="option" data-value="Ampola" onclick="selectOptionUnidade(\'${unidadeId}\', 'Ampola')">Ampola</div>
+      <div class="option" data-value="Tubo" onclick="selectOptionUnidade(\'${unidadeId}\', 'Tubo')">Tubo</div>
+      <div class="option" data-value="Refil" onclick="selectOptionUnidade(\'${unidadeId}\', 'Refil')">Refil</div>
+      <div class="option" data-value="Sachê" onclick="selectOptionUnidade(\'${unidadeId}\', 'Sachê')">Sachê</div>
+      <div class="option" data-value="Drágea" onclick="selectOptionUnidade(\'${unidadeId}\', 'Drágea')">Drágea</div>
+      <div class="option" data-value="Caneta" onclick="selectOptionUnidade(\'${unidadeId}\', 'Caneta')">Caneta</div>
+      <div class="option" data-value="Unidade" onclick="selectOptionUnidade(\'${unidadeId}\', 'Unidade')">Unidade</div>
+      <div class="option" data-value="Cartela" onclick="selectOptionUnidade(\'${unidadeId}\', 'Cartela')">Cartela</div>
+      <div class="option" data-value="Bisnaga" onclick="selectOptionUnidade(\'${unidadeId}\', 'Bisnaga')">Bisnaga</div>
+      <div class="option" data-value="Envelope" onclick="selectOptionUnidade(\'${unidadeId}\', 'Envelope')">Envelope</div>
+    </div>
+  </div>
+</div>
+        <button type="button" onclick="removerItem(this)" class="remove-button remove-item-button">Remover</button>
+      `;
+      container.appendChild(div);
+    }
+
+    function verificarDuplicata(input, index) {
+      const container = document.getElementById(`itens-${index}`);
+      const itensExistentes = Array.from(container.querySelectorAll('.item-nome')).map(input => input.value.trim());
+      const valorAtual = input.value.trim();
+      const duplicatas = itensExistentes.filter((item, idx) => item === valorAtual && itensExistentes.indexOf(item) !== idx);
+      if (duplicatas.length > 0) {
+        mostrarMensagemTopo('Este item já foi adicionado.');
+        input.value = '';
+      }
+// Auto-preenche a unidade de controle a partir do datalist (sem apagar se não achar)
+try {
+  const itemDiv = input.closest('.item');
+  if (itemDiv) {
+    const hiddenUnidade = itemDiv.querySelector('.item-unidade');
+    const selectedDiv   = itemDiv.querySelector('.custom-select .selected');
+
+    let unidadeEncontrada = '';
+    const listId = input.getAttribute('list');
+    const dl = listId ? document.getElementById(listId) : null;
+    if (dl) {
+      const match = Array.from(dl.options).find(o => o.value === input.value && o.dataset && o.dataset.original);
+      if (match) {
+        const mu = match.dataset.original.match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
+        if (mu) unidadeEncontrada = mu[1];
+      }
+    }
+
+    if (unidadeEncontrada) {
+      if (hiddenUnidade) hiddenUnidade.value = unidadeEncontrada;
+      if (selectedDiv)   selectedDiv.textContent = unidadeEncontrada;
+    }
+  }
+}
+
+function toggleOptions(setorId) {
+      const options = document.querySelector(`#${setorId} .options`);
+      options.style.display = options.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function selectOption(setorId, value) {
+      const setores = document.querySelectorAll('.setor input[name="setor"]');
+      const setoresSelecionados = Array.from(setores).map(input => input.value.trim());
+      if (setoresSelecionados.includes(value)) {
+        mostrarMensagemTopo('Este setor já foi adicionado.');
+        return;
+      }
+      const selected = document.querySelector(`#${setorId} .selected`);
+      const hiddenInput = document.querySelector(`#${setorId} input[name="setor"]`);
+      selected.textContent = value;
+      hiddenInput.value = value;
+      toggleOptions(setorId);
+      updateDatalist(setorId, value);
+      // Clear all item names and quantities in this sector
+      const setor = document.querySelector(`#${setorId}`).closest('.setor');
+      const itemInputs = setor.querySelectorAll('.item-nome');
+      const quantityInputs = setor.querySelectorAll('.item-qtd');
+      itemInputs.forEach(input => input.value = '');
+      quantityInputs.forEach(input => input.value = '');
+    }
+
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.custom-select')) {
+        document.querySelectorAll('.options').forEach(opt => opt.style.display = 'none');
+      }
+    });
+
+    function removerSetor(button) {
+      button.closest('.setor').remove();
+      // Update datalist for the first remaining sector, if any
+      const firstSetor = document.querySelector('.setor');
+      if (firstSetor) {
+        const setorId = firstSetor.querySelector('.custom-select').id;
+        const sectorValue = firstSetor.querySelector('input[name="setor"]').value.trim();
+        updateDatalist(setorId, sectorValue);
+      } else {
+        updateDatalist('setor-0', ''); // Clear datalist if no sectors remain
+      }
+    }
+
+    function adicionarItem(index) {
+      const container = document.getElementById(`itens-${index}`);
+      const setor = container.closest('.setor');
+      const nomeSetor = setor.querySelector('input[name="setor"]').value.trim();
+      if (!nomeSetor) {
+      }
+      const itensExistentes = Array.from(container.querySelectorAll('.item-nome')).map(input => input.value.trim());
+      const div = document.createElement('div');
+      div.className = 'item';
+      const count = container.querySelectorAll('.item').length;
+      const unidadeId = `unidade-${index}-${count+1}`;
+      div.innerHTML = `
+        <div class="item-input-group item-nome-group">
+          <label>Item:</label>
+          <input type="text" class="item-nome" list="lista-itens" required onchange="verificarDuplicata(this, '${index}')">
+        </div>
+        <div class="item-input-group item-qtd-group">
+          <label>Quantidade:</label>
+          <input type="number" class="item-qtd" min="1" required>
+        </div>
+        
+<div class="item-input-group item-unidade-group">
+  <label>Unidade de Controle</label>
+  <input type="text" class="unidade-controle" readonly />
+</div>
+    <input type="hidden" class="item-unidade" name="unidade" value="">
+    <div class="options">
+      <div class="option" data-value="Comprimido" onclick="selectOptionUnidade(\'${unidadeId}\', 'Comprimido')">Comprimido</div>
+      <div class="option" data-value="Cápsula" onclick="selectOptionUnidade(\'${unidadeId}\', 'Cápsula')">Cápsula</div>
+      <div class="option" data-value="Frasco" onclick="selectOptionUnidade(\'${unidadeId}\', 'Frasco')">Frasco</div>
+      <div class="option" data-value="Ampola" onclick="selectOptionUnidade(\'${unidadeId}\', 'Ampola')">Ampola</div>
+      <div class="option" data-value="Tubo" onclick="selectOptionUnidade(\'${unidadeId}\', 'Tubo')">Tubo</div>
+      <div class="option" data-value="Refil" onclick="selectOptionUnidade(\'${unidadeId}\', 'Refil')">Refil</div>
+      <div class="option" data-value="Sachê" onclick="selectOptionUnidade(\'${unidadeId}\', 'Sachê')">Sachê</div>
+      <div class="option" data-value="Drágea" onclick="selectOptionUnidade(\'${unidadeId}\', 'Drágea')">Drágea</div>
+      <div class="option" data-value="Caneta" onclick="selectOptionUnidade(\'${unidadeId}\', 'Caneta')">Caneta</div>
+      <div class="option" data-value="Unidade" onclick="selectOptionUnidade(\'${unidadeId}\', 'Unidade')">Unidade</div>
+      <div class="option" data-value="Cartela" onclick="selectOptionUnidade(\'${unidadeId}\', 'Cartela')">Cartela</div>
+      <div class="option" data-value="Bisnaga" onclick="selectOptionUnidade(\'${unidadeId}\', 'Bisnaga')">Bisnaga</div>
+      <div class="option" data-value="Envelope" onclick="selectOptionUnidade(\'${unidadeId}\', 'Envelope')">Envelope</div>
+    </div>
+  </div>
+</div>
+        <button type="button" onclick="removerItem(this)" class="remove-button remove-item-button">Remover</button>
+      `;
+      container.appendChild(div);
+    }
+
+    function verificarDuplicata(input, index) {
+      const container = document.getElementById(`itens-${index}`);
+      const itensExistentes = Array.from(container.querySelectorAll('.item-nome')).map(input => input.value.trim());
+      const valorAtual = input.value.trim();
+      const duplicatas = itensExistentes.filter((item, idx) => item === valorAtual && itensExistentes.indexOf(item) !== idx);
+      if (duplicatas.length > 0) {
+        mostrarMensagemTopo('Este item já foi adicionado.');
+        input.value = '';
+      }
+// Auto-preenche a unidade de controle a partir do datalist (sem apagar se não achar)
+try {
+  const itemDiv = input.closest('.item');
+  if (itemDiv) {
+    const hiddenUnidade = itemDiv.querySelector('.item-unidade');
+    const selectedDiv   = itemDiv.querySelector('.custom-select .selected');
+
+    let unidadeEncontrada = '';
+    const listId = input.getAttribute('list');
+    const dl = listId ? document.getElementById(listId) : null;
+    if (dl) {
+      const match = Array.from(dl.options).find(o => o.value === input.value && o.dataset && o.dataset.original);
+      if (match) {
+        const mu = match.dataset.original.match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
+        if (mu) unidadeEncontrada = mu[1];
+      }
+    }
+
+    if (unidadeEncontrada) {
+      if (hiddenUnidade) hiddenUnidade.value = unidadeEncontrada;
+      if (selectedDiv)   selectedDiv.textContent = unidadeEncontrada;
+    }
+  }
+}
+
+function selectOption(setorId, value) {
+      const setores = document.querySelectorAll('.setor input[name="setor"]');
+      const setoresSelecionados = Array.from(setores).map(input => input.value.trim());
+      if (setoresSelecionados.includes(value)) {
+        mostrarMensagemTopo('Este setor já foi adicionado.');
+        return;
+      }
+      const selected = document.querySelector(`#${setorId} .selected`);
+      const hiddenInput = document.querySelector(`#${setorId} input[name="setor"]`);
+      selected.textContent = value;
+      hiddenInput.value = value;
+      toggleOptions(setorId);
+      updateDatalist(setorId, value);
+      // Clear all item names and quantities in this sector
+      const setor = document.querySelector(`#${setorId}`).closest('.setor');
+      const itemInputs = setor.querySelectorAll('.item-nome');
+      const quantityInputs = setor.querySelectorAll('.item-qtd');
+      itemInputs.forEach(input => input.value = '');
+      quantityInputs.forEach(input => input.value = '');
+    }
+
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.custom-select')) {
+        document.querySelectorAll('.options').forEach(opt => opt.style.display = 'none');
+      }
+    });
+
+    function removerSetor(button) {
+      button.closest('.setor').remove();
+      // Update datalist for the first remaining sector, if any
+      const firstSetor = document.querySelector('.setor');
+      if (firstSetor) {
+        const setorId = firstSetor.querySelector('.custom-select').id;
+        const sectorValue = firstSetor.querySelector('input[name="setor"]').value.trim();
+        updateDatalist(setorId, sectorValue);
+      } else {
+        updateDatalist('setor-0', ''); // Clear datalist if no sectors remain
+      }
+    }
+
+    function adicionarItem(index) {
+      const container = document.getElementById(`itens-${index}`);
+      const setor = container.closest('.setor');
+      const nomeSetor = setor.querySelector('input[name="setor"]').value.trim();
+      if (!nomeSetor) {
+      }
+      const itensExistentes = Array.from(container.querySelectorAll('.item-nome')).map(input => input.value.trim());
+      const div = document.createElement('div');
+      div.className = 'item';
+      const count = container.querySelectorAll('.item').length;
+      const unidadeId = `unidade-${index}-${count+1}`;
+      div.innerHTML = `
+        <div class="item-input-group item-nome-group">
+          <label>Item:</label>
+          <input type="text" class="item-nome" list="lista-itens" required onchange="verificarDuplicata(this, '${index}')">
+        </div>
+        <div class="item-input-group item-qtd-group">
+          <label>Quantidade:</label>
+          <input type="number" class="item-qtd" min="1" required>
+        </div>
+        
+<div class="item-input-group item-unidade-group">
+  <label>Unidade de Controle</label>
+  <input type="text" class="unidade-controle" readonly />
+</div>
+    <input type="hidden" class="item-unidade" name="unidade" value="">
+    <div class="options">
+      <div class="option" data-value="Comprimido" onclick="selectOptionUnidade(\'${unidadeId}\', 'Comprimido')">Comprimido</div>
+      <div class="option" data-value="Cápsula" onclick="selectOptionUnidade(\'${unidadeId}\', 'Cápsula')">Cápsula</div>
+      <div class="option" data-value="Frasco" onclick="selectOptionUnidade(\'${unidadeId}\', 'Frasco')">Frasco</div>
+      <div class="option" data-value="Ampola" onclick="selectOptionUnidade(\'${unidadeId}\', 'Ampola')">Ampola</div>
+      <div class="option" data-value="Tubo" onclick="selectOptionUnidade(\'${unidadeId}\', 'Tubo')">Tubo</div>
+      <div class="option" data-value="Refil" onclick="selectOptionUnidade(\'${unidadeId}\', 'Refil')">Refil</div>
+      <div class="option" data-value="Sachê" onclick="selectOptionUnidade(\'${unidadeId}\', 'Sachê')">Sachê</div>
+      <div class="option" data-value="Drágea" onclick="selectOptionUnidade(\'${unidadeId}\', 'Drágea')">Drágea</div>
+      <div class="option" data-value="Caneta" onclick="selectOptionUnidade(\'${unidadeId}\', 'Caneta')">Caneta</div>
+      <div class="option" data-value="Unidade" onclick="selectOptionUnidade(\'${unidadeId}\', 'Unidade')">Unidade</div>
+      <div class="option" data-value="Cartela" onclick="selectOptionUnidade(\'${unidadeId}\', 'Cartela')">Cartela</div>
+      <div class="option" data-value="Bisnaga" onclick="selectOptionUnidade(\'${unidadeId}\', 'Bisnaga')">Bisnaga</div>
+      <div class="option" data-value="Envelope" onclick="selectOptionUnidade(\'${unidadeId}\', 'Envelope')">Envelope</div>
+    </div>
+  </div>
+</div>
+        <button type="button" onclick="removerItem(this)" class="remove-button remove-item-button">Remover</button>
+      `;
+      container.appendChild(div);
+    }
+
+    function verificarDuplicata(input, index) {
+      const container = document.getElementById(`itens-${index}`);
+      const itensExistentes = Array.from(container.querySelectorAll('.item-nome')).map(input => input.value.trim());
+      const valorAtual = input.value.trim();
+      const duplicatas = itensExistentes.filter((item, idx) => item === valorAtual && itensExistentes.indexOf(item) !== idx);
+      if (duplicatas.length > 0) {
+        mostrarMensagemTopo('Este item já foi adicionado.');
+        input.value = '';
+      }
+// Auto-preenche a unidade de controle a partir do datalist (sem apagar se não achar)
+try {
+  const itemDiv = input.closest('.item');
+  if (itemDiv) {
+    const hiddenUnidade = itemDiv.querySelector('.item-unidade');
+    const selectedDiv   = itemDiv.querySelector('.custom-select .selected');
+
+    let unidadeEncontrada = '';
+    const listId = input.getAttribute('list');
+    const dl = listId ? document.getElementById(listId) : null;
+    if (dl) {
+      const match = Array.from(dl.options).find(o => o.value === input.value && o.dataset && o.dataset.original);
+      if (match) {
+        const mu = match.dataset.original.match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
+        if (mu) unidadeEncontrada = mu[1];
+      }
+    }
+
+    if (unidadeEncontrada) {
+      if (hiddenUnidade) hiddenUnidade.value = unidadeEncontrada;
+      if (selectedDiv)   selectedDiv.textContent = unidadeEncontrada;
+    }
+  }
+}
+
+function updateDatalist(setorId, sectorValue) {
+      const datalist = document.getElementById('lista-itens');
+      datalist.innerHTML = '';
+      let items;
+      if (sectorValue === 'Farmácia') {
+        items = farmaciaItems;
+      } else if (sectorValue === 'Psicotrópico') {
+        items = PsicotópicoItems;
+      } else if (sectorValue === 'Enfermagem') {
+        items = enfermagemItems;
+      } else if (sectorValue === 'Enfermagem_Urgência_e_Emergência') {
+        items = Enfermagem_Urgência_e_EmergênciaItems;
+      } else if (sectorValue === 'Enfermagem_Teste_DST') {
+        items = Enfermagem_Teste_DSTItems;
+      } else if (sectorValue === 'Odonto') {
+        items = OdontoItems;
+      } else if (sectorValue === 'Odonto_Instrumental') {
+        items = Odonto_InstrumentalItems;
+      } else if (sectorValue === 'Impressos') {
+        items = ImpressosItems;
+      } else if (sectorValue === 'Escritório') {
+        items = EscritórioItems;
+      } else if (sectorValue === 'Consumo_e_Limpeza_Esporádicos') {
+        items = Consumo_e_Limpeza_EsporádicosItems;
+      } else if (sectorValue === 'Consumo_e_Limpeza_Periódico') {
+        items = Consumo_e_Limpeza_PeriódicoItems;
+      } else if (sectorValue === 'Epi_Consumo') {
+        items = Epi_ConsumoItems;
+      } else {
+        items = defaultItems;
+      }
+      items.forEach(item => {
+        const option = document.createElement('option');
+        // Texto exibido sem "unidade: ..."
+        const display = item
+        .replace(/^\d+(?:\s\d+)*\s*/, '')
+        .replace(/\s*unidade:\s*[^,\n]+/i, '')
+        .trim();
+        option.value = display;                   // o usuário vê o texto limpo
+        option.dataset.original = item;           // guardamos o original para usar no formulário
+        datalist.appendChild(option);
+      });
+    }
+
+    document.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+      return false;
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) || (e.ctrlKey && e.keyCode === 85)) {
+        e.preventDefault();
+        return false;
+      }
+    });
+
+    let setorIndex = 0;
+
+    function adicionarSetor() {
+
+      // Exibe o botão Enviar Pedido assim que um setor for adicionado
+      document.getElementById("enviarPedido").style.display = "inline-block";
+
+      const setores = document.querySelectorAll('.setor input[name="setor"]');
+      const setoresSelecionados = Array.from(setores).map(input => input.value.trim());
+      const container = document.getElementById('setoresContainer');
+      const div = document.createElement('div');
+      div.className = 'setor';
+      div.setAttribute('data-setor-index', setorIndex);
+      const setorId = `setor-${setorIndex}`;
+      div.innerHTML = `
+        <label>Setor:</label>
+        <div class="setor-select-group">
+          <div class="custom-select" id="${setorId}">
+            <div class="selected" onclick="toggleOptions('${setorId}')">Selecione um setor</div>
+            <input type="hidden" name="setor" value="" required>
+            <div class="options">
+              <div class="option" data-value="Farmácia" onclick="selectOption('${setorId}', 'Farmácia')">Farmácia</div>
+              <div class="option" data-value="Psicotrópico" onclick="selectOption('${setorId}', 'Psicotrópico')">Psicotrópico</div>
+              <div class="option" data-value="Enfermagem" onclick="selectOption('${setorId}', 'Enfermagem')">Enfermagem</div>
+              <div class="option" data-value="Enfermagem_Urgência_e_Emergência" onclick="selectOption('${setorId}', 'Enfermagem_Urgência_e_Emergência')">Enfermagem_Urgência_e_Emergência</div>
+              <div class="option" data-value="Enfermagem_Teste_DST" onclick="selectOption('${setorId}', 'Enfermagem_Teste_DST')">Enfermagem_Teste_DST</div>
+              <div class="option" data-value="Odonto" onclick="selectOption('${setorId}', 'Odonto')">Odonto</div>
+              <div class="option" data-value="Odonto_Instrumental" onclick="selectOption('${setorId}', 'Odonto_Instrumental')">Odonto_Instrumental</div>
+              <div class="option" data-value="Consumo_e_Limpeza_Esporádicos" onclick="selectOption('${setorId}', 'Consumo_e_Limpeza_Esporádicos')">Consumo_e_Limpeza_Esporádicos</div>
+              <div class="option" data-value="Consumo_e_Limpeza_Periódico" onclick="selectOption('${setorId}', 'Consumo_e_Limpeza_Periódico')">Consumo_e_Limpeza_Periódico</div>
+              <div class="option" data-value="Escritório" onclick="selectOption('${setorId}', 'Escritório')">Escritório</div>
+              <div class="option" data-value="Impressos" onclick="selectOption('${setorId}', 'Impressos')">Impressos</div>
+              <div class="option" data-value="Epi_Consumo" onclick="selectOption('${setorId}', 'Epi_Consumo')">Epi_Consumo</div>
+            </div>
+          </div>
+          <button type="button" onclick="removerSetor(this)" class="remove-button remove-setor-button">Remover Setor</button>
+        </div>
+        <div class="itens" id="itens-${setorIndex}"></div>
+        <div class="item-buttons">
+          <button type="button" onclick="adicionarItem(${setorIndex})">Adicionar Item</button>
+        </div>
+        <div class="Justificativa-group">
+          <label>Digite aqui uma justificativa para itens do setor acima:</label>
+          <textarea class="Justificativa" maxlength="300" rows="3" placeholder="Digite sua justificativa..."></textarea>
+        </div>
+      `;
+      container.appendChild(div);
+      adicionarItem(setorIndex);
+      setorIndex++;
+    }
+
+    function toggleOptions(setorId) {
+      const options = document.querySelector(`#${setorId} .options`);
+      options.style.display = options.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function selectOption(setorId, value) {
+      const setores = document.querySelectorAll('.setor input[name="setor"]');
+      const setoresSelecionados = Array.from(setores).map(input => input.value.trim());
+      if (setoresSelecionados.includes(value)) {
+        mostrarMensagemTopo('Este setor já foi adicionado.');
+        return;
+      }
+      const selected = document.querySelector(`#${setorId} .selected`);
+      const hiddenInput = document.querySelector(`#${setorId} input[name="setor"]`);
+      selected.textContent = value;
+      hiddenInput.value = value;
+      toggleOptions(setorId);
+      updateDatalist(setorId, value);
+      // Clear all item names and quantities in this sector
+      const setor = document.querySelector(`#${setorId}`).closest('.setor');
+      const itemInputs = setor.querySelectorAll('.item-nome');
+      const quantityInputs = setor.querySelectorAll('.item-qtd');
+      itemInputs.forEach(input => input.value = '');
+      quantityInputs.forEach(input => input.value = '');
+    }
+
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.custom-select')) {
+        document.querySelectorAll('.options').forEach(opt => opt.style.display = 'none');
+      }
+    });
+
+    function removerSetor(button) {
+      button.closest('.setor').remove();
+      // Update datalist for the first remaining sector, if any
+      const firstSetor = document.querySelector('.setor');
+      if (firstSetor) {
+        const setorId = firstSetor.querySelector('.custom-select').id;
+        const sectorValue = firstSetor.querySelector('input[name="setor"]').value.trim();
+        updateDatalist(setorId, sectorValue);
+      } else {
+        updateDatalist('setor-0', ''); // Clear datalist if no sectors remain
+      }
+    }
+
+    function adicionarItem(index) {
+      const container = document.getElementById(`itens-${index}`);
+      const setor = container.closest('.setor');
+      const nomeSetor = setor.querySelector('input[name="setor"]').value.trim();
+      if (!nomeSetor) {
+      }
+      const itensExistentes = Array.from(container.querySelectorAll('.item-nome')).map(input => input.value.trim());
+      const div = document.createElement('div');
+      div.className = 'item';
+      const count = container.querySelectorAll('.item').length;
+      const unidadeId = `unidade-${index}-${count+1}`;
+      div.innerHTML = `
+        <div class="item-input-group item-nome-group">
+          <label>Item:</label>
+          <input type="text" class="item-nome" list="lista-itens" required onchange="verificarDuplicata(this, '${index}')">
+        </div>
+        <div class="item-input-group item-qtd-group">
+          <label>Quantidade:</label>
+          <input type="number" class="item-qtd" min="1" required>
+        </div>
+        
+<div class="item-input-group item-unidade-group">
+  <label>Unidade de Controle</label>
+  <input type="text" class="unidade-controle" readonly />
+</div>
+    <input type="hidden" class="item-unidade" name="unidade" value="">
+    <div class="options">
+      <div class="option" data-value="Comprimido" onclick="selectOptionUnidade(\'${unidadeId}\', 'Comprimido')">Comprimido</div>
+      <div class="option" data-value="Cápsula" onclick="selectOptionUnidade(\'${unidadeId}\', 'Cápsula')">Cápsula</div>
+      <div class="option" data-value="Frasco" onclick="selectOptionUnidade(\'${unidadeId}\', 'Frasco')">Frasco</div>
+      <div class="option" data-value="Ampola" onclick="selectOptionUnidade(\'${unidadeId}\', 'Ampola')">Ampola</div>
+      <div class="option" data-value="Tubo" onclick="selectOptionUnidade(\'${unidadeId}\', 'Tubo')">Tubo</div>
+      <div class="option" data-value="Refil" onclick="selectOptionUnidade(\'${unidadeId}\', 'Refil')">Refil</div>
+      <div class="option" data-value="Sachê" onclick="selectOptionUnidade(\'${unidadeId}\', 'Sachê')">Sachê</div>
+      <div class="option" data-value="Drágea" onclick="selectOptionUnidade(\'${unidadeId}\', 'Drágea')">Drágea</div>
+      <div class="option" data-value="Caneta" onclick="selectOptionUnidade(\'${unidadeId}\', 'Caneta')">Caneta</div>
+      <div class="option" data-value="Unidade" onclick="selectOptionUnidade(\'${unidadeId}\', 'Unidade')">Unidade</div>
+      <div class="option" data-value="Cartela" onclick="selectOptionUnidade(\'${unidadeId}\', 'Cartela')">Cartela</div>
+      <div class="option" data-value="Bisnaga" onclick="selectOptionUnidade(\'${unidadeId}\', 'Bisnaga')">Bisnaga</div>
+      <div class="option" data-value="Envelope" onclick="selectOptionUnidade(\'${unidadeId}\', 'Envelope')">Envelope</div>
+    </div>
+  </div>
+</div>
+        <button type="button" onclick="removerItem(this)" class="remove-button remove-item-button">Remover</button>
+      `;
+      container.appendChild(div);
+    }
+
+    function verificarDuplicata(input, index) {
+      const container = document.getElementById(`itens-${index}`);
+      const itensExistentes = Array.from(container.querySelectorAll('.item-nome')).map(input => input.value.trim());
+      const valorAtual = input.value.trim();
+      const duplicatas = itensExistentes.filter((item, idx) => item === valorAtual && itensExistentes.indexOf(item) !== idx);
+      if (duplicatas.length > 0) {
+        mostrarMensagemTopo('Este item já foi adicionado.');
+        input.value = '';
+      }
+// Auto-preenche a unidade de controle a partir do datalist (sem apagar se não achar)
+try {
+  const itemDiv = input.closest('.item');
+  if (itemDiv) {
+    const hiddenUnidade = itemDiv.querySelector('.item-unidade');
+    const selectedDiv   = itemDiv.querySelector('.custom-select .selected');
+
+    let unidadeEncontrada = '';
+    const listId = input.getAttribute('list');
+    const dl = listId ? document.getElementById(listId) : null;
+    if (dl) {
+      const match = Array.from(dl.options).find(o => o.value === input.value && o.dataset && o.dataset.original);
+      if (match) {
+        const mu = match.dataset.original.match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
+        if (mu) unidadeEncontrada = mu[1];
+      }
+    }
+
+    if (unidadeEncontrada) {
+      if (hiddenUnidade) hiddenUnidade.value = unidadeEncontrada;
+      if (selectedDiv)   selectedDiv.textContent = unidadeEncontrada;
+    }
+  }
+}
+
+function enviarPedido() {
+    const solicitante = document.getElementById("solicitante").value.trim();
+    const unidade = document.getElementById("unidade").value.trim();
+    const itens = [];
+
+    document.querySelectorAll(".item").forEach(itemDiv => {
+      const nome = itemDiv.querySelector(".item-nome")?.value;
+      const quantidade = itemDiv.querySelector(".item-qtd")?.value;
+      const unidadeControle = itemDiv.querySelector(".item-unidade")?.value;
+      );
+      }
+    });
+
+    if (!solicitante || !unidade || itens.length === 0) {
+      mostrarMensagemTopo("⚠️ Preencha todos os campos e adicione pelo menos um item.");
+      return;
+    }
+
+    const dados = {
+      solicitante,
+      unidade,
+      itens,
+      data: new Date().toISOString()
+    };
+
+    try {
+      await addDoc(collection(db, "pedidos"), dados);
+      mostrarMensagemTopo("<h3>✅ Pedido enviado com sucesso!</h3>", "success");
+      document.getElementById("pedidoForm").reset();
+      document.getElementById("setoresContainer").innerHTML = "";
+    } catch (erro) {
+      console.error("Erro ao salvar no Firebase:", erro);
+      mostrarMensagemTopo("❌ Erro ao enviar o pedido. Tente novamente.");
+    }
+  }
+
+  // Listener único para o botão
+  const btn = document.getElementById("enviarPedido");
+  if (btn) {
+    btn.addEventListener("click", async (e) => {
+      e.preventDefault();
+      if (btn.disabled) return;
+      btn.disabled = true;
+      await enviarPedido();
+      setTimeout(() => { btn.disabled = false; }, 2000);
+    });
+  }
+</script>
+
+<script>
+function atualizarUnidade() {
+  const select = document.getElementById("medicamento");
+  const valor = select.value;
+  if (!valor) return;
+  const match = valor.match(/unidade:\s*([^"]+)/i);
+  if (match) {
+    document.getElementById("unidadeControle").value = match[1].trim();
+  }
+}
+
+</script>
 </body>
 </html>
 <html lang="pt-BR">
@@ -3590,84 +3947,7 @@ document.addEventListener("DOMContentLoaded", function() {
   const app = initializeApp(firebaseConfig);
   const db = getFirestore(app);
 
-  async function enviarPedido() {
-    const solicitante = document.getElementById("solicitante").value.trim();
-    const unidade = document.getElementById("unidade").value.trim();
-    const itens = [];
-
-    document.querySelectorAll(".item").forEach(itemDiv => {
-      const nome = itemDiv.querySelector(".item-nome")?.value;
-      const quantidade = itemDiv.querySelector(".item-qtd")?.value;
-      const unidadeControle = itemDiv.querySelector(".item-unidade")?.value;
-      if (nome && quantidade && unidadeControle) {
-        itens.push({ nome, quantidade, unidadeControle });
-      }
-    });
-
-    if (!solicitante || !unidade || itens.length === 0) {
-      alert("⚠️ Preencha todos os campos e adicione pelo menos um item.");
-      return;
-    }
-
-    const dados = {
-      solicitante,
-      unidade,
-      itens,
-      data: new Date().toISOString()
-    };
-
-    try {
-      await addDoc(collection(db, "pedidos"), dados);
-      alert("✅ Pedido enviado com sucesso!");
-      document.getElementById("pedidoForm").reset();
-      document.getElementById("setoresContainer").innerHTML = "";
-    } catch (erro) {
-      console.error("Erro ao salvar no Firebase:", erro);
-      alert("❌ Erro ao enviar o pedido. Tente novamente.");
-    }
-  }
-
-  // Listener único para o botão
-  const btn = document.getElementById("enviarPedido");
-  if (btn) {
-    btn.addEventListener("click", async (e) => {
-      e.preventDefault();
-      if (btn.disabled) return;
-      btn.disabled = true;
-      await enviarPedido();
-      setTimeout(() => { btn.disabled = false; }, 2000);
-    });
-  }
-</script>
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pedido Extra</title>
-<style>
-
-/* === Botões fixos no topo (voltar e sair) === */
-
-
-
-.corner-btn {
-  position: fixed;
-  top: 10px;
-  z-index: 1000;
-  padding: 8px 16px;
-  border-radius: 999px;
-  border: 1px solid rgba(24,144,255,0.65); /* azul mais vivo translúcido */
-  background: rgba(0,0,0,0.15);
-  color: var(--text-dark);
-  font-size: 0.95rem;
-  font-weight: 600;
-  cursor: pointer;
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  transition: background 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.25), inset 0 0 0 1px rgba(24,144,255,0.35);
-}
+  async 
 .corner-left { left: 14px; }
 .corner-right { right: 14px; }
 
@@ -3955,4 +4235,904 @@ document.addEventListener('click', function(e) {
 });
 </script>
 
+<script>
+let setorIndex = 0;
+
+function adicionarSetor() {
+
+      // Exibe o botão Enviar Pedido assim que um setor for adicionado
+      document.getElementById("enviarPedido").style.display = "inline-block";
+
+      const setores = document.querySelectorAll('.setor input[name="setor"]');
+      const setoresSelecionados = Array.from(setores).map(input => input.value.trim());
+      const container = document.getElementById('setoresContainer');
+      const div = document.createElement('div');
+      div.className = 'setor';
+      div.setAttribute('data-setor-index', setorIndex);
+      const setorId = `setor-${setorIndex}`;
+      div.innerHTML = `
+        <label>Setor:</label>
+        <div class="setor-select-group">
+          <div class="custom-select" id="${setorId}">
+            <div class="selected" onclick="toggleOptions('${setorId}')">Selecione um setor</div>
+            <input type="hidden" name="setor" value="" required>
+            <div class="options">
+              <div class="option" data-value="Farmácia" onclick="selectOption('${setorId}', 'Farmácia')">Farmácia</div>
+              <div class="option" data-value="Psicotrópico" onclick="selectOption('${setorId}', 'Psicotrópico')">Psicotrópico</div>
+              <div class="option" data-value="Enfermagem" onclick="selectOption('${setorId}', 'Enfermagem')">Enfermagem</div>
+              <div class="option" data-value="Enfermagem_Urgência_e_Emergência" onclick="selectOption('${setorId}', 'Enfermagem_Urgência_e_Emergência')">Enfermagem_Urgência_e_Emergência</div>
+              <div class="option" data-value="Enfermagem_Teste_DST" onclick="selectOption('${setorId}', 'Enfermagem_Teste_DST')">Enfermagem_Teste_DST</div>
+              <div class="option" data-value="Odonto" onclick="selectOption('${setorId}', 'Odonto')">Odonto</div>
+              <div class="option" data-value="Odonto_Instrumental" onclick="selectOption('${setorId}', 'Odonto_Instrumental')">Odonto_Instrumental</div>
+              <div class="option" data-value="Consumo_e_Limpeza_Esporádicos" onclick="selectOption('${setorId}', 'Consumo_e_Limpeza_Esporádicos')">Consumo_e_Limpeza_Esporádicos</div>
+              <div class="option" data-value="Consumo_e_Limpeza_Periódico" onclick="selectOption('${setorId}', 'Consumo_e_Limpeza_Periódico')">Consumo_e_Limpeza_Periódico</div>
+              <div class="option" data-value="Escritório" onclick="selectOption('${setorId}', 'Escritório')">Escritório</div>
+              <div class="option" data-value="Impressos" onclick="selectOption('${setorId}', 'Impressos')">Impressos</div>
+              <div class="option" data-value="Epi_Consumo" onclick="selectOption('${setorId}', 'Epi_Consumo')">Epi_Consumo</div>
+            </div>
+          </div>
+          <button type="button" onclick="removerSetor(this)" class="remove-button remove-setor-button">Remover Setor</button>
+        </div>
+        <div class="itens" id="itens-${setorIndex}"></div>
+        <div class="item-buttons">
+          <button type="button" onclick="adicionarItem(${setorIndex})">Adicionar Item</button>
+        </div>
+        <div class="Justificativa-group">
+          <label>Digite aqui uma justificativa para itens do setor acima:</label>
+          <textarea class="Justificativa" maxlength="300" rows="3" placeholder="Digite sua justificativa..."></textarea>
+        </div>
+      `;
+      container.appendChild(div);
+      adicionarItem(setorIndex);
+      setorIndex++;
+    }
+
+    function toggleOptions(setorId) {
+      const options = document.querySelector(`#${setorId} .options`);
+      options.style.display = options.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function selectOption(setorId, value) {
+      const setores = document.querySelectorAll('.setor input[name="setor"]');
+      const setoresSelecionados = Array.from(setores).map(input => input.value.trim());
+      if (setoresSelecionados.includes(value)) {
+        mostrarMensagemTopo('Este setor já foi adicionado.');
+        return;
+      }
+      const selected = document.querySelector(`#${setorId} .selected`);
+      const hiddenInput = document.querySelector(`#${setorId} input[name="setor"]`);
+      selected.textContent = value;
+      hiddenInput.value = value;
+      toggleOptions(setorId);
+      updateDatalist(setorId, value);
+      // Clear all item names and quantities in this sector
+      const setor = document.querySelector(`#${setorId}`).closest('.setor');
+      const itemInputs = setor.querySelectorAll('.item-nome');
+      const quantityInputs = setor.querySelectorAll('.item-qtd');
+      itemInputs.forEach(input => input.value = '');
+      quantityInputs.forEach(input => input.value = '');
+    }
+
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.custom-select')) {
+        document.querySelectorAll('.options').forEach(opt => opt.style.display = 'none');
+      }
+    });
+
+    function removerSetor(button) {
+      button.closest('.setor').remove();
+      // Update datalist for the first remaining sector, if any
+      const firstSetor = document.querySelector('.setor');
+      if (firstSetor) {
+        const setorId = firstSetor.querySelector('.custom-select').id;
+        const sectorValue = firstSetor.querySelector('input[name="setor"]').value.trim();
+        updateDatalist(setorId, sectorValue);
+      } else {
+        updateDatalist('setor-0', ''); // Clear datalist if no sectors remain
+      }
+    }
+
+    function adicionarItem(index) {
+      const container = document.getElementById(`itens-${index}`);
+      const setor = container.closest('.setor');
+      const nomeSetor = setor.querySelector('input[name="setor"]').value.trim();
+      if (!nomeSetor) {
+      }
+      const itensExistentes = Array.from(container.querySelectorAll('.item-nome')).map(input => input.value.trim());
+      const div = document.createElement('div');
+      div.className = 'item';
+      const count = container.querySelectorAll('.item').length;
+      const unidadeId = `unidade-${index}-${count+1}`;
+      div.innerHTML = `
+        <div class="item-input-group item-nome-group">
+          <label>Item:</label>
+          <input type="text" class="item-nome" list="lista-itens" required onchange="verificarDuplicata(this, '${index}')">
+        </div>
+        <div class="item-input-group item-qtd-group">
+          <label>Quantidade:</label>
+          <input type="number" class="item-qtd" min="1" required>
+        </div>
+        
+<div class="item-input-group item-unidade-group">
+  <label>Unidade de Controle</label>
+  <input type="text" class="unidade-controle" readonly />
+</div>
+    <input type="hidden" class="item-unidade" name="unidade" value="">
+    <div class="options">
+      <div class="option" data-value="Comprimido" onclick="selectOptionUnidade(\'${unidadeId}\', 'Comprimido')">Comprimido</div>
+      <div class="option" data-value="Cápsula" onclick="selectOptionUnidade(\'${unidadeId}\', 'Cápsula')">Cápsula</div>
+      <div class="option" data-value="Frasco" onclick="selectOptionUnidade(\'${unidadeId}\', 'Frasco')">Frasco</div>
+      <div class="option" data-value="Ampola" onclick="selectOptionUnidade(\'${unidadeId}\', 'Ampola')">Ampola</div>
+      <div class="option" data-value="Tubo" onclick="selectOptionUnidade(\'${unidadeId}\', 'Tubo')">Tubo</div>
+      <div class="option" data-value="Refil" onclick="selectOptionUnidade(\'${unidadeId}\', 'Refil')">Refil</div>
+      <div class="option" data-value="Sachê" onclick="selectOptionUnidade(\'${unidadeId}\', 'Sachê')">Sachê</div>
+      <div class="option" data-value="Drágea" onclick="selectOptionUnidade(\'${unidadeId}\', 'Drágea')">Drágea</div>
+      <div class="option" data-value="Caneta" onclick="selectOptionUnidade(\'${unidadeId}\', 'Caneta')">Caneta</div>
+      <div class="option" data-value="Unidade" onclick="selectOptionUnidade(\'${unidadeId}\', 'Unidade')">Unidade</div>
+      <div class="option" data-value="Cartela" onclick="selectOptionUnidade(\'${unidadeId}\', 'Cartela')">Cartela</div>
+      <div class="option" data-value="Bisnaga" onclick="selectOptionUnidade(\'${unidadeId}\', 'Bisnaga')">Bisnaga</div>
+      <div class="option" data-value="Envelope" onclick="selectOptionUnidade(\'${unidadeId}\', 'Envelope')">Envelope</div>
+    </div>
+  </div>
+</div>
+        <button type="button" onclick="removerItem(this)" class="remove-button remove-item-button">Remover</button>
+      `;
+      container.appendChild(div);
+    }
+
+    function verificarDuplicata(input, index) {
+      const container = document.getElementById(`itens-${index}`);
+      const itensExistentes = Array.from(container.querySelectorAll('.item-nome')).map(input => input.value.trim());
+      const valorAtual = input.value.trim();
+      const duplicatas = itensExistentes.filter((item, idx) => item === valorAtual && itensExistentes.indexOf(item) !== idx);
+      if (duplicatas.length > 0) {
+        mostrarMensagemTopo('Este item já foi adicionado.');
+        input.value = '';
+      }
+// Auto-preenche a unidade de controle a partir do datalist (sem apagar se não achar)
+try {
+  const itemDiv = input.closest('.item');
+  if (itemDiv) {
+    const hiddenUnidade = itemDiv.querySelector('.item-unidade');
+    const selectedDiv   = itemDiv.querySelector('.custom-select .selected');
+
+    let unidadeEncontrada = '';
+    const listId = input.getAttribute('list');
+    const dl = listId ? document.getElementById(listId) : null;
+    if (dl) {
+      const match = Array.from(dl.options).find(o => o.value === input.value && o.dataset && o.dataset.original);
+      if (match) {
+        const mu = match.dataset.original.match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
+        if (mu) unidadeEncontrada = mu[1];
+      }
+    }
+
+    if (unidadeEncontrada) {
+      if (hiddenUnidade) hiddenUnidade.value = unidadeEncontrada;
+      if (selectedDiv)   selectedDiv.textContent = unidadeEncontrada;
+    }
+  }
+}
+
+function adicionarItem(index) {
+      const container = document.getElementById(`itens-${index}`);
+      const setor = container.closest('.setor');
+      const nomeSetor = setor.querySelector('input[name="setor"]').value.trim();
+      if (!nomeSetor) {
+      }
+      const itensExistentes = Array.from(container.querySelectorAll('.item-nome')).map(input => input.value.trim());
+      const div = document.createElement('div');
+      div.className = 'item';
+      const count = container.querySelectorAll('.item').length;
+      const unidadeId = `unidade-${index}-${count+1}`;
+      div.innerHTML = `
+        <div class="item-input-group item-nome-group">
+          <label>Item:</label>
+          <input type="text" class="item-nome" list="lista-itens" required onchange="verificarDuplicata(this, '${index}')">
+        </div>
+        <div class="item-input-group item-qtd-group">
+          <label>Quantidade:</label>
+          <input type="number" class="item-qtd" min="1" required>
+        </div>
+        
+<div class="item-input-group item-unidade-group">
+  <label>Unidade de Controle</label>
+  <input type="text" class="unidade-controle" readonly />
+</div>
+    <input type="hidden" class="item-unidade" name="unidade" value="">
+    <div class="options">
+      <div class="option" data-value="Comprimido" onclick="selectOptionUnidade(\'${unidadeId}\', 'Comprimido')">Comprimido</div>
+      <div class="option" data-value="Cápsula" onclick="selectOptionUnidade(\'${unidadeId}\', 'Cápsula')">Cápsula</div>
+      <div class="option" data-value="Frasco" onclick="selectOptionUnidade(\'${unidadeId}\', 'Frasco')">Frasco</div>
+      <div class="option" data-value="Ampola" onclick="selectOptionUnidade(\'${unidadeId}\', 'Ampola')">Ampola</div>
+      <div class="option" data-value="Tubo" onclick="selectOptionUnidade(\'${unidadeId}\', 'Tubo')">Tubo</div>
+      <div class="option" data-value="Refil" onclick="selectOptionUnidade(\'${unidadeId}\', 'Refil')">Refil</div>
+      <div class="option" data-value="Sachê" onclick="selectOptionUnidade(\'${unidadeId}\', 'Sachê')">Sachê</div>
+      <div class="option" data-value="Drágea" onclick="selectOptionUnidade(\'${unidadeId}\', 'Drágea')">Drágea</div>
+      <div class="option" data-value="Caneta" onclick="selectOptionUnidade(\'${unidadeId}\', 'Caneta')">Caneta</div>
+      <div class="option" data-value="Unidade" onclick="selectOptionUnidade(\'${unidadeId}\', 'Unidade')">Unidade</div>
+      <div class="option" data-value="Cartela" onclick="selectOptionUnidade(\'${unidadeId}\', 'Cartela')">Cartela</div>
+      <div class="option" data-value="Bisnaga" onclick="selectOptionUnidade(\'${unidadeId}\', 'Bisnaga')">Bisnaga</div>
+      <div class="option" data-value="Envelope" onclick="selectOptionUnidade(\'${unidadeId}\', 'Envelope')">Envelope</div>
+    </div>
+  </div>
+</div>
+        <button type="button" onclick="removerItem(this)" class="remove-button remove-item-button">Remover</button>
+      `;
+      container.appendChild(div);
+    }
+
+    function verificarDuplicata(input, index) {
+      const container = document.getElementById(`itens-${index}`);
+      const itensExistentes = Array.from(container.querySelectorAll('.item-nome')).map(input => input.value.trim());
+      const valorAtual = input.value.trim();
+      const duplicatas = itensExistentes.filter((item, idx) => item === valorAtual && itensExistentes.indexOf(item) !== idx);
+      if (duplicatas.length > 0) {
+        mostrarMensagemTopo('Este item já foi adicionado.');
+        input.value = '';
+      }
+// Auto-preenche a unidade de controle a partir do datalist (sem apagar se não achar)
+try {
+  const itemDiv = input.closest('.item');
+  if (itemDiv) {
+    const hiddenUnidade = itemDiv.querySelector('.item-unidade');
+    const selectedDiv   = itemDiv.querySelector('.custom-select .selected');
+
+    let unidadeEncontrada = '';
+    const listId = input.getAttribute('list');
+    const dl = listId ? document.getElementById(listId) : null;
+    if (dl) {
+      const match = Array.from(dl.options).find(o => o.value === input.value && o.dataset && o.dataset.original);
+      if (match) {
+        const mu = match.dataset.original.match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
+        if (mu) unidadeEncontrada = mu[1];
+      }
+    }
+
+    if (unidadeEncontrada) {
+      if (hiddenUnidade) hiddenUnidade.value = unidadeEncontrada;
+      if (selectedDiv)   selectedDiv.textContent = unidadeEncontrada;
+    }
+  }
+}
+
+function removerSetor(button) {
+      button.closest('.setor').remove();
+      // Update datalist for the first remaining sector, if any
+      const firstSetor = document.querySelector('.setor');
+      if (firstSetor) {
+        const setorId = firstSetor.querySelector('.custom-select').id;
+        const sectorValue = firstSetor.querySelector('input[name="setor"]').value.trim();
+        updateDatalist(setorId, sectorValue);
+      } else {
+        updateDatalist('setor-0', ''); // Clear datalist if no sectors remain
+      }
+    }
+
+    function adicionarItem(index) {
+      const container = document.getElementById(`itens-${index}`);
+      const setor = container.closest('.setor');
+      const nomeSetor = setor.querySelector('input[name="setor"]').value.trim();
+      if (!nomeSetor) {
+      }
+      const itensExistentes = Array.from(container.querySelectorAll('.item-nome')).map(input => input.value.trim());
+      const div = document.createElement('div');
+      div.className = 'item';
+      const count = container.querySelectorAll('.item').length;
+      const unidadeId = `unidade-${index}-${count+1}`;
+      div.innerHTML = `
+        <div class="item-input-group item-nome-group">
+          <label>Item:</label>
+          <input type="text" class="item-nome" list="lista-itens" required onchange="verificarDuplicata(this, '${index}')">
+        </div>
+        <div class="item-input-group item-qtd-group">
+          <label>Quantidade:</label>
+          <input type="number" class="item-qtd" min="1" required>
+        </div>
+        
+<div class="item-input-group item-unidade-group">
+  <label>Unidade de Controle</label>
+  <input type="text" class="unidade-controle" readonly />
+</div>
+    <input type="hidden" class="item-unidade" name="unidade" value="">
+    <div class="options">
+      <div class="option" data-value="Comprimido" onclick="selectOptionUnidade(\'${unidadeId}\', 'Comprimido')">Comprimido</div>
+      <div class="option" data-value="Cápsula" onclick="selectOptionUnidade(\'${unidadeId}\', 'Cápsula')">Cápsula</div>
+      <div class="option" data-value="Frasco" onclick="selectOptionUnidade(\'${unidadeId}\', 'Frasco')">Frasco</div>
+      <div class="option" data-value="Ampola" onclick="selectOptionUnidade(\'${unidadeId}\', 'Ampola')">Ampola</div>
+      <div class="option" data-value="Tubo" onclick="selectOptionUnidade(\'${unidadeId}\', 'Tubo')">Tubo</div>
+      <div class="option" data-value="Refil" onclick="selectOptionUnidade(\'${unidadeId}\', 'Refil')">Refil</div>
+      <div class="option" data-value="Sachê" onclick="selectOptionUnidade(\'${unidadeId}\', 'Sachê')">Sachê</div>
+      <div class="option" data-value="Drágea" onclick="selectOptionUnidade(\'${unidadeId}\', 'Drágea')">Drágea</div>
+      <div class="option" data-value="Caneta" onclick="selectOptionUnidade(\'${unidadeId}\', 'Caneta')">Caneta</div>
+      <div class="option" data-value="Unidade" onclick="selectOptionUnidade(\'${unidadeId}\', 'Unidade')">Unidade</div>
+      <div class="option" data-value="Cartela" onclick="selectOptionUnidade(\'${unidadeId}\', 'Cartela')">Cartela</div>
+      <div class="option" data-value="Bisnaga" onclick="selectOptionUnidade(\'${unidadeId}\', 'Bisnaga')">Bisnaga</div>
+      <div class="option" data-value="Envelope" onclick="selectOptionUnidade(\'${unidadeId}\', 'Envelope')">Envelope</div>
+    </div>
+  </div>
+</div>
+        <button type="button" onclick="removerItem(this)" class="remove-button remove-item-button">Remover</button>
+      `;
+      container.appendChild(div);
+    }
+
+    function verificarDuplicata(input, index) {
+      const container = document.getElementById(`itens-${index}`);
+      const itensExistentes = Array.from(container.querySelectorAll('.item-nome')).map(input => input.value.trim());
+      const valorAtual = input.value.trim();
+      const duplicatas = itensExistentes.filter((item, idx) => item === valorAtual && itensExistentes.indexOf(item) !== idx);
+      if (duplicatas.length > 0) {
+        mostrarMensagemTopo('Este item já foi adicionado.');
+        input.value = '';
+      }
+// Auto-preenche a unidade de controle a partir do datalist (sem apagar se não achar)
+try {
+  const itemDiv = input.closest('.item');
+  if (itemDiv) {
+    const hiddenUnidade = itemDiv.querySelector('.item-unidade');
+    const selectedDiv   = itemDiv.querySelector('.custom-select .selected');
+
+    let unidadeEncontrada = '';
+    const listId = input.getAttribute('list');
+    const dl = listId ? document.getElementById(listId) : null;
+    if (dl) {
+      const match = Array.from(dl.options).find(o => o.value === input.value && o.dataset && o.dataset.original);
+      if (match) {
+        const mu = match.dataset.original.match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
+        if (mu) unidadeEncontrada = mu[1];
+      }
+    }
+
+    if (unidadeEncontrada) {
+      if (hiddenUnidade) hiddenUnidade.value = unidadeEncontrada;
+      if (selectedDiv)   selectedDiv.textContent = unidadeEncontrada;
+    }
+  }
+}
+
+function toggleOptions(setorId) {
+      const options = document.querySelector(`#${setorId} .options`);
+      options.style.display = options.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function selectOption(setorId, value) {
+      const setores = document.querySelectorAll('.setor input[name="setor"]');
+      const setoresSelecionados = Array.from(setores).map(input => input.value.trim());
+      if (setoresSelecionados.includes(value)) {
+        mostrarMensagemTopo('Este setor já foi adicionado.');
+        return;
+      }
+      const selected = document.querySelector(`#${setorId} .selected`);
+      const hiddenInput = document.querySelector(`#${setorId} input[name="setor"]`);
+      selected.textContent = value;
+      hiddenInput.value = value;
+      toggleOptions(setorId);
+      updateDatalist(setorId, value);
+      // Clear all item names and quantities in this sector
+      const setor = document.querySelector(`#${setorId}`).closest('.setor');
+      const itemInputs = setor.querySelectorAll('.item-nome');
+      const quantityInputs = setor.querySelectorAll('.item-qtd');
+      itemInputs.forEach(input => input.value = '');
+      quantityInputs.forEach(input => input.value = '');
+    }
+
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.custom-select')) {
+        document.querySelectorAll('.options').forEach(opt => opt.style.display = 'none');
+      }
+    });
+
+    function removerSetor(button) {
+      button.closest('.setor').remove();
+      // Update datalist for the first remaining sector, if any
+      const firstSetor = document.querySelector('.setor');
+      if (firstSetor) {
+        const setorId = firstSetor.querySelector('.custom-select').id;
+        const sectorValue = firstSetor.querySelector('input[name="setor"]').value.trim();
+        updateDatalist(setorId, sectorValue);
+      } else {
+        updateDatalist('setor-0', ''); // Clear datalist if no sectors remain
+      }
+    }
+
+    function adicionarItem(index) {
+      const container = document.getElementById(`itens-${index}`);
+      const setor = container.closest('.setor');
+      const nomeSetor = setor.querySelector('input[name="setor"]').value.trim();
+      if (!nomeSetor) {
+      }
+      const itensExistentes = Array.from(container.querySelectorAll('.item-nome')).map(input => input.value.trim());
+      const div = document.createElement('div');
+      div.className = 'item';
+      const count = container.querySelectorAll('.item').length;
+      const unidadeId = `unidade-${index}-${count+1}`;
+      div.innerHTML = `
+        <div class="item-input-group item-nome-group">
+          <label>Item:</label>
+          <input type="text" class="item-nome" list="lista-itens" required onchange="verificarDuplicata(this, '${index}')">
+        </div>
+        <div class="item-input-group item-qtd-group">
+          <label>Quantidade:</label>
+          <input type="number" class="item-qtd" min="1" required>
+        </div>
+        
+<div class="item-input-group item-unidade-group">
+  <label>Unidade de Controle</label>
+  <input type="text" class="unidade-controle" readonly />
+</div>
+    <input type="hidden" class="item-unidade" name="unidade" value="">
+    <div class="options">
+      <div class="option" data-value="Comprimido" onclick="selectOptionUnidade(\'${unidadeId}\', 'Comprimido')">Comprimido</div>
+      <div class="option" data-value="Cápsula" onclick="selectOptionUnidade(\'${unidadeId}\', 'Cápsula')">Cápsula</div>
+      <div class="option" data-value="Frasco" onclick="selectOptionUnidade(\'${unidadeId}\', 'Frasco')">Frasco</div>
+      <div class="option" data-value="Ampola" onclick="selectOptionUnidade(\'${unidadeId}\', 'Ampola')">Ampola</div>
+      <div class="option" data-value="Tubo" onclick="selectOptionUnidade(\'${unidadeId}\', 'Tubo')">Tubo</div>
+      <div class="option" data-value="Refil" onclick="selectOptionUnidade(\'${unidadeId}\', 'Refil')">Refil</div>
+      <div class="option" data-value="Sachê" onclick="selectOptionUnidade(\'${unidadeId}\', 'Sachê')">Sachê</div>
+      <div class="option" data-value="Drágea" onclick="selectOptionUnidade(\'${unidadeId}\', 'Drágea')">Drágea</div>
+      <div class="option" data-value="Caneta" onclick="selectOptionUnidade(\'${unidadeId}\', 'Caneta')">Caneta</div>
+      <div class="option" data-value="Unidade" onclick="selectOptionUnidade(\'${unidadeId}\', 'Unidade')">Unidade</div>
+      <div class="option" data-value="Cartela" onclick="selectOptionUnidade(\'${unidadeId}\', 'Cartela')">Cartela</div>
+      <div class="option" data-value="Bisnaga" onclick="selectOptionUnidade(\'${unidadeId}\', 'Bisnaga')">Bisnaga</div>
+      <div class="option" data-value="Envelope" onclick="selectOptionUnidade(\'${unidadeId}\', 'Envelope')">Envelope</div>
+    </div>
+  </div>
+</div>
+        <button type="button" onclick="removerItem(this)" class="remove-button remove-item-button">Remover</button>
+      `;
+      container.appendChild(div);
+    }
+
+    function verificarDuplicata(input, index) {
+      const container = document.getElementById(`itens-${index}`);
+      const itensExistentes = Array.from(container.querySelectorAll('.item-nome')).map(input => input.value.trim());
+      const valorAtual = input.value.trim();
+      const duplicatas = itensExistentes.filter((item, idx) => item === valorAtual && itensExistentes.indexOf(item) !== idx);
+      if (duplicatas.length > 0) {
+        mostrarMensagemTopo('Este item já foi adicionado.');
+        input.value = '';
+      }
+// Auto-preenche a unidade de controle a partir do datalist (sem apagar se não achar)
+try {
+  const itemDiv = input.closest('.item');
+  if (itemDiv) {
+    const hiddenUnidade = itemDiv.querySelector('.item-unidade');
+    const selectedDiv   = itemDiv.querySelector('.custom-select .selected');
+
+    let unidadeEncontrada = '';
+    const listId = input.getAttribute('list');
+    const dl = listId ? document.getElementById(listId) : null;
+    if (dl) {
+      const match = Array.from(dl.options).find(o => o.value === input.value && o.dataset && o.dataset.original);
+      if (match) {
+        const mu = match.dataset.original.match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
+        if (mu) unidadeEncontrada = mu[1];
+      }
+    }
+
+    if (unidadeEncontrada) {
+      if (hiddenUnidade) hiddenUnidade.value = unidadeEncontrada;
+      if (selectedDiv)   selectedDiv.textContent = unidadeEncontrada;
+    }
+  }
+}
+
+function selectOption(setorId, value) {
+      const setores = document.querySelectorAll('.setor input[name="setor"]');
+      const setoresSelecionados = Array.from(setores).map(input => input.value.trim());
+      if (setoresSelecionados.includes(value)) {
+        mostrarMensagemTopo('Este setor já foi adicionado.');
+        return;
+      }
+      const selected = document.querySelector(`#${setorId} .selected`);
+      const hiddenInput = document.querySelector(`#${setorId} input[name="setor"]`);
+      selected.textContent = value;
+      hiddenInput.value = value;
+      toggleOptions(setorId);
+      updateDatalist(setorId, value);
+      // Clear all item names and quantities in this sector
+      const setor = document.querySelector(`#${setorId}`).closest('.setor');
+      const itemInputs = setor.querySelectorAll('.item-nome');
+      const quantityInputs = setor.querySelectorAll('.item-qtd');
+      itemInputs.forEach(input => input.value = '');
+      quantityInputs.forEach(input => input.value = '');
+    }
+
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.custom-select')) {
+        document.querySelectorAll('.options').forEach(opt => opt.style.display = 'none');
+      }
+    });
+
+    function removerSetor(button) {
+      button.closest('.setor').remove();
+      // Update datalist for the first remaining sector, if any
+      const firstSetor = document.querySelector('.setor');
+      if (firstSetor) {
+        const setorId = firstSetor.querySelector('.custom-select').id;
+        const sectorValue = firstSetor.querySelector('input[name="setor"]').value.trim();
+        updateDatalist(setorId, sectorValue);
+      } else {
+        updateDatalist('setor-0', ''); // Clear datalist if no sectors remain
+      }
+    }
+
+    function adicionarItem(index) {
+      const container = document.getElementById(`itens-${index}`);
+      const setor = container.closest('.setor');
+      const nomeSetor = setor.querySelector('input[name="setor"]').value.trim();
+      if (!nomeSetor) {
+      }
+      const itensExistentes = Array.from(container.querySelectorAll('.item-nome')).map(input => input.value.trim());
+      const div = document.createElement('div');
+      div.className = 'item';
+      const count = container.querySelectorAll('.item').length;
+      const unidadeId = `unidade-${index}-${count+1}`;
+      div.innerHTML = `
+        <div class="item-input-group item-nome-group">
+          <label>Item:</label>
+          <input type="text" class="item-nome" list="lista-itens" required onchange="verificarDuplicata(this, '${index}')">
+        </div>
+        <div class="item-input-group item-qtd-group">
+          <label>Quantidade:</label>
+          <input type="number" class="item-qtd" min="1" required>
+        </div>
+        
+<div class="item-input-group item-unidade-group">
+  <label>Unidade de Controle</label>
+  <input type="text" class="unidade-controle" readonly />
+</div>
+    <input type="hidden" class="item-unidade" name="unidade" value="">
+    <div class="options">
+      <div class="option" data-value="Comprimido" onclick="selectOptionUnidade(\'${unidadeId}\', 'Comprimido')">Comprimido</div>
+      <div class="option" data-value="Cápsula" onclick="selectOptionUnidade(\'${unidadeId}\', 'Cápsula')">Cápsula</div>
+      <div class="option" data-value="Frasco" onclick="selectOptionUnidade(\'${unidadeId}\', 'Frasco')">Frasco</div>
+      <div class="option" data-value="Ampola" onclick="selectOptionUnidade(\'${unidadeId}\', 'Ampola')">Ampola</div>
+      <div class="option" data-value="Tubo" onclick="selectOptionUnidade(\'${unidadeId}\', 'Tubo')">Tubo</div>
+      <div class="option" data-value="Refil" onclick="selectOptionUnidade(\'${unidadeId}\', 'Refil')">Refil</div>
+      <div class="option" data-value="Sachê" onclick="selectOptionUnidade(\'${unidadeId}\', 'Sachê')">Sachê</div>
+      <div class="option" data-value="Drágea" onclick="selectOptionUnidade(\'${unidadeId}\', 'Drágea')">Drágea</div>
+      <div class="option" data-value="Caneta" onclick="selectOptionUnidade(\'${unidadeId}\', 'Caneta')">Caneta</div>
+      <div class="option" data-value="Unidade" onclick="selectOptionUnidade(\'${unidadeId}\', 'Unidade')">Unidade</div>
+      <div class="option" data-value="Cartela" onclick="selectOptionUnidade(\'${unidadeId}\', 'Cartela')">Cartela</div>
+      <div class="option" data-value="Bisnaga" onclick="selectOptionUnidade(\'${unidadeId}\', 'Bisnaga')">Bisnaga</div>
+      <div class="option" data-value="Envelope" onclick="selectOptionUnidade(\'${unidadeId}\', 'Envelope')">Envelope</div>
+    </div>
+  </div>
+</div>
+        <button type="button" onclick="removerItem(this)" class="remove-button remove-item-button">Remover</button>
+      `;
+      container.appendChild(div);
+    }
+
+    function verificarDuplicata(input, index) {
+      const container = document.getElementById(`itens-${index}`);
+      const itensExistentes = Array.from(container.querySelectorAll('.item-nome')).map(input => input.value.trim());
+      const valorAtual = input.value.trim();
+      const duplicatas = itensExistentes.filter((item, idx) => item === valorAtual && itensExistentes.indexOf(item) !== idx);
+      if (duplicatas.length > 0) {
+        mostrarMensagemTopo('Este item já foi adicionado.');
+        input.value = '';
+      }
+// Auto-preenche a unidade de controle a partir do datalist (sem apagar se não achar)
+try {
+  const itemDiv = input.closest('.item');
+  if (itemDiv) {
+    const hiddenUnidade = itemDiv.querySelector('.item-unidade');
+    const selectedDiv   = itemDiv.querySelector('.custom-select .selected');
+
+    let unidadeEncontrada = '';
+    const listId = input.getAttribute('list');
+    const dl = listId ? document.getElementById(listId) : null;
+    if (dl) {
+      const match = Array.from(dl.options).find(o => o.value === input.value && o.dataset && o.dataset.original);
+      if (match) {
+        const mu = match.dataset.original.match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
+        if (mu) unidadeEncontrada = mu[1];
+      }
+    }
+
+    if (unidadeEncontrada) {
+      if (hiddenUnidade) hiddenUnidade.value = unidadeEncontrada;
+      if (selectedDiv)   selectedDiv.textContent = unidadeEncontrada;
+    }
+  }
+}
+
+function updateDatalist(setorId, sectorValue) {
+      const datalist = document.getElementById('lista-itens');
+      datalist.innerHTML = '';
+      let items;
+      if (sectorValue === 'Farmácia') {
+        items = farmaciaItems;
+      } else if (sectorValue === 'Psicotrópico') {
+        items = PsicotópicoItems;
+      } else if (sectorValue === 'Enfermagem') {
+        items = enfermagemItems;
+      } else if (sectorValue === 'Enfermagem_Urgência_e_Emergência') {
+        items = Enfermagem_Urgência_e_EmergênciaItems;
+      } else if (sectorValue === 'Enfermagem_Teste_DST') {
+        items = Enfermagem_Teste_DSTItems;
+      } else if (sectorValue === 'Odonto') {
+        items = OdontoItems;
+      } else if (sectorValue === 'Odonto_Instrumental') {
+        items = Odonto_InstrumentalItems;
+      } else if (sectorValue === 'Impressos') {
+        items = ImpressosItems;
+      } else if (sectorValue === 'Escritório') {
+        items = EscritórioItems;
+      } else if (sectorValue === 'Consumo_e_Limpeza_Esporádicos') {
+        items = Consumo_e_Limpeza_EsporádicosItems;
+      } else if (sectorValue === 'Consumo_e_Limpeza_Periódico') {
+        items = Consumo_e_Limpeza_PeriódicoItems;
+      } else if (sectorValue === 'Epi_Consumo') {
+        items = Epi_ConsumoItems;
+      } else {
+        items = defaultItems;
+      }
+      items.forEach(item => {
+        const option = document.createElement('option');
+        // Texto exibido sem "unidade: ..."
+        const display = item
+        .replace(/^\d+(?:\s\d+)*\s*/, '')
+        .replace(/\s*unidade:\s*[^,\n]+/i, '')
+        .trim();
+        option.value = display;                   // o usuário vê o texto limpo
+        option.dataset.original = item;           // guardamos o original para usar no formulário
+        datalist.appendChild(option);
+      });
+    }
+
+    document.addEventListener('contextmenu', function(e) {
+      e.preventDefault();
+      return false;
+    });
+
+    document.addEventListener('keydown', function(e) {
+      if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74)) || (e.ctrlKey && e.keyCode === 85)) {
+        e.preventDefault();
+        return false;
+      }
+    });
+
+    let setorIndex = 0;
+
+    function adicionarSetor() {
+
+      // Exibe o botão Enviar Pedido assim que um setor for adicionado
+      document.getElementById("enviarPedido").style.display = "inline-block";
+
+      const setores = document.querySelectorAll('.setor input[name="setor"]');
+      const setoresSelecionados = Array.from(setores).map(input => input.value.trim());
+      const container = document.getElementById('setoresContainer');
+      const div = document.createElement('div');
+      div.className = 'setor';
+      div.setAttribute('data-setor-index', setorIndex);
+      const setorId = `setor-${setorIndex}`;
+      div.innerHTML = `
+        <label>Setor:</label>
+        <div class="setor-select-group">
+          <div class="custom-select" id="${setorId}">
+            <div class="selected" onclick="toggleOptions('${setorId}')">Selecione um setor</div>
+            <input type="hidden" name="setor" value="" required>
+            <div class="options">
+              <div class="option" data-value="Farmácia" onclick="selectOption('${setorId}', 'Farmácia')">Farmácia</div>
+              <div class="option" data-value="Psicotrópico" onclick="selectOption('${setorId}', 'Psicotrópico')">Psicotrópico</div>
+              <div class="option" data-value="Enfermagem" onclick="selectOption('${setorId}', 'Enfermagem')">Enfermagem</div>
+              <div class="option" data-value="Enfermagem_Urgência_e_Emergência" onclick="selectOption('${setorId}', 'Enfermagem_Urgência_e_Emergência')">Enfermagem_Urgência_e_Emergência</div>
+              <div class="option" data-value="Enfermagem_Teste_DST" onclick="selectOption('${setorId}', 'Enfermagem_Teste_DST')">Enfermagem_Teste_DST</div>
+              <div class="option" data-value="Odonto" onclick="selectOption('${setorId}', 'Odonto')">Odonto</div>
+              <div class="option" data-value="Odonto_Instrumental" onclick="selectOption('${setorId}', 'Odonto_Instrumental')">Odonto_Instrumental</div>
+              <div class="option" data-value="Consumo_e_Limpeza_Esporádicos" onclick="selectOption('${setorId}', 'Consumo_e_Limpeza_Esporádicos')">Consumo_e_Limpeza_Esporádicos</div>
+              <div class="option" data-value="Consumo_e_Limpeza_Periódico" onclick="selectOption('${setorId}', 'Consumo_e_Limpeza_Periódico')">Consumo_e_Limpeza_Periódico</div>
+              <div class="option" data-value="Escritório" onclick="selectOption('${setorId}', 'Escritório')">Escritório</div>
+              <div class="option" data-value="Impressos" onclick="selectOption('${setorId}', 'Impressos')">Impressos</div>
+              <div class="option" data-value="Epi_Consumo" onclick="selectOption('${setorId}', 'Epi_Consumo')">Epi_Consumo</div>
+            </div>
+          </div>
+          <button type="button" onclick="removerSetor(this)" class="remove-button remove-setor-button">Remover Setor</button>
+        </div>
+        <div class="itens" id="itens-${setorIndex}"></div>
+        <div class="item-buttons">
+          <button type="button" onclick="adicionarItem(${setorIndex})">Adicionar Item</button>
+        </div>
+        <div class="Justificativa-group">
+          <label>Digite aqui uma justificativa para itens do setor acima:</label>
+          <textarea class="Justificativa" maxlength="300" rows="3" placeholder="Digite sua justificativa..."></textarea>
+        </div>
+      `;
+      container.appendChild(div);
+      adicionarItem(setorIndex);
+      setorIndex++;
+    }
+
+    function toggleOptions(setorId) {
+      const options = document.querySelector(`#${setorId} .options`);
+      options.style.display = options.style.display === 'block' ? 'none' : 'block';
+    }
+
+    function selectOption(setorId, value) {
+      const setores = document.querySelectorAll('.setor input[name="setor"]');
+      const setoresSelecionados = Array.from(setores).map(input => input.value.trim());
+      if (setoresSelecionados.includes(value)) {
+        mostrarMensagemTopo('Este setor já foi adicionado.');
+        return;
+      }
+      const selected = document.querySelector(`#${setorId} .selected`);
+      const hiddenInput = document.querySelector(`#${setorId} input[name="setor"]`);
+      selected.textContent = value;
+      hiddenInput.value = value;
+      toggleOptions(setorId);
+      updateDatalist(setorId, value);
+      // Clear all item names and quantities in this sector
+      const setor = document.querySelector(`#${setorId}`).closest('.setor');
+      const itemInputs = setor.querySelectorAll('.item-nome');
+      const quantityInputs = setor.querySelectorAll('.item-qtd');
+      itemInputs.forEach(input => input.value = '');
+      quantityInputs.forEach(input => input.value = '');
+    }
+
+    document.addEventListener('click', function(e) {
+      if (!e.target.closest('.custom-select')) {
+        document.querySelectorAll('.options').forEach(opt => opt.style.display = 'none');
+      }
+    });
+
+    function removerSetor(button) {
+      button.closest('.setor').remove();
+      // Update datalist for the first remaining sector, if any
+      const firstSetor = document.querySelector('.setor');
+      if (firstSetor) {
+        const setorId = firstSetor.querySelector('.custom-select').id;
+        const sectorValue = firstSetor.querySelector('input[name="setor"]').value.trim();
+        updateDatalist(setorId, sectorValue);
+      } else {
+        updateDatalist('setor-0', ''); // Clear datalist if no sectors remain
+      }
+    }
+
+    function adicionarItem(index) {
+      const container = document.getElementById(`itens-${index}`);
+      const setor = container.closest('.setor');
+      const nomeSetor = setor.querySelector('input[name="setor"]').value.trim();
+      if (!nomeSetor) {
+      }
+      const itensExistentes = Array.from(container.querySelectorAll('.item-nome')).map(input => input.value.trim());
+      const div = document.createElement('div');
+      div.className = 'item';
+      const count = container.querySelectorAll('.item').length;
+      const unidadeId = `unidade-${index}-${count+1}`;
+      div.innerHTML = `
+        <div class="item-input-group item-nome-group">
+          <label>Item:</label>
+          <input type="text" class="item-nome" list="lista-itens" required onchange="verificarDuplicata(this, '${index}')">
+        </div>
+        <div class="item-input-group item-qtd-group">
+          <label>Quantidade:</label>
+          <input type="number" class="item-qtd" min="1" required>
+        </div>
+        
+<div class="item-input-group item-unidade-group">
+  <label>Unidade de Controle</label>
+  <input type="text" class="unidade-controle" readonly />
+</div>
+    <input type="hidden" class="item-unidade" name="unidade" value="">
+    <div class="options">
+      <div class="option" data-value="Comprimido" onclick="selectOptionUnidade(\'${unidadeId}\', 'Comprimido')">Comprimido</div>
+      <div class="option" data-value="Cápsula" onclick="selectOptionUnidade(\'${unidadeId}\', 'Cápsula')">Cápsula</div>
+      <div class="option" data-value="Frasco" onclick="selectOptionUnidade(\'${unidadeId}\', 'Frasco')">Frasco</div>
+      <div class="option" data-value="Ampola" onclick="selectOptionUnidade(\'${unidadeId}\', 'Ampola')">Ampola</div>
+      <div class="option" data-value="Tubo" onclick="selectOptionUnidade(\'${unidadeId}\', 'Tubo')">Tubo</div>
+      <div class="option" data-value="Refil" onclick="selectOptionUnidade(\'${unidadeId}\', 'Refil')">Refil</div>
+      <div class="option" data-value="Sachê" onclick="selectOptionUnidade(\'${unidadeId}\', 'Sachê')">Sachê</div>
+      <div class="option" data-value="Drágea" onclick="selectOptionUnidade(\'${unidadeId}\', 'Drágea')">Drágea</div>
+      <div class="option" data-value="Caneta" onclick="selectOptionUnidade(\'${unidadeId}\', 'Caneta')">Caneta</div>
+      <div class="option" data-value="Unidade" onclick="selectOptionUnidade(\'${unidadeId}\', 'Unidade')">Unidade</div>
+      <div class="option" data-value="Cartela" onclick="selectOptionUnidade(\'${unidadeId}\', 'Cartela')">Cartela</div>
+      <div class="option" data-value="Bisnaga" onclick="selectOptionUnidade(\'${unidadeId}\', 'Bisnaga')">Bisnaga</div>
+      <div class="option" data-value="Envelope" onclick="selectOptionUnidade(\'${unidadeId}\', 'Envelope')">Envelope</div>
+    </div>
+  </div>
+</div>
+        <button type="button" onclick="removerItem(this)" class="remove-button remove-item-button">Remover</button>
+      `;
+      container.appendChild(div);
+    }
+
+    function verificarDuplicata(input, index) {
+      const container = document.getElementById(`itens-${index}`);
+      const itensExistentes = Array.from(container.querySelectorAll('.item-nome')).map(input => input.value.trim());
+      const valorAtual = input.value.trim();
+      const duplicatas = itensExistentes.filter((item, idx) => item === valorAtual && itensExistentes.indexOf(item) !== idx);
+      if (duplicatas.length > 0) {
+        mostrarMensagemTopo('Este item já foi adicionado.');
+        input.value = '';
+      }
+// Auto-preenche a unidade de controle a partir do datalist (sem apagar se não achar)
+try {
+  const itemDiv = input.closest('.item');
+  if (itemDiv) {
+    const hiddenUnidade = itemDiv.querySelector('.item-unidade');
+    const selectedDiv   = itemDiv.querySelector('.custom-select .selected');
+
+    let unidadeEncontrada = '';
+    const listId = input.getAttribute('list');
+    const dl = listId ? document.getElementById(listId) : null;
+    if (dl) {
+      const match = Array.from(dl.options).find(o => o.value === input.value && o.dataset && o.dataset.original);
+      if (match) {
+        const mu = match.dataset.original.match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
+        if (mu) unidadeEncontrada = mu[1];
+      }
+    }
+
+    if (unidadeEncontrada) {
+      if (hiddenUnidade) hiddenUnidade.value = unidadeEncontrada;
+      if (selectedDiv)   selectedDiv.textContent = unidadeEncontrada;
+    }
+  }
+}
+
+function enviarPedido() {
+    const solicitante = document.getElementById("solicitante").value.trim();
+    const unidade = document.getElementById("unidade").value.trim();
+    const itens = [];
+
+    document.querySelectorAll(".item").forEach(itemDiv => {
+      const nome = itemDiv.querySelector(".item-nome")?.value;
+      const quantidade = itemDiv.querySelector(".item-qtd")?.value;
+      const unidadeControle = itemDiv.querySelector(".item-unidade")?.value;
+      );
+      }
+    });
+
+    if (!solicitante || !unidade || itens.length === 0) {
+      mostrarMensagemTopo("⚠️ Preencha todos os campos e adicione pelo menos um item.");
+      return;
+    }
+
+    const dados = {
+      solicitante,
+      unidade,
+      itens,
+      data: new Date().toISOString()
+    };
+
+    try {
+      await addDoc(collection(db, "pedidos"), dados);
+      mostrarMensagemTopo("<h3>✅ Pedido enviado com sucesso!</h3>", "success");
+      document.getElementById("pedidoForm").reset();
+      document.getElementById("setoresContainer").innerHTML = "";
+    } catch (erro) {
+      console.error("Erro ao salvar no Firebase:", erro);
+      mostrarMensagemTopo("❌ Erro ao enviar o pedido. Tente novamente.");
+    }
+  }
+
+  // Listener único para o botão
+  const btn = document.getElementById("enviarPedido");
+  if (btn) {
+    btn.addEventListener("click", async (e) => {
+      e.preventDefault();
+      if (btn.disabled) return;
+      btn.disabled = true;
+      await enviarPedido();
+      setTimeout(() => { btn.disabled = false; }, 2000);
+    });
+  }
+</script>
+
+<script>
+function atualizarUnidade() {
+  const select = document.getElementById("medicamento");
+  const valor = select.value;
+  if (!valor) return;
+  const match = valor.match(/unidade:\s*([^"]+)/i);
+  if (match) {
+    document.getElementById("unidadeControle").value = match[1].trim();
+  }
+}
+
+</script>
 </body>
