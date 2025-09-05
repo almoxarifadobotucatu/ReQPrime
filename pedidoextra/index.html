@@ -3307,56 +3307,7 @@ document.addEventListener("DOMContentLoaded", function() {
 </script>
 
 
-<script>
-let setorIndex = 0;
 
-function adicionarSetor() {
-  const container = document.getElementById('setoresContainer');
-  if (!container) return;
-
-  const div = document.createElement('div');
-  div.className = 'setor';
-  div.setAttribute('data-setor-index', setorIndex);
-  const setorId = `setor-${setorIndex}`;
-
-  div.innerHTML = `
-    <label>Setor:</label>
-    <div class="setor-select-group">
-      <div class="custom-select" id="${setorId}">
-        <div class="selected" onclick="toggleOptions('${setorId}')">Selecione um setor</div>
-        <input type="hidden" name="setor" value="" required>
-        <div class="options">
-          <div class="option" data-value="Farmácia" onclick="selectOption('${setorId}', 'Farmácia')">Farmácia</div>
-          <div class="option" data-value="Psicotrópico" onclick="selectOption('${setorId}', 'Psicotrópico')">Psicotrópico</div>
-          <div class="option" data-value="Enfermagem" onclick="selectOption('${setorId}', 'Enfermagem')">Enfermagem</div>
-          <div class="option" data-value="Enfermagem_Urgência_e_Emergência" onclick="selectOption('${setorId}', 'Enfermagem_Urgência_e_Emergência')">Enfermagem_Urgência_e_Emergência</div>
-          <div class="option" data-value="Enfermagem_Teste_DST" onclick="selectOption('${setorId}', 'Enfermagem_Teste_DST')">Enfermagem_Teste_DST</div>
-          <div class="option" data-value="Odonto" onclick="selectOption('${setorId}', 'Odonto')">Odonto</div>
-          <div class="option" data-value="Odonto_Instrumental" onclick="selectOption('${setorId}', 'Odonto_Instrumental')">Odonto_Instrumental</div>
-          <div class="option" data-value="Consumo_e_Limpeza_Esporádicos" onclick="selectOption('${setorId}', 'Consumo_e_Limpeza_Esporádicos')">Consumo_e_Limpeza_Esporádicos</div>
-          <div class="option" data-value="Consumo_e_Limpeza_Periódico" onclick="selectOption('${setorId}', 'Consumo_e_Limpeza_Periódico')">Consumo_e_Limpeza_Periódico</div>
-          <div class="option" data-value="Escritório" onclick="selectOption('${setorId}', 'Escritório')">Escritório</div>
-          <div class="option" data-value="Impressos" onclick="selectOption('${setorId}', 'Impressos')">Impressos</div>
-          <div class="option" data-value="Epi_Consumo" onclick="selectOption('${setorId}', 'Epi_Consumo')">Epi_Consumo</div>
-        </div>
-      </div>
-      <button type="button" onclick="removerSetor(this)" class="remove-button remove-setor-button">Remover Setor</button>
-    </div>
-    <div class="itens" id="itens-${setorIndex}"></div>
-    <div class="item-buttons">
-      <button type="button" onclick="adicionarItem(${setorIndex})">Adicionar Item</button>
-    </div>
-    <div class="Justificativa-group">
-      <label>Digite aqui uma justificativa para itens do setor acima:</label>
-      <textarea class="Justificativa" maxlength="300" rows="3" placeholder="Digite sua justificativa."></textarea>
-    </div>
-  `;
-
-  container.appendChild(div);
-  adicionarItem(setorIndex);
-  setorIndex++;
-}
-</script>
 
 
 <script>
@@ -3941,56 +3892,7 @@ document.addEventListener("DOMContentLoaded", function() {
 </script>
 
   
-<script>
-let setorIndex = 0;
 
-function adicionarSetor() {
-  const container = document.getElementById('setoresContainer');
-  if (!container) return;
-
-  const div = document.createElement('div');
-  div.className = 'setor';
-  div.setAttribute('data-setor-index', setorIndex);
-  const setorId = `setor-${setorIndex}`;
-
-  div.innerHTML = `
-    <label>Setor:</label>
-    <div class="setor-select-group">
-      <div class="custom-select" id="${setorId}">
-        <div class="selected" onclick="toggleOptions('${setorId}')">Selecione um setor</div>
-        <input type="hidden" name="setor" value="" required>
-        <div class="options">
-          <div class="option" data-value="Farmácia" onclick="selectOption('${setorId}', 'Farmácia')">Farmácia</div>
-          <div class="option" data-value="Psicotrópico" onclick="selectOption('${setorId}', 'Psicotrópico')">Psicotrópico</div>
-          <div class="option" data-value="Enfermagem" onclick="selectOption('${setorId}', 'Enfermagem')">Enfermagem</div>
-          <div class="option" data-value="Enfermagem_Urgência_e_Emergência" onclick="selectOption('${setorId}', 'Enfermagem_Urgência_e_Emergência')">Enfermagem_Urgência_e_Emergência</div>
-          <div class="option" data-value="Enfermagem_Teste_DST" onclick="selectOption('${setorId}', 'Enfermagem_Teste_DST')">Enfermagem_Teste_DST</div>
-          <div class="option" data-value="Odonto" onclick="selectOption('${setorId}', 'Odonto')">Odonto</div>
-          <div class="option" data-value="Odonto_Instrumental" onclick="selectOption('${setorId}', 'Odonto_Instrumental')">Odonto_Instrumental</div>
-          <div class="option" data-value="Consumo_e_Limpeza_Esporádicos" onclick="selectOption('${setorId}', 'Consumo_e_Limpeza_Esporádicos')">Consumo_e_Limpeza_Esporádicos</div>
-          <div class="option" data-value="Consumo_e_Limpeza_Periódico" onclick="selectOption('${setorId}', 'Consumo_e_Limpeza_Periódico')">Consumo_e_Limpeza_Periódico</div>
-          <div class="option" data-value="Escritório" onclick="selectOption('${setorId}', 'Escritório')">Escritório</div>
-          <div class="option" data-value="Impressos" onclick="selectOption('${setorId}', 'Impressos')">Impressos</div>
-          <div class="option" data-value="Epi_Consumo" onclick="selectOption('${setorId}', 'Epi_Consumo')">Epi_Consumo</div>
-        </div>
-      </div>
-      <button type="button" onclick="removerSetor(this)" class="remove-button remove-setor-button">Remover Setor</button>
-    </div>
-    <div class="itens" id="itens-${setorIndex}"></div>
-    <div class="item-buttons">
-      <button type="button" onclick="adicionarItem(${setorIndex})">Adicionar Item</button>
-    </div>
-    <div class="Justificativa-group">
-      <label>Digite aqui uma justificativa para itens do setor acima:</label>
-      <textarea class="Justificativa" maxlength="300" rows="3" placeholder="Digite sua justificativa."></textarea>
-    </div>
-  `;
-
-  container.appendChild(div);
-  adicionarItem(setorIndex);
-  setorIndex++;
-}
-</script>
 
 
 <script>
