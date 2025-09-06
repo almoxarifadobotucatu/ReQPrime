@@ -52,6 +52,15 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
   }
 
 
+
+// --- Função auxiliar para garantir que a validação e envio usem o valor completo ---
+function resolverItemCompleto(valorDigitado) {
+  const dataListEl = document.getElementById('lista-itens');
+  if (!dataListEl) return valorDigitado;
+  const opt = [...dataListEl.options].find(o => o.value === valorDigitado);
+  return opt ? (opt.dataset.original || opt.dataset.itemCompleto || valorDigitado) : valorDigitado;
+}
+
 </script>
 
 <meta charset="utf-8"/>
@@ -2105,7 +2114,10 @@ const EscritórioItems = [
       items.forEach(item => {
         const option = document.createElement('option');
         // Texto exibido sem "unidade: ..."
-        const display = item.replace(/\s*unidade:\s*[^,\n]+/i, '').trim();
+        const display = item
+        .replace(/^\d+(?:\s\d+)*\s*/, '')
+        .replace(/\s*unidade:\s*[^,\n]+/i, '')
+        .trim();
         option.value = display;                   // o usuário vê o texto limpo
         option.dataset.original = item;           // guardamos o original para usar no formulário
         datalist.appendChild(option);
@@ -2390,15 +2402,23 @@ if (!listaLimpa.includes(nomeLimpo)) {
         const itensNomes = setor.querySelectorAll('.item-nome');
         const itensQtds = setor.querySelectorAll('.item-qtd');
         itensNomes.forEach((input, index) => {
-          const nome = input.value;
-          const qtd = itensQtds[index].value;
-          const unidades = setor.querySelectorAll('.item-unidade');
+          const nomeDisplay = input.value;
+const nomeCompleto = resolverItemCompleto(nomeDisplay);
+const qtd = itensQtds[index].value;
+const dataListEl = document.getElementById('lista-itens');
+let nomeCompleto = nomeDisplay;
+if (dataListEl) {
+  const opt = [...dataListEl.options].find(o => o.value === nomeDisplay);
+  if (opt && (opt.dataset.original || opt.dataset.itemCompleto)) {
+    nomeCompleto = opt.dataset.original || opt.dataset.itemCompleto;
+  }
+}
+const unidades = setor.querySelectorAll('.item-unidade');
 const unidade = (unidades[index] && unidades[index].value) ? unidades[index].value : '';
-let m = nome.trim().match(/^((?:\d+\s+){4}\d+)\s+(.*)$/);
+let m = nomeCompleto.trim().match(/^(\d+(?:\s\d+)*)\s+(.*)$/);
 let codigo = '';
-let descricao = nome;
+let descricao = nomeCompleto;
 if (m) { codigo = m[1]; descricao = m[2]; }
-
 descricao = descricao.replace(/\s*unidade:\s*[^,\n]+/gi, '').trim();
 corpoEmail += `${codigo ? codigo + ' - ' : ''}${descricao} - ${qtd} ${pluralizarUnidade(unidade, qtd)}
 `;
