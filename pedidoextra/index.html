@@ -2424,7 +2424,7 @@ if (!listaLimpa.includes(nomeLimpo)) {
         return;
       }
       let corpoEmail = `SOLICITAÇÃO DE PEDIDO EXTRA\n\n`;
-      corpoEmail += `<p><b>Responsável pela solicitação:<p><b> ${solicitante}\n`;
+      corpoEmail += `Responsável pela solicitação: ${solicitante}\n`;
       corpoEmail += `Unidade de saúde: ${unidade}\n\n`;
       corpoEmail += `----------------------------------------\n\n`;
       setores.forEach(setor => {
