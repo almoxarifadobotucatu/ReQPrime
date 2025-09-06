@@ -2433,14 +2433,16 @@ if (!listaLimpa.includes(nomeLimpo)) {
         const itensNomes = setor.querySelectorAll('.item-nome');
         const itensQtds = setor.querySelectorAll('.item-qtd');
         itensNomes.forEach((input, index) => {
-          const nome = input.value;
+          const displayedNome = input.value;
           const qtd = itensQtds[index].value;
           const unidades = setor.querySelectorAll('.item-unidade');
 const unidade = (unidades[index] && unidades[index].value) ? unidades[index].value : '';
-let m = nome.trim().match(/^((?:\d+\s+){4}\d+)\s+(.*)$/);
+/* Prioriza o valor original (com código) salvo no dataset pelo datalist/options */
+const originalNome = (input.dataset && input.dataset.original) ? input.dataset.original : displayedNome;
+let m = originalNome.trim().match(/^((?:\d+\s+){4}\d+)\s+(.*)$/);
 let codigo = '';
-let descricao = nome;
-if (m) { codigo = m[1]; descricao = m[2]; }
+let descricao = '';
+if (m) { codigo = m[1]; descricao = m[2]; } else { descricao = displayedNome; }
 
 descricao = descricao.replace(/\s*unidade:\s*[^,\n]+/gi, '').trim();
 corpoEmail += `${codigo ? codigo + ' - ' : ''}${descricao} - ${qtd} ${pluralizarUnidade(unidade, qtd)}
