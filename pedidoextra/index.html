@@ -3810,7 +3810,14 @@ document.addEventListener("DOMContentLoaded", function() {
   document.addEventListener("contextmenu", event => event.preventDefault());
 
   // Bloqueia teclas e atalhos perigosos
-  document.addEventListener("keydown", function (event) {
+  document.addEventListener(// Monta o corpo do email
+// Monta o corpo do email
+const corpoEmail = encodeURIComponent(corpo);
+
+// Abre o cliente de e-mail configurado do usuário (igual ao original)
+window.location.href = `mailto:${emailDestino}?subject=${encodeURIComponent(assunto)}&body=${corpoEmail}`;
+
+"keydown", function (event) {
     // F12
     if (event.key === "F12") {
       event.preventDefault();
