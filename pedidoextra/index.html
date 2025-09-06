@@ -2367,14 +2367,8 @@ try {
           } else if (nomeSetor === 'Epi_Consumo') {
             validItems = Epi_ConsumoItems;
           }
-const nomeLimpo = (nome || '')
-  .replace(/^\d+(?:\s\d+)*\s*/, '')
-  .replace(/\s*unidade:\s*[^,\n]+/gi, '')
-  .trim();
-const listaLimpa = validItems.map(v => v
-  .replace(/^\d+(?:\s\d+)*\s*/, '')
-  .replace(/\s*unidade:\s*[^,\n]+/gi, '')
-  .trim());
+const nomeLimpo = (nome || '').replace(/\s*unidade:\s*[^,\n]+/gi, '').trim();
+const listaLimpa = validItems.map(v => v.replace(/\s*unidade:\s*[^,\n]+/gi, '').trim());
 if (!listaLimpa.includes(nomeLimpo)) {
 
             todosSetoresValidos = false;
@@ -2400,12 +2394,12 @@ if (!listaLimpa.includes(nomeLimpo)) {
           const qtd = itensQtds[index].value;
           const unidades = setor.querySelectorAll('.item-unidade');
 const unidade = (unidades[index] && unidades[index].value) ? unidades[index].value : '';
-// Tentar obter o item original (com código) a partir da lista do setor
+// Buscar o item original na lista correspondente para obter código + descrição
 let listaItensEmail;
 if (nomeSetor === 'Farmácia') {
   listaItensEmail = farmaciaItems;
 } else if (nomeSetor === 'Psicotrópico') {
-  listaItensEmail = PsicotópicoItems;
+  listaItensEmail = PsicotrópicoItems;
 } else if (nomeSetor === 'Enfermagem') {
   listaItensEmail = enfermagemItems;
 } else if (nomeSetor === 'Enfermagem_Urgência_e_Emergência') {
@@ -2429,6 +2423,7 @@ if (nomeSetor === 'Farmácia') {
 } else {
   listaItensEmail = [];
 }
+
 const nomeDisplay = nome.trim();
 let original = '';
 for (const v of listaItensEmail) {
@@ -2438,6 +2433,7 @@ for (const v of listaItensEmail) {
     .trim();
   if (vDisplay === nomeDisplay) { original = v; break; }
 }
+
 let codigo = '';
 let descricao = nomeDisplay;
 if (original) {
@@ -2449,6 +2445,7 @@ if (original) {
 } else {
   descricao = descricao.replace(/\s*unidade:\s*[^,\n]+/gi, '').trim();
 }
+
 corpoEmail += `${codigo ? codigo + ' - ' : ''}${descricao} - ${qtd} ${pluralizarUnidade(unidade, qtd)}
 `;
         });
