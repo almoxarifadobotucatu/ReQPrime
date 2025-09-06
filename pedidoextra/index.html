@@ -3,6 +3,31 @@
 <html lang="pt-BR">
 <head>
   <script>
+
+// === Correção Validação Item x Setor ===
+function validarItemSetor(inputItem, nomeSetor, erros) {
+  try {
+    // Normaliza o nome exibido do campo (remove códigos e unidade)
+    const nomeItemExibido = inputItem.value
+      .replace(/^\d+(\s\d+)*/,'')                // remove códigos
+      .replace(/unidade:\s*[A-Za-zÀ-ú]+/i,'')    // remove "unidade: ..."
+      .trim();
+
+    // Normalizar a lista farmaciaItems
+    const listaNormalizada = farmaciaItems.map(i => 
+      i.replace(/^\d+(\s\d+)*/,'')
+       .replace(/unidade:\s*[A-Za-zÀ-ú]+/i,'')
+       .trim()
+    );
+
+    // Verifica se o item normalizado existe na lista normalizada
+    if (!listaNormalizada.includes(nomeItemExibido)) {
+      erros.push(`O item "${nomeItemExibido}" não é válido para o setor ${nomeSetor}.`);
+    }
+  } catch(e){ console.error("Erro validação item:", e); }
+}
+
+
     // Redireciona imediatamente se tentar acessar direto
     if (document.referrer === "" || document.referrer === window.location.href) {
       window.location.replace("https://almoxarifadobotucatu.netlify.app/");
@@ -3319,18 +3344,6 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 </script>
 
-<script>
-// === Correção Validação Item x Setor ===
-function validarItemSetor(inputItem, nomeSetor, erros) {
-  try {
-    const nomeItemExibido = inputItem.value.trim();
-    const itemOriginal = inputItem.dataset.original || nomeItemExibido;
-    if (!farmaciaItems.includes(itemOriginal)) {
-      erros.push(`O item "${nomeItemExibido}" não é válido para o setor ${nomeSetor}.`);
-    }
-  } catch(e){ console.error("Erro validação item:", e); }
-}
-</script>
 </body>
 </html>
 <html lang="pt-BR">
@@ -3853,16 +3866,4 @@ document.addEventListener("DOMContentLoaded", function() {
 </html>
 </script>
 
-  <script>
-// === Correção Validação Item x Setor ===
-function validarItemSetor(inputItem, nomeSetor, erros) {
-  try {
-    const nomeItemExibido = inputItem.value.trim();
-    const itemOriginal = inputItem.dataset.original || nomeItemExibido;
-    if (!farmaciaItems.includes(itemOriginal)) {
-      erros.push(`O item "${nomeItemExibido}" não é válido para o setor ${nomeSetor}.`);
-    }
-  } catch(e){ console.error("Erro validação item:", e); }
-}
-</script>
-</body>
+  </body>
