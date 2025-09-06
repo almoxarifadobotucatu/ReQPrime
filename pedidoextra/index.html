@@ -3842,3 +3842,15 @@ document.addEventListener("DOMContentLoaded", function() {
 </script>
 
   </body>
+
+
+// === Correção Validação Item x Setor ===
+function validarItemSetor(inputItem, nomeSetor, erros) {
+  try {
+    const nomeItemExibido = inputItem.value.trim();
+    const itemOriginal = inputItem.dataset.original || nomeItemExibido;
+    if (!farmaciaItems.includes(itemOriginal)) {
+      erros.push(`O item "${nomeItemExibido}" não é válido para o setor ${nomeSetor}.`);
+    }
+  } catch(e){ console.error("Erro validação item:", e); }
+}
