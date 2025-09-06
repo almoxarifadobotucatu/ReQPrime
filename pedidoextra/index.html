@@ -2402,12 +2402,8 @@ const nomeLimpo = (nome || '').replace(/\s*unidade:\s*[^,\n]+/gi, '').trim();
 const listaLimpa = validItems.map(v => v.replace(/\s*unidade:\s*[^,\n]+/gi, '').trim());
 if (!listaLimpa.includes(nomeLimpo)) {
 
-            todosSetoresValidos = false;
-// Validação removida — qualquer item será aceito
-// if (!itensValidos.includes(itemSelecionado)) {
-//   mostrarErro("O item '" + itemSelecionado + "' não é válido para o setor " + setorSelecionado);
-//   return;
-// }
+            todosSetoresValidos = true;
+            return;
           }
         });
       });
@@ -3322,68 +3318,6 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 </script>
 
-
-<script>
-function enviarEmail() {
-  const solicitante = document.getElementById("solicitante").value.trim();
-  const unidadeSaude = document.getElementById("unidade").value.trim();
-
-  let corpo = `Solicitante: ${solicitante}%0D%0A`;
-  corpo += `Unidade: ${unidadeSaude}%0D%0A%0D%0A`;
-
-  // Percorrer os setores
-  const setores = document.querySelectorAll(".setor");
-  setores.forEach((setor, i) => {
-    // Nome do setor (via select)
-    const setorNome = setor.querySelector("select")?.value || `Setor ${i + 1}`;
-
-    // Destaque em negrito (markdown-like)
-    corpo += `**${setorNome}:**%0D%0A`;
-
-    // Percorrer os itens do setor
-    const itens = setor.querySelectorAll(".item");
-    itens.forEach((item) => {
-      const nomeInput = item.querySelector("input.item-nome");
-      const qtd = item.querySelector("input.item-qtd")?.value || "0";
-      const unidade = item.querySelector(".item-unidade")?.value || "";
-      const justificativa = item.querySelector(".Justificativa")?.value || "";
-
-      // Recupera item completo (com código)
-      const itemCompleto = nomeInput?.dataset.original || nomeInput?.value || "";
-
-      // Extrair código e nome (tirando "unidade: ...")
-      const codigoMatch = itemCompleto.match(/^\d+(?:\s\d+)*\s*/);
-      const codigo = codigoMatch ? codigoMatch[0].trim() : "";
-      const nome = itemCompleto
-        .replace(/^\d+(?:\s\d+)*\s*/, "")
-        .replace(/unidade:\s*[A-Za-zÀ-ú]+/i, "")
-        .trim();
-
-      // Unidade ajustada no singular/plural
-      const unidadeFinal = pluralizarUnidade(unidade, qtd);
-
-      // Linha do item no padrão
-      corpo += ` - ${codigo} - ${nome} - ${qtd} ${unidadeFinal}%0D%0A`;
-
-      if (justificativa) {
-        corpo += `   Justificativa: ${justificativa}%0D%0A`;
-      }
-    });
-
-    corpo += `%0D%0A`; // espaço entre setores
-  });
-
-  const assunto = "Solicitação de Pedido Extra";
-  const destinatario = "almoxarifado@prefeitura.com"; // <-- ajuste para o e-mail real
-
-  window.location.href = `mailto:${destinatario}?subject=${encodeURIComponent(assunto)}&body=${corpo}`;
-}
-
-// Ativa o botão
-document.getElementById("enviarPedido").style.display = "inline-block";
-document.getElementById("enviarPedido").addEventListener("click", enviarEmail);
-</script>
-
 </body>
 </html>
 <html lang="pt-BR">
@@ -3906,107 +3840,4 @@ document.addEventListener("DOMContentLoaded", function() {
 </html>
 </script>
 
-  
-<script>
-function enviarEmail() {
-  const solicitante = document.getElementById("solicitante").value.trim();
-  const unidadeSaude = document.getElementById("unidade").value.trim();
-
-  let corpo = `Solicitante: ${solicitante}%0D%0A`;
-  corpo += `Unidade: ${unidadeSaude}%0D%0A%0D%0A`;
-
-  // Percorrer os setores
-  const setores = document.querySelectorAll(".setor");
-  setores.forEach((setor, i) => {
-    // Nome do setor (via select)
-    const setorNome = setor.querySelector("select")?.value || `Setor ${i + 1}`;
-
-    // Destaque em negrito (markdown-like)
-    corpo += `**${setorNome}:**%0D%0A`;
-
-    // Percorrer os itens do setor
-    const itens = setor.querySelectorAll(".item");
-    itens.forEach((item) => {
-      const nomeInput = item.querySelector("input.item-nome");
-      const qtd = item.querySelector("input.item-qtd")?.value || "0";
-      const unidade = item.querySelector(".item-unidade")?.value || "";
-      const justificativa = item.querySelector(".Justificativa")?.value || "";
-
-      // Recupera item completo (com código)
-      const itemCompleto = nomeInput?.dataset.original || nomeInput?.value || "";
-
-      // Extrair código e nome (tirando "unidade: ...")
-      const codigoMatch = itemCompleto.match(/^\d+(?:\s\d+)*\s*/);
-      const codigo = codigoMatch ? codigoMatch[0].trim() : "";
-      const nome = itemCompleto
-        .replace(/^\d+(?:\s\d+)*\s*/, "")
-        .replace(/unidade:\s*[A-Za-zÀ-ú]+/i, "")
-        .trim();
-
-      // Unidade ajustada no singular/plural
-      const unidadeFinal = pluralizarUnidade(unidade, qtd);
-
-      // Linha do item no padrão
-      corpo += ` - ${codigo} - ${nome} - ${qtd} ${unidadeFinal}%0D%0A`;
-
-      if (justificativa) {
-        corpo += `   Justificativa: ${justificativa}%0D%0A`;
-      }
-    });
-
-    corpo += `%0D%0A`; // espaço entre setores
-  });
-
-  const assunto = "Solicitação de Pedido Extra";
-  const destinatario = "almoxarifado@prefeitura.com"; // <-- ajuste para o e-mail real
-
-  window.location.href = `mailto:${destinatario}?subject=${encodeURIComponent(assunto)}&body=${corpo}`;
-}
-
-// Ativa o botão
-document.getElementById("enviarPedido").style.display = "inline-block";
-document.getElementById("enviarPedido").addEventListener("click", enviarEmail);
-</script>
-<script>
-document.getElementById("enviarPedido").style.display = "inline-block";
-
-document.getElementById("enviarPedido").addEventListener("click", function () {
-  const solicitante = document.getElementById("solicitante").value.trim();
-  const unidade = document.getElementById("unidade").value.trim();
-
-  if (!solicitante || !unidade) {
-    mostrarMensagemTopo("<h3>Erro</h3><ul><li>Preencha todos os campos obrigatórios.</li></ul>", "erro");
-    return;
-  }
-
-  let corpoEmail = `Solicitante: ${solicitante}\nUnidade de Saúde: ${unidade}\n\nItens solicitados:\n`;
-
-  // Percorrer setores e itens
-  document.querySelectorAll(".setor").forEach((setor, idxSetor) => {
-    corpoEmail += `\nSetor ${idxSetor + 1}:\n`;
-
-    setor.querySelectorAll(".item").forEach(item => {
-      const nome = item.querySelector(".item-nome")?.value || "";
-      const qtd = item.querySelector(".item-qtd")?.value || "";
-      const unidadeCtrl = item.querySelector(".item-unidade")?.value || "";
-
-      if (nome && qtd) {
-        corpoEmail += `- ${nome} | ${qtd} ${pluralizarUnidade(unidadeCtrl, qtd)}\n`;
-      }
-    });
-
-    const justificativa = setor.querySelector(".Justificativa")?.value || "";
-    if (justificativa) {
-      corpoEmail += `Justificativa: ${justificativa}\n`;
-    }
-  });
-
-  const assunto = "Pedido Extra - " + unidade;
-  const emailDestino = "seuemail@dominio.com"; // <<< troque aqui
-
-  const mailtoLink = `mailto:${emailDestino}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(corpoEmail)}`;
-  window.location.href = mailtoLink;
-});
-</script>
-
-</body>
+  </body>
