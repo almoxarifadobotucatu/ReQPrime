@@ -38,7 +38,7 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
       const option = document.createElement("option");
       const display = (typeof item === 'string') ? item.replace(/^\d+(\s\d+)*\s*/, '').replace(/\s*unidade:\s*[^,\n]+/i, '').trim() : String(item);
       option.value = display; // mostra só o nome
-      option.textContent = display; // texto visível
+      option.textContent = ""; // evita duplicidade na lista // texto visível
       option.dataset.original = item; // original com código e unidade
       option.dataset.itemCompleto = item;
       dataList.appendChild(option);
@@ -2149,7 +2149,7 @@ const EscritórioItems = [
         const option = document.createElement('option');
         const display = (typeof item === 'string') ? item.replace(/^\d+(\s\d+)*\s*/, '').replace(/\s*unidade:\s*[^,\n]+/i, '').trim() : String(item);
         option.value = display; // o usuário vê o texto limpo
-        option.textContent = display;
+        option.textContent = ""; // evita duplicidade na lista
         option.dataset.original = item; // guardamos o original para usar no formulário
         option.dataset.itemCompleto = item;
         datalist.appendChild(option);
