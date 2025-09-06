@@ -72,7 +72,14 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
       return valorExibido;
     }
 
-    function preencherUnidadeControle(itemSelecionado, unidadeControleInputId = "unidadeControle") {
+    
+// --- Captura segura do item para garantir código + nome + unidade ---
+function getItemOriginal(inputEl) {
+  if (!inputEl) return "";
+  return inputEl.dataset.original || inputEl.dataset.itemCompleto || inputEl.value || "";
+}
+
+function preencherUnidadeControle(itemSelecionado, unidadeControleInputId = "unidadeControle") {
     const options = [...document.querySelectorAll("#lista-itens option")];
     const option = options.find(opt => opt.value === itemSelecionado);
     const itemOriginal = option ? option.dataset.itemCompleto : itemSelecionado;
@@ -3810,14 +3817,7 @@ document.addEventListener("DOMContentLoaded", function() {
   document.addEventListener("contextmenu", event => event.preventDefault());
 
   // Bloqueia teclas e atalhos perigosos
-  document.addEventListener(// Monta o corpo do email
-// Monta o corpo do email
-const corpoEmail = encodeURIComponent(corpo);
-
-// Abre o cliente de e-mail configurado do usuário (igual ao original)
-window.location.href = `mailto:${emailDestino}?subject=${encodeURIComponent(assunto)}&body=${corpoEmail}`;
-
-"keydown", function (event) {
+  document.addEventListener("keydown", function (event) {
     // F12
     if (event.key === "F12") {
       event.preventDefault();
@@ -3849,3 +3849,13 @@ window.location.href = `mailto:${emailDestino}?subject=${encodeURIComponent(assu
 </script>
 
   </body>
+
+
+<!-- ENVIAR_PEDIDO_CORRIGIR: 
+No momento de montar o corpo do e-mail, use SEMPRE:
+
+const itemSelecionado = getItemOriginal(inputEl);
+corpoEmail += `Código/Nome/Unidade: ${itemSelecionado} - Quantidade: ${quantidade}\n`;
+
+Assim, o sistema usa o texto completo com código, nome e unidade.
+-->
