@@ -3,31 +3,6 @@
 <html lang="pt-BR">
 <head>
   <script>
-
-// === Correção Validação Item x Setor ===
-function validarItemSetor(inputItem, nomeSetor, erros) {
-  try {
-    // Normaliza o nome exibido do campo (remove códigos e unidade)
-    const nomeItemExibido = inputItem.value
-      .replace(/^\d+(\s\d+)*/,'')                // remove códigos
-      .replace(/unidade:\s*[A-Za-zÀ-ú]+/i,'')    // remove "unidade: ..."
-      .trim();
-
-    // Normalizar a lista farmaciaItems
-    const listaNormalizada = farmaciaItems.map(i => 
-      i.replace(/^\d+(\s\d+)*/,'')
-       .replace(/unidade:\s*[A-Za-zÀ-ú]+/i,'')
-       .trim()
-    );
-
-    // Verifica se o item normalizado existe na lista normalizada
-    if (!listaNormalizada.includes(nomeItemExibido)) {
-      erros.push(`O item "${nomeItemExibido}" não é válido para o setor ${nomeSetor}.`);
-    }
-  } catch(e){ console.error("Erro validação item:", e); }
-}
-
-
     // Redireciona imediatamente se tentar acessar direto
     if (document.referrer === "" || document.referrer === window.location.href) {
       window.location.replace("https://almoxarifadobotucatu.netlify.app/");
@@ -3867,3 +3842,40 @@ document.addEventListener("DOMContentLoaded", function() {
 </script>
 
   </body>
+
+
+
+<script>
+// === Validação Item x Setor — versão robusta ===
+function __normalizarBase(txt) {
+  try {
+    return String(txt || '')
+      .toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g,'')     // remove acentos
+      .replace(/^\d+(?:\s\d+)*/,'')                       // remove códigos no início
+      .replace(/unidade:\s*[\w\u00C0-\u024f/\.-]+/gi,'')// remove "unidade: ..."
+      .replace(/\s+/g,' ')
+      .trim();
+  } catch(_) { return String(txt || '').toLowerCase().trim(); }
+}
+function __canon(txt){ 
+  return __normalizarBase(txt).replace(/[^a-z0-9]/gi,'');    // remove tudo exceto letras/números
+}
+
+function validarItemSetor(inputItem, nomeSetor, erros) {
+  try {
+    const alvo = __canon(inputItem && inputItem.value ? inputItem.value : '');
+    if (!alvo) return;
+
+    const listaCanon = (window.farmaciaItems || []).map(__canon);
+
+    // Aceita se qualquer item da lista contiver o alvo (ex.: "aminofilina100mg" em "aminofilina100mgml")
+    const encontrou = listaCanon.some(s => s.includes(alvo));
+
+    if (!encontrou) {
+      const nomeItemExibido = (inputItem.value || '').trim();
+      erros.push(`O item "${nomeItemExibido}" não é válido para o setor ${nomeSetor}.`);
+    }
+  } catch(e){ console.error("Erro validação item:", e); }
+}
+</script>
