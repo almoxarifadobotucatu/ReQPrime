@@ -3967,5 +3967,46 @@ function enviarEmail() {
 document.getElementById("enviarPedido").style.display = "inline-block";
 document.getElementById("enviarPedido").addEventListener("click", enviarEmail);
 </script>
+<script>
+document.getElementById("enviarPedido").style.display = "inline-block";
+
+document.getElementById("enviarPedido").addEventListener("click", function () {
+  const solicitante = document.getElementById("solicitante").value.trim();
+  const unidade = document.getElementById("unidade").value.trim();
+
+  if (!solicitante || !unidade) {
+    mostrarMensagemTopo("<h3>Erro</h3><ul><li>Preencha todos os campos obrigatórios.</li></ul>", "erro");
+    return;
+  }
+
+  let corpoEmail = `Solicitante: ${solicitante}\nUnidade de Saúde: ${unidade}\n\nItens solicitados:\n`;
+
+  // Percorrer setores e itens
+  document.querySelectorAll(".setor").forEach((setor, idxSetor) => {
+    corpoEmail += `\nSetor ${idxSetor + 1}:\n`;
+
+    setor.querySelectorAll(".item").forEach(item => {
+      const nome = item.querySelector(".item-nome")?.value || "";
+      const qtd = item.querySelector(".item-qtd")?.value || "";
+      const unidadeCtrl = item.querySelector(".item-unidade")?.value || "";
+
+      if (nome && qtd) {
+        corpoEmail += `- ${nome} | ${qtd} ${pluralizarUnidade(unidadeCtrl, qtd)}\n`;
+      }
+    });
+
+    const justificativa = setor.querySelector(".Justificativa")?.value || "";
+    if (justificativa) {
+      corpoEmail += `Justificativa: ${justificativa}\n`;
+    }
+  });
+
+  const assunto = "Pedido Extra - " + unidade;
+  const emailDestino = "seuemail@dominio.com"; // <<< troque aqui
+
+  const mailtoLink = `mailto:${emailDestino}?subject=${encodeURIComponent(assunto)}&body=${encodeURIComponent(corpoEmail)}`;
+  window.location.href = mailtoLink;
+});
+</script>
 
 </body>
