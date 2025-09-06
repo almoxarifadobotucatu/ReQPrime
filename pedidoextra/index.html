@@ -39,16 +39,36 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
       option.value = formatarItemParaExibicao(item);
       option.textContent = formatarItemParaExibicao(item); // só o nome visível
       option.dataset.itemCompleto = item;
-      option.dataset.itemCompleto = item;            // mantém original
+      option.dataset.itemCompleto = item;            // mantém original\n      option.dataset.original = item;
       dataList.appendChild(option);
     });
   }
+  // Quando o usuário digita/seleciona no input do item, salvamos o original no dataset e garantimos que o valor mostrado seja só o nome
+  function onItemInputChange(inputEl) {
+    try {
+      if (!inputEl) return;
+      inputEl.setAttribute('autocomplete','off');
+      const val = inputEl.value;
+      const options = [...document.querySelectorAll('#lista-itens option')];
+      const opt = options.find(o => o.value === val || o.textContent === val);
+      if (opt) {
+        // garantir exibição limpa e salvar original
+        inputEl.value = opt.value;
+        inputEl.dataset.original = opt.dataset.original || opt.dataset.itemCompleto || opt.value;
+      } else {
+        if (!inputEl.dataset.original) inputEl.dataset.original = val;
+      }
+    } catch(e){ /* noop */ }
+  }
+
+
 
   // Quando selecionar, ainda captura a unidade corretamente
   function obterItemOriginal(valorExibido) {
       const options = [...document.querySelectorAll("#lista-itens option")];
       const option = options.find(opt => opt.value === valorExibido || opt.textContent === valorExibido);
-      return option ? option.dataset.itemCompleto : valorExibido;
+      if (option) return option.dataset.original || option.dataset.itemCompleto || valorExibido;
+      return valorExibido;
     }
 
     function preencherUnidadeControle(itemSelecionado, unidadeControleInputId = "unidadeControle") {
@@ -2116,7 +2136,7 @@ const EscritórioItems = [
         // Texto exibido sem "unidade: ..."
         const display = item.replace(/\s*unidade:\s*[^,\n]+/i, '').trim();
         option.value = display;                   // o usuário vê o texto limpo
-        option.dataset.original = item;           // guardamos o original para usar no formulário
+        option.dataset.original = item;           // guardamos o original para usar no formulário\n        option.dataset.itemCompleto = item;
         datalist.appendChild(option);
       });
     }
@@ -2243,7 +2263,7 @@ const EscritórioItems = [
       div.innerHTML = `
         <div class="item-input-group item-nome-group">
           <label>Item:</label>
-          <input type="text" class="item-nome" list="lista-itens" required onchange="verificarDuplicata(this, '${index}')">
+          <input type="text" class="item-nome" list="lista-itens" autocomplete="off" required onchange="verificarDuplicata(this, '${index}')" oninput="onItemInputChange(this)">
         </div>
         <div class="item-input-group item-qtd-group">
           <label>Quantidade:</label>
@@ -2728,7 +2748,8 @@ document.addEventListener("DOMContentLoaded", function() {
     const itens = [];
 
     document.querySelectorAll(".item").forEach(itemDiv => {
-      const nome = itemDiv.querySelector(".item-nome")?.value;
+      const nomeVisivel = itemDiv.querySelector(".item-nome")?.value;
+      const nome = itemDiv.querySelector(".item-nome")?.dataset.original || obterItemOriginal(nomeVisivel);
       const quantidade = itemDiv.querySelector(".item-qtd")?.value;
       const unidadeControle = itemDiv.querySelector(".item-unidade")?.value;
       );
@@ -3102,7 +3123,8 @@ document.addEventListener("DOMContentLoaded", function() {
     const itens = [];
 
     document.querySelectorAll(".item").forEach(itemDiv => {
-      const nome = itemDiv.querySelector(".item-nome")?.value;
+      const nomeVisivel = itemDiv.querySelector(".item-nome")?.value;
+      const nome = itemDiv.querySelector(".item-nome")?.dataset.original || obterItemOriginal(nomeVisivel);
       const quantidade = itemDiv.querySelector(".item-qtd")?.value;
       const unidadeControle = itemDiv.querySelector(".item-unidade")?.value;
       // Captura o setor a partir do container .setor mais próximo
@@ -3521,7 +3543,8 @@ document.addEventListener("DOMContentLoaded", function() {
     const itens = [];
 
     document.querySelectorAll(".item").forEach(itemDiv => {
-      const nome = itemDiv.querySelector(".item-nome")?.value;
+      const nomeVisivel = itemDiv.querySelector(".item-nome")?.value;
+      const nome = itemDiv.querySelector(".item-nome")?.dataset.original || obterItemOriginal(nomeVisivel);
       const quantidade = itemDiv.querySelector(".item-qtd")?.value;
       const unidadeControle = itemDiv.querySelector(".item-unidade")?.value;
       if (nome && quantidade && unidadeControle) {
