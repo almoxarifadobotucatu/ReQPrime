@@ -22,7 +22,7 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
     
   // Função para exibir apenas o nome do item (sem código e sem "unidade: ...")
   function formatarItemParaExibicao(item) {
-      return item.replace(/^\d+(\s\d+)*\s*/, "").replace(/unidade:\s*[A-Za-zÀ-ú]+/i, "").trim();
+      // Mostra só o nome (remove código e unidade)
     return item
       .replace(/^\d+(\s\d+)*\s*/, "")   // remove códigos no início
       .replace(/unidade:\s*[A-Za-zÀ-ú]+/i, "") // remove "unidade: ..."
@@ -36,7 +36,9 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
     dataList.innerHTML = "";
     lista.forEach(item => {
       const option = document.createElement("option");
-      option.value = formatarItemParaExibicao(item); // exibe só o nome
+      option.value = formatarItemParaExibicao(item);
+      option.textContent = formatarItemParaExibicao(item); // só o nome visível
+      option.dataset.itemCompleto = item;
       option.dataset.itemCompleto = item;            // mantém original
       dataList.appendChild(option);
     });
@@ -45,7 +47,7 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
   // Quando selecionar, ainda captura a unidade corretamente
   function obterItemOriginal(valorExibido) {
       const options = [...document.querySelectorAll("#lista-itens option")];
-      const option = options.find(opt => opt.value === valorExibido);
+      const option = options.find(opt => opt.value === valorExibido || opt.textContent === valorExibido);
       return option ? option.dataset.itemCompleto : valorExibido;
     }
 
