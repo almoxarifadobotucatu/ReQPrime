@@ -2403,8 +2403,11 @@ const listaLimpa = validItems.map(v => v.replace(/\s*unidade:\s*[^,\n]+/gi, '').
 if (!listaLimpa.includes(nomeLimpo)) {
 
             todosSetoresValidos = false;
-            mostrarMensagemTopo(`O item "${nome}" não é válido para o setor ${nomeSetor}.`);
-            return;
+// Validação removida — qualquer item será aceito
+// if (!itensValidos.includes(itemSelecionado)) {
+//   mostrarErro("O item '" + itemSelecionado + "' não é válido para o setor " + setorSelecionado);
+//   return;
+// }
           }
         });
       });
@@ -3842,40 +3845,3 @@ document.addEventListener("DOMContentLoaded", function() {
 </script>
 
   </body>
-
-
-
-<script>
-// === Validação Item x Setor — versão robusta ===
-function __normalizarBase(txt) {
-  try {
-    return String(txt || '')
-      .toLowerCase()
-      .normalize('NFD').replace(/[\u0300-\u036f]/g,'')     // remove acentos
-      .replace(/^\d+(?:\s\d+)*/,'')                       // remove códigos no início
-      .replace(/unidade:\s*[\w\u00C0-\u024f/\.-]+/gi,'')// remove "unidade: ..."
-      .replace(/\s+/g,' ')
-      .trim();
-  } catch(_) { return String(txt || '').toLowerCase().trim(); }
-}
-function __canon(txt){ 
-  return __normalizarBase(txt).replace(/[^a-z0-9]/gi,'');    // remove tudo exceto letras/números
-}
-
-function validarItemSetor(inputItem, nomeSetor, erros) {
-  try {
-    const alvo = __canon(inputItem && inputItem.value ? inputItem.value : '');
-    if (!alvo) return;
-
-    const listaCanon = (window.farmaciaItems || []).map(__canon);
-
-    // Aceita se qualquer item da lista contiver o alvo (ex.: "aminofilina100mg" em "aminofilina100mgml")
-    const encontrou = listaCanon.some(s => s.includes(alvo));
-
-    if (!encontrou) {
-      const nomeItemExibido = (inputItem.value || '').trim();
-      erros.push(`O item "${nomeItemExibido}" não é válido para o setor ${nomeSetor}.`);
-    }
-  } catch(e){ console.error("Erro validação item:", e); }
-}
-</script>
