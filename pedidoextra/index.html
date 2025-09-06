@@ -22,7 +22,6 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
     
   // Função para exibir apenas o nome do item (sem código e sem "unidade: ...")
   function formatarItemParaExibicao(item) {
-      // Mostra só o nome (remove código e unidade)
     return item
       .replace(/^\d+(\s\d+)*\s*/, "")   // remove códigos no início
       .replace(/unidade:\s*[A-Za-zÀ-ú]+/i, "") // remove "unidade: ..."
@@ -34,52 +33,16 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
     const dataList = document.getElementById(datalistId);
     if (!dataList) return;
     dataList.innerHTML = "";
-        lista.forEach(item => {
+    lista.forEach(item => {
       const option = document.createElement("option");
-      const display = (typeof item === 'string') ? item.replace(/^\d+(\s\d+)*\s*/, '').replace(/\s*unidade:\s*[^,\n]+/i, '').trim() : String(item);
-      option.value = display; // mostra só o nome
-      option.textContent = display; // texto visível
-      option.dataset.original = item; // original com código e unidade
-      option.dataset.itemCompleto = item;
+      option.value = formatarItemParaExibicao(item); // exibe só o nome
+      option.dataset.itemCompleto = item;            // mantém original
       dataList.appendChild(option);
     });
   }
-  // Quando o usuário digita/seleciona no input do item, salvamos o original no dataset e garantimos que o valor mostrado seja só o nome
-  function onItemInputChange(inputEl) {
-    try {
-      if (!inputEl) return;
-      inputEl.setAttribute('autocomplete','off');
-      const val = inputEl.value;
-      const options = [...document.querySelectorAll('#lista-itens option')];
-      const opt = options.find(o => o.value === val || o.textContent === val);
-      if (opt) {
-        // garantir exibição limpa e salvar original
-        inputEl.value = opt.value;
-        inputEl.dataset.original = opt.dataset.original || opt.dataset.itemCompleto || opt.value;
-      } else {
-        if (!inputEl.dataset.original) inputEl.dataset.original = val;
-      }
-    } catch(e){ /* noop */ }
-  }
-
-
 
   // Quando selecionar, ainda captura a unidade corretamente
-  function obterItemOriginal(valorExibido) {
-      const options = [...document.querySelectorAll("#lista-itens option")];
-      const option = options.find(opt => opt.value === valorExibido || opt.textContent === valorExibido);
-      if (option) return option.dataset.original || option.dataset.itemCompleto || valorExibido;
-      return valorExibido;
-    }
-
-    
-// --- Captura segura do item para garantir código + nome + unidade ---
-function getItemOriginal(inputEl) {
-  if (!inputEl) return "";
-  return inputEl.dataset.original || inputEl.dataset.itemCompleto || inputEl.value || "";
-}
-
-function preencherUnidadeControle(itemSelecionado, unidadeControleInputId = "unidadeControle") {
+  function preencherUnidadeControle(itemSelecionado, unidadeControleInputId = "unidadeControle") {
     const options = [...document.querySelectorAll("#lista-itens option")];
     const option = options.find(opt => opt.value === itemSelecionado);
     const itemOriginal = option ? option.dataset.itemCompleto : itemSelecionado;
@@ -2139,13 +2102,12 @@ const EscritórioItems = [
       } else {
         items = defaultItems;
       }
-            items.forEach(item => {
+      items.forEach(item => {
         const option = document.createElement('option');
-        const display = (typeof item === 'string') ? item.replace(/^\d+(\s\d+)*\s*/, '').replace(/\s*unidade:\s*[^,\n]+/i, '').trim() : String(item);
-        option.value = display; // o usuário vê o texto limpo
-        option.textContent = display;
-        option.dataset.original = item; // guardamos o original para usar no formulário
-        option.dataset.itemCompleto = item;
+        // Texto exibido sem "unidade: ..."
+        const display = item.replace(/\s*unidade:\s*[^,\n]+/i, '').trim();
+        option.value = display;                   // o usuário vê o texto limpo
+        option.dataset.original = item;           // guardamos o original para usar no formulário
         datalist.appendChild(option);
       });
     }
@@ -2272,7 +2234,7 @@ const EscritórioItems = [
       div.innerHTML = `
         <div class="item-input-group item-nome-group">
           <label>Item:</label>
-          <input type="text" class="item-nome" list="lista-itens" autocomplete="off" required onchange="verificarDuplicata(this, '${index}')" oninput="onItemInputChange(this)">
+          <input type="text" class="item-nome" list="lista-itens" required onchange="verificarDuplicata(this, '${index}')">
         </div>
         <div class="item-input-group item-qtd-group">
           <label>Quantidade:</label>
@@ -2405,8 +2367,14 @@ try {
           } else if (nomeSetor === 'Epi_Consumo') {
             validItems = Epi_ConsumoItems;
           }
-const nomeLimpo = (nome || '').replace(/\s*unidade:\s*[^,\n]+/gi, '').trim();
-const listaLimpa = validItems.map(v => v.replace(/\s*unidade:\s*[^,\n]+/gi, '').trim());
+const nomeLimpo = (nome || '')
+  .replace(/^\d+(?:\s\d+)*\s*/, '')
+  .replace(/\s*unidade:\s*[^,\n]+/gi, '')
+  .trim();
+const listaLimpa = validItems.map(v => v
+  .replace(/^\d+(?:\s\d+)*\s*/, '')
+  .replace(/\s*unidade:\s*[^,\n]+/gi, '')
+  .trim());
 if (!listaLimpa.includes(nomeLimpo)) {
 
             todosSetoresValidos = false;
@@ -2432,12 +2400,55 @@ if (!listaLimpa.includes(nomeLimpo)) {
           const qtd = itensQtds[index].value;
           const unidades = setor.querySelectorAll('.item-unidade');
 const unidade = (unidades[index] && unidades[index].value) ? unidades[index].value : '';
-let m = nome.trim().match(/^((?:\d+\s+){4}\d+)\s+(.*)$/);
+// Tentar obter o item original (com código) a partir da lista do setor
+let listaItensEmail;
+if (nomeSetor === 'Farmácia') {
+  listaItensEmail = farmaciaItems;
+} else if (nomeSetor === 'Psicotrópico') {
+  listaItensEmail = PsicotópicoItems;
+} else if (nomeSetor === 'Enfermagem') {
+  listaItensEmail = enfermagemItems;
+} else if (nomeSetor === 'Enfermagem_Urgência_e_Emergência') {
+  listaItensEmail = Enfermagem_Urgência_e_EmergênciaItems;
+} else if (nomeSetor === 'Enfermagem_Teste_DST') {
+  listaItensEmail = Enfermagem_Teste_DSTItems;
+} else if (nomeSetor === 'Odonto') {
+  listaItensEmail = OdontoItems;
+} else if (nomeSetor === 'Odonto_Instrumental') {
+  listaItensEmail = Odonto_InstrumentalItems;
+} else if (nomeSetor === 'Impressos') {
+  listaItensEmail = ImpressosItems;
+} else if (nomeSetor === 'Escritório') {
+  listaItensEmail = EscritórioItems;
+} else if (nomeSetor === 'Consumo_e_Limpeza_Esporádicos') {
+  listaItensEmail = Consumo_e_Limpeza_EsporádicosItems;
+} else if (nomeSetor === 'Consumo_e_Limpeza_Periódico') {
+  listaItensEmail = Consumo_e_Limpeza_PeriódicoItems;
+} else if (nomeSetor === 'Epi_Consumo') {
+  listaItensEmail = Epi_ConsumoItems;
+} else {
+  listaItensEmail = [];
+}
+const nomeDisplay = nome.trim();
+let original = '';
+for (const v of listaItensEmail) {
+  const vDisplay = v
+    .replace(/^\d+(?:\s\d+)*\s*/, '')
+    .replace(/\s*unidade:\s*[^,\n]+/gi, '')
+    .trim();
+  if (vDisplay === nomeDisplay) { original = v; break; }
+}
 let codigo = '';
-let descricao = nome;
-if (m) { codigo = m[1]; descricao = m[2]; }
-
-descricao = descricao.replace(/\s*unidade:\s*[^,\n]+/gi, '').trim();
+let descricao = nomeDisplay;
+if (original) {
+  const mm = original.match(/^((?:\d+\s+){4}\d+)\s+(.*)$/);
+  if (mm) { 
+    codigo = mm[1]; 
+    descricao = mm[2].replace(/\s*unidade:\s*[^,\n]+/gi, '').trim();
+  }
+} else {
+  descricao = descricao.replace(/\s*unidade:\s*[^,\n]+/gi, '').trim();
+}
 corpoEmail += `${codigo ? codigo + ' - ' : ''}${descricao} - ${qtd} ${pluralizarUnidade(unidade, qtd)}
 `;
         });
@@ -2757,8 +2768,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const itens = [];
 
     document.querySelectorAll(".item").forEach(itemDiv => {
-      const nomeVisivel = itemDiv.querySelector(".item-nome")?.value;
-      const nome = itemDiv.querySelector(".item-nome")?.dataset.original || obterItemOriginal(nomeVisivel);
+      const nome = itemDiv.querySelector(".item-nome")?.value;
       const quantidade = itemDiv.querySelector(".item-qtd")?.value;
       const unidadeControle = itemDiv.querySelector(".item-unidade")?.value;
       );
@@ -3132,8 +3142,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const itens = [];
 
     document.querySelectorAll(".item").forEach(itemDiv => {
-      const nomeVisivel = itemDiv.querySelector(".item-nome")?.value;
-      const nome = itemDiv.querySelector(".item-nome")?.dataset.original || obterItemOriginal(nomeVisivel);
+      const nome = itemDiv.querySelector(".item-nome")?.value;
       const quantidade = itemDiv.querySelector(".item-qtd")?.value;
       const unidadeControle = itemDiv.querySelector(".item-unidade")?.value;
       // Captura o setor a partir do container .setor mais próximo
@@ -3552,8 +3561,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const itens = [];
 
     document.querySelectorAll(".item").forEach(itemDiv => {
-      const nomeVisivel = itemDiv.querySelector(".item-nome")?.value;
-      const nome = itemDiv.querySelector(".item-nome")?.dataset.original || obterItemOriginal(nomeVisivel);
+      const nome = itemDiv.querySelector(".item-nome")?.value;
       const quantidade = itemDiv.querySelector(".item-qtd")?.value;
       const unidadeControle = itemDiv.querySelector(".item-unidade")?.value;
       if (nome && quantidade && unidadeControle) {
@@ -3849,13 +3857,3 @@ document.addEventListener("DOMContentLoaded", function() {
 </script>
 
   </body>
-
-
-<!-- ENVIAR_PEDIDO_CORRIGIR: 
-No momento de montar o corpo do e-mail, use SEMPRE:
-
-const itemSelecionado = getItemOriginal(inputEl);
-corpoEmail += `Código/Nome/Unidade: ${itemSelecionado} - Quantidade: ${quantidade}\n`;
-
-Assim, o sistema usa o texto completo com código, nome e unidade.
--->
