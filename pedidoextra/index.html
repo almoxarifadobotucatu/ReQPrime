@@ -22,6 +22,7 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
     
   // Função para exibir apenas o nome do item (sem código e sem "unidade: ...")
   function formatarItemParaExibicao(item) {
+      return item.replace(/^\d+(\s\d+)*\s*/, "").replace(/unidade:\s*[A-Za-zÀ-ú]+/i, "").trim();
     return item
       .replace(/^\d+(\s\d+)*\s*/, "")   // remove códigos no início
       .replace(/unidade:\s*[A-Za-zÀ-ú]+/i, "") // remove "unidade: ..."
@@ -42,7 +43,13 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
   }
 
   // Quando selecionar, ainda captura a unidade corretamente
-  function preencherUnidadeControle(itemSelecionado, unidadeControleInputId = "unidadeControle") {
+  function obterItemOriginal(valorExibido) {
+      const options = [...document.querySelectorAll("#lista-itens option")];
+      const option = options.find(opt => opt.value === valorExibido);
+      return option ? option.dataset.itemCompleto : valorExibido;
+    }
+
+    function preencherUnidadeControle(itemSelecionado, unidadeControleInputId = "unidadeControle") {
     const options = [...document.querySelectorAll("#lista-itens option")];
     const option = options.find(opt => opt.value === itemSelecionado);
     const itemOriginal = option ? option.dataset.itemCompleto : itemSelecionado;
