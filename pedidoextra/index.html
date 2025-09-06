@@ -2749,8 +2749,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const itens = [];
 
     document.querySelectorAll(".item").forEach(itemDiv => {
-      const nomeVisivel = itemDiv.querySelector(".item-nome")?.value;
-      const nome = itemDiv.querySelector(".item-nome")?.dataset.original || obterItemOriginal(nomeVisivel);
+      const nome = itemDiv.querySelector(".item-nome")?.value;
       const quantidade = itemDiv.querySelector(".item-qtd")?.value;
       const unidadeControle = itemDiv.querySelector(".item-unidade")?.value;
       );
@@ -3124,8 +3123,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const itens = [];
 
     document.querySelectorAll(".item").forEach(itemDiv => {
-      const nomeVisivel = itemDiv.querySelector(".item-nome")?.value;
-      const nome = itemDiv.querySelector(".item-nome")?.dataset.original || obterItemOriginal(nomeVisivel);
+      const nome = itemDiv.querySelector(".item-nome")?.value;
       const quantidade = itemDiv.querySelector(".item-qtd")?.value;
       const unidadeControle = itemDiv.querySelector(".item-unidade")?.value;
       // Captura o setor a partir do container .setor mais próximo
@@ -3544,8 +3542,7 @@ document.addEventListener("DOMContentLoaded", function() {
     const itens = [];
 
     document.querySelectorAll(".item").forEach(itemDiv => {
-      const nomeVisivel = itemDiv.querySelector(".item-nome")?.value;
-      const nome = itemDiv.querySelector(".item-nome")?.dataset.original || obterItemOriginal(nomeVisivel);
+      const nome = itemDiv.querySelector(".item-nome")?.value;
       const quantidade = itemDiv.querySelector(".item-qtd")?.value;
       const unidadeControle = itemDiv.querySelector(".item-unidade")?.value;
       if (nome && quantidade && unidadeControle) {
