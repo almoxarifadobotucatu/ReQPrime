@@ -34,12 +34,13 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
     const dataList = document.getElementById(datalistId);
     if (!dataList) return;
     dataList.innerHTML = "";
-    lista.forEach(item => {
+        lista.forEach(item => {
       const option = document.createElement("option");
-      option.value = formatarItemParaExibicao(item);
-      option.textContent = formatarItemParaExibicao(item); // só o nome visível
+      const display = (typeof item === 'string') ? item.replace(/^\d+(\s\d+)*\s*/, '').replace(/\s*unidade:\s*[^,\n]+/i, '').trim() : String(item);
+      option.value = display; // mostra só o nome
+      option.textContent = display; // texto visível
+      option.dataset.original = item; // original com código e unidade
       option.dataset.itemCompleto = item;
-      option.dataset.itemCompleto = item;            // mantém original\n      option.dataset.original = item;
       dataList.appendChild(option);
     });
   }
@@ -2131,12 +2132,13 @@ const EscritórioItems = [
       } else {
         items = defaultItems;
       }
-      items.forEach(item => {
+            items.forEach(item => {
         const option = document.createElement('option');
-        // Texto exibido sem "unidade: ..."
-        const display = item.replace(/\s*unidade:\s*[^,\n]+/i, '').trim();
-        option.value = display;                   // o usuário vê o texto limpo
-        option.dataset.original = item;           // guardamos o original para usar no formulário\n        option.dataset.itemCompleto = item;
+        const display = (typeof item === 'string') ? item.replace(/^\d+(\s\d+)*\s*/, '').replace(/\s*unidade:\s*[^,\n]+/i, '').trim() : String(item);
+        option.value = display; // o usuário vê o texto limpo
+        option.textContent = display;
+        option.dataset.original = item; // guardamos o original para usar no formulário
+        option.dataset.itemCompleto = item;
         datalist.appendChild(option);
       });
     }
