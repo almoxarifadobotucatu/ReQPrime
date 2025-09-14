@@ -2289,7 +2289,7 @@ const EscritórioItems = [
       div.innerHTML = `
         <div class="item-input-group item-nome-group">
           <label>Item:</label>
-          <input type="text" class="item-nome" list="lista-itens" autocomplete="off" required onchange="verificarDuplicata(this, '${index}')" oninput="onItemInputChange(this)">
+          <input type="text" class="item-nome" data-autocomplete="1"  autocomplete="off" required onchange="verificarDuplicata(this, '${index}')" oninput="onItemInputChange(this)">
         </div>
         <div class="item-input-group item-qtd-group">
           <label>Quantidade:</label>
@@ -3442,6 +3442,139 @@ document.addEventListener("DOMContentLoaded", function() {
 
 <!-- ==== Fim da proteção ==== -->
 
+
+
+<style>
+.autocomplete-suggestions {
+  position: absolute;
+  z-index: 9999;
+  background: #fff;
+  color: #000;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+  max-height: 200px;
+  overflow-y: auto;
+  width: calc(100% - 4px);
+  margin-top: 6px;
+  display: none;
+  padding: 4px 0;
+}
+.autocomplete-suggestions.hidden { display: none; }
+.autocomplete-suggestion {
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+.autocomplete-suggestion:hover { background: #f0f0f0; }
+</style>
+
+<script>
+(function(){
+  // Build options list from datalist options
+  function buildOptions() {
+    var opts = [];
+    try {
+      var options = document.querySelectorAll('#lista-itens option');
+      options && options.forEach && options.forEach(function(o){
+        var display = (o.value || '').toString();
+        var original = o.dataset && (o.dataset.original || o.dataset.itemCompleto) ? (o.dataset.original || o.dataset.itemCompleto) : display;
+        opts.push({ value: display, original: original });
+      });
+    } catch(err){}
+    return opts;
+  }
+  var dataOptions = buildOptions();
+
+  function ensureContainer(input){
+    if (input._suggestions) return input._suggestions;
+    var wrap = input.parentElement;
+    try { if (getComputedStyle(wrap).position === 'static') wrap.style.position = 'relative'; } catch(e){}
+    var box = document.createElement('div');
+    box.className = 'autocomplete-suggestions hidden';
+    input._suggestions = box;
+    wrap.appendChild(box);
+    // prevent losing focus when clicking suggestion
+    box.addEventListener('mousedown', function(e){ e.preventDefault(); });
+    return box;
+  }
+
+  function showSuggestions(input, items){
+    var box = ensureContainer(input);
+    box.innerHTML = '';
+    if (!items || items.length === 0) { box.classList.add('hidden'); box.style.display='none'; return; }
+    items.slice(0,20).forEach(function(it){
+      var div = document.createElement('div');
+      div.className = 'autocomplete-suggestion';
+      div.textContent = it.value;
+      div.dataset.original = it.original;
+      div.addEventListener('click', function(e){
+        input.value = it.value;
+        try { input.dataset.original = it.original; } catch(err){}
+        // notify other handlers
+        try { var ev = new Event('input', { bubbles: true }); input.dispatchEvent(ev); } catch(err){}
+        box.classList.add('hidden');
+        box.style.display='none';
+      });
+      box.appendChild(div);
+    });
+    box.classList.remove('hidden');
+    box.style.display='block';
+  }
+
+  function filterOptions(q){
+    if (!q) return dataOptions.slice(0,20);
+    q = q.toLowerCase();
+    return dataOptions.filter(function(d){
+      return d.value.toLowerCase().indexOf(q) !== -1;
+    });
+  }
+
+  function attachAutocomplete(input){
+    if (!input || input._autocompleteAttached) return;
+    input._autocompleteAttached = true;
+    try { input.setAttribute('autocomplete','off'); } catch(e){}
+    input.addEventListener('input', function(e){
+      var q = (input.value || '').trim();
+      if (!q) { // clear suggestions and original
+        try { input.dataset.original = input.dataset.original || ''; } catch(err){}
+        showSuggestions(input, []);
+        return;
+      }
+      var matches = filterOptions(q);
+      showSuggestions(input, matches);
+    });
+    input.addEventListener('focus', function(e){
+      var q = (input.value || '').trim();
+      var matches = filterOptions(q);
+      showSuggestions(input, matches);
+    });
+    input.addEventListener('blur', function(e){
+      setTimeout(function(){ var box = input._suggestions; if (box) { box.classList.add('hidden'); box.style.display='none'; } }, 150);
+    });
+  }
+
+  // attach existing
+  document.querySelectorAll && document.querySelectorAll('input[data-autocomplete="1"]').forEach(function(i){ attachAutocomplete(i); });
+
+  // mutation observer for new inputs
+  try {
+    var mo = new MutationObserver(function(muts){
+      muts.forEach(function(m){
+        m.addedNodes && m.addedNodes.forEach(function(node){
+          try {
+            if (node.nodeType !== 1) return;
+            if (node.matches && node.matches('input[data-autocomplete="1"]')) attachAutocomplete(node);
+            var found = node.querySelectorAll && node.querySelectorAll('input[data-autocomplete="1"]');
+            found && found.forEach && found.forEach(attachAutocomplete);
+          } catch(err){}
+        });
+      });
+    });
+    mo.observe(document.body, { childList:true, subtree:true });
+  } catch(err){}
+})();
+</script>
 
 </body>
 </html>
