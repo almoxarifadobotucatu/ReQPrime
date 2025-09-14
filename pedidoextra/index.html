@@ -3376,6 +3376,34 @@ document.getElementById("btnSair").addEventListener("click", function () {
     })();
   </script>
 
+
+<!-- Fix: garantir que o botão Voltar sempre redirecione para Central de Pedidos -->
+<script>
+(function(){
+  var target = "https://almoxarifadobotucatu.netlify.app/central-de-pedidos/";
+  var btn = document.getElementById('btnVoltar');
+  if (!btn) return;
+  try {
+    // substitui o botão por um clone para remover listeners antigos
+    var clone = btn.cloneNode(true);
+    btn.parentNode.replaceChild(clone, btn);
+
+    // adiciona listener novo e único
+    clone.addEventListener('click', function(e){
+      e.preventDefault();
+      // remoção segura de possíveis dados de sessão locais, se desejar
+      try { sessionStorage.clear(); localStorage.removeItem('usuarioLogado'); } catch(_){}
+      window.location.href = target;
+    }, { once: false });
+
+    // fallback para onclick inline
+    clone.onclick = function(e){ e.preventDefault(); window.location.href = target; return false; };
+  } catch (err) {
+    console && console.error && console.error('Erro ao aplicar fix btnVoltar:', err);
+  }
+})();
+</script>
+
 </body>
 </html>
 <html lang="pt-BR">
@@ -3988,5 +4016,33 @@ document.getElementById("btnSair").addEventListener("click", function () {
       }
     })();
   </script>
+
+
+<!-- Fix: garantir que o botão Voltar sempre redirecione para Central de Pedidos -->
+<script>
+(function(){
+  var target = "https://almoxarifadobotucatu.netlify.app/central-de-pedidos/";
+  var btn = document.getElementById('btnVoltar');
+  if (!btn) return;
+  try {
+    // substitui o botão por um clone para remover listeners antigos
+    var clone = btn.cloneNode(true);
+    btn.parentNode.replaceChild(clone, btn);
+
+    // adiciona listener novo e único
+    clone.addEventListener('click', function(e){
+      e.preventDefault();
+      // remoção segura de possíveis dados de sessão locais, se desejar
+      try { sessionStorage.clear(); localStorage.removeItem('usuarioLogado'); } catch(_){}
+      window.location.href = target;
+    }, { once: false });
+
+    // fallback para onclick inline
+    clone.onclick = function(e){ e.preventDefault(); window.location.href = target; return false; };
+  } catch (err) {
+    console && console.error && console.error('Erro ao aplicar fix btnVoltar:', err);
+  }
+})();
+</script>
 
 </body>
