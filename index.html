@@ -177,7 +177,7 @@
   <h2>Iniciar sessão</h2>
   <form id="loginForm">
     <label for="username">Usuário:</label>
-    <input type="text" id="username" autocomplete="off" required>
+    <input type="text" id="username" autocomplete="off" required oninput="this.value = this.value.toLowerCase()">
 
     <label for="password">Senha:</label>
     <div class="password-wrapper">
@@ -303,7 +303,7 @@
   // LOGIN
   loginForm.addEventListener("submit", async function(e) {
     e.preventDefault();
-    const username = document.getElementById("username").value.trim();
+    let username = document.getElementById("username").value.trim().toLowerCase();
     const password = passwordInput.value.trim();
 
     if (!username || !password) { alert("Preencha usuário e senha."); return; }
@@ -362,7 +362,7 @@
 
   // salvar nova senha
   savePasswordBtn.addEventListener("click", async () => {
-    const usuario = document.getElementById("username").value.trim();
+    const usuario = document.getElementById("username").value.trim().toLowerCase();
     const currentPass = document.getElementById("currentPassword").value.trim();
     const newPass = document.getElementById("newPassword").value.trim();
 
