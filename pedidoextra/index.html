@@ -2875,6 +2875,9 @@ document.addEventListener("input", function(e) {
     if (!dl) return;
 
     var opt = Array.from(dl.options).find(function(o){
+    // Proteção: não restaurar valor ao apagar manualmente (backspace/delete/cut)
+    if (e.inputType && typeof e.inputType === 'string' && /delete/i.test(e.inputType)) return;
+
       return o.value === e.target.value && o.dataset && o.dataset.original;
     });
     if (!opt) return;
