@@ -46,53 +46,26 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
   }
   // Quando o usuário digita/seleciona no input do item, salvamos o original no dataset e garantimos que o valor mostrado seja só o nome
   function onItemInputChange(inputEl) {
-    try {
-      if (!inputEl) return;
-      inputEl.setAttribute('autocomplete','off');
-      const val = inputEl.value;
-      const options = [...document.querySelectorAll('#lista-itens option')];
-      const opt = options.find(o => o.value === val || o.textContent === val);
-      if (opt) {
-        // garantir exibição limpa e salvar original
-        inputEl.value = opt.value;
-        inputEl.dataset.original = opt.dataset.original || opt.dataset.itemCompleto || opt.value;
-      } else {
-        if (!inputEl.dataset.original) inputEl.dataset.original = val;
-      }
-    } catch(e){ /* noop */ }
-  }
+  try {
+    if (!inputEl) return;
+    inputEl.setAttribute('autocomplete','off');
+    const val = inputEl.value.trim();
 
-
-
-  // Quando selecionar, ainda captura a unidade corretamente
-  function obterItemOriginal(valorExibido) {
-      const options = [...document.querySelectorAll("#lista-itens option")];
-      const option = options.find(opt => opt.value === valorExibido || opt.textContent === valorExibido);
-      if (option) return option.dataset.original || option.dataset.itemCompleto || valorExibido;
-      return valorExibido;
+    // Se o campo foi apagado, limpa também o dataset e não força valor
+    if (val === "") {
+      inputEl.dataset.original = "";
+      return;
     }
 
-    function preencherUnidadeControle(itemSelecionado, unidadeControleInputId = "unidadeControle") {
-    const options = [...document.querySelectorAll("#lista-itens option")];
-    const option = options.find(opt => opt.value === itemSelecionado);
-    const itemOriginal = option ? option.dataset.itemCompleto : itemSelecionado;
-    const match = itemOriginal.match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
-    const unidadeInput = document.getElementById(unidadeControleInputId);
-    if (unidadeInput) unidadeInput.value = match ? match[1] : "";
-  }
-
-
-
-// --- Patch para enviar com código do item ---
-function formatarItemParaEmail(inputNome, inputQtd, inputUnidade) {
-  try {
-    const itemOriginal = inputNome.dataset.original || inputNome.value;
-    const quantidade = inputQtd.value;
-    const unidade = inputUnidade.value;
-    return itemOriginal.replace(/unidade:\s*[A-Za-zÀ-ú]+/i, "").trim() + " - " + quantidade + " " + unidade;
-  } catch(e) {
-    return inputNome.value + " - " + inputQtd.value + " " + inputUnidade.value;
-  }
+    const options = [...document.querySelectorAll('#lista-itens option')];
+    const opt = options.find(o => o.value === val || o.textContent === val);
+    if (opt) {
+      inputEl.value = opt.value; // mantém exibição limpa
+      inputEl.dataset.original = opt.dataset.original || opt.dataset.itemCompleto || opt.value;
+    } else {
+      inputEl.dataset.original = val;
+    }
+  } catch(e){ /* noop */ }
 }
 
 </script>
