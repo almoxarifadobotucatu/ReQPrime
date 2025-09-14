@@ -49,26 +49,41 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
   try {
     if (!inputEl) return;
     inputEl.setAttribute('autocomplete','off');
-    const val = inputEl.value.trim();
+    const val = inputEl.value;
 
-    // Se o campo foi apagado, limpa também o dataset e a unidade
-    if (val === "") {
+    // Se o campo foi apagado, limpa também o dataset e a unidade desta linha
+    if (!val || val.trim() === "") {
       inputEl.dataset.original = "";
-      const unidadeInput = document.getElementById("unidadeControle");
-      if (unidadeInput) unidadeInput.value = "";
+      const itemDiv = inputEl.closest('.item');
+      if (itemDiv) {
+        const visibleUnidade = itemDiv.querySelector('.unidade-controle');
+        const hiddenUnidade = itemDiv.querySelector('.item-unidade');
+        if (visibleUnidade) visibleUnidade.value = "";
+        if (hiddenUnidade) hiddenUnidade.value = "";
+      }
       return;
     }
 
     const options = [...document.querySelectorAll('#lista-itens option')];
     const opt = options.find(o => o.value === val || o.textContent === val);
     if (opt) {
-      inputEl.value = opt.value; // mantém exibição limpa
+      // garantir exibição limpa e salvar original
+      inputEl.value = opt.value;
       inputEl.dataset.original = opt.dataset.original || opt.dataset.itemCompleto || opt.value;
 
-      // Atualiza automaticamente o campo unidade
-      preencherUnidadeControle(opt.dataset.itemCompleto || opt.value, "unidadeControle");
+      // Preenche a unidade na mesma linha do item (visível e hidden)
+      const itemDiv = inputEl.closest('.item');
+      const originalStr = opt.dataset.original || opt.dataset.itemCompleto || "";
+      const mu = originalStr.match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
+      const unidade = mu ? mu[1] : "";
+      if (itemDiv) {
+        const visibleUnidade = itemDiv.querySelector('.unidade-controle');
+        const hiddenUnidade = itemDiv.querySelector('.item-unidade');
+        if (visibleUnidade) visibleUnidade.value = unidade;
+        if (hiddenUnidade) hiddenUnidade.value = unidade;
+      }
     } else {
-      inputEl.dataset.original = val;
+      if (!inputEl.dataset.original) inputEl.dataset.original = val;
     }
   } catch(e){ /* noop */ }
 }
