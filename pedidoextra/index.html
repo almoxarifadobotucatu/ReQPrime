@@ -50,38 +50,18 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
     if (!inputEl) return;
     inputEl.setAttribute('autocomplete','off');
     const val = inputEl.value;
-
-    // Se o campo foi apagado, limpa também o dataset e a unidade desta linha
-    if (!val || val.trim() === "") {
+    // Se o campo foi apagado (ou só espaços), não force preenchimento
+    if (!val || String(val).trim() === "") {
       inputEl.dataset.original = "";
-      const itemDiv = inputEl.closest('.item');
-      if (itemDiv) {
-        const visibleUnidade = itemDiv.querySelector('.unidade-controle');
-        const hiddenUnidade = itemDiv.querySelector('.item-unidade');
-        if (visibleUnidade) visibleUnidade.value = "";
-        if (hiddenUnidade) hiddenUnidade.value = "";
-      }
       return;
     }
-
     const options = [...document.querySelectorAll('#lista-itens option')];
-    const opt = options.find(o => o.value === val || o.textContent === val);
+    // comparar apenas com option.value (não com textContent que está vazio no arquivo)
+    const opt = options.find(o => o.value === val);
     if (opt) {
-      // garantir exibição limpa e salvar original
+      // garantir exibição limpa e salvar original (com código/unidade intactos no dataset)
       inputEl.value = opt.value;
       inputEl.dataset.original = opt.dataset.original || opt.dataset.itemCompleto || opt.value;
-
-      // Preenche a unidade na mesma linha do item (visível e hidden)
-      const itemDiv = inputEl.closest('.item');
-      const originalStr = opt.dataset.original || opt.dataset.itemCompleto || "";
-      const mu = originalStr.match(/unidade:\s*([A-Za-zÀ-ú]+)/i);
-      const unidade = mu ? mu[1] : "";
-      if (itemDiv) {
-        const visibleUnidade = itemDiv.querySelector('.unidade-controle');
-        const hiddenUnidade = itemDiv.querySelector('.item-unidade');
-        if (visibleUnidade) visibleUnidade.value = unidade;
-        if (hiddenUnidade) hiddenUnidade.value = unidade;
-      }
     } else {
       if (!inputEl.dataset.original) inputEl.dataset.original = val;
     }
