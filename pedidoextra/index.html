@@ -45,7 +45,8 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
     });
   }
   // Quando o usuário digita/seleciona no input do item, salvamos o original no dataset e garantimos que o valor mostrado seja só o nome
-  function onItemInputChange(inputEl) {
+  
+function onItemInputChange(inputEl) {
     try {
       if (!inputEl) return;
       inputEl.setAttribute('autocomplete','off');
@@ -53,14 +54,24 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
       const options = [...document.querySelectorAll('#lista-itens option')];
       const opt = options.find(o => o.value === val || o.textContent === val);
       if (opt) {
-        // garantir exibição limpa e salvar original
         inputEl.value = opt.value;
         inputEl.dataset.original = opt.dataset.original || opt.dataset.itemCompleto || opt.value;
+        try { inputEl.dataset.userCleared = "0"; } catch(e) {}
       } else {
-        if (!inputEl.dataset.original) inputEl.dataset.original = val;
+        if (val.trim() === "") {
+          inputEl.dataset.original = "";
+          try { inputEl.dataset.userCleared = "1"; } catch(e) {}
+          setTimeout(function(){
+            try { if ((inputEl.value||"").trim() === "") { inputEl.value = ""; inputEl.dataset.original = ""; } } catch(e) {}
+          }, 20);
+        } else {
+          inputEl.dataset.original = val;
+          try { inputEl.dataset.userCleared = "0"; } catch(e) {}
+        }
       }
     } catch(e){ /* noop */ }
   }
+
 
 
 
@@ -2310,7 +2321,31 @@ const EscritórioItems = [
         <button type="button" onclick="removerItem(this)" class="remove-button remove-item-button">Remover</button>
       `;
       container.appendChild(div);
-    }
+      // Aplicar proteções anti-autofill e nomes únicos ao input recém-criado
+      try {
+        var _inp = div.querySelector && div.querySelector('input.item-nome');
+        if (_inp) {
+          try { _inp.setAttribute('autocomplete','off'); } catch(e){}
+          try { _inp.setAttribute('autocorrect','off'); } catch(e){}
+          try { _inp.name = 'item-nome-' + Date.now() + '-' + Math.random().toString(36).slice(2); } catch(e){}
+          // forçar handler inicial para ajustar dataset conforme necessário
+          try { onItemInputChange(_inp); } catch(e){}
+        }
+      } catch(err) {}
+
+    
+      // Aplicar proteções anti-autofill e nomes únicos ao input recém-criado
+      try {
+        var _inp = div.querySelector && div.querySelector('input.item-nome');
+        if (_inp) {
+          try { _inp.setAttribute('autocomplete','off'); } catch(e){}
+          try { _inp.setAttribute('autocorrect','off'); } catch(e){}
+          try { _inp.name = 'item-nome-' + Date.now() + '-' + Math.random().toString(36).slice(2); } catch(e){}
+          // forçar handler inicial para ajustar dataset conforme necessário
+          try { onItemInputChange(_inp); } catch(e){}
+        }
+      } catch(err) {}
+}
 
     function verificarDuplicata(input, index) {
       const container = document.getElementById(`itens-${index}`);
