@@ -3311,6 +3311,27 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 </script>
 
+<script>
+// --- Botão Sair ---
+document.getElementById("btnSair").addEventListener("click", function () {
+  // limpar sessão
+  localStorage.removeItem("usuarioLogado");
+
+  // redireciona para login
+  window.location.href = "index.html"; // ajuste para a URL real da sua tela de login
+});
+
+// --- Bloqueio do histórico ---
+(function bloquearVoltar() {
+  // coloca um estado "fake" no histórico
+  window.history.pushState(null, "", window.location.href);
+  window.onpopstate = function () {
+    // sempre que tentar voltar, manda para o login
+    window.history.pushState(null, "", window.location.href);
+    window.location.href = "index.html"; // ajuste para a sua tela de login
+  };
+})();
+</script>
 </body>
 </html>
 <html lang="pt-BR">
@@ -3832,4 +3853,25 @@ document.addEventListener("DOMContentLoaded", function() {
 </html>
 </script>
 
-  </body>
+  <script>
+// --- Botão Sair ---
+document.getElementById("btnSair").addEventListener("click", function () {
+  // limpar sessão
+  localStorage.removeItem("usuarioLogado");
+
+  // redireciona para login
+  window.location.href = "index.html"; // ajuste para a URL real da sua tela de login
+});
+
+// --- Bloqueio do histórico ---
+(function bloquearVoltar() {
+  // coloca um estado "fake" no histórico
+  window.history.pushState(null, "", window.location.href);
+  window.onpopstate = function () {
+    // sempre que tentar voltar, manda para o login
+    window.history.pushState(null, "", window.location.href);
+    window.location.href = "index.html"; // ajuste para a sua tela de login
+  };
+})();
+</script>
+</body>
