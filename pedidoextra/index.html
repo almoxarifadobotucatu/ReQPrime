@@ -45,29 +45,33 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
     });
   }
   // Quando o usuário digita/seleciona no input do item, salvamos o original no dataset e garantimos que o valor mostrado seja só o nome
-  function onItemInputChange(inputEl) {
+function onItemInputChange(inputEl) {
   try {
     if (!inputEl) return;
     inputEl.setAttribute('autocomplete','off');
     const val = inputEl.value;
-    // Se o campo foi apagado (ou só espaços), não force preenchimento
+
+    // Se o campo foi apagado (ou só espaços), não force preenchimento e limpe unidade
     if (!val || String(val).trim() === "") {
       inputEl.dataset.original = "";
+      const unidadeInput = document.getElementById("unidadeControle");
+      if (unidadeInput) unidadeInput.value = "";
       return;
     }
+
     const options = [...document.querySelectorAll('#lista-itens option')];
-    // comparar apenas com option.value (não com textContent que está vazio no arquivo)
-    const opt = options.find(o => o.value === val);
+    const opt = options.find(o => o.value === val || o.textContent === val);
     if (opt) {
-      // garantir exibição limpa e salvar original (com código/unidade intactos no dataset)
       inputEl.value = opt.value;
       inputEl.dataset.original = opt.dataset.original || opt.dataset.itemCompleto || opt.value;
+
+      // Preencher a unidade de controle igual ao original
+      preencherUnidadeControle(opt.dataset.itemCompleto || opt.value, "unidadeControle");
     } else {
       if (!inputEl.dataset.original) inputEl.dataset.original = val;
     }
   } catch(e){ /* noop */ }
 }
-
 </script>
 
 <meta charset="utf-8"/>
