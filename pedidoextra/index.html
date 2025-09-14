@@ -3497,6 +3497,39 @@ document.getElementById("btnSair").addEventListener("click", function () {
 })();
 </script>
 
+
+<script>
+(function(){
+  // === Proteção extra: impede acesso sem login ===
+  const loggedUser = sessionStorage.getItem("loggedUser");
+  if (!loggedUser) {
+    // Se não está logado, redireciona imediatamente
+    window.location.replace("https://almoxarifadobotucatu.netlify.app/");
+  }
+
+  // === Botão Sair ===
+  const sairBtn = document.getElementById("btnSair");
+  if (sairBtn) {
+    sairBtn.addEventListener("click", function(){
+      try {
+        // Limpa dados locais para invalidar sessão
+        localStorage.clear();
+        sessionStorage.clear();
+
+        // Bloqueia histórico (não consegue voltar)
+        window.history.pushState(null, "", window.location.href);
+        window.addEventListener("popstate", function () {
+          window.history.pushState(null, "", window.location.href);
+        });
+
+        // Redireciona para login
+        window.location.replace("https://almoxarifadobotucatu.netlify.app/");
+      } catch(e){ console.error("Erro ao sair", e); }
+    });
+  }
+})();
+</script>
+
 </body>
 </html>
 <html lang="pt-BR">
@@ -4228,6 +4261,39 @@ document.getElementById("btnSair").addEventListener("click", function () {
       try { window.onpopstate = null; } catch(_) {}
     }
   } catch(_) {}
+})();
+</script>
+
+
+<script>
+(function(){
+  // === Proteção extra: impede acesso sem login ===
+  const loggedUser = sessionStorage.getItem("loggedUser");
+  if (!loggedUser) {
+    // Se não está logado, redireciona imediatamente
+    window.location.replace("https://almoxarifadobotucatu.netlify.app/");
+  }
+
+  // === Botão Sair ===
+  const sairBtn = document.getElementById("btnSair");
+  if (sairBtn) {
+    sairBtn.addEventListener("click", function(){
+      try {
+        // Limpa dados locais para invalidar sessão
+        localStorage.clear();
+        sessionStorage.clear();
+
+        // Bloqueia histórico (não consegue voltar)
+        window.history.pushState(null, "", window.location.href);
+        window.addEventListener("popstate", function () {
+          window.history.pushState(null, "", window.location.href);
+        });
+
+        // Redireciona para login
+        window.location.replace("https://almoxarifadobotucatu.netlify.app/");
+      } catch(e){ console.error("Erro ao sair", e); }
+    });
+  }
 })();
 </script>
 
