@@ -3407,6 +3407,96 @@ document.getElementById("btnSair").addEventListener("click", function () {
 })();
 </script>
 
+
+<!-- Override: bloquear 'bloqueio global' apenas após clicar em SAIR -->
+<script>
+(function(){
+  var urlLogin = "https://almoxarifadobotucatu.netlify.app/";
+  var urlCentral = "https://almoxarifadobotucatu.netlify.app/central-de-pedidos/";
+
+  // Capturing popstate listener que neutraliza handlers antigos e age apenas quando a flag estiver ativa
+  window.addEventListener('popstate', function(e){
+    try {
+      // impede que outros listeners de popstate (incl. bloqueadores antigos) executem
+      if (e && typeof e.stopImmediatePropagation === 'function') {
+        e.stopImmediatePropagation();
+      }
+    } catch(_) {}
+
+    try {
+      var flag = sessionStorage.getItem('bloqueioVoltar');
+      if (flag === '1') {
+        // limpa a flag (para não ficar permanentemente bloqueado) e redireciona ao login
+        sessionStorage.removeItem('bloqueioVoltar');
+        // usa replace para não adicionar novo registro ao histórico
+        window.location.replace(urlLogin);
+      } else {
+        // sem flag: apenas permite que o navegador volte normalmente (já impedimos outros handlers)
+        // nada a fazer aqui
+      }
+    } catch(_) {}
+  }, true); // capturing = true -> executa antes de outros listeners
+
+  // Função segura para ativar bloqueio e ir para login (usada pelo botão SAIR)
+  function sairParaLogin(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    try {
+      // marca que o bloqueio deve funcionar para o próximo popstate
+      sessionStorage.setItem('bloqueioVoltar', '1');
+      // limpa dados de sessão/local se for necessário
+      try { sessionStorage.removeItem('usuarioLogado'); } catch(_){}
+      try { localStorage.removeItem('usuarioLogado'); } catch(_){}
+    } catch(_) {}
+    // usamos replace para não deixar rastro no histórico
+    window.location.replace(urlLogin);
+    return false;
+  }
+
+  // Garante que o botão SAIR só faça logout (e ative o bloqueio)
+  var btnSair = document.getElementById('btnSair');
+  if (btnSair) {
+    // remove listeners antigos substituindo por clone (evita múltiplos handlers)
+    try {
+      var cloneS = btnSair.cloneNode(true);
+      btnSair.parentNode.replaceChild(cloneS, btnSair);
+      cloneS.addEventListener('click', sairParaLogin, { once: false });
+      cloneS.onclick = sairParaLogin;
+    } catch(e) {
+      // fallback
+      btnSair.addEventListener('click', sairParaLogin);
+      btnSair.onclick = sairParaLogin;
+    }
+  }
+
+  // Garante que o botão VOLTAR sempre vá para a Central de Pedidos
+  var btnVoltar = document.getElementById('btnVoltar');
+  if (btnVoltar) {
+    try {
+      var cloneV = btnVoltar.cloneNode(true);
+      btnVoltar.parentNode.replaceChild(cloneV, btnVoltar);
+      cloneV.addEventListener('click', function(ev){
+        if (ev && ev.preventDefault) ev.preventDefault();
+        window.location.href = urlCentral;
+      }, { once: false });
+      cloneV.onclick = function(ev){ if (ev && ev.preventDefault) ev.preventDefault(); window.location.href = urlCentral; };
+    } catch(e) {
+      btnVoltar.addEventListener('click', function(ev){
+        if (ev && ev.preventDefault) ev.preventDefault();
+        window.location.href = urlCentral;
+      });
+      btnVoltar.onclick = function(ev){ if (ev && ev.preventDefault) ev.preventDefault(); window.location.href = urlCentral; };
+    }
+  }
+
+  // Além disso, neutraliza qualquer window.onpopstate definido anteriormente (se não estivermos no fluxo de logout)
+  try {
+    if (sessionStorage.getItem('bloqueioVoltar') !== '1') {
+      try { window.onpopstate = null; } catch(_) {}
+    }
+  } catch(_) {}
+})();
+</script>
+
 </body>
 </html>
 <html lang="pt-BR">
@@ -4048,6 +4138,96 @@ document.getElementById("btnSair").addEventListener("click", function () {
       window.location.href = urlLogin;
     };
   }
+})();
+</script>
+
+
+<!-- Override: bloquear 'bloqueio global' apenas após clicar em SAIR -->
+<script>
+(function(){
+  var urlLogin = "https://almoxarifadobotucatu.netlify.app/";
+  var urlCentral = "https://almoxarifadobotucatu.netlify.app/central-de-pedidos/";
+
+  // Capturing popstate listener que neutraliza handlers antigos e age apenas quando a flag estiver ativa
+  window.addEventListener('popstate', function(e){
+    try {
+      // impede que outros listeners de popstate (incl. bloqueadores antigos) executem
+      if (e && typeof e.stopImmediatePropagation === 'function') {
+        e.stopImmediatePropagation();
+      }
+    } catch(_) {}
+
+    try {
+      var flag = sessionStorage.getItem('bloqueioVoltar');
+      if (flag === '1') {
+        // limpa a flag (para não ficar permanentemente bloqueado) e redireciona ao login
+        sessionStorage.removeItem('bloqueioVoltar');
+        // usa replace para não adicionar novo registro ao histórico
+        window.location.replace(urlLogin);
+      } else {
+        // sem flag: apenas permite que o navegador volte normalmente (já impedimos outros handlers)
+        // nada a fazer aqui
+      }
+    } catch(_) {}
+  }, true); // capturing = true -> executa antes de outros listeners
+
+  // Função segura para ativar bloqueio e ir para login (usada pelo botão SAIR)
+  function sairParaLogin(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    try {
+      // marca que o bloqueio deve funcionar para o próximo popstate
+      sessionStorage.setItem('bloqueioVoltar', '1');
+      // limpa dados de sessão/local se for necessário
+      try { sessionStorage.removeItem('usuarioLogado'); } catch(_){}
+      try { localStorage.removeItem('usuarioLogado'); } catch(_){}
+    } catch(_) {}
+    // usamos replace para não deixar rastro no histórico
+    window.location.replace(urlLogin);
+    return false;
+  }
+
+  // Garante que o botão SAIR só faça logout (e ative o bloqueio)
+  var btnSair = document.getElementById('btnSair');
+  if (btnSair) {
+    // remove listeners antigos substituindo por clone (evita múltiplos handlers)
+    try {
+      var cloneS = btnSair.cloneNode(true);
+      btnSair.parentNode.replaceChild(cloneS, btnSair);
+      cloneS.addEventListener('click', sairParaLogin, { once: false });
+      cloneS.onclick = sairParaLogin;
+    } catch(e) {
+      // fallback
+      btnSair.addEventListener('click', sairParaLogin);
+      btnSair.onclick = sairParaLogin;
+    }
+  }
+
+  // Garante que o botão VOLTAR sempre vá para a Central de Pedidos
+  var btnVoltar = document.getElementById('btnVoltar');
+  if (btnVoltar) {
+    try {
+      var cloneV = btnVoltar.cloneNode(true);
+      btnVoltar.parentNode.replaceChild(cloneV, btnVoltar);
+      cloneV.addEventListener('click', function(ev){
+        if (ev && ev.preventDefault) ev.preventDefault();
+        window.location.href = urlCentral;
+      }, { once: false });
+      cloneV.onclick = function(ev){ if (ev && ev.preventDefault) ev.preventDefault(); window.location.href = urlCentral; };
+    } catch(e) {
+      btnVoltar.addEventListener('click', function(ev){
+        if (ev && ev.preventDefault) ev.preventDefault();
+        window.location.href = urlCentral;
+      });
+      btnVoltar.onclick = function(ev){ if (ev && ev.preventDefault) ev.preventDefault(); window.location.href = urlCentral; };
+    }
+  }
+
+  // Além disso, neutraliza qualquer window.onpopstate definido anteriormente (se não estivermos no fluxo de logout)
+  try {
+    if (sessionStorage.getItem('bloqueioVoltar') !== '1') {
+      try { window.onpopstate = null; } catch(_) {}
+    }
+  } catch(_) {}
 })();
 </script>
 
