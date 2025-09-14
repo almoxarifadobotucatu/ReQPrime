@@ -57,7 +57,11 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
         inputEl.value = opt.value;
         inputEl.dataset.original = opt.dataset.original || opt.dataset.itemCompleto || opt.value;
       } else {
-        if (!inputEl.dataset.original) inputEl.dataset.original = val;
+        if (val.trim() === "") {
+          inputEl.dataset.original = "";
+        } else {
+          inputEl.dataset.original = val;
+        }
       }
     } catch(e){ /* noop */ }
   }
