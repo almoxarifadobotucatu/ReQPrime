@@ -3500,33 +3500,124 @@ document.getElementById("btnSair").addEventListener("click", function () {
 
 <script>
 (function(){
-  // === Proteção extra: impede acesso sem login ===
-  const loggedUser = sessionStorage.getItem("loggedUser");
-  if (!loggedUser) {
-    // Se não está logado, redireciona imediatamente
-    window.location.replace("https://almoxarifadobotucatu.netlify.app/");
+  const LOGIN_URL = "https://almoxarifadobotucatu.netlify.app/";
+
+  function getCookie(name) {
+    const cookies = document.cookie ? document.cookie.split(';').map(c=>c.trim()) : [];
+    for (const c of cookies) {
+      if (c.indexOf(name + '=') === 0) return decodeURIComponent(c.substring((name + '=').length));
+    }
+    return null;
   }
 
-  // === Botão Sair ===
-  const sairBtn = document.getElementById("btnSair");
+  function hasAuthCookie() {
+    const c = document.cookie || "";
+    // common readable cookie names used for auth/session
+    return /(?:^|;\s*)(?:session|auth|token|sid|sess)=/.test(c);
+  }
+
+  function hasLoggedOutCookie() {
+    return /(?:^|;\s*)logged_out=1(?:;|$)/.test(document.cookie || "");
+  }
+
+  const AUTH_KEYS = ['usuarioLogado','currentUser','usuarioAtual','userObject','authUser','nomeUsuario','displayName','welcomeName','user','usuario','username','login','loggedUser','activeUser','auth','session','token','current','sess','sid'];
+
+  function hasStorageAuth() {
+    try {
+      for (const k of AUTH_KEYS) {
+        const s = sessionStorage.getItem(k);
+        const l = localStorage.getItem(k);
+        if (s && s !== 'null' && s !== 'undefined' && String(s).trim() !== '') return true;
+        if (l && l !== 'null' && l !== 'undefined' && String(l).trim() !== '') return true;
+      }
+    } catch(e){ /* ignore storage access errors */ }
+    return false;
+  }
+
+  function isUserLogged() {
+    // 1) explicit storage keys
+    if (hasStorageAuth()) return true;
+    // 2) readable cookies (note: HttpOnly cookies cannot be read here)
+    if (hasAuthCookie() && !hasLoggedOutCookie()) return true;
+    return false;
+  }
+
+  // Lightweight overlay while we confirm authentication to avoid flash/false redirect
+  var blocker = document.createElement('div');
+  blocker.id = 'authBlocker';
+  blocker.style.position = 'fixed';
+  blocker.style.inset = '0';
+  blocker.style.zIndex = '2147483647';
+  blocker.style.background = 'rgba(0,0,0,0.45)';
+  blocker.style.display = 'flex';
+  blocker.style.alignItems = 'center';
+  blocker.style.justifyContent = 'center';
+  blocker.style.color = '#ffffff';
+  blocker.style.fontSize = '15px';
+  blocker.style.fontFamily = 'Inter, Arial, sans-serif';
+  blocker.innerText = 'Verificando credenciais...';
+  // append early (before DOMContentLoaded) to avoid content flash
+  try { document.documentElement.appendChild(blocker); } catch(e){}
+
+  var attempts = 0;
+  var maxAttempts = 6;
+  function checkAuthThenMaybeRedirect(){
+    attempts++;
+    if (isUserLogged()) {
+      // remove blocker and continue
+      try { blocker.remove(); } catch(e){}
+      return;
+    }
+    if (hasLoggedOutCookie() || attempts >= maxAttempts) {
+      // final decision: redirect to login (replace so there's no history entry)
+      try { window.location.replace(LOGIN_URL); } catch(e){ window.location.href = LOGIN_URL; }
+      return;
+    }
+    // retry after increasing delay to allow other scripts (login) to set storage/cookies
+    setTimeout(checkAuthThenMaybeRedirect, 300 * attempts);
+  }
+
+  // start checking after small delay to allow other inline scripts to run
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    setTimeout(checkAuthThenMaybeRedirect, 200);
+  } else {
+    document.addEventListener('DOMContentLoaded', function(){ setTimeout(checkAuthThenMaybeRedirect, 200); });
+  }
+
+  // Robust logout handling
+  const sairBtn = document.getElementById('btnSair');
   if (sairBtn) {
-    sairBtn.addEventListener("click", function(){
+    sairBtn.addEventListener('click', function(e){
       try {
-        // Limpa dados locais para invalidar sessão
-        localStorage.clear();
-        sessionStorage.clear();
-
-        // Bloqueia histórico (não consegue voltar)
-        window.history.pushState(null, "", window.location.href);
-        window.addEventListener("popstate", function () {
+        // 1) set a cookie to mark logout so that going back triggers redirect
+        document.cookie = "logged_out=1; path=/; max-age=3600; SameSite=Lax";
+        // 2) clear storages to invalidate client-side session
+        try { sessionStorage.clear(); } catch(e){}
+        try { localStorage.clear(); } catch(e){}
+        // 3) immediately push new history state and prevent back navigation to this page
+        try {
           window.history.pushState(null, "", window.location.href);
-        });
-
-        // Redireciona para login
-        window.location.replace("https://almoxarifadobotucatu.netlify.app/");
-      } catch(e){ console.error("Erro ao sair", e); }
+          window.addEventListener("popstate", function () {
+            try { window.history.pushState(null, "", window.location.href); } catch(e){}
+            try { window.location.replace(LOGIN_URL); } catch(e){ window.location.href = LOGIN_URL; }
+          });
+        } catch(e){}
+        // 4) redirect to login page using replace (doesn't create a new history entry)
+        try { window.location.replace(LOGIN_URL); } catch(e){ window.location.href = LOGIN_URL; }
+      } catch(err) {
+        console.error('Erro durante logout seguro:', err);
+        try { window.location.replace(LOGIN_URL); } catch(e){ window.location.href = LOGIN_URL; }
+      }
     });
   }
+
+  // Extra precaution: if a logged_out cookie is present, always keep redirect enforced
+  // (this prevents returning via manual URL entry while cookie still valid)
+  try {
+    if (hasLoggedOutCookie()) {
+      setTimeout(function(){ try { window.location.replace(LOGIN_URL); } catch(e) { window.location.href = LOGIN_URL; } }, 1000);
+    }
+  } catch(e){}
 })();
 </script>
 
@@ -4267,33 +4358,124 @@ document.getElementById("btnSair").addEventListener("click", function () {
 
 <script>
 (function(){
-  // === Proteção extra: impede acesso sem login ===
-  const loggedUser = sessionStorage.getItem("loggedUser");
-  if (!loggedUser) {
-    // Se não está logado, redireciona imediatamente
-    window.location.replace("https://almoxarifadobotucatu.netlify.app/");
+  const LOGIN_URL = "https://almoxarifadobotucatu.netlify.app/";
+
+  function getCookie(name) {
+    const cookies = document.cookie ? document.cookie.split(';').map(c=>c.trim()) : [];
+    for (const c of cookies) {
+      if (c.indexOf(name + '=') === 0) return decodeURIComponent(c.substring((name + '=').length));
+    }
+    return null;
   }
 
-  // === Botão Sair ===
-  const sairBtn = document.getElementById("btnSair");
+  function hasAuthCookie() {
+    const c = document.cookie || "";
+    // common readable cookie names used for auth/session
+    return /(?:^|;\s*)(?:session|auth|token|sid|sess)=/.test(c);
+  }
+
+  function hasLoggedOutCookie() {
+    return /(?:^|;\s*)logged_out=1(?:;|$)/.test(document.cookie || "");
+  }
+
+  const AUTH_KEYS = ['usuarioLogado','currentUser','usuarioAtual','userObject','authUser','nomeUsuario','displayName','welcomeName','user','usuario','username','login','loggedUser','activeUser','auth','session','token','current','sess','sid'];
+
+  function hasStorageAuth() {
+    try {
+      for (const k of AUTH_KEYS) {
+        const s = sessionStorage.getItem(k);
+        const l = localStorage.getItem(k);
+        if (s && s !== 'null' && s !== 'undefined' && String(s).trim() !== '') return true;
+        if (l && l !== 'null' && l !== 'undefined' && String(l).trim() !== '') return true;
+      }
+    } catch(e){ /* ignore storage access errors */ }
+    return false;
+  }
+
+  function isUserLogged() {
+    // 1) explicit storage keys
+    if (hasStorageAuth()) return true;
+    // 2) readable cookies (note: HttpOnly cookies cannot be read here)
+    if (hasAuthCookie() && !hasLoggedOutCookie()) return true;
+    return false;
+  }
+
+  // Lightweight overlay while we confirm authentication to avoid flash/false redirect
+  var blocker = document.createElement('div');
+  blocker.id = 'authBlocker';
+  blocker.style.position = 'fixed';
+  blocker.style.inset = '0';
+  blocker.style.zIndex = '2147483647';
+  blocker.style.background = 'rgba(0,0,0,0.45)';
+  blocker.style.display = 'flex';
+  blocker.style.alignItems = 'center';
+  blocker.style.justifyContent = 'center';
+  blocker.style.color = '#ffffff';
+  blocker.style.fontSize = '15px';
+  blocker.style.fontFamily = 'Inter, Arial, sans-serif';
+  blocker.innerText = 'Verificando credenciais...';
+  // append early (before DOMContentLoaded) to avoid content flash
+  try { document.documentElement.appendChild(blocker); } catch(e){}
+
+  var attempts = 0;
+  var maxAttempts = 6;
+  function checkAuthThenMaybeRedirect(){
+    attempts++;
+    if (isUserLogged()) {
+      // remove blocker and continue
+      try { blocker.remove(); } catch(e){}
+      return;
+    }
+    if (hasLoggedOutCookie() || attempts >= maxAttempts) {
+      // final decision: redirect to login (replace so there's no history entry)
+      try { window.location.replace(LOGIN_URL); } catch(e){ window.location.href = LOGIN_URL; }
+      return;
+    }
+    // retry after increasing delay to allow other scripts (login) to set storage/cookies
+    setTimeout(checkAuthThenMaybeRedirect, 300 * attempts);
+  }
+
+  // start checking after small delay to allow other inline scripts to run
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+    setTimeout(checkAuthThenMaybeRedirect, 200);
+  } else {
+    document.addEventListener('DOMContentLoaded', function(){ setTimeout(checkAuthThenMaybeRedirect, 200); });
+  }
+
+  // Robust logout handling
+  const sairBtn = document.getElementById('btnSair');
   if (sairBtn) {
-    sairBtn.addEventListener("click", function(){
+    sairBtn.addEventListener('click', function(e){
       try {
-        // Limpa dados locais para invalidar sessão
-        localStorage.clear();
-        sessionStorage.clear();
-
-        // Bloqueia histórico (não consegue voltar)
-        window.history.pushState(null, "", window.location.href);
-        window.addEventListener("popstate", function () {
+        // 1) set a cookie to mark logout so that going back triggers redirect
+        document.cookie = "logged_out=1; path=/; max-age=3600; SameSite=Lax";
+        // 2) clear storages to invalidate client-side session
+        try { sessionStorage.clear(); } catch(e){}
+        try { localStorage.clear(); } catch(e){}
+        // 3) immediately push new history state and prevent back navigation to this page
+        try {
           window.history.pushState(null, "", window.location.href);
-        });
-
-        // Redireciona para login
-        window.location.replace("https://almoxarifadobotucatu.netlify.app/");
-      } catch(e){ console.error("Erro ao sair", e); }
+          window.addEventListener("popstate", function () {
+            try { window.history.pushState(null, "", window.location.href); } catch(e){}
+            try { window.location.replace(LOGIN_URL); } catch(e){ window.location.href = LOGIN_URL; }
+          });
+        } catch(e){}
+        // 4) redirect to login page using replace (doesn't create a new history entry)
+        try { window.location.replace(LOGIN_URL); } catch(e){ window.location.href = LOGIN_URL; }
+      } catch(err) {
+        console.error('Erro durante logout seguro:', err);
+        try { window.location.replace(LOGIN_URL); } catch(e){ window.location.href = LOGIN_URL; }
+      }
     });
   }
+
+  // Extra precaution: if a logged_out cookie is present, always keep redirect enforced
+  // (this prevents returning via manual URL entry while cookie still valid)
+  try {
+    if (hasLoggedOutCookie()) {
+      setTimeout(function(){ try { window.location.replace(LOGIN_URL); } catch(e) { window.location.href = LOGIN_URL; } }, 1000);
+    }
+  } catch(e){}
 })();
 </script>
 
