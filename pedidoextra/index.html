@@ -3329,7 +3329,7 @@ document.addEventListener("DOMContentLoaded", function() {
 <script>
   // Botão Voltar sempre vai para o painel de controle
   document.getElementById("btnVoltar").addEventListener("click", function () {
-    window.location.href = "https://almoxarifadobotucatu.netlify.app/central-de-pedidos/";
+    window.location.href = "https://almoxarifadobotucatu.netlify.app/paineldecontrole.html";
   });
 
   // Botão Sair sempre vai para a tela inicial de login
@@ -3377,29 +3377,32 @@ document.getElementById("btnSair").addEventListener("click", function () {
   </script>
 
 
-<!-- Fix: garantir que o botão Voltar sempre redirecione para Central de Pedidos -->
+<!-- Fix: separar lógica de Voltar e Sair -->
 <script>
 (function(){
-  var target = "https://almoxarifadobotucatu.netlify.app/central-de-pedidos/";
-  var btn = document.getElementById('btnVoltar');
-  if (!btn) return;
-  try {
-    // substitui o botão por um clone para remover listeners antigos
-    var clone = btn.cloneNode(true);
-    btn.parentNode.replaceChild(clone, btn);
+  var urlCentral = "https://almoxarifadobotucatu.netlify.app/central-de-pedidos/";
+  var urlLogin   = "https://almoxarifadobotucatu.netlify.app/";
 
-    // adiciona listener novo e único
-    clone.addEventListener('click', function(e){
+  // Botão VOLTAR → Central de Pedidos
+  var btnVoltar = document.getElementById('btnVoltar');
+  if (btnVoltar) {
+    btnVoltar.onclick = function(e){
       e.preventDefault();
-      // remoção segura de possíveis dados de sessão locais, se desejar
-      try { sessionStorage.clear(); localStorage.removeItem('usuarioLogado'); } catch(_){}
-      window.location.href = target;
-    }, { once: false });
+      window.location.href = urlCentral;
+    };
+  }
 
-    // fallback para onclick inline
-    clone.onclick = function(e){ e.preventDefault(); window.location.href = target; return false; };
-  } catch (err) {
-    console && console.error && console.error('Erro ao aplicar fix btnVoltar:', err);
+  // Botão SAIR → limpa sessão e vai para Login
+  var btnSair = document.getElementById('btnSair');
+  if (btnSair) {
+    btnSair.onclick = function(e){
+      e.preventDefault();
+      try {
+        sessionStorage.clear();
+        localStorage.removeItem('usuarioLogado');
+      } catch(_){}
+      window.location.href = urlLogin;
+    };
   }
 })();
 </script>
@@ -4018,29 +4021,32 @@ document.getElementById("btnSair").addEventListener("click", function () {
   </script>
 
 
-<!-- Fix: garantir que o botão Voltar sempre redirecione para Central de Pedidos -->
+<!-- Fix: separar lógica de Voltar e Sair -->
 <script>
 (function(){
-  var target = "https://almoxarifadobotucatu.netlify.app/central-de-pedidos/";
-  var btn = document.getElementById('btnVoltar');
-  if (!btn) return;
-  try {
-    // substitui o botão por um clone para remover listeners antigos
-    var clone = btn.cloneNode(true);
-    btn.parentNode.replaceChild(clone, btn);
+  var urlCentral = "https://almoxarifadobotucatu.netlify.app/central-de-pedidos/";
+  var urlLogin   = "https://almoxarifadobotucatu.netlify.app/";
 
-    // adiciona listener novo e único
-    clone.addEventListener('click', function(e){
+  // Botão VOLTAR → Central de Pedidos
+  var btnVoltar = document.getElementById('btnVoltar');
+  if (btnVoltar) {
+    btnVoltar.onclick = function(e){
       e.preventDefault();
-      // remoção segura de possíveis dados de sessão locais, se desejar
-      try { sessionStorage.clear(); localStorage.removeItem('usuarioLogado'); } catch(_){}
-      window.location.href = target;
-    }, { once: false });
+      window.location.href = urlCentral;
+    };
+  }
 
-    // fallback para onclick inline
-    clone.onclick = function(e){ e.preventDefault(); window.location.href = target; return false; };
-  } catch (err) {
-    console && console.error && console.error('Erro ao aplicar fix btnVoltar:', err);
+  // Botão SAIR → limpa sessão e vai para Login
+  var btnSair = document.getElementById('btnSair');
+  if (btnSair) {
+    btnSair.onclick = function(e){
+      e.preventDefault();
+      try {
+        sessionStorage.clear();
+        localStorage.removeItem('usuarioLogado');
+      } catch(_){}
+      window.location.href = urlLogin;
+    };
   }
 })();
 </script>
