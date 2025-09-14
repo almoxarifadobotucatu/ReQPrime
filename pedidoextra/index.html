@@ -51,9 +51,11 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
     inputEl.setAttribute('autocomplete','off');
     const val = inputEl.value.trim();
 
-    // Se o campo foi apagado, limpa também o dataset e não força valor
+    // Se o campo foi apagado, limpa também o dataset e a unidade
     if (val === "") {
       inputEl.dataset.original = "";
+      const unidadeInput = document.getElementById("unidadeControle");
+      if (unidadeInput) unidadeInput.value = "";
       return;
     }
 
@@ -62,6 +64,9 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
     if (opt) {
       inputEl.value = opt.value; // mantém exibição limpa
       inputEl.dataset.original = opt.dataset.original || opt.dataset.itemCompleto || opt.value;
+
+      // Atualiza automaticamente o campo unidade
+      preencherUnidadeControle(opt.dataset.itemCompleto || opt.value, "unidadeControle");
     } else {
       inputEl.dataset.original = val;
     }
