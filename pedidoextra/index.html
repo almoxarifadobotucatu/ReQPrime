@@ -57,11 +57,7 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
         inputEl.value = opt.value;
         inputEl.dataset.original = opt.dataset.original || opt.dataset.itemCompleto || opt.value;
       } else {
-        if (val.trim() === "") {
-          inputEl.dataset.original = "";
-        } else {
-          inputEl.dataset.original = val;
-        }
+        if (!inputEl.dataset.original) inputEl.dataset.original = val;
       }
     } catch(e){ /* noop */ }
   }
@@ -2875,9 +2871,6 @@ document.addEventListener("input", function(e) {
     if (!dl) return;
 
     var opt = Array.from(dl.options).find(function(o){
-    // Proteção: não restaurar valor ao apagar manualmente (backspace/delete/cut)
-    if (e.inputType && typeof e.inputType === 'string' && /delete/i.test(e.inputType)) return;
-
       return o.value === e.target.value && o.dataset && o.dataset.original;
     });
     if (!opt) return;
@@ -3337,6 +3330,83 @@ document.addEventListener("DOMContentLoaded", function() {
     window.location.href = "https://almoxarifadobotucatu.netlify.app/";
   });
 </script>
+
+
+
+<!-- ==== Proteção contra auto-preenchimento ao apagar item-nome ==== -->
+<script>
+(function(){
+  function attach(input){
+    if (!input || input.dataset._antiRestore) return;
+    try{
+      input.dataset._antiRestore = '1';
+      // marca quando o usuário limpou manualmente
+      input.addEventListener('input', function(e){
+        try {
+          var val = (input.value || "").trim();
+          if (val === "") {
+            input.dataset.original = "";
+            input.dataset.userCleared = "1";
+            // re-limpa após ciclo de eventos para sobrescrever preenchimentos automáticos
+            setTimeout(function(){
+              try {
+                if ((input.value||"").trim() === "") {
+                  input.value = "";
+                  input.dataset.original = "";
+                }
+              } catch(err) {}
+            }, 30);
+          } else {
+            input.dataset.userCleared = "0";
+          }
+        } catch(err){}
+      }, true);
+      // também no change garantir limpeza se o usuário tiver apagado
+      input.addEventListener('change', function(e){
+        try {
+          if (input.dataset.userCleared === "1" && (input.value||"").trim() === "") {
+            setTimeout(function(){
+              try {
+                if ((input.value||"").trim() === "") {
+                  input.value = "";
+                  input.dataset.original = "";
+                  input.dataset.userCleared = "0";
+                }
+              } catch(err) {}
+            }, 30);
+          }
+        } catch(err){}
+      }, true);
+    } catch(err) {}
+  }
+
+  // attach para inputs já existentes
+  try {
+    document.querySelectorAll && document.querySelectorAll('input.item-nome').forEach(function(i){ attach(i); });
+  } catch(err) {}
+
+  // observa novos inputs adicionados dinamicamente
+  try {
+    var mo = new MutationObserver(function(muts){
+      muts.forEach(function(m){
+        m.addedNodes && m.addedNodes.forEach(function(node){
+          try {
+            if (node.nodeType !== 1) return;
+            if (node.matches && node.matches('input.item-nome')) attach(node);
+            var found = node.querySelectorAll && node.querySelectorAll('input.item-nome');
+            found && found.forEach && found.forEach(function(i){ attach(i); });
+          } catch(err) {}
+        });
+      });
+    });
+    mo.observe(document.documentElement || document.body, { childList:true, subtree:true });
+  } catch(err) {}
+
+})();
+</script>
+
+<!-- ==== Fim da proteção ==== -->
+
 
 </body>
 </html>
@@ -3859,4 +3929,81 @@ document.addEventListener("DOMContentLoaded", function() {
 </html>
 </script>
 
-  </body>
+  
+
+<!-- ==== Proteção contra auto-preenchimento ao apagar item-nome ==== -->
+<script>
+(function(){
+  function attach(input){
+    if (!input || input.dataset._antiRestore) return;
+    try{
+      input.dataset._antiRestore = '1';
+      // marca quando o usuário limpou manualmente
+      input.addEventListener('input', function(e){
+        try {
+          var val = (input.value || "").trim();
+          if (val === "") {
+            input.dataset.original = "";
+            input.dataset.userCleared = "1";
+            // re-limpa após ciclo de eventos para sobrescrever preenchimentos automáticos
+            setTimeout(function(){
+              try {
+                if ((input.value||"").trim() === "") {
+                  input.value = "";
+                  input.dataset.original = "";
+                }
+              } catch(err) {}
+            }, 30);
+          } else {
+            input.dataset.userCleared = "0";
+          }
+        } catch(err){}
+      }, true);
+      // também no change garantir limpeza se o usuário tiver apagado
+      input.addEventListener('change', function(e){
+        try {
+          if (input.dataset.userCleared === "1" && (input.value||"").trim() === "") {
+            setTimeout(function(){
+              try {
+                if ((input.value||"").trim() === "") {
+                  input.value = "";
+                  input.dataset.original = "";
+                  input.dataset.userCleared = "0";
+                }
+              } catch(err) {}
+            }, 30);
+          }
+        } catch(err){}
+      }, true);
+    } catch(err) {}
+  }
+
+  // attach para inputs já existentes
+  try {
+    document.querySelectorAll && document.querySelectorAll('input.item-nome').forEach(function(i){ attach(i); });
+  } catch(err) {}
+
+  // observa novos inputs adicionados dinamicamente
+  try {
+    var mo = new MutationObserver(function(muts){
+      muts.forEach(function(m){
+        m.addedNodes && m.addedNodes.forEach(function(node){
+          try {
+            if (node.nodeType !== 1) return;
+            if (node.matches && node.matches('input.item-nome')) attach(node);
+            var found = node.querySelectorAll && node.querySelectorAll('input.item-nome');
+            found && found.forEach && found.forEach(function(i){ attach(i); });
+          } catch(err) {}
+        });
+      });
+    });
+    mo.observe(document.documentElement || document.body, { childList:true, subtree:true });
+  } catch(err) {}
+
+})();
+</script>
+
+<!-- ==== Fim da proteção ==== -->
+
+
+</body>
