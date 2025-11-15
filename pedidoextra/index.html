@@ -57,8 +57,7 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
   }
 
   // Preencher datalist ocultando código e unidade
-  function carregarListaItens(lista, datalistId) {
-    if (!datalistId) datalistId = "lista-itens";
+  function carregarListaItens(lista, datalistId = "lista-itens") {
     const dataList = document.getElementById(datalistId);
     if (!dataList) return;
     dataList.innerHTML = "";
@@ -85,8 +84,7 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
       return;
     }
 
-    const datalist = inputEl.closest('.setor') ? inputEl.closest('.setor').querySelector('datalist') : document.querySelector('#lista-itens');
-    const options = datalist ? [...datalist.querySelectorAll('option')] : [];
+    const options = [...document.querySelectorAll('#lista-itens option')];
     const opt = options.find(o => o.value === val);
 
     if (opt) {
@@ -898,7 +896,7 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
 </div>
 </form>
 </div>
-<datalist id="lista-itens-${setorIndex}"></datalist>
+<datalist id="lista-itens"></datalist>
 <script>
 function pluralizarUnidade(unidade, quantidade) {
   const pluraisIrregulares = {
@@ -2124,7 +2122,7 @@ const EscritórioItems = [
   ];
 
     function updateDatalist(setorId, sectorValue) {
-      const datalist = document.querySelector(`#${setorId} datalist`);
+      const datalist = document.getElementById('lista-itens');
       datalist.innerHTML = '';
       let items;
       if (sectorValue === 'Farmácia') {
