@@ -84,7 +84,17 @@ function preencherUnidadeControle(itemSelecionado, unidadeControleInput) {
       return;
     }
 
-    const options = [...document.querySelectorAll('#lista-itens option')];
+
+    const setor = inputEl.closest('.setor');
+    let options = [];
+    if (setor) {
+      const dl = setor.querySelector('datalist');
+      if (dl) options = [...dl.querySelectorAll('option')];
+    }
+    if (!options || options.length === 0) {
+      options = [...document.querySelectorAll('#lista-itens option')];
+    }
+
     const opt = options.find(o => o.value === val);
 
     if (opt) {
@@ -2121,8 +2131,20 @@ const EscritórioItems = [
      "1 06 04 0001 1 Protetor facial (viseira) (4.01.02 - ODONTO) unidade: Unidade",
   ];
 
-    function updateDatalist(setorId, sectorValue) {
-      const datalist = document.getElementById('lista-itens');
+    
+function updateDatalist(setorId, sectorValue) {
+      // prefer a datalist specific to the setor (lista-itens-<index>), fall back to the global lista-itens
+      let datalist = null;
+      if (setorId) {
+        const parts = String(setorId).split('-');
+        if (parts.length > 1) {
+          datalist = document.getElementById(`lista-itens-${parts[1]}`);
+        }
+      }
+      if (!datalist) {
+        datalist = document.getElementById('lista-itens');
+      }
+
       datalist.innerHTML = '';
       let items;
       if (sectorValue === 'Farmácia') {
@@ -2213,6 +2235,7 @@ const EscritórioItems = [
           <button type="button" onclick="removerSetor(this)" class="remove-button remove-setor-button">Remover Setor</button>
         </div>
         <div class="itens" id="itens-${setorIndex}"></div>
+        <datalist id="lista-itens-${setorIndex}"></datalist>
         <div class="item-buttons">
           <button type="button" onclick="adicionarItem(${setorIndex})">Adicionar Item</button>
         </div>
@@ -2285,7 +2308,7 @@ const EscritórioItems = [
       div.innerHTML = `
         <div class="item-input-group item-nome-group">
           <label>Item:</label>
-          <input type="text" class="item-nome" list="lista-itens" autocomplete="off" required onchange="verificarDuplicata(this, '${index}')" oninput="onItemInputChange(this)">
+          <input type="text" class="item-nome" list="lista-itens-${index}" autocomplete="off" required onchange="verificarDuplicata(this, '${index}')" oninput="onItemInputChange(this)">
         </div>
         <div class="item-input-group item-qtd-group">
           <label>Quantidade:</label>
