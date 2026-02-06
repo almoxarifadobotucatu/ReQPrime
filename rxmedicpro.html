@@ -168,32 +168,33 @@ button:hover {
 
 </div>
 <script>
-function fazerLogin() {
-  // redireciona direto para a página de receita no Netlify
-  window.location.href = "https://almoxarifadobotucatu.netlify.app/receita";
-  return false; // impede o reload da página
-}
-</script>
 <script>
 function fazerLogin() {
 
-  // LOGIN E SENHA DE TESTE
+  const usuarioDigitado = document.getElementById("crm").value;
+  const senhaDigitada   = document.getElementById("senha").value;
+
   const usuarioCorreto = "12345-SP";
-  const senhaCorreta = "teste123";
+  const senhaCorreta   = "teste123";
 
-  const usuario = document.getElementById("crm").value.trim();
-  const senha = document.getElementById("senha").value.trim();
+  // DEBUG — mostra exatamente o que está chegando
+  alert(
+    "CRM digitado: [" + usuarioDigitado + "]\n" +
+    "Senha digitada: [" + senhaDigitada + "]"
+  );
 
-  if (usuario === usuarioCorreto && senha === senhaCorreta) {
+  if (
+    usuarioDigitado.trim().toUpperCase() === usuarioCorreto &&
+    senhaDigitada.trim() === senhaCorreta
+  ) {
     window.location.href = "https://almoxarifadobotucatu.netlify.app/receita";
   } else {
     alert("❌ CRM ou senha incorretos");
   }
 
-  return false; // impede o reload da página
+  return false;
 }
 </script>
-
-
+  
 </body>
 </html>
