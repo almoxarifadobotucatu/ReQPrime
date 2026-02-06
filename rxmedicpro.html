@@ -230,6 +230,79 @@ function fazerLogin() {
     }
   };
 </script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bcryptjs/2.4.3/bcrypt.min.js"></script>
+
+<script>
+const bcrypt = dcodeIO.bcrypt;
+
+// FIREBASE
+const firebaseConfig = {
+  apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
+  authDomain: "almoxarifadobotucatu-5e03d.firebaseapp.com",
+  projectId: "almoxarifadobotucatu-5e03d",
+  storageBucket: "almoxarifadobotucatu-5e03d.firebasestorage.app",
+  messagingSenderId: "828951000388",
+  appId: "1:828951000388:web:06dbe3cb5764872e7b1311"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+// LOGIN
+function fazerLogin() {
+
+  const usuario = document.getElementById("crm").value.trim();
+  const senha   = document.getElementById("senha").value.trim();
+
+  if (!usuario || !senha) {
+    alert("Preencha usuário e senha");
+    return;
+  }
+
+  db.collection("usuarios").doc(usuario).get()
+    .then(doc => {
+
+      if (!doc.exists) {
+        alert("Usuário não encontrado");
+        return;
+      }
+
+      const dados = doc.data();
+
+      if (dados.ativo === false) {
+        alert("Usuário desativado");
+        return;
+      }
+
+      const senhaOk = bcrypt.compareSync(
+        senha,
+        dados.senhaHash || ""
+      );
+
+      if (!senhaOk) {
+        alert("Senha incorreta");
+        return;
+      }
+
+      // sessão
+      sessionStorage.setItem("logado", "true");
+      localStorage.setItem("usuarioLogado", usuario);
+      localStorage.setItem("nomeUsuario", dados.nome || usuario);
+
+      // redireciona
+      window.location.replace(
+        "https://almoxarifadobotucatu.netlify.app/receita"
+      );
+
+    })
+    .catch(err => {
+      console.error(err);
+      alert("Erro ao autenticar");
+    });
+}
+</script>
 
 </body>
 </html>
