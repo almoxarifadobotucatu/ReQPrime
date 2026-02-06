@@ -28,44 +28,47 @@ body {
   justify-content: center;
 }
 
+/* CARD */
 .login-box {
   background: #ffffff;
   width: 100%;
-  max-width: 420px;
-  padding: 42px 38px;
+  max-width: 380px;
+  padding: 32px 30px;
   border-radius: 20px;
   box-shadow: 0 30px 60px rgba(0,0,0,0.25);
 }
 
+/* LOGO */
 .logo {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 24px;
+  margin-bottom: 20px;
 }
 
 .logo img {
-  width: 420px;
+  width: 360px;
+  max-width: 100%;
   height: auto;
   filter: drop-shadow(0 10px 22px rgba(0,0,0,0.25));
 }
 
-}
-
+/* TÍTULOS */
 h1 {
   text-align: center;
   font-size: 22px;
   color: var(--azul-escuro);
-  margin-bottom: 6px;
+  margin: 6px 0 6px;
 }
 
 .subtitle {
   text-align: center;
   font-size: 14px;
   color: var(--cinza);
-  margin-bottom: 32px;
+  margin-bottom: 28px;
 }
 
+/* FORM */
 .form-group {
   margin-bottom: 18px;
 }
@@ -92,6 +95,7 @@ input:focus {
   box-shadow: 0 0 0 3px rgba(14,122,196,0.15);
 }
 
+/* BOTÃO */
 button {
   width: 100%;
   padding: 14px;
@@ -111,8 +115,9 @@ button:hover {
   box-shadow: 0 12px 24px rgba(0,0,0,0.25);
 }
 
+/* FOOTER */
 .footer {
-  margin-top: 28px;
+  margin-top: 26px;
   text-align: center;
   font-size: 12px;
   color: #9ca3af;
@@ -122,6 +127,13 @@ button:hover {
   color: var(--azul-escuro);
   font-weight: 600;
 }
+
+/* RESPONSIVO */
+@media (max-width: 420px) {
+  .logo img {
+    width: 300px;
+  }
+}
 </style>
 </head>
 
@@ -129,9 +141,9 @@ button:hover {
 
 <div class="login-box">
 
-<div class="logo">
-  <img src="./LogoRxMedicPRO.png" alt="LogoRxMedicPRO.png">
-</div>
+  <div class="logo">
+    <img src="./LogoRxMedicPRO.png" alt="RxMedicPRO">
+  </div>
 
   <h1>Acesso Profissional</h1>
   <p class="subtitle">Assistente inteligente de prescrição médica</p>
