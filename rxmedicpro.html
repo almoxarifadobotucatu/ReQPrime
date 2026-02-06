@@ -107,8 +107,8 @@ button {
   <p class="subtitle">Assistente inteligente de prescrição médica</p>
 
   <div class="form-group">
-    <label>CRM / Usuário</label>
-    <input type="text" id="crm" placeholder="Ex: SMS786">
+    <label>CRM</label>
+    <input type="text" id="crm" placeholder="Ex: 12345-SP">
   </div>
 
   <div class="form-group">
@@ -146,40 +146,50 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-// LOGIN REAL
+// ✅ LOGIN POR CRM (CASE INSENSITIVE)
 function fazerLogin() {
-  const usuario = document.getElementById("crm").value.trim();
+
+  // força uppercase → não diferencia maiúsculas/minúsculas
+  const usuario = document.getElementById("crm").value.trim().toUpperCase();
   const senha   = document.getElementById("senha").value.trim();
 
   if (!usuario || !senha) {
-    alert("Preencha usuário e senha");
+    alert("Preencha CRM e senha");
     return;
   }
 
-  db.collection("usuarios").doc(usuario).get()
+  // 🔥 BUSCA SOMENTE NA COLEÇÃO CRM
+  db.collection("crm").doc(usuario).get()
     .then(doc => {
+
       if (!doc.exists) {
-        alert("Usuário não encontrado");
+        alert("CRM não encontrado");
         return;
       }
 
       const dados = doc.data();
 
       if (dados.ativo === false) {
-        alert("Usuário desativado");
+        alert("CRM desativado");
         return;
       }
 
-      const ok = bcrypt.compareSync(senha, dados.senhaHash);
-      if (!ok) {
+      const senhaOk = bcrypt.compareSync(
+        senha,
+        dados.senhaHash
+      );
+
+      if (!senhaOk) {
         alert("Senha incorreta");
         return;
       }
 
+      // sessão
       sessionStorage.setItem("logado", "true");
-      localStorage.setItem("usuarioLogado", usuario);
+      localStorage.setItem("crmLogado", usuario);
       localStorage.setItem("nomeUsuario", dados.nome || usuario);
 
+      // redireciona
       window.location.href =
         "https://almoxarifadobotucatu.netlify.app/receita";
     })
