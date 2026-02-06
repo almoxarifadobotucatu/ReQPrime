@@ -173,6 +173,28 @@ function fazerLogin() {
   return false; // impede o reload da página
 }
 </script>
+<script>
+function fazerLogin() {
+
+  // LOGIN E SENHA DE TESTE
+  const usuarioCorreto = "12345-SP";
+  const senhaCorreta = "teste123";
+
+  // valores digitados
+  const usuario = document.getElementById("crm").value;
+  const senha = document.getElementById("senha").value;
+
+  // validação
+  if (usuario === usuarioCorreto && senha === senhaCorreta) {
+    // login OK → redireciona
+    window.location.href = "https://almoxarifadobotucatu.netlify.app/receita";
+  } else {
+    alert("❌ CRM ou senha incorretos");
+  }
+
+  return false; // impede reload
+}
+</script>
 
 </body>
 </html>
