@@ -152,7 +152,6 @@ button:hover {
     © 2026 <span>CIMED</span> • Prescrição Inteligente
   </div>
 
-</div>
 <!-- 🔥 FIREBASE COMPAT -->
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
@@ -161,10 +160,9 @@ button:hover {
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bcryptjs/2.4.3/bcrypt.min.js"></script>
 
 <script>
-/* =====================================================
-   🔥 FIREBASE - CONFIGURAÇÃO (MANTIDA 100% IGUAL)
-===================================================== */
+const bcrypt = dcodeIO.bcrypt;
 
+// FIREBASE CONFIG
 const firebaseConfig = {
   apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
   authDomain: "almoxarifadobotucatu-5e03d.firebaseapp.com",
@@ -177,12 +175,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-/* =====================================================
-   🔐 LOGIN RxMedicPRO
-===================================================== */
-
-const bcrypt = dcodeIO.bcrypt;
-
+// ✅ LOGIN POR CRM (SEM DIFERENCIAR MAIÚSCULAS)
 function fazerLogin() {
 
   const usuario = document.getElementById("crm").value.trim().toUpperCase();
@@ -193,7 +186,7 @@ function fazerLogin() {
     return;
   }
 
-  // 🚫 Bloqueia acessos que não sejam CRM
+  // 🚫 bloqueia SMS
   if (!usuario.startsWith("CRM")) {
     alert("Acesso permitido apenas para CRM");
     return;
@@ -224,16 +217,12 @@ function fazerLogin() {
         return;
       }
 
-      // ✅ Login realizado com sucesso
       sessionStorage.setItem("logado", "true");
       localStorage.setItem("usuarioLogado", usuario);
       localStorage.setItem("nomeUsuario", dados.nome || usuario);
 
-      alert("Login realizado com sucesso!");
-      
-      // ❌ REDIRECIONAMENTO REMOVIDO
-      // window.location.href = "...";
-
+      window.location.href =
+        "https://almoxarifadobotucatu.netlify.app/receita";
     })
     .catch(err => {
       console.error(err);
