@@ -108,7 +108,7 @@ button {
 
   <div class="form-group">
     <label>CRM</label>
-    <input type="text" id="crm" placeholder="Ex: 12345-SP">
+    <input type="text" id="crm" placeholder="Ex: CRM6786-SP">
   </div>
 
   <div class="form-group">
@@ -146,24 +146,29 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-// ✅ LOGIN POR CRM (CASE INSENSITIVE)
+// ✅ LOGIN POR CRM (SEM DIFERENCIAR MAIÚSCULAS)
 function fazerLogin() {
 
-  // força uppercase → não diferencia maiúsculas/minúsculas
-  const usuario = document.getElementById("crm").value.trim().toUpperCase();
-  const senha   = document.getElementById("senha").value.trim();
+  let usuario = document.getElementById("crm").value.trim().toUpperCase();
+  const senha = document.getElementById("senha").value.trim();
 
   if (!usuario || !senha) {
     alert("Preencha CRM e senha");
     return;
   }
 
-  // 🔥 BUSCA SOMENTE NA COLEÇÃO CRM
-  db.collection("crm").doc(usuario).get()
+  // 🚫 bloqueia SMS e qualquer outro tipo
+  if (!usuario.startsWith("CRM")) {
+    alert("Acesso permitido apenas para CRM");
+    return;
+  }
+
+  // 🔍 BUSCA NA COLEÇÃO CORRETA
+  db.collection("usuarios").doc(usuario).get()
     .then(doc => {
 
       if (!doc.exists) {
-        alert("CRM não encontrado");
+        alert("CRM não cadastrado");
         return;
       }
 
@@ -184,12 +189,11 @@ function fazerLogin() {
         return;
       }
 
-      // sessão
+      // ✅ sessão
       sessionStorage.setItem("logado", "true");
-      localStorage.setItem("crmLogado", usuario);
+      localStorage.setItem("usuarioLogado", usuario);
       localStorage.setItem("nomeUsuario", dados.nome || usuario);
 
-      // redireciona
       window.location.href =
         "https://almoxarifadobotucatu.netlify.app/receita";
     })
