@@ -147,20 +147,19 @@ button:hover {
   <h1>Acesso Profissional</h1>
   <p class="subtitle">Assistente inteligente de prescrição médica</p>
 
-<form onsubmit="return fazerLogin()">
+<form onsubmit="return false;">
   <div class="form-group">
     <label for="crm">CRM / UF</label>
-    <input type="text" id="crm" placeholder="Ex: 12345-SP" required>
+    <input type="text" id="crm" placeholder="Ex: 12345-SP">
   </div>
 
   <div class="form-group">
     <label for="senha">Senha</label>
-    <input type="password" id="senha" placeholder="Digite sua senha" required>
+    <input type="password" id="senha" placeholder="Digite sua senha">
   </div>
 
-  <button type="submit">Entrar no Sistema</button>
+  <button type="button" onclick="fazerLogin()">Entrar no Sistema</button>
 </form>
-
 
   <div class="footer">
     © 2026 <span>RxMedicPRO</span> • Plataforma Médica Profissional
@@ -168,33 +167,22 @@ button:hover {
 
 </div>
 <script>
-<script>
 function fazerLogin() {
 
-  const usuarioDigitado = document.getElementById("crm").value;
-  const senhaDigitada   = document.getElementById("senha").value;
+  const usuario = document.getElementById("crm").value.trim().toUpperCase();
+  const senha   = document.getElementById("senha").value.trim();
 
-  const usuarioCorreto = "12345-SP";
-  const senhaCorreta   = "teste123";
-
-  // DEBUG — mostra exatamente o que está chegando
-  alert(
-    "CRM digitado: [" + usuarioDigitado + "]\n" +
-    "Senha digitada: [" + senhaDigitada + "]"
-  );
-
-  if (
-    usuarioDigitado.trim().toUpperCase() === usuarioCorreto &&
-    senhaDigitada.trim() === senhaCorreta
-  ) {
-    window.location.href = "https://almoxarifadobotucatu.netlify.app/receita";
+  // LOGIN DE TESTE
+  if (usuario === "12345-SP" && senha === "teste123") {
+    window.location.replace(
+      "https://almoxarifadobotucatu.netlify.app/receita"
+    );
   } else {
     alert("❌ CRM ou senha incorretos");
   }
-
-  return false;
 }
 </script>
+
   
 </body>
 </html>
