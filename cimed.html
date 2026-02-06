@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>CIMED • Prescrição Inteligente</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+:root {
+  --amarelo-cimed: #ffd900;
+  --preto: #0f0f0f;
+  --preto-sec: #1a1a1a;
+  --cinza: #6b7280;
+  --cinza-claro: #e5e7eb;
+}
+
+* {
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #ffd900, #ffcc00);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.login-box {
+  background: #ffffff;
+  width: 100%;
+  max-width: 420px;
+  padding: 42px 38px;
+  border-radius: 22px;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.35);
+  border-top: 10px solid var(--preto);
+}
+
+.logo {
+  text-align: center;
+  margin-bottom: 26px;
+}
+
+.logo img {
+  max-width: 260px;
+}
+
+h1 {
+  text-align: center;
+  font-size: 22px;
+  color: var(--preto);
+  margin-bottom: 6px;
+  font-weight: 800;
+}
+
+.subtitle {
+  text-align: center;
+  font-size: 14px;
+  color: #374151;
+  margin-bottom: 32px;
+}
+
+.form-group {
+  margin-bottom: 18px;
+}
+
+label {
+  display: block;
+  font-size: 13px;
+  color: #111827;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+input {
+  width: 100%;
+  padding: 14px 16px;
+  font-size: 15px;
+  border-radius: 14px;
+  border: 1px solid var(--cinza-claro);
+  transition: all 0.2s ease;
+}
+
+input:focus {
+  outline: none;
+  border-color: var(--preto);
+  box-shadow: 0 0 0 3px rgba(0,0,0,0.15);
+}
+
+button {
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #0f0f0f, #1a1a1a);
+  color: var(--amarelo-cimed);
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  margin-top: 12px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 14px 28px rgba(0,0,0,0.35);
+}
+
+.footer {
+  margin-top: 28px;
+  text-align: center;
+  font-size: 12px;
+  color: #374151;
+}
+
+.footer span {
+  color: var(--preto);
+  font-weight: 800;
+}
+</style>
+</head>
+
+<body>
+
+<div class="login-box">
+
+  <div class="logo">
+    <!-- TROQUE AQUI PELO LOGO DA CIMED -->
+    <img src="logo-cimed.png" alt="CIMED">
+  </div>
+
+  <h1>Acesso Profissional</h1>
+  <p class="subtitle">Prescrição Inteligente • Plataforma CIMED</p>
+
+  <form>
+    <div class="form-group">
+      <label for="crm">CRM / UF</label>
+      <input type="text" id="crm" placeholder="Ex: 12345-SP" required>
+    </div>
+
+    <div class="form-group">
+      <label for="senha">Senha</label>
+      <input type="password" id="senha" placeholder="Digite sua senha" required>
+    </div>
+
+    <button type="submit">Entrar no Sistema</button>
+  </form>
+
+  <div class="footer">
+    © 2026 <span>CIMED</span> • Prescrição Inteligente
+  </div>
+
+</div>
+
+</body>
+</html>
