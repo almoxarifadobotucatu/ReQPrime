@@ -158,7 +158,7 @@ button:hover {
     <input type="password" id="senha" placeholder="Digite sua senha">
   </div>
 
-  <button type="button" onclick="loginFirebase()">
+<button type="button" onclick="fazerLogin()">
   Entrar no Sistema
 </button>
 
@@ -170,22 +170,6 @@ button:hover {
 
 </div>
 <script>
-function fazerLogin() {
-
-  const usuario = document.getElementById("crm").value.trim().toUpperCase();
-  const senha   = document.getElementById("senha").value.trim();
-
-  // LOGIN DE TESTE
-  if (usuario === "12345-SP" && senha === "teste123") {
-    window.location.replace(
-      "https://almoxarifadobotucatu.netlify.app/receita"
-    );
-  } else {
-    alert("❌ CRM ou senha incorretos");
-  }
-}
-</script>
-
 <!-- Firebase COMPAT (igual seu outro sistema) -->
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
