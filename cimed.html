@@ -80,13 +80,6 @@ input {
   font-size: 15px;
   border-radius: 14px;
   border: 1px solid var(--cinza-claro);
-  transition: all 0.2s ease;
-}
-
-input:focus {
-  outline: none;
-  border-color: var(--preto);
-  box-shadow: 0 0 0 3px rgba(0,0,0,0.15);
 }
 
 button {
@@ -100,12 +93,6 @@ button {
   font-weight: 700;
   cursor: pointer;
   margin-top: 12px;
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 14px 28px rgba(0,0,0,0.35);
 }
 
 .footer {
@@ -127,14 +114,14 @@ button:hover {
 <div class="login-box">
 
   <div class="logo">
-    <!-- TROQUE AQUI PELO LOGO DA CIMED -->
     <img src="https://almoxarifadobotucatu.netlify.app/logocimed.png" alt="CIMED">
   </div>
 
   <h1>Acesso Profissional</h1>
   <p class="subtitle">Prescrição Inteligente • Plataforma CIMED</p>
 
-  <form>
+  <!-- ✅ FORM CORRIGIDO -->
+  <form onsubmit="fazerLogin(event)">
     <div class="form-group">
       <label for="crm">CRM / UF</label>
       <input type="text" id="crm" placeholder="Ex: 12345-SP" required>
@@ -151,8 +138,9 @@ button:hover {
   <div class="footer">
     © 2026 <span>CIMED</span> • Prescrição Inteligente
   </div>
+</div>
 
-<!-- 🔥 FIREBASE COMPAT -->
+<!-- 🔥 FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 
@@ -162,7 +150,6 @@ button:hover {
 <script>
 const bcrypt = dcodeIO.bcrypt;
 
-// FIREBASE CONFIG
 const firebaseConfig = {
   apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
   authDomain: "almoxarifadobotucatu-5e03d.firebaseapp.com",
@@ -175,8 +162,8 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-// ✅ LOGIN POR CRM (SEM DIFERENCIAR MAIÚSCULAS)
-function fazerLogin() {
+function fazerLogin(event) {
+  event.preventDefault(); // 🚫 impede reload
 
   const usuario = document.getElementById("crm").value.trim().toUpperCase();
   const senha   = document.getElementById("senha").value.trim();
@@ -186,15 +173,14 @@ function fazerLogin() {
     return;
   }
 
-  // 🚫 bloqueia SMS
-  if (!usuario.startsWith("CRM")) {
-    alert("Acesso permitido apenas para CRM");
+  // ✅ Aceita CRM real (ex: 12345-SP)
+  if (!usuario.includes("-")) {
+    alert("CRM inválido");
     return;
   }
 
   db.collection("usuarios").doc(usuario).get()
     .then(doc => {
-
       if (!doc.exists) {
         alert("CRM não cadastrado");
         return;
@@ -207,10 +193,7 @@ function fazerLogin() {
         return;
       }
 
-      const senhaOk = bcrypt.compareSync(
-        senha,
-        dados.senhaHash
-      );
+      const senhaOk = bcrypt.compareSync(senha, dados.senhaHash);
 
       if (!senhaOk) {
         alert("Senha incorreta");
@@ -221,8 +204,7 @@ function fazerLogin() {
       localStorage.setItem("usuarioLogado", usuario);
       localStorage.setItem("nomeUsuario", dados.nome || usuario);
 
-      window.location.href =
-        "https://almoxarifadobotucatu.netlify.app/receita";
+      window.location.href = "https://almoxarifadobotucatu.netlify.app/receita";
     })
     .catch(err => {
       console.error(err);
