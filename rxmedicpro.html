@@ -147,19 +147,20 @@ button:hover {
   <h1>Acesso Profissional</h1>
   <p class="subtitle">Assistente inteligente de prescrição médica</p>
 
-  <form>
-    <div class="form-group">
-      <label for="crm">CRM / UF</label>
-      <input type="text" id="crm" placeholder="Ex: 12345-SP" required>
-    </div>
+<form onsubmit="return fazerLogin()">
+  <div class="form-group">
+    <label for="crm">CRM / UF</label>
+    <input type="text" id="crm" placeholder="Ex: 12345-SP" required>
+  </div>
 
-    <div class="form-group">
-      <label for="senha">Senha</label>
-      <input type="password" id="senha" placeholder="Digite sua senha" required>
-    </div>
+  <div class="form-group">
+    <label for="senha">Senha</label>
+    <input type="password" id="senha" placeholder="Digite sua senha" required>
+  </div>
 
-    <button type="submit">Entrar no Sistema</button>
-  </form>
+  <button type="submit">Entrar no Sistema</button>
+</form>
+
 
   <div class="footer">
     © 2026 <span>RxMedicPRO</span> • Plataforma Médica Profissional
@@ -180,21 +181,19 @@ function fazerLogin() {
   const usuarioCorreto = "12345-SP";
   const senhaCorreta = "teste123";
 
-  // valores digitados
-  const usuario = document.getElementById("crm").value;
-  const senha = document.getElementById("senha").value;
+  const usuario = document.getElementById("crm").value.trim();
+  const senha = document.getElementById("senha").value.trim();
 
-  // validação
   if (usuario === usuarioCorreto && senha === senhaCorreta) {
-    // login OK → redireciona
     window.location.href = "https://almoxarifadobotucatu.netlify.app/receita";
   } else {
     alert("❌ CRM ou senha incorretos");
   }
 
-  return false; // impede reload
+  return false; // impede o reload da página
 }
 </script>
+
 
 </body>
 </html>
