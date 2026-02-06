@@ -93,6 +93,12 @@ button {
   font-size: 12px;
   color: #9ca3af;
 }
+
+/* ✅ ESTILO QUE DEIXA O RxMedicPRO ELEGANTE */
+.footer span {
+  color: var(--azul-escuro);
+  font-weight: 600;
+}
 </style>
 </head>
 
@@ -149,21 +155,20 @@ const db = firebase.firestore();
 // ✅ LOGIN POR CRM (SEM DIFERENCIAR MAIÚSCULAS)
 function fazerLogin() {
 
-  let usuario = document.getElementById("crm").value.trim().toUpperCase();
-  const senha = document.getElementById("senha").value.trim();
+  const usuario = document.getElementById("crm").value.trim().toUpperCase();
+  const senha   = document.getElementById("senha").value.trim();
 
   if (!usuario || !senha) {
     alert("Preencha CRM e senha");
     return;
   }
 
-  // 🚫 bloqueia SMS e qualquer outro tipo
+  // 🚫 bloqueia SMS
   if (!usuario.startsWith("CRM")) {
     alert("Acesso permitido apenas para CRM");
     return;
   }
 
-  // 🔍 BUSCA NA COLEÇÃO CORRETA
   db.collection("usuarios").doc(usuario).get()
     .then(doc => {
 
@@ -189,7 +194,6 @@ function fazerLogin() {
         return;
       }
 
-      // ✅ sessão
       sessionStorage.setItem("logado", "true");
       localStorage.setItem("usuarioLogado", usuario);
       localStorage.setItem("nomeUsuario", dados.nome || usuario);
