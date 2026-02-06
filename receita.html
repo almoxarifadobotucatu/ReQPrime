@@ -2,15 +2,15 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Assistente de Receita Médica</title>
+<title>Assistente de Prescrição • CIMED</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
 
 
 <style>
 :root {
-  --azul-escuro:#0b4f8a;
-  --azul:#0e7ac4;
-  --verde:#22c55e;
+  --amarelo-cimed:#ffd900;
+  --preto:#0f0f0f;
+  --preto-sec:#1a1a1a;
   --cinza:#6b7280;
   --cinza-claro:#e5e7eb;
   --card:#ffffff;
@@ -21,7 +21,7 @@
 body{
   margin:0;
   min-height:100vh;
-  background:linear-gradient(135deg,#0b4f8a,#0e7ac4);
+  background:linear-gradient(135deg,var(--preto),var(--preto-sec));
   padding:30px;
   color:#1f2937;
 }
@@ -40,7 +40,7 @@ h2{
   text-align:center;
   font-weight:700;
   font-size:26px;
-  color:var(--azul-escuro);
+  color:var(--preto);
   margin-bottom:20px;
 }
 
@@ -72,8 +72,8 @@ input:focus,select:focus{
 
 button{
   padding:14px 22px;
-  background:linear-gradient(135deg,var(--azul),var(--verde));
-  color:#fff;
+  background:linear-gradient(135deg,var(--preto),var(--preto-sec));
+  color:var(--amarelo-cimed);
   border:none;
   border-radius:14px;
   cursor:pointer;
@@ -127,7 +127,7 @@ button:hover{
 }
 
 .sugestoes div:hover{
-  background:#e0f2fe;
+  background:#fff7cc;
 }
 
 .receita{
@@ -155,7 +155,7 @@ button:hover{
 .check-continuo{
   width:18px;
   height:18px;
-  accent-color:var(--azul);
+  accent-color:var(--preto);
 }
 
 @media print{
@@ -903,13 +903,12 @@ document.addEventListener("click", function(e){
 
 </script>
 <footer style="
-  width: 100%;
-  background: rgba(11, 79, 138, 0.9);
-  padding: 12px 15px;
-  font-size: 12px;
-  color: #ffffff;
-  text-align: center;
-  box-sizing: border-box;
+  width:100%;
+  background:#0f0f0f;
+  padding:12px 15px;
+  font-size:12px;
+  color:#ffd900;
+  text-align:center;
 ">
   ⚠️ Este sistema não realiza diagnóstico nem recomenda tratamento ou posologia.<br>
   As opções de posologia são apenas modelos de texto padronizados para facilitar a digitação,
