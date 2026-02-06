@@ -153,6 +153,94 @@ button:hover {
   </div>
 
 </div>
+<!-- 🔥 FIREBASE COMPAT -->
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+<!-- 🔐 BCRYPT -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bcryptjs/2.4.3/bcrypt.min.js"></script>
+
+<script>
+/* =====================================================
+   🔥 FIREBASE - CONFIGURAÇÃO (MANTIDA 100% IGUAL)
+===================================================== */
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
+  authDomain: "almoxarifadobotucatu-5e03d.firebaseapp.com",
+  projectId: "almoxarifadobotucatu-5e03d",
+  storageBucket: "almoxarifadobotucatu-5e03d.firebasestorage.app",
+  messagingSenderId: "828951000388",
+  appId: "1:828951000388:web:06dbe3cb5764872e7b1311"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+/* =====================================================
+   🔐 LOGIN RxMedicPRO
+===================================================== */
+
+const bcrypt = dcodeIO.bcrypt;
+
+function fazerLogin() {
+
+  const usuario = document.getElementById("crm").value.trim().toUpperCase();
+  const senha   = document.getElementById("senha").value.trim();
+
+  if (!usuario || !senha) {
+    alert("Preencha CRM e senha");
+    return;
+  }
+
+  // 🚫 Bloqueia acessos que não sejam CRM
+  if (!usuario.startsWith("CRM")) {
+    alert("Acesso permitido apenas para CRM");
+    return;
+  }
+
+  db.collection("usuarios").doc(usuario).get()
+    .then(doc => {
+
+      if (!doc.exists) {
+        alert("CRM não cadastrado");
+        return;
+      }
+
+      const dados = doc.data();
+
+      if (dados.ativo === false) {
+        alert("CRM desativado");
+        return;
+      }
+
+      const senhaOk = bcrypt.compareSync(
+        senha,
+        dados.senhaHash
+      );
+
+      if (!senhaOk) {
+        alert("Senha incorreta");
+        return;
+      }
+
+      // ✅ Login realizado com sucesso
+      sessionStorage.setItem("logado", "true");
+      localStorage.setItem("usuarioLogado", usuario);
+      localStorage.setItem("nomeUsuario", dados.nome || usuario);
+
+      alert("Login realizado com sucesso!");
+      
+      // ❌ REDIRECIONAMENTO REMOVIDO
+      // window.location.href = "...";
+
+    })
+    .catch(err => {
+      console.error(err);
+      alert("Erro ao autenticar");
+    });
+}
+</script>
 
 </body>
 </html>
