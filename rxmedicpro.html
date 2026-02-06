@@ -186,58 +186,17 @@ function fazerLogin() {
 }
 </script>
 
-  <script type="module">
-  // Firebase SDKs (WEB)
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-  import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
-
-  // 🔥 SUA CONFIGURAÇÃO FIREBASE
-  const firebaseConfig = {
-    apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
-    authDomain: "almoxarifadobotucatu-5e03d.firebaseapp.com",
-    projectId: "almoxarifadobotucatu-5e03d",
-    storageBucket: "almoxarifadobotucatu-5e03d.firebasestorage.app",
-    messagingSenderId: "828951000388",
-    appId: "1:828951000388:web:06dbe3cb5764872e7b1311"
-  };
-
-  // Inicializa Firebase
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-
-  // 🔐 FUNÇÃO DE LOGIN (GLOBAL)
-  window.loginFirebase = async function () {
-
-    const email = document.getElementById("crm").value.trim();
-    const senha = document.getElementById("senha").value.trim();
-
-    if (!email || !senha) {
-      alert("Preencha email e senha");
-      return;
-    }
-
-    try {
-      await signInWithEmailAndPassword(auth, email, senha);
-
-      // login OK
-      window.location.replace(
-        "https://almoxarifadobotucatu.netlify.app/receita"
-      );
-
-    } catch (error) {
-      alert("❌ Email ou senha inválidos");
-      console.error(error);
-    }
-  };
-</script>
+<!-- Firebase COMPAT (igual seu outro sistema) -->
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+
+<!-- bcrypt -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bcryptjs/2.4.3/bcrypt.min.js"></script>
 
 <script>
 const bcrypt = dcodeIO.bcrypt;
 
-// FIREBASE
+// 🔥 FIREBASE (UMA VEZ SÓ)
 const firebaseConfig = {
   apiKey: "AIzaSyCdB4pI610z1rplKmfAHct7CmGD0vmBg3U",
   authDomain: "almoxarifadobotucatu-5e03d.firebaseapp.com",
@@ -250,7 +209,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
-// LOGIN
+// ✅ LOGIN REAL (USERNAME + BCRYPT)
 function fazerLogin() {
 
   const usuario = document.getElementById("crm").value.trim();
@@ -278,7 +237,7 @@ function fazerLogin() {
 
       const senhaOk = bcrypt.compareSync(
         senha,
-        dados.senhaHash || ""
+        dados.senhaHash
       );
 
       if (!senhaOk) {
@@ -286,12 +245,11 @@ function fazerLogin() {
         return;
       }
 
-      // sessão
+      // sessão (igual seu outro sistema)
       sessionStorage.setItem("logado", "true");
       localStorage.setItem("usuarioLogado", usuario);
       localStorage.setItem("nomeUsuario", dados.nome || usuario);
 
-      // redireciona
       window.location.replace(
         "https://almoxarifadobotucatu.netlify.app/receita"
       );
