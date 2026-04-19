@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>INVUL</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+      background: #000;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      color: #fff;
+    }
+
+    .container {
+      text-align: center;
+    }
+
+    .logo {
+      width: 420px;
+      max-width: 80vw;
+      transition: all 0.5s ease;
+      filter: brightness(1);
+    }
+
+    /* Efeito premium ao passar o mouse */
+    .logo:hover {
+      transform: scale(1.05);
+      filter: brightness(1.2);
+    }
+
+    /* Glow sutil */
+    .logo::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+    }
+
+    .text {
+      margin-top: 60px;
+      font-size: 14px;
+      letter-spacing: 6px;
+      opacity: 0.6;
+      transition: all 0.4s ease;
+    }
+
+    .container:hover .text {
+      opacity: 1;
+      letter-spacing: 10px;
+    }
+
+    /* Linha premium */
+    .line {
+      width: 120px;
+      height: 1px;
+      background: rgba(255,255,255,0.2);
+      margin: 40px auto 0 auto;
+      transition: all 0.4s ease;
+    }
+
+    .container:hover .line {
+      width: 200px;
+      background: rgba(255,255,255,0.6);
+    }
+
+    /* Fade-in inicial */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeIn 1.2s ease forwards;
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+  <div class="container fade-in">
+    <img src="sua-logo.png" alt="INVUL" class="logo" />
+
+    <div class="line"></div>
+
+    <div class="text">EM BREVE</div>
+  </div>
+</body>
+</html>
