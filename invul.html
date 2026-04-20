@@ -32,7 +32,7 @@ body {
   transform: translateY(-5%);
 }
 
-/* LOGO BASE (fallback) */
+/* LOGO */
 .logo {
   width: clamp(300px, 82vw, 1000px);
 
@@ -44,6 +44,12 @@ body {
   transition:
     transform 0.4s cubic-bezier(0.22,1,0.36,1),
     filter 0.4s ease;
+
+  /* 🔥 NITIDEZ */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
 /* LINHA */
@@ -96,47 +102,24 @@ body {
   color: #fff;
 }
 
-/* ===== RESPONSIVIDADE REAL ===== */
-
-/* 🔥 TELAS GRANDES (Full HD / 2K / 4K) */
+/* RESPONSIVO */
 @media (min-width: 1600px) {
-  .logo {
-    width: 900px;
-  }
+  .logo { width: 900px; }
 }
 
-/* 💻 NOTEBOOK PADRÃO (1366px) */
 @media (max-width: 1400px) {
-  .logo {
-    width: 780px;
-  }
+  .logo { width: 780px; }
 }
 
-/* 📱 TABLET */
 @media (max-width: 900px) {
-  .logo {
-    width: 70vw;
-  }
-
-  .text {
-    letter-spacing: 5px;
-  }
+  .logo { width: 70vw; }
+  .text { letter-spacing: 5px; }
 }
 
-/* 📱 MOBILE */
 @media (max-width: 600px) {
-  .logo {
-    width: 85vw;
-  }
-
-  .text {
-    font-size: 11px;
-    letter-spacing: 4px;
-  }
-
-  .line {
-    width: 40px;
-  }
+  .logo { width: 85vw; }
+  .text { font-size: 11px; letter-spacing: 4px; }
+  .line { width: 40px; }
 }
 
 /* ANIMAÇÕES */
@@ -168,7 +151,6 @@ body {
     transform: translateY(0);
   }
 }
-
 </style>
 </head>
 
