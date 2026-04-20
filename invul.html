@@ -14,39 +14,71 @@
 
 body {
   height: 100vh;
-  background: #000; /* preto absoluto */
+  background: #000;
   display: flex;
   align-items: center;
   justify-content: center;
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* CONTAINER */
+/* CENTRALIZAÇÃO ÓPTICA (ligeiramente acima do centro real) */
 .container {
-  text-align: center;
-
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+
+  transform: translateY(-3%); /* 👈 ajuste fino visual */
+  text-align: center;
 
   opacity: 0;
-  transform: translateY(80px);
   animation: entrance 1.4s cubic-bezier(0.22,1,0.36,1) forwards;
+}
+
+/* WRAPPER PARA CONTROLAR O SHINE */
+.logo-wrapper {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
 }
 
 /* LOGO */
 .logo {
   width: 85vw;
   max-width: 1000px;
+  display: block;
 
   transition: transform 0.4s ease;
 }
 
+/* SHINE (SÓ NO HOVER) */
+.shine {
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255,255,255,0.35),
+    transparent
+  );
+  transform: skewX(-20deg);
+  pointer-events: none;
+}
+
+/* ativa no hover */
+.logo-wrapper:hover .shine {
+  animation: shineMove 0.8s ease forwards;
+}
+
 /* LINHA */
 .line {
-  width: 70px;
+  width: 60px;
   height: 1px;
+  margin-top: 14px;
+  margin-bottom: 10px;
+
   background: linear-gradient(90deg, transparent, #fff, transparent);
   opacity: 0.5;
   transition: 0.4s;
@@ -54,37 +86,42 @@ body {
 
 /* TEXTO */
 .text {
-  font-size: 13px;
-  letter-spacing: 6px;
+  font-size: 12px;
+  letter-spacing: 5px;
   color: rgba(255,255,255,0.6);
   text-transform: uppercase;
   transition: 0.4s;
 }
 
-/* HOVER (bem sutil) */
+/* HOVER SUAVE */
 .container:hover .logo {
-  transform: scale(1.02);
+  transform: scale(1.025);
 }
 
 .container:hover .text {
-  letter-spacing: 10px;
+  letter-spacing: 8px;
   color: #fff;
 }
 
 .container:hover .line {
-  width: 120px;
+  width: 100px;
 }
 
-/* ENTRADA SUAVE */
+/* ANIMAÇÕES */
 @keyframes entrance {
   from {
     opacity: 0;
-    transform: translateY(100px);
+    transform: translateY(80px);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(-3%);
   }
+}
+
+@keyframes shineMove {
+  from { left: -120%; }
+  to { left: 140%; }
 }
 
 </style>
@@ -94,10 +131,12 @@ body {
 
 <div class="container">
 
-  <img class="logo" src="https://almoxarifadobotucatu.netlify.app/invul.png">
+  <div class="logo-wrapper">
+    <img class="logo" src="https://almoxarifadobotucatu.netlify.app/invul.png">
+    <div class="shine"></div>
+  </div>
 
   <div class="line"></div>
-
   <div class="text">EM BREVE</div>
 
 </div>
