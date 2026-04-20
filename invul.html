@@ -21,76 +21,108 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* CENTRALIZAÇÃO ÓPTICA */
+/* CONTAINER (CENTRO ÓPTICO) */
 .container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  transform: translateY(-3%);
   text-align: center;
 
-  opacity: 0;
-  animation: entrance 1.2s cubic-bezier(0.22,1,0.36,1) forwards;
+  transform: translateY(-4%);
 }
 
 /* LOGO */
 .logo {
   width: 85vw;
-  max-width: 1000px;
+  max-width: 980px;
 
-  transition: 
-    transform 0.35s cubic-bezier(0.22,1,0.36,1),
-    filter 0.35s ease;
-}
+  opacity: 0;
+  transform: translateY(40px) scale(0.96);
 
-/* INTERAÇÃO PREMIUM */
-.container:hover .logo {
-  transform: scale(1.025);
+  animation: logoIn 1.2s cubic-bezier(0.22,1,0.36,1) forwards;
 
-  /* 👇 isso aqui dá sensação premium real */
-  filter: brightness(1.15) contrast(1.1);
+  transition:
+    transform 0.4s cubic-bezier(0.22,1,0.36,1),
+    filter 0.4s ease;
 }
 
 /* LINHA */
 .line {
-  width: 60px;
+  width: 50px;
   height: 1px;
-  margin-top: 14px;
-  margin-bottom: 10px;
+  margin-top: 18px;
+  margin-bottom: 12px;
+
   background: linear-gradient(90deg, transparent, #fff, transparent);
-  opacity: 0.4;
-  transition: 0.35s ease;
+
+  opacity: 0;
+  transform: scaleX(0.6);
+
+  animation: lineIn 0.8s ease forwards;
+  animation-delay: 0.6s;
+
+  transition: 0.4s ease;
 }
 
 /* TEXTO */
 .text {
   font-size: 12px;
-  letter-spacing: 5px;
-  color: rgba(255,255,255,0.55);
+  letter-spacing: 4px;
+  color: rgba(255,255,255,0.5);
   text-transform: uppercase;
-  transition: 0.35s ease;
+
+  opacity: 0;
+  transform: translateY(10px);
+
+  animation: textIn 0.8s ease forwards;
+  animation-delay: 0.9s;
+
+  transition: 0.4s ease;
 }
 
-/* HOVER SUTIL */
-.container:hover .text {
-  letter-spacing: 7px;
-  color: #fff;
+/* HOVER (MICRO INTERAÇÃO) */
+.container:hover .logo {
+  transform: scale(1.02);
+  filter: brightness(1.12) contrast(1.08);
 }
 
 .container:hover .line {
-  width: 90px;
+  width: 80px;
   opacity: 0.8;
 }
 
-/* ENTRADA LIMPA */
-@keyframes entrance {
-  from {
+.container:hover .text {
+  letter-spacing: 6px;
+  color: #fff;
+}
+
+/* ANIMAÇÕES (TIMING REFINADO) */
+@keyframes logoIn {
+  0% {
     opacity: 0;
-    transform: translateY(60px);
+    transform: translateY(60px) scale(0.94);
   }
+  60% {
+    opacity: 1;
+    transform: translateY(-4px) scale(1.01);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes lineIn {
+  to {
+    opacity: 0.6;
+    transform: scaleX(1);
+  }
+}
+
+@keyframes textIn {
   to {
     opacity: 1;
-    transform: translateY(-3%);
+    transform: translateY(0);
   }
 }
 
@@ -104,6 +136,7 @@ body {
   <img class="logo" src="https://almoxarifadobotucatu.netlify.app/invul.png">
 
   <div class="line"></div>
+
   <div class="text">EM BREVE</div>
 
 </div>
