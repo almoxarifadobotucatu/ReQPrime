@@ -30,53 +30,25 @@ body {
   text-align: center;
 
   opacity: 0;
-  animation: entrance 1.4s cubic-bezier(0.22,1,0.36,1) forwards;
-}
-
-/* WRAPPER */
-.logo-wrapper {
-  position: relative;
+  animation: entrance 1.2s cubic-bezier(0.22,1,0.36,1) forwards;
 }
 
 /* LOGO */
 .logo {
   width: 85vw;
   max-width: 1000px;
-  display: block;
-  position: relative;
-  z-index: 2;
+
+  transition: 
+    transform 0.35s cubic-bezier(0.22,1,0.36,1),
+    filter 0.35s ease;
 }
 
-/* SHINE RECORTADO (AQUI MUDA TUDO) */
-.shine {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    120deg,
-    transparent 30%,
-    rgba(255,255,255,0.6) 50%,
-    transparent 70%
-  );
+/* INTERAÇÃO PREMIUM */
+.container:hover .logo {
+  transform: scale(1.025);
 
-  transform: translateX(-120%) skewX(-20deg);
-
-  /* máscara usando a própria logo */
-  -webkit-mask-image: url("https://almoxarifadobotucatu.netlify.app/invul.png");
-  -webkit-mask-repeat: no-repeat;
-  -webkit-mask-size: contain;
-  -webkit-mask-position: center;
-
-  mask-image: url("https://almoxarifadobotucatu.netlify.app/invul.png");
-  mask-repeat: no-repeat;
-  mask-size: contain;
-  mask-position: center;
-
-  pointer-events: none;
-}
-
-/* HOVER ATIVA O SHINE */
-.logo-wrapper:hover .shine {
-  animation: shineMove 0.9s ease forwards;
+  /* 👇 isso aqui dá sensação premium real */
+  filter: brightness(1.15) contrast(1.1);
 }
 
 /* LINHA */
@@ -86,51 +58,39 @@ body {
   margin-top: 14px;
   margin-bottom: 10px;
   background: linear-gradient(90deg, transparent, #fff, transparent);
-  opacity: 0.5;
-  transition: 0.4s;
+  opacity: 0.4;
+  transition: 0.35s ease;
 }
 
 /* TEXTO */
 .text {
   font-size: 12px;
   letter-spacing: 5px;
-  color: rgba(255,255,255,0.6);
+  color: rgba(255,255,255,0.55);
   text-transform: uppercase;
-  transition: 0.4s;
+  transition: 0.35s ease;
 }
 
-/* HOVER */
-.container:hover .logo {
-  transform: scale(1.02);
-}
-
+/* HOVER SUTIL */
 .container:hover .text {
-  letter-spacing: 8px;
+  letter-spacing: 7px;
   color: #fff;
 }
 
 .container:hover .line {
-  width: 100px;
+  width: 90px;
+  opacity: 0.8;
 }
 
-/* ANIMAÇÕES */
+/* ENTRADA LIMPA */
 @keyframes entrance {
   from {
     opacity: 0;
-    transform: translateY(80px);
+    transform: translateY(60px);
   }
   to {
     opacity: 1;
     transform: translateY(-3%);
-  }
-}
-
-@keyframes shineMove {
-  from {
-    transform: translateX(-120%) skewX(-20deg);
-  }
-  to {
-    transform: translateX(140%) skewX(-20deg);
   }
 }
 
@@ -141,10 +101,7 @@ body {
 
 <div class="container">
 
-  <div class="logo-wrapper">
-    <img class="logo" src="https://almoxarifadobotucatu.netlify.app/invul.png">
-    <div class="shine"></div>
-  </div>
+  <img class="logo" src="https://almoxarifadobotucatu.netlify.app/invul.png">
 
   <div class="line"></div>
   <div class="text">EM BREVE</div>
