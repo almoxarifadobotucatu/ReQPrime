@@ -14,11 +14,10 @@
 
 body {
   height: 100vh;
-  background: #000; /* preto puro */
+  background: #000; /* preto absoluto */
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
   font-family: Arial, Helvetica, sans-serif;
 }
 
@@ -29,99 +28,63 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 
   opacity: 0;
-  transform: translateY(80px) scale(0.9);
-  animation: entrance 1.6s cubic-bezier(0.22,1,0.36,1) forwards;
+  transform: translateY(80px);
+  animation: entrance 1.4s cubic-bezier(0.22,1,0.36,1) forwards;
 }
 
 /* LOGO */
-.logo-wrapper {
-  position: relative;
-}
-
 .logo {
   width: 85vw;
   max-width: 1000px;
 
-  animation: breathe 5s ease-in-out infinite;
   transition: transform 0.4s ease;
-}
-
-/* GLOW (fixo, sem fundo animado) */
-.glow {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle, rgba(255,255,255,0.2), transparent 70%);
-  filter: blur(35px);
-  opacity: 0.15;
-}
-
-/* SHINE */
-.shine {
-  position: absolute;
-  top: 0;
-  left: -80%;
-  width: 40%;
-  height: 100%;
-  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.5), transparent);
-  transform: skewX(-20deg);
-  animation: shineMove 5s infinite;
 }
 
 /* LINHA */
 .line {
-  width: 80px;
+  width: 70px;
   height: 1px;
   background: linear-gradient(90deg, transparent, #fff, transparent);
-  opacity: 0.6;
+  opacity: 0.5;
   transition: 0.4s;
 }
 
 /* TEXTO */
 .text {
-  font-size: 14px;
-  letter-spacing: 8px;
+  font-size: 13px;
+  letter-spacing: 6px;
   color: rgba(255,255,255,0.6);
   text-transform: uppercase;
   transition: 0.4s;
 }
 
-/* HOVER */
+/* HOVER (bem sutil) */
 .container:hover .logo {
-  transform: scale(1.04);
+  transform: scale(1.02);
 }
 
 .container:hover .text {
-  letter-spacing: 12px;
+  letter-spacing: 10px;
   color: #fff;
 }
 
 .container:hover .line {
-  width: 160px;
+  width: 120px;
 }
 
-/* ANIMAÇÕES */
+/* ENTRADA SUAVE */
 @keyframes entrance {
-  0% {
+  from {
     opacity: 0;
-    transform: translateY(120px) scale(0.85);
+    transform: translateY(100px);
   }
-  100% {
+  to {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
   }
-}
-
-@keyframes breathe {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.015); }
-}
-
-@keyframes shineMove {
-  0% { left: -80%; }
-  100% { left: 140%; }
 }
 
 </style>
@@ -131,13 +94,10 @@ body {
 
 <div class="container">
 
-  <div class="logo-wrapper">
-    <div class="glow"></div>
-    <img class="logo" src="https://almoxarifadobotucatu.netlify.app/invul.png">
-    <div class="shine"></div>
-  </div>
+  <img class="logo" src="https://almoxarifadobotucatu.netlify.app/invul.png">
 
   <div class="line"></div>
+
   <div class="text">EM BREVE</div>
 
 </div>
