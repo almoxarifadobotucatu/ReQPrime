@@ -32,7 +32,7 @@ body {
   transform: translateY(-5%);
 }
 
-/* LOGO */
+/* LOGO — LIMPA (SEM NADA QUE CAUSE BLUR) */
 .logo {
   width: clamp(300px, 82vw, 1000px);
 
@@ -41,12 +41,9 @@ body {
 
   animation: logoIn 1.2s cubic-bezier(0.22,1,0.36,1) forwards;
 
-  transition:
+  transition: 
     transform 0.35s cubic-bezier(0.22,1,0.36,1),
     filter 0.35s ease;
-
-  image-rendering: -webkit-optimize-contrast;
-  backface-visibility: hidden;
 }
 
 /* LINHA */
@@ -83,10 +80,10 @@ body {
   transition: 0.4s ease;
 }
 
-/* 🔥 HOVER SEM SCALE (NÍTIDO) */
+/* HOVER LIMPO (SEM DISTORCER) */
 .container:hover .logo {
   transform: translateY(-2px);
-  filter: brightness(1.12) contrast(1.08);
+  filter: brightness(1.08);
 }
 
 .container:hover .line {
@@ -101,23 +98,19 @@ body {
 
 /* RESPONSIVO */
 
-/* telas grandes */
 @media (min-width: 1600px) {
   .logo { width: 900px; }
 }
 
-/* notebook */
 @media (max-width: 1400px) {
   .logo { width: 780px; }
 }
 
-/* tablet */
 @media (max-width: 900px) {
   .logo { width: 70vw; }
   .text { letter-spacing: 5px; }
 }
 
-/* mobile */
 @media (max-width: 600px) {
   .logo { width: 85vw; }
   .text {
@@ -127,7 +120,7 @@ body {
   .line { width: 40px; }
 }
 
-/* ANIMAÇÕES */
+/* ANIMAÇÕES (SEM SCALE = SEM BLUR) */
 
 @keyframes logoIn {
   0% {
