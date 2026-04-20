@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>INVUL</title>
 
-<!-- FONTE PREMIUM -->
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
 
 <style>
@@ -33,9 +32,9 @@ body {
   transform: translateY(-5%);
 }
 
-/* LOGO */
+/* LOGO BASE (fallback) */
 .logo {
-  width: clamp(320px, 88vw, 1120px);
+  width: clamp(300px, 82vw, 1000px);
 
   opacity: 0;
   transform: translateY(40px) scale(0.96);
@@ -53,7 +52,6 @@ body {
   height: 1px;
   margin-top: 16px;
   margin-bottom: 12px;
-
   background: linear-gradient(90deg, transparent, #fff, transparent);
 
   opacity: 0;
@@ -68,7 +66,7 @@ body {
 /* TEXTO */
 .text {
   font-size: 12px;
-  letter-spacing: 6px; /* melhor com Inter */
+  letter-spacing: 6px;
   color: rgba(255,255,255,0.55);
   text-transform: uppercase;
   font-weight: 400;
@@ -96,6 +94,49 @@ body {
 .container:hover .text {
   letter-spacing: 8px;
   color: #fff;
+}
+
+/* ===== RESPONSIVIDADE REAL ===== */
+
+/* 🔥 TELAS GRANDES (Full HD / 2K / 4K) */
+@media (min-width: 1600px) {
+  .logo {
+    width: 900px;
+  }
+}
+
+/* 💻 NOTEBOOK PADRÃO (1366px) */
+@media (max-width: 1400px) {
+  .logo {
+    width: 780px;
+  }
+}
+
+/* 📱 TABLET */
+@media (max-width: 900px) {
+  .logo {
+    width: 70vw;
+  }
+
+  .text {
+    letter-spacing: 5px;
+  }
+}
+
+/* 📱 MOBILE */
+@media (max-width: 600px) {
+  .logo {
+    width: 85vw;
+  }
+
+  .text {
+    font-size: 11px;
+    letter-spacing: 4px;
+  }
+
+  .line {
+    width: 40px;
+  }
 }
 
 /* ANIMAÇÕES */
