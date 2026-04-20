@@ -14,124 +14,127 @@
 
 body {
   height: 100vh;
-  background: radial-gradient(circle at center, #0a0a0a 0%, #000 70%);
+  background: #000;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: Arial, Helvetica, sans-serif;
-  color: #fff;
   overflow: hidden;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-/* PARALLAX FUNDO SUAVE */
-body::before {
-  content: "";
+/* FUNDO PROFUNDO */
+.bg {
   position: absolute;
-  width: 140%;
-  height: 140%;
-  background: radial-gradient(circle, rgba(255,255,255,0.05), transparent 60%);
-  animation: bgMove 12s linear infinite;
+  width: 120%;
+  height: 120%;
+  background:
+    radial-gradient(circle at center, rgba(255,255,255,0.06), transparent 60%),
+    radial-gradient(circle at 80% 20%, rgba(255,255,255,0.04), transparent 60%);
+  filter: blur(40px);
+  transition: transform 0.2s ease-out;
 }
 
-@keyframes bgMove {
-  0% { transform: translate(-5%, -5%); }
-  50% { transform: translate(5%, 5%); }
-  100% { transform: translate(-5%, -5%); }
+/* VINHETA (efeito premium) */
+.vignette {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, transparent 60%, rgba(0,0,0,0.9));
 }
 
 /* CONTAINER */
 .container {
   position: relative;
   z-index: 2;
+  text-align: center;
 
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 18px;
-  text-align: center;
+  gap: 12px;
 
   opacity: 0;
-  transform: translateY(60px) scale(0.9);
-  animation: entrance 1.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  transform: translateY(80px) scale(0.9);
+  animation: entrance 1.8s cubic-bezier(0.22,1,0.36,1) forwards;
 }
 
-/* LOGO GRANDE (AQUI É O PONTO PRINCIPAL) */
-.logo {
-  width: 720px;              /* 🔥 AUMENTADO */
-  max-width: 92vw;           /* ocupa quase tudo no mobile */
-
+/* LOGO HERO */
+.logo-wrapper {
   position: relative;
-
-  filter: drop-shadow(0 0 0 rgba(255,255,255,0));
-  transition: all 0.6s ease;
+  display: inline-block;
 }
 
-/* SHINE EFFECT */
-.logo::after {
-  content: "";
+.logo {
+  width: 85vw;
+  max-width: 1100px;
+
+  animation: breathe 5s ease-in-out infinite;
+  transition: transform 0.4s ease;
+}
+
+/* GLOW */
+.glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle, rgba(255,255,255,0.25), transparent 70%);
+  filter: blur(40px);
+  opacity: 0.15;
+  animation: glowPulse 4s ease-in-out infinite;
+}
+
+/* SHINE REAL */
+.shine {
   position: absolute;
   top: 0;
-  left: -60%;
-  width: 50%;
+  left: -80%;
+  width: 40%;
   height: 100%;
-  background: linear-gradient(
-    120deg,
-    transparent,
-    rgba(255,255,255,0.4),
-    transparent
-  );
+  background: linear-gradient(120deg, transparent, rgba(255,255,255,0.6), transparent);
   transform: skewX(-20deg);
-  animation: shine 4s infinite;
-}
-
-@keyframes shine {
-  0% { left: -60%; }
-  100% { left: 140%; }
-}
-
-/* LINHA */
-.line {
-  width: 60px;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
-  transition: 0.5s;
+  animation: shineMove 5s infinite;
 }
 
 /* TEXTO */
 .text {
-  font-size: 13px;
+  font-size: 14px;
   letter-spacing: 8px;
-  opacity: 0.6;
+  color: rgba(255,255,255,0.6);
   text-transform: uppercase;
-  font-weight: 300;
-  transition: 0.5s;
+  transition: 0.4s;
 }
 
-/* HOVER PREMIUM */
-.container:hover .logo {
-  transform: scale(1.05);
-  filter: drop-shadow(0 0 25px rgba(255,255,255,0.25));
-}
-
-.container:hover .line {
-  width: 140px;
+/* LINHA */
+.line {
+  width: 80px;
+  height: 1px;
   background: linear-gradient(90deg, transparent, #fff, transparent);
+  opacity: 0.6;
+  transition: 0.4s;
+}
+
+/* HOVER */
+.container:hover .logo {
+  transform: scale(1.04);
 }
 
 .container:hover .text {
-  opacity: 1;
   letter-spacing: 12px;
+  color: #fff;
 }
 
-/* ENTRADA CINEMATOGRÁFICA */
+.container:hover .line {
+  width: 160px;
+}
+
+/* ANIMAÇÕES */
 @keyframes entrance {
   0% {
     opacity: 0;
-    transform: translateY(80px) scale(0.85);
+    transform: translateY(120px) scale(0.8);
   }
   60% {
     opacity: 1;
-    transform: translateY(-10px) scale(1.03);
+    transform: translateY(-15px) scale(1.03);
   }
   100% {
     opacity: 1;
@@ -139,16 +142,19 @@ body::before {
   }
 }
 
-/* SCROLL REVEAL (se adicionar conteúdo depois) */
-.reveal {
-  opacity: 0;
-  transform: translateY(40px);
-  transition: 1s ease;
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.015); }
 }
 
-.reveal.active {
-  opacity: 1;
-  transform: translateY(0);
+@keyframes glowPulse {
+  0%,100% { opacity: 0.1; }
+  50% { opacity: 0.25; }
+}
+
+@keyframes shineMove {
+  0% { left: -80%; }
+  100% { left: 140%; }
 }
 
 </style>
@@ -156,15 +162,33 @@ body::before {
 
 <body>
 
+<div class="bg" id="bg"></div>
+<div class="vignette"></div>
+
 <div class="container">
 
-  <img class="logo" src="https://almoxarifadobotucatu.netlify.app/invul.png">
+  <div class="logo-wrapper">
+    <div class="glow"></div>
+    <img class="logo" src="https://almoxarifadobotucatu.netlify.app/invul.png">
+    <div class="shine"></div>
+  </div>
 
   <div class="line"></div>
-
   <div class="text">EM BREVE</div>
 
 </div>
+
+<script>
+/* PARALLAX COM MOUSE */
+const bg = document.getElementById("bg");
+
+document.addEventListener("mousemove", (e) => {
+  const x = (e.clientX / window.innerWidth - 0.5) * 20;
+  const y = (e.clientY / window.innerHeight - 0.5) * 20;
+
+  bg.style.transform = `translate(${x}px, ${y}px)`;
+});
+</script>
 
 </body>
 </html>
