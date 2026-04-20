@@ -32,15 +32,15 @@ body {
   transform: translateY(-5%);
 }
 
-/* LOGO — 100% LIMPA */
+/* LOGO — EFEITO LUZ PREMIUM */
 .logo {
   width: clamp(300px, 82vw, 1000px);
   display: block;
 
   opacity: 0;
-  transform: translateY(40px);
+  filter: brightness(0.2) contrast(0.8);
 
-  animation: logoIn 1.2s cubic-bezier(0.22,1,0.36,1) forwards;
+  animation: logoReveal 1.6s cubic-bezier(0.22,1,0.36,1) forwards;
 
   transition: transform 0.35s cubic-bezier(0.22,1,0.36,1);
 }
@@ -79,7 +79,7 @@ body {
   transition: 0.4s ease;
 }
 
-/* HOVER (SEM QUALQUER EFEITO VISUAL NA IMAGEM) */
+/* HOVER LIMPO */
 .container:hover .logo {
   transform: translateY(-2px);
 }
@@ -120,18 +120,18 @@ body {
 
 /* ANIMAÇÕES */
 
-@keyframes logoIn {
+@keyframes logoReveal {
   0% {
     opacity: 0;
-    transform: translateY(60px);
+    filter: brightness(0.1) contrast(0.7);
   }
-  60% {
-    opacity: 1;
-    transform: translateY(-3px);
+  50% {
+    opacity: 0.7;
+    filter: brightness(0.6) contrast(0.9);
   }
   100% {
     opacity: 1;
-    transform: translateY(0);
+    filter: brightness(1) contrast(1);
   }
 }
 
