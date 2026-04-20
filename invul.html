@@ -19,72 +19,60 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
       color: #fff;
     }
 
     .container {
       text-align: center;
-      position: relative;
-    }
-      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 20px; /* controla distância real */
     }
 
     .logo {
       width: 420px;
       max-width: 80vw;
-      transition: all 0.5s ease;
-      filter: brightness(1);
+      transition: all 0.6s ease;
     }
 
-    /* Efeito premium ao passar o mouse */
-    .logo:hover {
-      transform: scale(1.05);
-      filter: brightness(1.2);
+    /* efeito premium */
+    .container:hover .logo {
+      transform: scale(1.04);
+      filter: brightness(1.15);
     }
 
-    /* Glow sutil */
-    .logo::after {
-      content: "";
-      position: absolute;
-      inset: 0;
+    .line {
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
+      transition: all 0.6s ease;
     }
 
     .text {
-      margin-top: 18px;
       font-size: 12px;
       letter-spacing: 14px;
       opacity: 0.6;
-      color: #ffffff;
-      position: relative;
-      z-index: 2;
       text-transform: uppercase;
       font-weight: 300;
       transition: all 0.6s ease;
     }
 
+    /* interação premium */
     .container:hover .text {
       opacity: 1;
       letter-spacing: 18px;
       transform: translateY(-2px);
     }
 
-    /* Linha premium */
-    .line {
-      width: 60px;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
-      margin: 20px auto 5px auto;
-      transition: all 0.6s ease;
-    }
-
     .container:hover .line {
-      width: 200px;
-      background: rgba(255,255,255,0.6);
+      width: 120px;
+      background: linear-gradient(90deg, transparent, #fff, transparent);
     }
 
-    /* Fade-in inicial */
-    .fade-in {
+    /* entrada suave */
+    .container {
       opacity: 0;
       transform: translateY(20px);
       animation: fadeIn 1.2s ease forwards;
@@ -101,12 +89,14 @@
 </head>
 
 <body>
-  <div class="container fade-in">
-    <img src="https://almoxarifadobotucatu.netlify.app/invul.png" />
+  <div class="container">
+
+    <img src="https://almoxarifadobotucatu.netlify.app/invul" />
 
     <div class="line"></div>
 
     <div class="text">EM BREVE</div>
+
   </div>
 </body>
 </html>
