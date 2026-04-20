@@ -37,19 +37,16 @@ body {
   width: clamp(300px, 82vw, 1000px);
 
   opacity: 0;
-  transform: translateY(40px) scale(0.96);
+  transform: translateY(40px);
 
   animation: logoIn 1.2s cubic-bezier(0.22,1,0.36,1) forwards;
 
   transition:
-    transform 0.4s cubic-bezier(0.22,1,0.36,1),
-    filter 0.4s ease;
+    transform 0.35s cubic-bezier(0.22,1,0.36,1),
+    filter 0.35s ease;
 
-  /* 🔥 NITIDEZ */
   image-rendering: -webkit-optimize-contrast;
-  image-rendering: crisp-edges;
   backface-visibility: hidden;
-  transform: translateZ(0);
 }
 
 /* LINHA */
@@ -86,10 +83,10 @@ body {
   transition: 0.4s ease;
 }
 
-/* HOVER */
+/* 🔥 HOVER SEM SCALE (NÍTIDO) */
 .container:hover .logo {
-  transform: scale(1.018);
-  filter: brightness(1.1) contrast(1.06);
+  transform: translateY(-2px);
+  filter: brightness(1.12) contrast(1.08);
 }
 
 .container:hover .line {
@@ -103,38 +100,47 @@ body {
 }
 
 /* RESPONSIVO */
+
+/* telas grandes */
 @media (min-width: 1600px) {
   .logo { width: 900px; }
 }
 
+/* notebook */
 @media (max-width: 1400px) {
   .logo { width: 780px; }
 }
 
+/* tablet */
 @media (max-width: 900px) {
   .logo { width: 70vw; }
   .text { letter-spacing: 5px; }
 }
 
+/* mobile */
 @media (max-width: 600px) {
   .logo { width: 85vw; }
-  .text { font-size: 11px; letter-spacing: 4px; }
+  .text {
+    font-size: 11px;
+    letter-spacing: 4px;
+  }
   .line { width: 40px; }
 }
 
 /* ANIMAÇÕES */
+
 @keyframes logoIn {
   0% {
     opacity: 0;
-    transform: translateY(60px) scale(0.94);
+    transform: translateY(60px);
   }
   60% {
     opacity: 1;
-    transform: translateY(-4px) scale(1.01);
+    transform: translateY(-3px);
   }
   100% {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
   }
 }
 
@@ -151,6 +157,7 @@ body {
     transform: translateY(0);
   }
 }
+
 </style>
 </head>
 
