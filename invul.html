@@ -1,102 +1,128 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>INVUL</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>INVUL</title>
 
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: Arial, Helvetica, sans-serif;
-    }
+<style>
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
 
-    body {
-      background: #000;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-    }
+body {
+  height: 100vh;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: Arial, Helvetica, sans-serif;
+  color: #fff;
+  overflow: hidden;
+}
 
-    .container {
-      text-align: center;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 20px; /* controla distância real */
-    }
+/* container perfeitamente centralizado */
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  text-align: center;
 
-    .logo {
-      width: 420px;
-      max-width: 80vw;
-      transition: all 0.6s ease;
-    }
+  opacity: 0;
+  transform: translateY(40px) scale(0.96);
+  animation: entrance 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
 
-    /* efeito premium */
-    .container:hover .logo {
-      transform: scale(1.04);
-      filter: brightness(1.15);
-    }
+/* LOGO */
+.logo {
+  width: 460px;
+  max-width: 80vw;
 
-    .line {
-      width: 60px;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.5), transparent);
-      transition: all 0.6s ease;
-    }
+  filter: drop-shadow(0 0 0 rgba(255,255,255,0));
+  transition: all 0.6s ease;
+}
 
-    .text {
-      font-size: 12px;
-      letter-spacing: 14px;
-      opacity: 0.6;
-      text-transform: uppercase;
-      font-weight: 300;
-      transition: all 0.6s ease;
-    }
+/* TEXTO */
+.text {
+  font-size: 11px;
+  letter-spacing: 10px;
+  text-transform: uppercase;
+  opacity: 0.5;
+  font-weight: 300;
 
-    /* interação premium */
-    .container:hover .text {
-      opacity: 1;
-      letter-spacing: 18px;
-      transform: translateY(-2px);
-    }
+  transform: translateY(10px);
+  transition: all 0.5s ease;
+}
 
-    .container:hover .line {
-      width: 120px;
-      background: linear-gradient(90deg, transparent, #fff, transparent);
-    }
+/* LINHA PREMIUM */
+.line {
+  width: 40px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+  transition: all 0.5s ease;
+}
 
-    /* entrada suave */
-    .container {
-      opacity: 0;
-      transform: translateY(20px);
-      animation: fadeIn 1.2s ease forwards;
-    }
+/* HOVER ESTILO MARCA PREMIUM */
+.container:hover .logo {
+  transform: scale(1.06);
+  filter: drop-shadow(0 0 18px rgba(255,255,255,0.25));
+}
 
-    @keyframes fadeIn {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
+.container:hover .text {
+  opacity: 1;
+  letter-spacing: 14px;
+  transform: translateY(0);
+}
 
-  </style>
+.container:hover .line {
+  width: 120px;
+  background: linear-gradient(90deg, transparent, #fff, transparent);
+}
+
+/* ANIMAÇÃO DE ENTRADA (cinematográfica) */
+@keyframes entrance {
+  0% {
+    opacity: 0;
+    transform: translateY(60px) scale(0.92);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(-8px) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* leve pulsação contínua (luxo) */
+@keyframes subtlePulse {
+  0%, 100% { filter: drop-shadow(0 0 0 rgba(255,255,255,0)); }
+  50% { filter: drop-shadow(0 0 12px rgba(255,255,255,0.15)); }
+}
+
+.logo {
+  animation: subtlePulse 4s ease-in-out infinite;
+}
+
+</style>
 </head>
 
 <body>
-  <div class="container">
 
-    <img src="https://almoxarifadobotucatu.netlify.app/invul.png"/>
+<div class="container">
 
-    <div class="line"></div>
+  <img class="logo" src="https://almoxarifadobotucatu.netlify.app/invul.png">
 
-    <div class="text">EM BREVE</div>
+  <div class="line"></div>
 
-  </div>
+  <div class="text">EM BREVE</div>
+
+</div>
+
 </body>
 </html>
