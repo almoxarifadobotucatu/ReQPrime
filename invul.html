@@ -14,7 +14,7 @@
 
 body {
   height: 100vh;
-  background: #000;
+  background: radial-gradient(circle at center, #0a0a0a 0%, #000 70%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -23,75 +23,115 @@ body {
   overflow: hidden;
 }
 
-/* container perfeitamente centralizado */
+/* PARALLAX FUNDO SUAVE */
+body::before {
+  content: "";
+  position: absolute;
+  width: 140%;
+  height: 140%;
+  background: radial-gradient(circle, rgba(255,255,255,0.05), transparent 60%);
+  animation: bgMove 12s linear infinite;
+}
+
+@keyframes bgMove {
+  0% { transform: translate(-5%, -5%); }
+  50% { transform: translate(5%, 5%); }
+  100% { transform: translate(-5%, -5%); }
+}
+
+/* CONTAINER */
 .container {
+  position: relative;
+  z-index: 2;
+
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  gap: 14px;
+  gap: 18px;
   text-align: center;
 
   opacity: 0;
-  transform: translateY(40px) scale(0.96);
-  animation: entrance 1.4s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  transform: translateY(60px) scale(0.9);
+  animation: entrance 1.6s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
-/* LOGO */
+/* LOGO GRANDE (AQUI É O PONTO PRINCIPAL) */
 .logo {
-  width: 460px;
-  max-width: 80vw;
+  width: 720px;              /* 🔥 AUMENTADO */
+  max-width: 92vw;           /* ocupa quase tudo no mobile */
+
+  position: relative;
 
   filter: drop-shadow(0 0 0 rgba(255,255,255,0));
   transition: all 0.6s ease;
 }
 
-/* TEXTO */
-.text {
-  font-size: 11px;
-  letter-spacing: 10px;
-  text-transform: uppercase;
-  opacity: 0.5;
-  font-weight: 300;
-
-  transform: translateY(10px);
-  transition: all 0.5s ease;
+/* SHINE EFFECT */
+.logo::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    120deg,
+    transparent,
+    rgba(255,255,255,0.4),
+    transparent
+  );
+  transform: skewX(-20deg);
+  animation: shine 4s infinite;
 }
 
-/* LINHA PREMIUM */
+@keyframes shine {
+  0% { left: -60%; }
+  100% { left: 140%; }
+}
+
+/* LINHA */
 .line {
-  width: 40px;
+  width: 60px;
   height: 1px;
   background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
-  transition: all 0.5s ease;
+  transition: 0.5s;
 }
 
-/* HOVER ESTILO MARCA PREMIUM */
+/* TEXTO */
+.text {
+  font-size: 13px;
+  letter-spacing: 8px;
+  opacity: 0.6;
+  text-transform: uppercase;
+  font-weight: 300;
+  transition: 0.5s;
+}
+
+/* HOVER PREMIUM */
 .container:hover .logo {
-  transform: scale(1.06);
-  filter: drop-shadow(0 0 18px rgba(255,255,255,0.25));
+  transform: scale(1.05);
+  filter: drop-shadow(0 0 25px rgba(255,255,255,0.25));
+}
+
+.container:hover .line {
+  width: 140px;
+  background: linear-gradient(90deg, transparent, #fff, transparent);
 }
 
 .container:hover .text {
   opacity: 1;
-  letter-spacing: 14px;
-  transform: translateY(0);
+  letter-spacing: 12px;
 }
 
-.container:hover .line {
-  width: 120px;
-  background: linear-gradient(90deg, transparent, #fff, transparent);
-}
-
-/* ANIMAÇÃO DE ENTRADA (cinematográfica) */
+/* ENTRADA CINEMATOGRÁFICA */
 @keyframes entrance {
   0% {
     opacity: 0;
-    transform: translateY(60px) scale(0.92);
+    transform: translateY(80px) scale(0.85);
   }
   60% {
     opacity: 1;
-    transform: translateY(-8px) scale(1.02);
+    transform: translateY(-10px) scale(1.03);
   }
   100% {
     opacity: 1;
@@ -99,14 +139,16 @@ body {
   }
 }
 
-/* leve pulsação contínua (luxo) */
-@keyframes subtlePulse {
-  0%, 100% { filter: drop-shadow(0 0 0 rgba(255,255,255,0)); }
-  50% { filter: drop-shadow(0 0 12px rgba(255,255,255,0.15)); }
+/* SCROLL REVEAL (se adicionar conteúdo depois) */
+.reveal {
+  opacity: 0;
+  transform: translateY(40px);
+  transition: 1s ease;
 }
 
-.logo {
-  animation: subtlePulse 4s ease-in-out infinite;
+.reveal.active {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 </style>
